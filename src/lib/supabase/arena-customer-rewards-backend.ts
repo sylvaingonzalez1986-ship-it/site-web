@@ -7,17 +7,31 @@ import { arenaPublicPlayerKey } from "@/lib/arena-public-player-key";
 import { createHash } from "node:crypto";
 import {
   ARENA_CUSTOMER_REWARD_SLOTS,
-  buildArenaCustomerRewardPreview,
+  ARENA_CUSTOMER_PRIZE_FORMULA, buildArenaCustomerRewardPreview,
   isArenaCustomerRewardEligible,
-  type ArenaCustomerRewardStanding,
+  type ArenaCustomerRewardStanding, type ArenaPrizeDelivery,
 } from "@/lib/arena-customer-rewards";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqArenaLeaderboardInternal } from "@/lib/supabase/kanab-quest-backend";
+
+export async function recordArenaPrizeReturn(itemId: number, reference: string, grams: number) {
+  const result = await createSupabaseServiceClient().rpc("rpc_arena_prize_record_return", {
+    p_item_id: itemId, p_reference: reference, p_grams: grams,
+  });
+  if (result.error) throw new Error("Retour indisponible. Vérifier la référence et le poids de la ligne de commande.");
+  invalidateArenaSharedReads();
+  return { itemId, reference, grams: Number(result.data) };
+}
 
 type RewardPoolRpcPayload = {
   seasonCode?: unknown;
   status?: unknown;
   formulaVersion?: unknown;
+  baseGrams?: unknown;
+  carryInGrams?: unknown;
+  carryPending?: unknown;
+  reportGrams?: unknown;
+  unknownSaleLines?: unknown;
   contributionRateBps?: unknown;
   surpriseShareBps?: unknown;
   minHumanBattles?: unknown;
@@ -96,6 +110,7 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
     ? await loadSharedRewardPool(input.finalizePreviousWeeks === true)
     : await readCachedRewardPool();
   const poolGrams = Math.max(0, toNumber(raw.poolGrams));
+  const prizeRules = raw.formulaVersion === ARENA_CUSTOMER_PRIZE_FORMULA;
   const minHumanBattles = Math.max(0, Math.floor(toNumber(raw.minHumanBattles, 3)));
   const preview = buildArenaCustomerRewardPreview(poolGrams, standings, minHumanBattles);
   const viewerStanding = input.viewerId ? standings.find(entry => entry.playerId === input.viewerId) : null;
@@ -126,6 +141,14 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
       grant: viewerGrant,
     } : null,
     formulaVersion: String(raw.formulaVersion ?? "arena-customer-v1"),
+    ...(prizeRules ? {
+      baseGrams: toNumber(raw.baseGrams), carryInGrams: toNumber(raw.carryInGrams), carryPending: raw.carryPending === true,
+      reportGrams: raw.reportGrams == null
+        ? Math.round((poolGrams - preview.rankingWinners.reduce((sum, winner) => sum + winner.grams, 0)
+          - (preview.surpriseCandidates.length ? preview.surprisePoolGrams : 0)) * 10) / 10
+        : toNumber(raw.reportGrams),
+      unknownSaleLines: raw.unknownSaleLines == null ? null : toNumber(raw.unknownSaleLines),
+    } : {}),
     rankingFormulaVersion: rankingFormulaVersion ?? "arena-v2",
     minimumTastedFlowers: rankingFormulaVersion === ARENA_FORMULA_VERSION ? 1 : null,
     contributionRateBps: Math.floor(toNumber(raw.contributionRateBps, 100)),
@@ -182,6 +205,28 @@ export async function getArenaCustomerRewardPool(input: { finalizePreviousWeeks?
       oneChancePerCustomer: true,
     },
   };
+}
+
+export async function getArenaPrizeDeliveries(userId: string): Promise<ArenaPrizeDelivery[]> {
+  const client = createSupabaseServiceClient();
+  const result = await client.from("arena_customer_reward_grants")
+    .select("id,season_code,kind,gift_weight_grams,fulfillment_order_id,arena_customer_reward_seasons!inner(formula_version,status)")
+    .eq("user_id", userId).is("claim_id", null)
+    .eq("arena_customer_reward_seasons.formula_version", ARENA_CUSTOMER_PRIZE_FORMULA)
+    .eq("arena_customer_reward_seasons.status", "settled")
+    .order("granted_at", { ascending: false });
+  if (result.error) throw new Error("Tes lots sont momentanément indisponibles.");
+  return result.data.map(award => ({
+    id: award.id, seasonCode: award.season_code, kind: award.kind === "surprise" ? "surprise" : "ranking",
+    grams: Number(award.gift_weight_grams), orderId: award.fulfillment_order_id,
+  }));
+}
+
+export async function createArenaPrizeDelivery(grantId: string, userId: string, shipping: {
+  name: string; address: string; city: string; postalCode: string; email: string; phone: string;
+}) {
+  const client = createSupabaseServiceClient();
+  return client.rpc("rpc_arena_order_customer_prize", { p_grant_id: grantId, p_user_id: userId, p_shipping: shipping });
 }
 
 export async function getArenaCustomerRewardDiceState(userId: string) {

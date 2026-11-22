@@ -100,6 +100,12 @@ type CustomerRewardPool = {
   poolGrams: number;
   wholePoolGrams: number;
   currentWeekGrams: number;
+  baseGrams?: number;
+  carryInGrams?: number;
+  carryPending?: boolean;
+  reportGrams?: number;
+  unknownSaleLines?: number | null;
+  minimumTastedFlowers?: number | null;
   contributionRateBps: number;
   weeklyDice: { rollCount: number; average: number | null; rateBps: number };
   eligiblePlayers: number;
@@ -112,6 +118,7 @@ type CustomerRewardPreview = {
   rankingGrams?: number;
   surpriseCandidates?: number;
   surpriseGrams?: number;
+  reportGrams?: number;
   ready?: boolean;
   seasonStatus?: string;
 };
@@ -408,8 +415,10 @@ export function AdminPlacardOperationsPanel() {
             {metric(customerRewards?.poolGrams)} g
           </p>
           <p className="mt-1 text-sm">
-            Le dé collectif fixe chaque semaine la part des grammes réellement payés · hors cadeaux, annulations et commandes archivées.
+            Le dé collectif fixe chaque semaine la part des grammes {customerRewards?.baseGrams !== undefined ? "de fleurs Concours " : ""}réellement payés. Les cadeaux, annulations et commandes archivées sont exclus.
           </p>
+          {customerRewards?.baseGrams !== undefined && <p className="mt-1 text-sm">Socle {metric(customerRewards.baseGrams)} g · report entrant {customerRewards.carryPending ? "en attente" : `${metric(customerRewards.carryInGrams)} g`} · {customerRewards.status === "settled" ? "report sortant" : "report sortant estimé"} {metric(customerRewards.reportGrams)} g.</p>}
+          {Boolean(customerRewards?.unknownSaleLines) && <p className="mt-1 text-sm" role="status">{metric(customerRewards?.unknownSaleLines)} ligne(s) de vente à vérifier, exclues du bonus.</p>}
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
             <b className="border-2 border-ink bg-white p-3">{metric(customerRewards?.currentWeekGrams)} g<small className="block font-normal">cette semaine</small></b>
             <b className="border-2 border-ink bg-[#fff0ae] p-3">{metric(customerRewards ? customerRewards.weeklyDice.rateBps / 100 : null)} %<small className="block font-normal">palier du dé · {metric(customerRewards?.weeklyDice?.rollCount)} lancer(s)</small></b>
@@ -419,11 +428,11 @@ export function AdminPlacardOperationsPanel() {
           </div>
           {customerRewardPreview ? (
             <p className="mt-3 border-2 border-ink bg-[#fff0c9] p-3 text-sm">
-              Simulation : {Number(customerRewardPreview.rankingWinners ?? 0)} gagnant(s) classés pour {Number(customerRewardPreview.rankingGrams ?? 0)} g · {Number(customerRewardPreview.surpriseCandidates ?? 0)} candidat(s) hors Top 10 pour {Number(customerRewardPreview.surpriseGrams ?? 0)} g.
+              Simulation : {Number(customerRewardPreview.rankingWinners ?? 0)} gagnant(s) classés pour {Number(customerRewardPreview.rankingGrams ?? 0)} g · {Number(customerRewardPreview.surpriseCandidates ?? 0)} candidat(s) hors Top 10 pour {Number(customerRewardPreview.surpriseGrams ?? 0)} g.{customerRewardPreview.reportGrams !== undefined && ` Report de ${metric(customerRewardPreview.reportGrams)} g.`}
             </p>
           ) : null}
           <p className="mt-3 text-xs text-charcoal">
-            Éligibilité : {metric(customerRewards?.minimumHumanBattles)} duels officiels minimum. Une seule chance par client pour la Fleur Surprise.
+            Éligibilité : {metric(customerRewards?.minimumHumanBattles)} duels officiels minimum{customerRewards?.minimumTastedFlowers ? " ou une fleur achetée avec avis validé" : ""}. Une seule chance par client pour la Fleur Surprise.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <button className="btn-cartoon btn-secondary" type="button" disabled={!customerRewards || customerRewards.status === "settled" || Boolean(action)} onClick={() => void runCustomerRewardAction("preview")}>

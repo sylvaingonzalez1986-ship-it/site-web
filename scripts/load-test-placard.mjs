@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
+import { verifyPlacardTestTarget } from "./placard-test-target.mjs";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 
 const baseUrl = (process.env.PLACARD_LOAD_TEST_BASE_URL || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -36,7 +37,7 @@ const minimumAccounts = Number.isInteger(requestedMinimumAccounts) && requestedM
   ? requestedMinimumAccounts
   : 2;
 const allowRemote = process.env.PLACARD_LOAD_TEST_ALLOW_REMOTE === "1";
-const remoteConfirmation = process.env.PLACARD_LOAD_TEST_CONFIRM_TARGET === "STAGING_READ_ONLY";
+const remoteConfirmation = process.env.PLACARD_LOAD_TEST_CONFIRM_TARGET === "ISOLATED_STAGING";
 const allowedRemoteHost = String(process.env.PLACARD_LOAD_TEST_ALLOWED_HOST || "").trim().toLowerCase();
 const isLocal = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(baseUrl);
 
@@ -45,7 +46,7 @@ if (!isLocal) {
   if (!allowRemote || !remoteConfirmation || !allowedRemoteHost || targetHost !== allowedRemoteHost) {
     throw new Error(
       "Cible distante refusée. Une recette distante exige ALLOW_REMOTE=1, " +
-      "CONFIRM_TARGET=STAGING_READ_ONLY et un PLACARD_LOAD_TEST_ALLOWED_HOST identique.",
+      "CONFIRM_TARGET=ISOLATED_STAGING et un PLACARD_LOAD_TEST_ALLOWED_HOST identique.",
     );
   }
 }
@@ -56,6 +57,7 @@ if (uniqueCookies.length < minimumAccounts) {
   );
 }
 
+const target = await verifyPlacardTestTarget(baseUrl);
 const paths = [
   "/arene/placard",
   "/api/arena/placard/bootstrap",
@@ -193,7 +195,8 @@ const summary = {
   schema: "kanab-quest-load-test-v2",
   generatedAt,
   artifactPath,
-  mode: "read-only",
+  mode: "isolated-bootstrap-and-reads",
+  target,
   baseUrl,
   participants,
   authenticatedAccounts,

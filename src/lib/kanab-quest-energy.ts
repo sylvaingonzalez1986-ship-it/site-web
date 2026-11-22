@@ -97,6 +97,7 @@ export type KqEnergySummary = { outstandingCents: number; invoiceCount: number; 
 export type KqEnergySnapshot = KqEnergySummary & {
   storageClimate?: KqStorageClimateBilling;
   warehouse?: KqWarehouseRunSnapshot;
+  campaignZoneCount?: number;
   equipmentScopeVersion?: 2 | 3;
   buildings?: Array<{ buildingNumber: number; anchorTentNumber: number; equippedCodes: string[]; levels: Record<string, number>; cultureWear: Record<string, KqCultureEquipmentCondition>; cultureOperationalCodes: string[] }>;
   tents?: Array<{ tentNumber: number; equippedCodes: string[]; levels: Record<string, number>; cultureWear: Record<string, KqCultureEquipmentCondition>; cultureOperationalCodes: string[] }>;

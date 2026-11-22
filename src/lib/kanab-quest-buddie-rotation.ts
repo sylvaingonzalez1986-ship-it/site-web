@@ -17,6 +17,12 @@ export function recordKqBuddieUse(code: string, recentBuddieCodes: readonly stri
   return [...new Set([code, ...recentBuddieCodes])].slice(0, KQ_BUDDIE_ROTATION_REQUIRED);
 }
 
+/** The server starts all campaign members together, then records each distinct variety. */
+export function getKqNextCampaignCapacity(owned: readonly string[], recent: readonly string[], assigned: readonly string[]) {
+  const afterCampaign = assigned.reduce<string[]>((history, code) => recordKqBuddieUse(code, history), [...recent]);
+  return [...new Set(owned)].filter(code => getKqBuddieRotationRemaining(code, afterCampaign) === 0).length;
+}
+
 export function getKqBuddieRotationMessage(remaining: number): string {
   return `Ce Buddie sera disponible après avoir utilisé ${remaining} autre${remaining > 1 ? "s" : ""} Buddie${remaining > 1 ? "s" : ""} différent${remaining > 1 ? "s" : ""}.`;
 }

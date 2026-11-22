@@ -1,18 +1,19 @@
 /** Actual Quartier, village map and pinned objective. Local read-only fixtures; no remote traffic. */
 import assert from 'node:assert/strict';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createServer, transformWithOxc} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
-const root=process.cwd(),output=resolve(root,'output/clarity-lot4/quartier');
+const visitOnly=process.argv.includes('--visit-only');
+const root=process.cwd(),output=resolve(root,visitOnly?'output/placard-visit-return':'output/clarity-lot4/quartier');
 const observe=process.argv.includes('--observe');
 const recoveryOnly=process.argv.includes('--recovery-only');
 const port=Number(process.env.KQ_QUARTIER_RESUME_PORT??3504),origin=`http://127.0.0.1:${port}`;
 const modules={
- entry:`import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
+ entry:visitOnly?await readFile(resolve(root,'scripts/fixtures/placard-visit-audit.jsx'),'utf8'):`import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
 import {KqPlacardLobby} from '/src/components/placard/KqPlacardLobby';
 import {KqPinnedMission,KqMissionFocusProvider} from '/src/components/placard/KqPinnedMission';
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
@@ -43,11 +44,94 @@ const server=await createServer({root,configFile:false,envDir:false,define:{"pro
  configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html; charset=utf-8');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reprise du Quartier</title><style>@font-face{font-family:AuditDisplay;src:url("/src/app/fonts/BarlowCondensed-Latin-Black.woff2");font-weight:900}@font-face{font-family:AuditBody;src:url("/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2");font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>')})}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
 const results=[],errors=[];let browser;
 const cases={mixed:['storage','attention','harvests'],waiting:['curing','waiting','workshop'],'waiting-goal':['curing','waiting','workshop'],active:['culture','ready','game'],jury:['jury','ready','arena'],rich:['new-culture','ready','game'],'storage-unknown':['curing','unknown','workshop'],'capacity-unknown':['curing','unknown','workshop'],inconsistent:['curing','unknown','workshop'],'manual-overflow':['storage','attention','harvests'],'exposed-unknown':['storage','attention','harvests'],malformed:['new-culture','ready','game'],unknown:['unknown','unknown',null],hanging:['unknown','unknown',null]};
+
+async function auditVisits(page) {
+ await page.emulateTimezone('America/Montreal');
+ const action = '[data-placard-next-action]';
+ const summary = '[data-placard-lobby] details:not([data-resume-details]) > summary';
+ const primary = `${action} > button`;
+ const stored = owner => page.evaluate(owner => JSON.parse(localStorage.getItem(`kq:visit:v1:${owner}:1`)), owner);
+ const press = async selector => { await page.focus(selector); await page.keyboard.press('Enter'); };
+ const evidence = () => page.evaluate(() => ({ snapshot: window.visitEvidence, navigation: window.navigation, requests: window.requests }));
+ const textOf = selector => page.$eval(selector, element => element.textContent.replace(/\s+/g, ' ').trim());
+ const checkReads = requests => assert.deepEqual(requests.map(({ path, method }) => `${method} ${path}`).sort(), [
+   'GET /api/arena/placard/commerce', 'GET /api/arena/placard/equipment', 'GET /api/arena/placard/storage',
+ ]);
+ const open = async (owner, day) => {
+   await page.goto(`${origin}/?owner=${owner}&day=${day}`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+   const kind = day === 7 ? 'finance' : 'culture';
+   await page.waitForSelector(`${action}[data-priority="${kind}"]`);
+   await page.waitForFunction(owner => JSON.parse(localStorage.getItem(`kq:visit:v1:${owner}:1`))?.at === window.visitEvidence.serverNow
+     && !document.querySelector('[data-placard-next-action]')?.textContent.includes('Factures et ventes en cours de vérification.'), {}, owner);
+   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'Current status and history fit the viewport');
+ };
+
+ for (const [day, width, height, gesture] of [[1, 1440, 900, 'keyboard'], [7, 320, 540, 'touch']]) {
+   const owner = `audit-visit-${day}`;
+   const activate = gesture === 'keyboard' ? press : selector => page.tap(selector);
+   await page.setViewport({ width, height, isMobile: gesture === 'touch', hasTouch: gesture === 'touch' });
+   await open(owner, 0);
+   assert.equal(await page.$(summary), null, 'First visit has no remembered changes');
+   const initial = await evidence();
+   const curing = await textOf('[data-resume-notice="curing"]');
+   assert.match(curing, /10 novembre.*17:00/);
+   assert.equal(initial.snapshot.protectedLot.readyAt, '2026-11-10T16:00:00.000Z');
+   assert.equal(await textOf(primary), 'Reprendre');
+   checkReads(initial.requests);
+   await open(owner, day);
+   assert.match(await textOf(summary), /10\/11\/2026.*11:00/);
+   await activate(summary);
+   await page.waitForSelector(`${summary.split(' > ')[0]}[open]`);
+   const history = await textOf(`${summary.split(' > ')[0]}[open]`);
+   const current = await evidence();
+   assert.equal(current.snapshot.protectedLot.stage, 'ready');
+   assert.equal(current.snapshot.protectedLot.readyAt, initial.snapshot.protectedLot.readyAt);
+   assert.equal(await page.$('[data-resume-notice="curing"]'), null);
+   if (day === 1) {
+     assert.match(history, /Caisse de 20 € à 20 € \(0 €\)/);
+     assert.match(await textOf('[data-resume-notice="jury"]'), /1 Fleur.*prête pour le jury/);
+     assert.equal(await textOf(primary), 'Reprendre');
+     await activate(primary);
+     assert.deepEqual((await evidence()).navigation, [{ view: 'game' }]);
+     assert.equal(current.snapshot.listing.status, 'active');
+   } else {
+     assert.match(history, /Caisse de 20 € à 0 € \(-20 €\)/);
+     assert.match(await textOf(action), /Une facture est échue.*Fournisseur : 2 €.*15 nov\. 2026.*11:00/);
+     assert.equal(current.snapshot.supplier.dueAt, '2026-11-15T10:00:00.000Z');
+     assert.equal(current.snapshot.listing.status, 'quality-blocked');
+     assert.match(await textOf('[data-resume-notice="sales-quality"]'), /3 paquets de « Lot du retour »/);
+     await activate(primary);
+     await activate('[data-resume-notice="sales-quality"]');
+     await activate('[data-resume-notice="culture"]');
+     assert.deepEqual((await evidence()).navigation, [{ view: 'staff', options: { staffSection: 'accounting' } },
+       { view: 'market', options: { marketSection: 'dashboard', listingId: 'listing-lot-retour' } }, { view: 'game' }]);
+   }
+   checkReads((await evidence()).requests);
+   results.push({ day, viewport: { width, height }, gesture, initialCuring: curing, current: current.snapshot,
+     history, currentAction: await textOf(action), navigation: (await evidence()).navigation, onlyReadRequests: true });
+   await page.screenshot({ path: resolve(output, `j-plus-${day}.png`), fullPage: true });
+ }
+ const savedVisit = await stored('audit-visit-7');
+ await open('audit-visit-other-account', 1);
+ assert.equal(await page.$(summary), null, 'A different account has no visit history');
+ assert.deepEqual(await stored('audit-visit-7'), savedVisit, 'Writing another account leaves the original visit saved');
+ assert.notEqual((await stored('audit-visit-other-account')).at, savedVisit.at);
+ assert.match(await textOf(action), /Reprends là où tu t’es arrêté/);
+ checkReads((await evidence()).requests);
+ const report = { passed: true, firstVisit: { historyShown: false, serverCuringDeadlineShown: true },
+   otherAccount: { historyShown: false, currentStatusShown: true }, returns: results, errors };
+ assert.deepEqual(errors, []);
+ await writeFile(resolve(output, 'rapport.json'), JSON.stringify(report, null, 2));
+ console.log(JSON.stringify({ passed: true, returns: results.length, otherAccount: report.otherAccount, output }));
+}
+
 try{
  await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
  const page=await browser.newPage();page.setDefaultTimeout(20000);page.on('pageerror',error=>errors.push(error.message));
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.setRequestInterception(true);page.on('request',request=>{const url=new URL(request.url());if(url.origin===origin||url.protocol==='data:')void request.continue();else void request.abort()});
- if(observe){
+ if(visitOnly){
+  await auditVisits(page);
+ }else if(observe){
   for(const width of [320,390,1440]){
    await page.setViewport({width,height:844});await page.goto(origin,{waitUntil:'networkidle0'});
    await page.evaluate(()=>window.mount('mixed'));await page.waitForSelector('[data-placard-next-action]');await page.evaluate(()=>document.fonts.ready);

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Check, CreditCard, LockKeyhole, RefreshCw, Zap } from "lucide-react";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
+import { CANONICAL_SITE_URL } from "@/lib/site-url";
 import { parseSupportEuros, parseSupportForm, supportEuros, type SupportAttempt, type SupportProvider, type SupportStatus, type SupportSummary } from "@/lib/support-campaign";
 import {
   clearSupportAttempt, createSupportToken, goToSupportPayment, readSupportAttempt, rememberSupportAttempt,
@@ -48,6 +49,16 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
   const chosenProvider = available.includes(provider) ? provider : available[0];
   const attemptedProvider = attempt?.provider ?? "viva";
   const final = supportStatusIsFinal(status);
+  const showOfficialBitcoinForm = summary?.campaign.active && !available.includes("swiss-bitcoin-pay")
+    && typeof window !== "undefined"
+    && (process.env.NODE_ENV === "development" || ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname));
+  const officialBitcoinLink = showOfficialBitcoinForm ? (
+    <a key="swiss-bitcoin-pay" className={`${styles.buttonLink} ${styles.methodPlate}`}
+      href={`${CANONICAL_SITE_URL}/soutenir`} target="_blank" rel="noopener noreferrer"
+      aria-label="Bitcoin Lightning sur le site officiel (nouvel onglet)">
+      <Zap size={20} aria-hidden="true" /><span>Bitcoin Lightning<small>Formulaire officiel <span aria-hidden="true">↗</span></small></span>
+    </a>
+  ) : null;
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     try {
@@ -212,7 +223,7 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
             {status?.refundedCents ? <p>Montant remboursé de {supportEuros(status.refundedCents)}.</p> : null}
           </div>
           <div className={styles.actions}>
-            {final ? <button type="button" onClick={newSupport} disabled={!chosenProvider}>Préparer une nouvelle contribution</button> : <>
+            {final ? <button type="button" onClick={newSupport} disabled={!chosenProvider && !officialBitcoinLink}>Préparer une nouvelle contribution</button> : <>
               {status?.state === "ready" && status.checkoutUrl && !work && (attemptedProvider === "swiss-bitcoin-pay"
                 ? <a href={status.checkoutUrl} className={`${styles.buttonLink} ${styles.primary}`}>Ouvrir Swiss Bitcoin Pay</a>
                 : <button type="button" className={styles.primary} onClick={() => void submit()}>Reprendre sur Viva</button>)}
@@ -222,7 +233,7 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
             </>}
           </div>
           <small className={styles.reference}>Référence de ton soutien&nbsp;: {attempt.id}</small>
-        </> : !chosenProvider || !summary ? <p role="status">{summary ? "Les nouvelles contributions sont actuellement fermées." : error ? "Moyens de paiement momentanément indisponibles." : "Vérification des moyens de paiement…"}</p>
+        </> : !chosenProvider || !summary ? officialBitcoinLink ?? <p role="status">{summary ? "Les nouvelles contributions sont actuellement fermées." : error ? "Moyens de paiement momentanément indisponibles." : "Vérification des moyens de paiement…"}</p>
           : <form onSubmit={submit}>
             <fieldset disabled={!storageReady || Boolean(work)} className={styles.fields}>
               <legend className={styles.srOnly}>Ta fiche de soutien</legend>
@@ -237,7 +248,7 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
               <fieldset className={styles.methods}>
                 <legend>Moyen de paiement</legend>
                 <div className={styles.methodOptions}>
-                  {paymentMethods.map(({ provider: method, service, Icon }) => <label key={method}>
+                  {paymentMethods.map(({ provider: method, service, Icon }) => method === "swiss-bitcoin-pay" && officialBitcoinLink ? officialBitcoinLink : <label key={method}>
                     <input className={styles.methodInput} aria-label={SUPPORT_PROVIDER_LABELS[method]} type="radio" name="provider" value={method} checked={chosenProvider === method} disabled={!available.includes(method)} onChange={() => setProvider(method)} />
                     <span className={styles.methodPlate}>{chosenProvider === method ? <Check size={20} aria-hidden="true" /> : <Icon size={20} aria-hidden="true" />}<span>{SUPPORT_PROVIDER_LABELS[method]}<small>{available.includes(method) ? service : "Indisponible"}</small></span></span>
                   </label>)}

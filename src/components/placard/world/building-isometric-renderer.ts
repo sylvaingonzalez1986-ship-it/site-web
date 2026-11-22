@@ -20,6 +20,7 @@ type BuildingIsometricRenderer = {
   setFocus: (id: string | null) => void;
   activate: (id: string) => void;
   setMotion: (enabled: boolean) => void;
+  setNight: (night: boolean) => void;
 };
 
 const ROOM_GESTURES: Partial<Record<InteriorRoom["id"], { pivot: string; pitch: number; yaw: number; hand: number; rest: number }>> = {
@@ -71,6 +72,8 @@ export function createBuildingIsometricRenderer(
   const key = new THREE.DirectionalLight(VILLAGE_LIGHT.key.color, VILLAGE_LIGHT.key.power);
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
   const meshes: THREE.Mesh[] = [];
+  const residents: THREE.Object3D[] = [];
+  const residentMeshes = new Set<THREE.Object3D>();
   const destinations = new Map<THREE.Object3D, string>();
   const halos = new Map<string, THREE.Group>();
   const bank = room.id === "bank";
@@ -92,6 +95,7 @@ export function createBuildingIsometricRenderer(
     model.add(createInteriorRoomArt(room, { cutaway: true }));
     if (room.id === "missions") {
       guide = createVillageLoic();
+      guide.object.name = "daytime-resident";
       guide.object.position.set(1.52, .023, 2.18);
       guide.object.rotation.y = .58;
       model.add(guide.object);
@@ -112,6 +116,10 @@ export function createBuildingIsometricRenderer(
     });
     model.updateMatrixWorld(true);
     model.traverseVisible(child => {
+      if (child.name === "daytime-resident") {
+        residents.push(child);
+        child.traverse(part => residentMeshes.add(part));
+      }
       if (!(child instanceof THREE.Mesh)) return;
       meshes.push(child);
       if (bank && child.name.endsWith("-gold") && child.material instanceof THREE.MeshStandardMaterial) {
@@ -144,6 +152,7 @@ export function createBuildingIsometricRenderer(
   const flag = model.getObjectByName("shop-flag");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   let motion = true;
+  let night = false;
   let hovered: string | null = null;
   let focused: string | null = null;
   let active: { id: string; at: number } | null = null;
@@ -203,7 +212,7 @@ export function createBuildingIsometricRenderer(
       const progress = enabled && active?.id === "bank" ? activationProgress : 0;
       wheel.rotation.z = Math.sin(Math.PI * progress) * -.36;
     }
-    if (gesture && (head || hand || guide)) {
+    if (!night && gesture && (head || hand || guide)) {
       // Short working gestures run at 15 Hz, with no frames drawn through the longer rest.
       const duration = guide ? 3200 : 2200;
       if (now >= nextGesture + duration) nextGesture = now + gesture.rest;
@@ -283,7 +292,7 @@ export function createBuildingIsometricRenderer(
     if (!bounds.width || !bounds.height || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height) return;
     pointer.set(2 * x / bounds.width - 1, 1 - 2 * y / bounds.height);
     ray.setFromCamera(pointer, camera);
-    const [hit] = ray.intersectObjects(meshes, false);
+    const hit = ray.intersectObjects(meshes, false).find(entry => !night || !residentMeshes.has(entry.object));
     return hit && destinations.get(hit.object);
   }
 
@@ -395,6 +404,15 @@ export function createBuildingIsometricRenderer(
 
   return {
     activate,
+    setNight(value) {
+      if (night === value || disposed) return;
+      night = value;
+      for (const resident of residents) resident.visible = !value;
+      canvas.dataset.residents = value ? "absent" : "present";
+      cancelPress();
+      renderer.shadowMap.needsUpdate = true;
+      invalidate();
+    },
     setFocus(id) {
       if (disposed || focused === id) return;
       focused = id;

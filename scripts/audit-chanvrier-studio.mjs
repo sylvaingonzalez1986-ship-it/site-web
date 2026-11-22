@@ -3,6 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import puppeteer from 'puppeteer-core';
 import { Launcher } from 'chrome-launcher';
+import { frameVillageSubject } from './fixtures/village-audit-camera.mjs';
 
 export const entry = `
 import React,{useState,useEffect} from 'react';
@@ -158,9 +159,15 @@ export async function run({origin,output}) {
     await page.goto(origin+'/?culture');await page.waitForSelector('[data-personalized="true"]');await shot('salle-culture');
     await page.goto(origin+'/?shop');await page.waitForSelector('canvas[data-ready="true"]');await page.click('#quality');await page.waitForSelector('canvas[data-quality="low"]');await shot('boutique-qualite-reduite');
     await page.goto(origin+'/?village');await page.waitForSelector('canvas[data-village-ready="true"]');
-    await page.click('details:has([data-observe-life="player"]) summary');await page.click('[data-observe-life="player"]');await page.waitForSelector('canvas[data-life-observe="player"][data-camera-transition="idle"]');
+    await frameVillageSubject(page, 'player');
     await shot('personnage-au-quartier');
-    await page.click('details:has([data-observe-life="player"]) summary');await byText('Modifier mon personnage');
+    const observer = 'details:has([data-observe-life])';
+    await page.click(observer + ' > summary');
+    assert.deepEqual(await page.$$eval(observer + ' button', nodes => nodes.map(node => node.dataset.observeLife)), ['breton', 'fisherman', 'loic']);
+    await page.click('[data-village-settings] > summary');
+    assert.equal(await page.$eval(observer, node => node.open), false);
+    assert.ok(await page.$('[data-village-settings][open] [data-village-toggle-labels]'));
+    await page.click('[data-village-settings][open] [aria-label="Modifier mon personnage"]');
     await page.waitForSelector(stage);await category('Tenue');await page.select('dialog select','clothing');
     assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
     await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});assert.equal(requests,2);

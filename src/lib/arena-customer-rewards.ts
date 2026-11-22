@@ -3,6 +3,15 @@ import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
 export const ARENA_CUSTOMER_REWARD_RATE_BPS = 100;
 export const ARENA_CUSTOMER_REWARD_MIN_BATTLES = 3;
 export const ARENA_CUSTOMER_REWARD_TOP_SIZE = 10;
+export const ARENA_CUSTOMER_PRIZE_FORMULA = "arena-customer-prizes-v3";
+
+export type ArenaPrizeDelivery = {
+  id: string;
+  seasonCode: string;
+  kind: "ranking" | "surprise";
+  grams: number;
+  orderId: string | null;
+};
 
 export const ARENA_CUSTOMER_REWARD_DICE_RATES = [
   { diceResult: "1–2", rateBps: 100, ratePercent: 1 },

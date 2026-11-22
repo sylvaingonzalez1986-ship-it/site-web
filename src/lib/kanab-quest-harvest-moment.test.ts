@@ -73,6 +73,10 @@ describe("terminal harvest moment", () => {
     expect(result?.confirmedFlowers).toBe(1);
     expect(result?.harvestCount).toBe(2);
     expect(result?.rows[0].grams).not.toBe(result?.rows[1].grams);
+    expect(result?.potentialGrams).toBe(Math.round(own.reduce((sum, member) => sum + member.warehouse!.estimatedHarvestGrams, 0) * 10) / 10);
+    for (const row of result!.rows) {
+      expect(Math.round((row.potentialGrams! + row.adjustments.reduce((sum, item) => sum + item.grams, 0)) * 10) / 10).toBe(row.grams);
+    }
   });
 
   it("does not present a partial campaign total as a full harvest", () => {

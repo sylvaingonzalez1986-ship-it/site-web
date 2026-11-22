@@ -45,15 +45,16 @@ try{
  const shot=async name=>{await page.evaluate(()=>Promise.allSettled([...document.images].map(img=>img.decode())));await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
  const load=async scenario=>{await page.goto(origin+'/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('[data-workshop-only]');await page.evaluate(()=>document.fonts.ready);};
  const state=async(code,label)=>assert.equal(await page.$eval(`[data-workshop-machine="${code}"] [data-workshop-machine-state]`,e=>e.textContent),label);
- const machineArtwork=async()=>{
+ const machineArtwork=async scenario=>{
   const images=await page.$$eval('[data-workshop-artwork] img',async nodes=>{await Promise.all(nodes.map(image=>image.decode()));return nodes.map(image=>({code:image.parentElement.dataset.workshopArtwork,path:new URL(image.currentSrc||image.src).pathname,loaded:image.complete&&image.naturalWidth>0}));});
-  assert.equal(images.length,6,'Six machine illustrations are present');
-  for(const image of images){assert.equal(image.loaded,true,`${image.code} illustration loaded`);assert.equal(image.path,`/app/kanab-quest/equipment/equipment-${image.code}-hero-v2.webp`);}
+  const expected=scenario==='empty'?[]:['PRESS-0600','SIFT-TRAY',...(scenario==='maintenance'?['WASHER-25L']:[])];
+  assert.deepEqual(images.map(image=>image.code).sort(), expected, 'Only owned machines occupy the laboratory');
+  for(const image of images){assert.equal(image.loaded,true,`${image.code} illustration loaded`);assert.match(image.path,/^\/placard\/lab-v2\/[^/]+\.webp$/);}
   return images.map(image=>image.code);
  };
  const unchanged=async()=>{assert.deepEqual(await page.evaluate(()=>window.__calls.filter(call=>call.method!=='GET')),[]);assert.deepEqual(await page.evaluate(()=>window.__openedShop),[]);};
  const layout=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'No horizontal document overflow');
- const unknown=async()=>{assert.equal(await page.$('[data-workshop-scene]'),null,'Unknown data never becomes an empty workshop');assert.equal(await page.$eval('[data-inventory-balance] strong',e=>e.textContent),'—');assert.equal(await page.evaluate(()=>/0 \/ 6|À acquérir|0,00/.test(document.body.textContent)),false,'No fabricated zero or unowned state');};
+ const unknown=async()=>{assert.equal(await page.$('[data-workshop-scene]'),null,'Unknown data never becomes an empty workshop');assert.equal(await page.$eval('[data-inventory-balance] strong',e=>e.textContent),'—');assert.equal(await page.evaluate(()=>/0 \/ 6|Emplacement libre|0,00/.test(document.body.textContent)),false,'No fabricated zero or unowned state');};
  for(const width of [320,390,1440]){
   await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});
   for(const scenario of ['loading','error','invalid','empty','owned','maintenance']){
@@ -71,10 +72,10 @@ try{
    }
    await page.waitForSelector('[data-workshop-scene]');
    assert.equal(await page.$eval('[data-workshop-scene]',e=>e.getAttribute('aria-label')),'Machines de l’atelier');
-   const verifiedArtwork=await machineArtwork();
+   const verifiedArtwork=await machineArtwork(scenario);
    if(scenario==='empty'){
     assert.equal(await page.$eval('[data-workshop-scene] dl > div:first-child dd',e=>e.textContent),'0 / 6');
-    assert.equal(await page.$$eval('[data-workshop-machine-state]',els=>els.filter(e=>e.textContent==='À acquérir').length),6,'A confirmed empty inventory can truthfully say not acquired');
+    assert.equal(await page.$$eval('[data-workshop-machine-state]',els=>els.filter(e=>e.textContent==='Emplacement libre').length),6,'A confirmed empty inventory has six free slots');
     assert.match(await page.$eval('[data-inventory-balance]',e=>e.textContent),/0\s*€/);
    }else{
     await state('SIFT-TRAY','Installée');await state('PRESS-0600','En réserve');if(scenario==='maintenance')await state('WASHER-25L','À entretenir');
@@ -87,6 +88,17 @@ try{
      await page.$eval(source,e=>e.scrollIntoView({block:'center',behavior:'instant'}));await page.focus(source);assert.notEqual(await page.$eval(source,e=>getComputedStyle(e).outlineStyle),'none','Keyboard focus is visible');
      await page.keyboard.press('Enter');await page.waitForSelector(`[data-workshop-machine-dialog] :is([data-workshop-machine-summary="${code}"],[data-workshop-tiers="${code}"])`);
      if(code==='PRESS-0600')assert.ok(await page.$$eval('button',els=>els.some(e=>e.checkVisibility()&&!e.disabled&&e.textContent.includes('Installer dans l’atelier commun'))),'A reserve machine opens its installation option');
+     if(code==='SIFT-TRAY'){
+      const comparison='[data-workshop-machine-dialog] [data-machine-investment="SIFT-TRAY"]';
+      await enter(comparison+' > summary');
+      assert.ok(await page.$eval(comparison,e=>e.open&&e.innerText.includes('100 g')),'The comparison uses the same visible lot volume');
+      assert.ok(await page.$eval(comparison+' [data-machine-saved-hours]',e=>Number(e.dataset.machineSavedHours)>0),'The next tier shows the time saved');
+      const price=await page.$eval(comparison,e=>Number(e.dataset.machineInvestmentPriceCents));
+      await page.focus(comparison+' input');await page.keyboard.type('12,50');
+      assert.equal(await page.$eval(comparison+' [data-investment-payback-count]',e=>Number(e.dataset.investmentPaybackCount)),Math.ceil(price/1250),'Payback is computed from the user’s hypothesis');
+      await layout();
+      await shot('comparaison-'+width);
+     }
      await page.keyboard.press('Escape');await page.waitForSelector('[data-workshop-machine-dialog]',{hidden:true});
      assert.equal(await page.$eval(source,e=>document.activeElement===e),true,'Machine dialog returns focus to the source');
     }

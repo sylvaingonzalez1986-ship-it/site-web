@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { createVillageAnimation, type AnimatedVillageBuilding, type VillageActivityState } from "./village-animation";
@@ -21,20 +21,23 @@ import type { VillageNpcBridge } from "./VillageNpcDialogue";
 import type { NpcPoint, VillageNpcId, VillageNpcRig } from "./village-npc-types";
 import type { RefObject } from "react";
 import { createVillageSeasonMotion, getVillageSeason } from "./village-seasons";
+import { createVillageKorrigans, fadeVillageCharacter, type VillageKorriganReaction } from "./village-korrigans";
+import { noCharacterHit } from "./village-character-art";
 
 export type VillageMotionProps = {
   activity: VillageActivityState;
   motion: { reduced: boolean; hidden: boolean; paused: boolean };
   focusBuilding: VillageBuildingKind | null;
   reaction: { building: VillageBuildingKind; sequence: number } | null;
+  korriganReaction?: VillageKorriganReaction;
 };
 
-export function VillageAtmosphere({ terrain, surface, buildings, activity, motion, focusBuilding, reaction, dragging, quality, npc, labelNodes }: VillageMotionProps & { terrain: THREE.Group; surface: VillageGrazingSurface; buildings: readonly AnimatedVillageBuilding[]; dragging: boolean; quality: "low" | "high"; npc: VillageNpcBridge; labelNodes: RefObject<Map<string, HTMLButtonElement>> }) {
+export function VillageAtmosphere({ terrain, surface, buildings, activity, motion, focusBuilding, reaction, korriganReaction = "idle", night, dragging, quality, npc, labelNodes }: VillageMotionProps & { terrain: THREE.Group; surface: VillageGrazingSurface; buildings: readonly AnimatedVillageBuilding[]; night: boolean; dragging: boolean; quality: "low" | "high"; npc: VillageNpcBridge; labelNodes: RefObject<Map<string, HTMLButtonElement>> }) {
   const controller = useMemo(() => createVillageAnimation(buildings), [buildings]);
   const seasonMotion = useMemo(() => createVillageSeasonMotion(terrain), [terrain]);
   const hydrangea = useMemo(() => controller.object.getObjectByName("motion-hydrangea"), [controller]);
   const daisies = useMemo(() => controller.object.getObjectByName("motion-daisies"), [controller]);
-  const { life, npcs } = useMemo(() => {
+  const { life, npcs, korrigans } = useMemo(() => {
     const rigs: [VillageNpcId, VillageNpcRig][] = [
       ["breton", createVillageBreton(surface.heightAt)], ["fisherman", createVillageFisherman()], ["loic", createVillageLoic(surface.heightAt)],
     ];
@@ -44,7 +47,13 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       rig.object.position.set(...spawn);
       // The landscape shadow map is static. A small moving contact shadow avoids
       // baking a villager's initial pose permanently onto the path.
-      rig.object.traverse(child => { if (child instanceof THREE.Mesh) child.castShadow = false; });
+      const pigments = new Set<THREE.Material>();
+      rig.object.traverse(child => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = false;
+          if (child.material instanceof THREE.Material && !child.material.transparent) pigments.add(child.material);
+        }
+      });
       const ankles = [-1, 1].map(side => rig.object.getObjectByName(`${id}-ankle-${side}`)!);
       const contact = createCharacterContactShadow(rig.object, ankles, .105, id === "fisherman" ? 1 : .76, surface.heightAt);
       contact.mesh.name = `npc-contact-${id}`;
@@ -52,10 +61,10 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       hit.name = `npc-hit-${id}`; hit.position.y = id === "fisherman" ? 0.85 : 1; hit.userData.npc = id;
       rig.object.add(hit);
       const others = rigs.filter(([otherId]) => otherId !== id && otherId !== "fisherman");
-      return { id, rig, contact, lastPoseTime: -1, posePhase: index / rigs.length, routine: createVillageNpcRoutine(id, surface, terrain.userData.groundPaths, spawn, id === "fisherman" ? VILLAGE_FISHERMAN_YAW : rig.object.rotation.y,
+      return { id, rig, contact, hit, pigments, lastPoseTime: -1, posePhase: index / rigs.length, routine: createVillageNpcRoutine(id, surface, terrain.userData.groundPaths, spawn, id === "fisherman" ? VILLAGE_FISHERMAN_YAW : rig.object.rotation.y,
         () => others.map(([, other]) => ({ x: other.object.position.x, z: other.object.position.z, radius: 0.4 }))) };
     });
-    return { life: [createVillageAnimals(surface), createVillageMarine(), createVillageGulls(), createVillageSheep(surface)], npcs: actors };
+    return { life: [createVillageAnimals(surface), createVillageMarine(), createVillageGulls(), createVillageSheep(surface)], npcs: actors, korrigans: createVillageKorrigans(surface) };
   }, [terrain, surface]);
   const ownership = useMemo(() => {
     let leases = 0, disposed = false;
@@ -64,11 +73,11 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       release() {
         leases--;
         queueMicrotask(() => {
-          if (!leases && !disposed) { disposed = true; controller.dispose(); seasonMotion.dispose(); life.forEach(part => part.dispose()); npcs.forEach(({ rig, contact }) => { contact.mesh.dispose(); rig.dispose(); }); }
+          if (!leases && !disposed) { disposed = true; controller.dispose(); seasonMotion.dispose(); life.forEach(part => part.dispose()); korrigans.dispose(); npcs.forEach(({ rig, contact }) => { contact.mesh.dispose(); rig.dispose(); }); }
         });
       },
     };
-  }, [controller, life, npcs, seasonMotion]);
+  }, [controller, korrigans, life, npcs, seasonMotion]);
   const { gl, invalidate, camera, size } = useThree();
   const tapGate = useMemo(() => createVillageNpcTapGate(), []);
   const projection = useMemo(() => new THREE.Vector3(), []);
@@ -78,10 +87,17 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
     return { frustum, matrix, visible: (object: THREE.Object3D, radius: number) => { object.getWorldPosition(sphere.center); sphere.radius = radius; return frustum.intersectsSphere(sphere); } };
   }, []);
   const time = useRef(0);
+  const nightMix = useRef(Number(night));
   const diagnosticsAt = useRef(-Infinity);
   const [inView, setInView] = useState(false);
   const state = motion.reduced ? "reduced" : motion.paused ? "paused" : motion.hidden ? "hidden" : dragging ? "dragging" : !inView ? "offscreen" : "running";
   const running = state === "running";
+  useLayoutEffect(() => {
+    tapGate.cancel();
+    for (const { hit } of npcs) hit.raycast = night ? noCharacterHit : THREE.Mesh.prototype.raycast;
+    if (night) gl.domElement.style.removeProperty("cursor");
+    invalidate();
+  }, [gl, invalidate, night, npcs, tapGate]);
   useEffect(() => {
     ownership.acquire();
     return () => {
@@ -123,6 +139,7 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
     gl.domElement.setAttribute("data-active-activities", Object.entries(activity).filter(([, active]) => active).map(([name]) => name).join(","));
     invalidate();
   }, [activity, controller, gl, invalidate, quality, state]);
+  useEffect(() => { invalidate(); }, [invalidate, korriganReaction]);
   const greet = useEffectEvent((building: VillageBuildingKind | null) => {
     if (running && building) controller.react(building, time.current);
     invalidate();
@@ -155,14 +172,22 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       ? THREE.MathUtils.smoothstep(size.height * camera.zoom / (camera.top - camera.bottom), 22, 72) : 1;
     const frame = { time: time.current, delta: step, reduced: motion.reduced, quality, detail, visible: visibility.visible };
     life.forEach(part => part.update(frame));
+    const targetMix = Number(night);
+    nightMix.current = running && step > 0 ? THREE.MathUtils.clamp(targetMix, nightMix.current - step / .38, nightMix.current + step / .38) : targetMix;
+    const presence = THREE.MathUtils.smoothstep(nightMix.current, 0, 1);
+    korrigans.update(frame, korriganReaction, presence);
     gaze[0] = camera.position.x; gaze[1] = camera.position.y; gaze[2] = camera.position.z;
     const now = performance.now();
     const targets: Record<string, { x: number; y: number; visible: boolean }> | null =
       now >= diagnosticsAt.current || !running ? {} : null;
     const distantPoseRate = quality === "low" ? 20 : 24;
     for (const actor of npcs) {
-      const { id, rig, routine } = actor;
-      const state = routine.update(frame, gaze, npc.active === id ? npc.interaction : undefined);
+      const { id, rig, contact, pigments, routine } = actor;
+      rig.object.visible = presence < 1;
+      pigments.forEach(material => fadeVillageCharacter(material, 1 - presence));
+      (contact.mesh.material as THREE.MeshBasicMaterial).opacity = .36 * (1 - presence);
+      if (!rig.object.visible) continue;
+      const state = routine.update(frame, gaze, !night && npc.active === id ? npc.interaction : undefined);
       rig.object.position.set(...state.position); rig.object.rotation.y = state.yaw;
       // Small figures keep a continuous trajectory while distant joints update in turns.
       const poseDue = Math.floor(frame.time * distantPoseRate + actor.posePhase) !== Math.floor(actor.lastPoseTime * distantPoseRate + actor.posePhase);
@@ -182,7 +207,7 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       projection.copy(rig.object.position); projection.y += 1; projection.project(camera);
       const x = (projection.x + 1) * size.width / 2, y = (1 - projection.y) * size.height / 2;
       const onScreen = Math.abs(projection.x) <= 1 && Math.abs(projection.y) <= 1 && projection.z <= 1;
-      if (targets) targets[id] = { x, y, visible: onScreen };
+      if (targets && !night) targets[id] = { x, y, visible: onScreen };
       const label = labelNodes.current.get(`npc-${id}`);
       projection.copy(rig.object.position).project(camera);
       const feetY = (1 - projection.y) * size.height / 2;
@@ -192,7 +217,7 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
         label.style.transform = `translate(${labelX}px, ${labelY}px) translate(-50%, 0)`;
         label.dataset.offscreen = String(!onScreen);
       }
-      if (npc.active === id && npc.bubbleNode.current) {
+      if (!night && npc.active === id && npc.bubbleNode.current) {
         projection.copy(rig.object.position); projection.y += 2.15; projection.project(camera);
         positionVillageBubble(npc.bubbleNode.current, npc.bubbleTail.current, (projection.x + 1) * size.width / 2, (1 - projection.y) * size.height / 2, size.width, size.height, { speech: true, feetY });
       }
@@ -205,15 +230,16 @@ export function VillageAtmosphere({ terrain, surface, buildings, activity, motio
       const boat = life[1].object.getObjectByName("fishing-boat");
       gl.domElement.setAttribute("data-life-boat", JSON.stringify(boat?.userData ?? {}));
       gl.domElement.setAttribute("data-life-breton", JSON.stringify(npcs[0].rig.object.userData));
-      gl.domElement.setAttribute("data-life-npcs", JSON.stringify(Object.fromEntries(npcs.map(({ id, rig }) => [id, { ...rig.object.userData, x: rig.object.position.x, y: rig.object.position.y, z: rig.object.position.z }]))));
+      gl.domElement.setAttribute("data-life-npcs", JSON.stringify(Object.fromEntries(npcs.map(({ id, rig }) => [id, { ...rig.object.userData, visible: rig.object.visible, x: rig.object.position.x, y: rig.object.position.y, z: rig.object.position.z }]))));
       gl.domElement.setAttribute("data-npc-targets", JSON.stringify(targets));
+      gl.domElement.setAttribute("data-life-korrigans", JSON.stringify({ visible: korrigans.object.visible, reaction: korriganReaction, dancers: korrigans.object.visible ? korrigans.sample() : [] }));
     }
   });
-  return <><primitive object={controller.object} /><primitive object={seasonMotion.object} />{life.map(part => <primitive key={part.object.uuid} object={part.object} />)}
+  return <><primitive object={controller.object} /><primitive object={seasonMotion.object} /><primitive object={korrigans.object} />{life.map(part => <primitive key={part.object.uuid} object={part.object} />)}
     {npcs.map(({ id, rig }) => <primitive key={id} object={rig.object}
-      onPointerDown={(event: ThreeEvent<PointerEvent>) => { event.stopPropagation(); tapGate.claim(event.pointerId, id); }}
-      onClick={(event: ThreeEvent<MouseEvent>) => { event.stopPropagation(); if (event.delta <= 6 && tapGate.consume(id)) { npc.onInteract(id); invalidate(); } }}
-      onPointerOver={(event: ThreeEvent<PointerEvent>) => { event.stopPropagation(); gl.domElement.style.cursor = "pointer"; }}
+      onPointerDown={night ? undefined : (event: ThreeEvent<PointerEvent>) => { event.stopPropagation(); tapGate.claim(event.pointerId, id); }}
+      onClick={night ? undefined : (event: ThreeEvent<MouseEvent>) => { event.stopPropagation(); if (event.delta <= 6 && tapGate.consume(id)) { npc.onInteract(id); invalidate(); } }}
+      onPointerOver={night ? undefined : (event: ThreeEvent<PointerEvent>) => { event.stopPropagation(); gl.domElement.style.cursor = "pointer"; }}
       onPointerOut={() => gl.domElement.style.removeProperty("cursor")} />)}
   </>;
 }

@@ -22,9 +22,11 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
   const [state, setState] = useState<"loading" | "story" | "create" | "paused" | "ready" | "error" | "signed-out">("loading");
   const [retry, setRetry] = useState(0);
   const [character, setCharacter] = useState<ChanvrierProfile | null>(null);
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState<boolean | null>(null);
+  const [arrivalDraftVersion, setArrivalDraftVersion] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const createButton = useRef<HTMLButtonElement>(null);
+  const enteringVillage = useRef(false);
   useEffect(() => {
     if (!enabled) return;
     const controller = new AbortController();
@@ -59,6 +61,25 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
   }, [enabled, state]);
 
   useEffect(() => {
+    if (!enabled || state !== "ready" || !enteringVillage.current) return;
+    const focusArrival = () => {
+      const invite = document.querySelector<HTMLButtonElement>('[data-sylvain-guide][data-mode="invited"] [data-sylvain-control="start"]');
+      const menu = document.querySelector<HTMLElement>('[data-village-prototype] button[aria-label="Ouvrir le menu du quartier"]');
+      const target = invite ?? menu;
+      if (!target) return;
+      target.focus({ preventScroll: true });
+      if (document.activeElement === target) {
+        enteringVillage.current = false;
+        observer.disconnect();
+      }
+    };
+    const observer = new MutationObserver(focusArrival);
+    observer.observe(document.body, { childList: true, subtree: true });
+    const frame = requestAnimationFrame(focusArrival);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); };
+  }, [enabled, state]);
+
+  useEffect(() => {
     const refreshAppearance = (event: Event) => {
       const profile = parseChanvrierProfile((event as CustomEvent).detail);
       if (profile) setCharacter(profile);
@@ -68,10 +89,10 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
   }, []);
 
   if (enabled && state === "ready") return <QuarterCharacterContext.Provider value={character}>
-    <QuarterAppearanceEditorContext.Provider value={{ open: () => setEditing(true), editing }}>
+    <QuarterAppearanceEditorContext.Provider value={{ open: () => setEditing(true), editing: editing === true }}>
       {children}
-      {character && editing && <ChanvrierProfileEditor profile={character} onClose={() => setEditing(false)}
-        onSaved={saved => { setCharacter(saved); setEditing(false); }} />}
+      {character && editing !== null && <ChanvrierProfileEditor profile={character} open={editing} onClose={() => setEditing(false)}
+        onDiscard={() => setEditing(null)} onSaved={saved => { setCharacter(saved); setEditing(null); }} />}
     </QuarterAppearanceEditorContext.Provider>
   </QuarterCharacterContext.Provider>;
   if (enabled && ["story", "create", "paused"].includes(state)) return <main className={`${styles.entry} ${styles.arrival}`} data-quarter-character-gate data-quarter-arrival="story">
@@ -87,10 +108,13 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
         </button></div>
       <Link className={styles.returnLink} href="/arene">Retour à l’Arène</Link>
     </div>
-    {state === "create" ? <ChanvrierProfileEditor profile={null} skipInheritance onClose={() => setState("paused")} onSaved={profile => {
-      setCharacter(profile);
-      setState("ready");
-    }} /> : null}
+    {(state === "create" || state === "paused") && <ChanvrierProfileEditor key={arrivalDraftVersion} profile={null} open={state === "create"} skipInheritance
+      onClose={() => setState("paused")} onDiscard={() => { setArrivalDraftVersion(version => version + 1); setState("paused"); }}
+      onSaved={profile => {
+        enteringVillage.current = true;
+        setCharacter(profile);
+        setState("ready");
+      }} />}
   </main>;
   return <main className={styles.characterWelcome} data-quarter-character-gate>
     <h1>Bienvenue au Quartier</h1>

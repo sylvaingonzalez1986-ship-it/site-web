@@ -13,18 +13,20 @@ import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createVillageBuilding, createVillageHempFarm, createVillageMailbox } from "./village-buildings";
 import { createVillageTerrain, disposeVillageObject } from "./village-terrain";
-import { HEMP_FARM, HEMP_FARM_ID, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition, type VillagePlaceId } from "./village-layout";
+import { HEMP_FARM, HEMP_FARM_ID, VILLAGE_KORRIGAN_GLADE, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition, type VillagePlaceId } from "./village-layout";
 import { createVillageHempFarmCollider } from "./village-hemp-farm";
 import { consumeVillageSupportView, saveVillageSupportView } from "./village-support-view";
 import { positionVillageBubble } from "./village-bubble";
+import { placeVillageLabel, type VillageLabelBounds } from "./village-labels";
 import { VillageAtmosphere, type VillageMotionProps } from "./VillageAtmosphere";
 import type { VillageNpcBridge } from "./VillageNpcDialogue";
+import { VILLAGE_KORRIGANS_NAME } from "./village-korrigans";
 
-export type VillageLifeSubject = "player" | "sheep" | "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic";
+export type VillageLifeSubject = "player" | "sheep" | "wolf" | "fox" | "weasel" | "boat" | "breton" | "fisherman" | "loic" | "korrigans";
 export type VillageCameraRequest = { rotation: number; zoom: number; reset: number; observe?: VillageLifeSubject };
 const VILLAGE_VIEW_CENTER = new THREE.Vector3(-4.3, 1.2, -1.8);
 const VILLAGE_NARROW_VIEW_CENTER = VILLAGE_VIEW_CENTER.clone().add(new THREE.Vector3(0, 3.15, 0));
-const LIFE_NAMES: Record<VillageLifeSubject, string> = { player: "chanvrier", sheep: "village-sheep-pasture", wolf: "village-animal-wolf", fox: "village-animal-fox", weasel: "village-animal-weasel", boat: "fishing-boat", breton: "village-breton", fisherman: "village-fisherman", loic: "village-loic" };
+const LIFE_NAMES: Record<VillageLifeSubject, string> = { player: "chanvrier", sheep: "village-sheep-pasture", wolf: "village-animal-wolf", fox: "village-animal-fox", weasel: "village-animal-weasel", boat: "fishing-boat", breton: "village-breton", fisherman: "village-fisherman", loic: "village-loic", korrigans: VILLAGE_KORRIGANS_NAME };
 const RESIDENT_EYE_HEIGHT: Partial<Record<VillageLifeSubject, number>> = { player: 1.57, breton: 1.65, fisherman: 1.35, loic: 1.66 };
 type Props = VillageMotionProps & {
   calendar?: VillageCalendar | null;
@@ -80,10 +82,10 @@ function frameResident(scene: THREE.Scene, subject: THREE.Object3D, orbit: THREE
   orbit.theta = subject.rotation.y + angles[0]; orbit.phi = 0.65;
 }
 
-function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpen, restoreSupportView }: { request: VillageCameraRequest; focus?: THREE.Vector3; onDrag: (dragging: boolean) => void; motion: VillageMotionProps["motion"] } & Pick<Props, "controlsBlocked" | "supportOpen" | "restoreSupportView">) {
+function CameraRig({ request, focus, onDrag, motion, night, controlsBlocked, supportOpen, restoreSupportView }: { request: VillageCameraRequest; focus?: THREE.Vector3; onDrag: (dragging: boolean) => void; motion: VillageMotionProps["motion"]; night: boolean } & Pick<Props, "controlsBlocked" | "supportOpen" | "restoreSupportView">) {
   const { camera, gl, invalidate, size, scene } = useThree();
   const controls = useRef<OrbitControls | null>(null);
-  const previous = useRef<{ request?: VillageCameraRequest; focus?: THREE.Vector3; width?: number; height?: number }>({});
+  const previous = useRef<{ request?: VillageCameraRequest; focus?: THREE.Vector3; night?: boolean; width?: number; height?: number }>({});
   const transition = useRef<CameraTransition | null>(null);
   const support = useRef<{ open: boolean; restored: boolean; pose?: ReturnType<typeof consumeVillageSupportView>; orbit?: OrbitControls }>({ open: false, restored: false });
   const restoredZoomRatio = useRef(1);
@@ -92,13 +94,16 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
   const observation = useMemo(() => new THREE.Vector3(), []);
   const viewZoom = Math.min(size.width / 38, size.height / 36);
   const eyeHeight = request.observe && RESIDENT_EYE_HEIGHT[request.observe];
+  const roundRequested = request.observe === "korrigans";
+  const subjectAvailable = roundRequested ? night : !night || request.observe === "player" || !eyeHeight;
   // At full length centre the torso. A deliberate close-up moves towards the eyes.
-  const observationHeight = eyeHeight ? THREE.MathUtils.lerp(eyeHeight * .59, eyeHeight, THREE.MathUtils.smoothstep(request.zoom, 1, 2.5)) : .4;
+  const closeUp = THREE.MathUtils.smoothstep(request.zoom, 1, 2.5);
+  const observationHeight = roundRequested ? THREE.MathUtils.lerp(3.04, 1.24, closeUp) : eyeHeight ? THREE.MathUtils.lerp(eyeHeight * .59, eyeHeight, closeUp) : .4;
 
   // Run before the labels/bubble project their anchors, using only demand frames.
   useFrame((_, delta) => {
     const tween = transition.current, orbit = controls.current;
-    if (tracking.current && request.observe && !focus && orbit && !stopped) {
+    if (tracking.current && subjectAvailable && request.observe && !focus && orbit && !stopped) {
       const subject = scene.getObjectByName(LIFE_NAMES[request.observe]);
       if (subject) {
         subject.getWorldPosition(observation); observation.y += observationHeight;
@@ -181,8 +186,13 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
     const prior = previous.current.request;
     const focusChanged = !!focus && focus !== previous.current.focus;
     const resized = size.width !== previous.current.width || size.height !== previous.current.height;
-    if (controlsBlocked && prior && !resized) return;
-    if (prior && !focusChanged && request === prior && !resized) {
+    const presenceChanged = night !== previous.current.night && !!(request.observe ?? prior?.observe);
+    const roundRequestedNow = roundRequested && prior !== request;
+    const roundLeaving = presenceChanged && prior?.observe === "korrigans";
+    // The anchored invitation can open in the same update as its framing. The
+    // manual controls stay inactive while the panel is open.
+    if (controlsBlocked && prior && !resized && !roundRequestedNow && !roundLeaving) return;
+    if (prior && !focusChanged && request === prior && !resized && !presenceChanged) {
       previous.current.focus = focus;
       return;
     }
@@ -193,13 +203,17 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
       // Keep the viewing angle, and make room above the roof for its activities.
       target.copy(focus).add(new THREE.Vector3(0, 3.5, 0));
     }
-    const subject = request.observe && !focus ? scene.getObjectByName(LIFE_NAMES[request.observe]) : null;
+    const subject = request.observe && subjectAvailable && !focus ? scene.getObjectByName(LIFE_NAMES[request.observe]) : null;
     const observingResident = !!subject && !!eyeHeight;
+    const observingRound = !!subject && roundRequested;
     if (subject) { subject.getWorldPosition(target); target.y += observationHeight; }
-    tracking.current = !!subject;
+    tracking.current = !!subject && !observingRound;
     gl.domElement.dataset.lifeObserve = subject ? request.observe! : "";
     const reset = !prior || request.reset !== prior.reset;
-    if (reset) {
+    if (observingRound && (reset || prior?.observe !== request.observe || presenceChanged)) {
+      offset.theta = 1.90;
+      offset.phi = 1.17;
+    } else if (reset || (presenceChanged && !subjectAvailable)) {
       restoredZoomRatio.current = 1;
       if (!focus || prior) target.copy(size.width <= 380 ? VILLAGE_NARROW_VIEW_CENTER : VILLAGE_VIEW_CENTER);
       const angle = Math.PI / 4 + request.rotation * Math.PI / 4;
@@ -214,8 +228,9 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
     const fromOrbit = new THREE.Spherical().setFromVector3(camera.position.clone().sub(orbit.target));
     // Cross the -PI/PI seam through the nearest angle instead of orbiting all the way around.
     offset.theta = fromOrbit.theta + Math.atan2(Math.sin(offset.theta - fromOrbit.theta), Math.cos(offset.theta - fromOrbit.theta));
-    const subjectZoom = observingResident ? Math.min(size.width / 3.1, size.height / 4.1) : Math.min(size.width / 8, size.height / 6);
-    orbit.maxZoom = observingResident ? Math.max(110, subjectZoom * 2.5) : 110;
+    const subjectZoom = observingResident ? Math.min(size.width / 3.1, size.height / 4.1)
+      : observingRound ? Math.min(size.width / 6.34, size.height / 7.55) : Math.min(size.width / 8, size.height / 6);
+    orbit.maxZoom = observingResident || observingRound ? Math.max(110, subjectZoom * 2.5) : 110;
     if (subject) restoredZoomRatio.current = 1;
     const toZoom = subject ? THREE.MathUtils.clamp(subjectZoom * request.zoom, orbit.minZoom, orbit.maxZoom) : reset || resized || request.zoom !== prior?.zoom || prior?.observe
       ? THREE.MathUtils.clamp(viewZoom * request.zoom * restoredZoomRatio.current, orbit.minZoom, orbit.maxZoom)
@@ -234,10 +249,10 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
       gl.domElement.dataset.cameraTransition = "idle";
     }
     invalidate();
-    previous.current = { request, focus, width: size.width, height: size.height };
+    previous.current = { request, focus, night, width: size.width, height: size.height };
     // Motion changes cancel separately; resuming must not restart an old camera command.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera, eyeHeight, focus, gl, invalidate, observationHeight, request, scene, size.width, size.height, viewZoom]);
+  }, [camera, eyeHeight, focus, gl, invalidate, night, observationHeight, request, roundRequested, scene, size.width, size.height, subjectAvailable, viewZoom]);
 
   useEffect(() => {
     const orbit = controls.current;
@@ -271,7 +286,7 @@ function CameraRig({ request, focus, onDrag, motion, controlsBlocked, supportOpe
   return null;
 }
 
-function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
+function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, korriganReaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
   const [dragging, setDragging] = useState(false);
   const terrain = useMemo(() => createVillageTerrain(), []);
   const mailbox = useMemo(() => createVillageMailbox(), []);
@@ -290,11 +305,14 @@ function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, on
   const { camera, size, gl, invalidate, get } = useThree();
   const quality = Math.min(size.width, size.height) < 600 ? "low" : "high";
   const labelPosition = useMemo(() => new THREE.Vector3(), []);
+  const compactSigns = useMemo(() => window.matchMedia("(max-width: 760px), (pointer: coarse) and (max-height: 540px)"), []);
+  const signSizes = useRef(new Map<string, { width: number; height: number }>());
   const labelCamera = useMemo(() => new THREE.Matrix4(), []);
   const projectedCamera = useMemo(() => new THREE.Matrix4(), []);
   const layoutDirty = useRef(true);
   const ready = useRef(false);
   const season = calendar?.season;
+  const night = calendar?.phase === "night";
   useLayoutEffect(() => {
     if (!season) return;
     applyVillageSeason(terrain, season);
@@ -311,32 +329,55 @@ function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, on
   }, [buildings, terrain, mailbox, hempFarm, hempFarmCollider, gl]);
   useEffect(() => {
     layoutDirty.current = true;
-    const node = bubbleNode.current;
-    if (!node) return;
     const observer = new ResizeObserver(() => { layoutDirty.current = true; invalidate(); });
-    observer.observe(node);
+    if (bubbleNode.current) observer.observe(bubbleNode.current);
     if (headerNode.current) observer.observe(headerNode.current);
+    for (const [id, label] of labelNodes.current) {
+      if (label.dataset.villageBuilding || id === "korrigans") observer.observe(label);
+    }
+    invalidate();
     return () => observer.disconnect();
-  }, [bubbleNode, headerNode, selected, invalidate, size.width, size.height]);
+  }, [bubbleNode, headerNode, labelNodes, night, selected, invalidate, size.width, size.height]);
   useFrame(() => {
     projectedCamera.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     if (!layoutDirty.current && projectedCamera.equals(labelCamera)) return;
     labelCamera.copy(projectedCamera);
+    const compact = compactSigns.matches;
+    if (compact && layoutDirty.current) {
+      for (const [id, label] of labelNodes.current) {
+        if (label.dataset.villageBuilding || id === "korrigans") signSizes.current.set(id, { width: label.offsetWidth, height: label.offsetHeight });
+      }
+    }
     layoutDirty.current = false;
+    const occupied: VillageLabelBounds[] = [];
+    if (compact) {
+      const [mailboxX, groundY, mailboxZ] = VILLAGE_MAILBOX_POSITION;
+      labelPosition.set(mailboxX, groundY + 1.75, mailboxZ).project(camera);
+      const x = (labelPosition.x + 1) * size.width / 2, y = (1 - labelPosition.y) * size.height / 2;
+      occupied.push({ left: x - 10, right: x + 10, top: y - 10, bottom: y + 10 });
+    }
     const positionLabel = (id: string, x3: number, z3: number, groundY = .4) => {
       const label = labelNodes.current.get(id);
       if (!label) return;
       label.style.removeProperty("visibility");
       labelPosition.set(x3, groundY, z3).project(camera);
       const x = (labelPosition.x + 1) * size.width / 2, y = (1 - labelPosition.y) * size.height / 2;
-      label.style.transform = `translate(${x}px, ${y}px) translate(-50%, 0)`;
-      label.dataset.offscreen = String(labelPosition.z > 1 || Math.abs(labelPosition.x) > 1 || Math.abs(labelPosition.y) > 1);
+      const offscreen = labelPosition.z > 1 || Math.abs(labelPosition.x) > 1 || Math.abs(labelPosition.y) > 1;
+      const dimensions = compact && !offscreen ? signSizes.current.get(id) : undefined;
+      if (dimensions) {
+        const sign = placeVillageLabel(x, y, dimensions.width, dimensions.height, size, occupied);
+        label.style.transform = `translate(${sign.x}px, ${sign.y}px)`;
+      } else {
+        label.style.transform = `translate(${x}px, ${y}px) translate(-50%, 0)`;
+      }
+      label.dataset.offscreen = String(offscreen);
     };
     for (const { place, position } of buildings) {
       positionLabel(place.id, position[0], position[2] + place.depth * place.scale / 2 + 0.75);
     }
     positionLabel(HEMP_FARM_ID, HEMP_FARM.position[0], HEMP_FARM.position[2] + HEMP_FARM.footprint.depth * HEMP_FARM.scale / 2 + .52, HEMP_FARM.position[1] + .28);
     positionLabel("mailbox", VILLAGE_MAILBOX_POSITION[0], VILLAGE_MAILBOX_POSITION[2] + 0.9);
+    if (night) positionLabel("korrigans", VILLAGE_KORRIGAN_GLADE.x + 1.54, VILLAGE_KORRIGAN_GLADE.z + 1.4, .10);
     if (active && bubbleNode.current) {
       labelPosition.copy(active.anchor).project(camera);
       const headerBottom = headerNode.current?.getBoundingClientRect().bottom ?? 0;
@@ -355,8 +396,8 @@ function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, on
     event.stopPropagation(); onSelect(id);
   };
   return <>
-    <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : keyboardFocus === HEMP_FARM_ID ? hempFarmFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} controlsBlocked={controlsBlocked} supportOpen={supportOpen} restoreSupportView={restoreSupportView} />
-    <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
+    <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : keyboardFocus === HEMP_FARM_ID ? hempFarmFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} night={night} controlsBlocked={controlsBlocked} supportOpen={supportOpen} restoreSupportView={restoreSupportView} />
+    <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} korriganReaction={korriganReaction} night={night} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
     <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); walkTo(event.point); } }} />
     <group position={VILLAGE_MAILBOX_POSITION}
       onClick={event => { if (event.delta > 5) return; event.stopPropagation(); onOpenMailbox(); }}

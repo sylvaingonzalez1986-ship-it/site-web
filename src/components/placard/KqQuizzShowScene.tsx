@@ -39,6 +39,11 @@ export function KqQuizzShowScene({ mode, seats = emptySeats, motion = true, focu
     const unavailable = () => { node.dataset.live = "false"; };
     async function open(target: HTMLCanvasElement) {
       try {
+        // Keep the poster and the HTML controls usable on devices without WebGL 2.
+        if (!target.getContext("webgl2", { alpha: true, antialias: true, powerPreference: "low-power" })) {
+          unavailable();
+          return;
+        }
         const { createQuizzShowRenderer } = await import("./world/quizzshow-renderer");
         if (!mounted) return;
         runtime.current = createQuizzShowRenderer(target, mode, {
@@ -52,9 +57,15 @@ export function KqQuizzShowScene({ mode, seats = emptySeats, motion = true, focu
         unavailable();
       }
     }
-    void open(node);
+    const visibility = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      visibility.disconnect();
+      if (mounted) void open(node);
+    });
+    visibility.observe(node);
     return () => {
       mounted = false;
+      visibility.disconnect();
       runtime.current?.dispose();
       runtime.current = null;
       unavailable();

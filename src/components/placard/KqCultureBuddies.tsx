@@ -9,7 +9,7 @@ import { BuddieCard } from "@/components/lottery/BuddieCard";
 import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { classifyKqBuddieAssignmentReceipt, getKqBuddieAssignmentRequest, type KqBuddieAssignmentSnapshot } from "@/lib/kanab-quest-buddie-assignment";
-import { getKqBuddieRotationRemaining, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
+import { getKqBuddieRotationRemaining, getKqNextCampaignCapacity, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KQ_BUDDIES } from "@/lib/kanab-quest-game";
 import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import { registerNavigationGuard } from "@/lib/navigation-guard";
@@ -23,6 +23,8 @@ type Props = {
   ownedCodes: readonly string[] | null;
   artwork: Record<string, { imageUrl: string; ownedCopies: number }>;
   rotation: KqBuddieRotation | null;
+  chooseVariety?: boolean;
+  preferredZoneId?: string;
   disabled?: boolean;
   loading?: boolean;
   onSaved: (snapshot: KqBuddieAssignmentSnapshot) => void;
@@ -36,7 +38,7 @@ type Attempt = { request: AssignmentRequest; body: string; zoneId: string; buddi
 type Status = "idle" | "saving" | "uncertain" | "conflict";
 
 /** Saves a single free assignment. Equipment and warehouse drafts stay untouched. */
-export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disabled = false, loading = false,
+export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, chooseVariety = false, preferredZoneId, disabled = false, loading = false,
   onSaved, onBlockedChange, onOpenWarehouse, onOpenBuddiePacks, onRefresh }: Props) {
   const api = useKqTutorialApi();
   const id = useId();
@@ -52,6 +54,9 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
   const triggers = useRef(new Map<string, HTMLButtonElement>());
   const feedback = useRef<HTMLDivElement>(null);
   const picker = useRef<HTMLDivElement>(null);
+  const section = useRef<HTMLElement>(null);
+  const focusedFirstChoice = useRef(false);
+  const focusChoiceAction = useRef(false);
   const focusZone = useRef<string | null>(null);
   const blocked = status !== "idle";
   useLayoutEffect(() => { callbacks.current = { onSaved, onBlockedChange }; });
@@ -80,7 +85,17 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
   }, [snapshot]);
   useEffect(() => {
     if (!selectedZoneId) return;
-    const frame = requestAnimationFrame(() => picker.current?.focus());
+    const frame = requestAnimationFrame(() => {
+      if (!focusChoiceAction.current) {
+        picker.current?.focus();
+        return;
+      }
+      focusChoiceAction.current = false;
+      const action = picker.current?.querySelector<HTMLElement>("[data-buddie-select]:enabled")
+        ?? picker.current?.querySelector<HTMLElement>("button:enabled") ?? picker.current;
+      action?.scrollIntoView({ block: "center", behavior: "instant" });
+      action?.focus({ preventScroll: true });
+    });
     return () => cancelAnimationFrame(frame);
   }, [selectedZoneId]);
   useEffect(() => {
@@ -103,7 +118,34 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
     || !!snapshot?.activeRuns?.some(run => !run.zoneId);
   const occupied = (zoneId: string) => legacyBusy || !!snapshot?.activeRuns?.some(run => run.zoneId === zoneId);
   const buddies = KQ_BUDDIES.filter(buddie => ownedCodes?.includes(buddie.code));
+  const freeZones = zones.filter(zone => zone.id !== reservation?.zoneId && isKqWarehouseZoneOperational(zone) && !occupied(zone.id));
+  const reservedCodes = new Set(zones.filter(zone => !freeZones.includes(zone)).map(zone => zone.buddieCode));
+  const rotationPool = buddies.map(buddy => buddy.code).filter(code => !reservedCodes.has(code));
+  const plannedCodes = freeZones.flatMap(zone => zone.buddieCode ? [zone.buddieCode] : []);
+  const nextCapacity = rotation && ownedCodes && freeZones.length >= 2 && plannedCodes.length > 0
+    && plannedCodes.every(code => rotationPool.includes(code) && !getKqBuddieRotationRemaining(code, rotation.recentBuddieCodes))
+    ? Math.min(freeZones.length, getKqNextCampaignCapacity(rotationPool, rotation.recentBuddieCodes, plannedCodes)) : null;
   const emptyCollection = ownedCodes !== null && ownedCodes.length === 0;
+  useEffect(() => {
+    if (!chooseVariety || focusedFirstChoice.current || !snapshot || loading || disabled || blocked) return;
+    const frame = requestAnimationFrame(() => {
+      const pack = section.current?.querySelector<HTMLElement>('[data-sylvain-target="prepare-packs"]');
+      const firstZone = snapshot.state.zones.find(zone => {
+        const trigger = triggers.current.get(zone.id);
+        return trigger && !trigger.disabled && isKqWarehouseZoneOperational(zone) && (preferredZoneId ? zone.id === preferredZoneId : !zone.buddieCode);
+      });
+      focusedFirstChoice.current = true;
+      if (firstZone) {
+        focusChoiceAction.current = true;
+        setSelectedZoneId(firstZone.id);
+      } else {
+        const action = pack ?? section.current;
+        action?.scrollIntoView({ block: "center", behavior: "instant" });
+        action?.focus({ preventScroll: true });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [blocked, chooseVariety, disabled, emptyCollection, loading, ownedCodes, preferredZoneId, rotation, snapshot]);
   const unavailableReasons: Record<string, string> = {};
   if (selectedZone) for (const buddie of buddies) {
     const elsewhere = zones.find(zone => zone.id !== selectedZone.id && zone.buddieCode === buddie.code);
@@ -172,7 +214,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
     onRefresh();
   }
 
-  return <section className={styles.section} data-culture-buddies aria-labelledby={`${id}-title`} aria-busy={status === "saving"}
+  return <section ref={section} tabIndex={-1} className={styles.section} data-culture-buddies aria-labelledby={`${id}-title`} aria-busy={status === "saving"}
     data-guide-saved-zone-count={snapshot?.state.zones.filter(isKqWarehouseZoneOperational).length}
     data-guide-assigned-zone-count={snapshot ? assignedZones.length : undefined}>
     <header className={styles.header}>
@@ -183,6 +225,10 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
         onClick={onOpenWarehouse}><Pencil size={15} aria-hidden="true" /> Aménager</button>
     </header>
     <p className={styles.intro}>Un Buddie par zone, les mêmes cartes pour toutes. Les zones vides ou réservées au personnel ne participent pas à la campagne.</p>
+    {nextCapacity !== null ? <p className={styles.intro} data-next-rotation>
+      Après ce semis, ta collection permettra de préparer {nextCapacity} zone{nextCapacity > 1 ? "s" : ""} sur {freeZones.length} au cycle suivant.
+      {nextCapacity < freeZones.length ? " Tu peux retirer une affectation pour semer uniquement les zones de ton choix." : " Tu pourras alterner les variétés sur toutes ces zones."}
+    </p> : null}
     {emptyCollection ? <div className={styles.empty} data-empty-buddie-collection>
       <p role="status"><strong>Un Buddie pour commencer</strong><br />Il te faut une carte Buddie dans ta collection pour choisir une variété. Elle est conservée pendant la culture.</p>
       {onOpenBuddiePacks ? <button type="button" data-sylvain-target="prepare-packs" disabled={disabled || blocked} onClick={onOpenBuddiePacks}>Découvrir les Packs Buddies</button>

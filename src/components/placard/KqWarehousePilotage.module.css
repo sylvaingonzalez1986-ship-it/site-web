@@ -29,6 +29,7 @@
 .modeBar { align-items: end; justify-content: space-between; margin: 2px 0 4px; }
 .modeActions { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
 .modeChooser { display: grid; gap: 3px; flex: 0 1 24rem; min-width: 0; }
+.modeChooser > [data-warehouse-first-plan] { min-height: 44px; }
 .modeLabel { padding-inline: 6px; color: var(--board-muted); font-size: .78rem; font-weight: 700; }
 .modeSwitch, .modeSwitch::before {
   border: var(--game-control-border-width, 2px) solid transparent;

@@ -11,6 +11,7 @@ import { getKqWorkshopMachineSpecification, getKqWorkshopTierPrice, KQ_WORKSHOP_
 import { getKqWorkshopProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
 import { getKqProcessingMachineReference } from "@/lib/kanab-quest-processing-profiles";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqWorkshopInvestmentComparison } from "./KqWorkshopInvestmentComparison";
 import styles from "./KqWorkshopTiers.module.css";
 
 export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanceDue = false, disabled = false, onUpdated, onBusyChange }: {
@@ -86,6 +87,7 @@ export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanc
     {chosen && !chosen.attained && chosen.price !== null ? <div className={styles.confirm} role="group" aria-label="Confirmer la gamme">
       <strong>{chosen.machine.name} · {formatKqCash(chosen.price)}</strong>
       <p>{currentLevel > 0 ? `Passage du niveau ${currentLevel} au niveau ${chosen.level}.` : `Achat direct au niveau ${chosen.level}.`} Solde prévu : {formatKqCash(Math.max(0, cashCents - chosen.price))}.</p>
+      {currentLevel > 0 && <KqWorkshopInvestmentComparison key={chosen.level} code={code} level={currentLevel} targetLevel={chosen.level} priceCents={chosen.price} />}
       <div><button type="button" disabled={pending} onClick={() => setSelected(null)}>Annuler</button><button type="button" data-workshop-tier-confirm disabled={pending || disabled || !!chosen.reason || chosen.price === null} onClick={() => void buy()}>{pending ? <><LoaderCircle size={16} aria-hidden="true" />Achat…</> : `Confirmer · ${formatKqCash(chosen.price)}`}</button></div>
     </div> : null}
     {notice ? <p className={styles.notice} role="status">{notice}</p> : null}

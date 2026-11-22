@@ -1,6 +1,6 @@
 export const SYLVAIN_INVITATION = {
   title: "Un coup de main de Loïc ?",
-  body: "Je peux te montrer comment ouvrir ton entrepôt et lancer une première culture. Tu joues à ton rythme. Le guide se met en pause quand tu le souhaites.",
+  body: "Je peux t’accompagner jusqu’à ton premier semis.",
   action: "Commencer avec Loïc",
 };
 
@@ -50,9 +50,9 @@ const LESSONS: Record<SylvainLessonId, Omit<SylvainLesson, "id" | "kind" | "targ
   },
   prepare: {
     title: "Choisir une variété",
-    instruction: "Choisis un Buddie disponible pour ta zone.",
-    body: "Dans une zone opérationnelle, choisis un Buddie disponible. Si ton album est vide, ouvre d’abord ton pack de bienvenue à la Maison des cartes. Reviens ensuite à la zone pour y placer la variété.",
-    action: "Repérer le choix du Buddie", targets: ["prepare-choice", "prepare-buddie", "prepare-pack-open", "prepare-pack-welcome", "prepare-packs", "prepare-open", "install-empty"], destination: WAREHOUSE,
+    instruction: "Sélectionne ta zone dans Pilotage ou Aménager, puis « Choisir mon Buddie ».",
+    body: "Dans l’entrepôt, sélectionne ta zone dans Pilotage ou Aménager, puis « Choisir mon Buddie ». Tu peux aussi utiliser « Préparer mes cultures ». Si ton album est vide, ouvre le pack de bienvenue offert, puis reviens choisir ta variété.",
+    action: "Ouvrir le choix du Buddie", targets: ["prepare-choice", "prepare-buddie", "prepare-pack-open", "prepare-pack-welcome", "prepare-packs", "prepare-zone", "prepare-open", "install-empty"], destination: WAREHOUSE,
   },
   supplies: {
     title: "Vérifier les stocks avant le semis",

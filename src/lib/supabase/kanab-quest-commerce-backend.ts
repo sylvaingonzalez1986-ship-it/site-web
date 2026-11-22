@@ -164,6 +164,17 @@ async function state(userId: string): Promise<KqCommerceState> {
   });
   return current;
 }
+/** Quote the same mature stock, channel and units as a sale, without creating a sale receipt. */
+export async function quoteKqKorriganShopValue(userId: string, stockId: string, grams: number) {
+  await settleKqStaffIfAvailable(userId);
+  const current = await state(userId);
+  const stock = current.stocks.find(item => item.id === stockId);
+  if (!stock || stock.route !== "raw") return null;
+  const units = grams * 10;
+  const offer = quoteKqCommerce(current, stock, "cbd-shop", "advised", units);
+  return offer.units === units ? offer.payoutCents : null;
+}
+
 export async function getKqCommerceSnapshot(userId: string, shopOnly = false) {
   uuid(userId);
   await settleKqStaffIfAvailable(userId);

@@ -1,0 +1,147 @@
+{
+  "series": {
+    "A": [
+      113,
+      2026,
+      15277,
+      19873,
+      27183,
+      39068,
+      51987,
+      63129,
+      73105,
+      85314,
+      92821,
+      99109
+    ],
+    "B": [
+      211,
+      3341,
+      10613,
+      16931,
+      23909,
+      31019,
+      42331,
+      54319,
+      62003,
+      77003,
+      89069,
+      96643
+    ],
+    "D": [
+      38447,
+      8155,
+      45952,
+      80755,
+      67944,
+      86801,
+      63471,
+      9427,
+      48573,
+      69694,
+      49256,
+      41333
+    ]
+  },
+  "rows": [
+    {
+      "serie": "A",
+      "choice": "lampe",
+      "addedCapitalCents": 2641,
+      "additionalMarginCents": 22548,
+      "medianAdditionalWorkHours": 0,
+      "firstPaybackCycle": 2,
+      "finalAdditionalCashAfterCapitalCents": 19907,
+      "operatingMarginCents": 14910,
+      "firstPositionCents": 9725
+    },
+    {
+      "serie": "A",
+      "choice": "extraction avec la lampe",
+      "addedCapitalCents": 13260,
+      "additionalMarginCents": 41180,
+      "medianAdditionalWorkHours": 0.5,
+      "firstPaybackCycle": 4,
+      "finalAdditionalCashAfterCapitalCents": 27920,
+      "operatingMarginCents": 56090,
+      "firstPositionCents": -3703
+    },
+    {
+      "serie": "A",
+      "choice": "seconde zone",
+      "addedCapitalCents": 36309,
+      "additionalMarginCents": 53013,
+      "medianAdditionalWorkHours": 3,
+      "firstPaybackCycle": 8,
+      "finalAdditionalCashAfterCapitalCents": 16704,
+      "operatingMarginCents": 45375,
+      "firstPositionCents": 362604
+    },
+    {
+      "serie": "B",
+      "choice": "lampe",
+      "addedCapitalCents": 2641,
+      "additionalMarginCents": 24780,
+      "medianAdditionalWorkHours": 0,
+      "firstPaybackCycle": 2,
+      "finalAdditionalCashAfterCapitalCents": 22139,
+      "operatingMarginCents": -59035,
+      "firstPositionCents": 8552
+    },
+    {
+      "serie": "B",
+      "choice": "extraction avec la lampe",
+      "addedCapitalCents": 13260,
+      "additionalMarginCents": 15307,
+      "medianAdditionalWorkHours": 0.25,
+      "firstPaybackCycle": 11,
+      "finalAdditionalCashAfterCapitalCents": 2047,
+      "operatingMarginCents": -43728,
+      "firstPositionCents": -4935
+    },
+    {
+      "serie": "B",
+      "choice": "seconde zone",
+      "addedCapitalCents": 36309,
+      "additionalMarginCents": -86200,
+      "medianAdditionalWorkHours": 3,
+      "firstPaybackCycle": null,
+      "finalAdditionalCashAfterCapitalCents": -122509,
+      "operatingMarginCents": -172515,
+      "firstPositionCents": 360262
+    },
+    {
+      "serie": "D",
+      "choice": "lampe",
+      "addedCapitalCents": 2641,
+      "additionalMarginCents": 23597,
+      "medianAdditionalWorkHours": 0,
+      "firstPaybackCycle": 2,
+      "finalAdditionalCashAfterCapitalCents": 20956,
+      "operatingMarginCents": -37243,
+      "firstPositionCents": 9530
+    },
+    {
+      "serie": "D",
+      "choice": "extraction avec la lampe",
+      "addedCapitalCents": 13260,
+      "additionalMarginCents": 22393,
+      "medianAdditionalWorkHours": 0.5,
+      "firstPaybackCycle": 3,
+      "finalAdditionalCashAfterCapitalCents": 9133,
+      "operatingMarginCents": -14850,
+      "firstPositionCents": -3795
+    },
+    {
+      "serie": "D",
+      "choice": "seconde zone",
+      "addedCapitalCents": 36309,
+      "additionalMarginCents": -29045,
+      "medianAdditionalWorkHours": 3,
+      "firstPaybackCycle": null,
+      "finalAdditionalCashAfterCapitalCents": -65354,
+      "operatingMarginCents": -91603,
+      "firstPositionCents": 362187
+    }
+  ]
+}

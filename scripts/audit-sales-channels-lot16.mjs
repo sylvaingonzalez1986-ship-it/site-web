@@ -12,7 +12,13 @@ source=source.replace("'output/placard-commerce-clarity'",`'output/clarity-lot16
  .replace("'react-dom/client','lucide-react'","'react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react'")
  .replace("    const params =", "    import {quoteKqCommerce} from '/src/lib/kanab-quest-commerce';\n    const params =")
  .replace('    const request = async',"    const fixture=params.get('case')??'ready';\n    const request = async")
+ .replace('const api = createKqTutorialApi(request);',
+   "const api = createKqTutorialApi(request); if(params.has('earned-mission')) api.isTutorial = false;")
  .replace("      if(method !== 'GET') window.__actions.push(body);",()=>`
+      if(method==='GET' && url.pathname==='/api/arena/placard/missions' && params.has('earned-mission')) {
+        return Response.json({missions:[{code:'first-harvest',progress:1,target:1,claimable:true,claimed:false,unlocked:true,
+          rewardAvailable:true,reward:{kind:'cash',amountCents:5000}}]});
+      }
       if(method !== 'GET'){window.__actions.push(body);if(fixture!=='ready')throw Error('Read-only fixture: '+fixture);}
       if(method==='GET'&&window.__failRefresh)return Response.json({error:'Comparaison indisponible pour cette recette.'},{status:503});`)
  .replace('        return Response.json(result.payload);',()=>`
@@ -51,6 +57,17 @@ try{
   assert.deepEqual(await page.$$eval('[data-sales-channel]',nodes=>nodes.map(n=>n.dataset.salesChannel)),['cbd-shop','wholesale','online']);
   for(const channel of ['cbd-shop','wholesale']){
    const text=await page.$eval('[data-sales-channel="'+channel+'"]',n=>n.innerText);const offer=await page.evaluate(c=>window.__offers[c],channel);
+   const expectedNet=await page.evaluate(c=>{
+    const {business,electricityOutstandingCents}=window.__snapshot,payout=window.__offers[c].payoutCents;
+    if(!business||!Number.isSafeInteger(electricityOutstandingCents))return null;
+    const prior=business.vat.salesTtcCents,afterVat=payout-Math.round((prior+payout)/6)+Math.round(prior/6);
+    return afterVat-Math.min(Math.floor(afterVat/2),business.lab.overdueCents+electricityOutstandingCents+(business.suppliers?.overdueCents??0));
+   },channel);
+   if(expectedNet!==null){
+    const displayed=await page.$eval('[data-sales-channel="'+channel+'"] strong',n=>n.textContent);
+    assert.equal(Number(displayed.replace(/[^\d,]/g,'').replace(',','.')),expectedNet/100);
+    assert.match(text,/Net estimé en caisse/);
+   }
    assert.match(text,/TTC/);assert.match(text,/Paiement immédiat/);assert(text.includes((offer.units/10).toLocaleString('fr-FR')+' g'));assert(text.includes((offer.payoutCents/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR',minimumFractionDigits:offer.payoutCents%100?2:0})));
   }
   const online=await page.$eval('[data-sales-channel="online"]',n=>n.innerText);assert.match(online,/Ventes progressives/);assert.match(online,/Prix libres/);assert.match(online,/2,5 %/);assert.match(online,/emballages/i);
@@ -61,7 +78,7 @@ try{
    await show(name);await clean();await noWrites();
    for(const channel of ['cbd-shop','wholesale']){
     const offer=await page.evaluate(c=>window.__offers[c],channel),card=await page.$eval('[data-sales-channel="'+channel+'"]',n=>({text:n.innerText,unavailable:n.dataset.unavailable}));
-    if(offer.reason){assert.equal(card.unavailable,'true');assert(card.text.includes(offer.reason));assert.match(card.text,/Voir les conditions/);assert(!card.text.includes('0 €'),'No false zero-price offer');}
+    if(offer.reason){assert.equal(card.unavailable,'true');assert(card.text.includes(offer.reason));assert.match(card.text,/Voir les conditions/i);assert(!card.text.includes('0 €'),'No false zero-price offer');}
     else{assert.equal(card.unavailable,undefined);assert(card.text.includes((offer.units/10).toLocaleString('fr-FR')+' g'));}
    }
    const onlineText=await page.$eval('[data-sales-channel="online"]',n=>n.innerText);
@@ -76,6 +93,17 @@ try{
  }
  if(!before){
   await show('ready');await page.click('[aria-label="Voir l’offre Grossistes"]');await click('Voir le montant net');await page.waitForSelector('dialog[open]');assert.match(await page.$eval('dialog',n=>n.innerText),/Versé au portefeuille/);assert.deepEqual(await page.evaluate(()=>window.__actions.map(a=>a.action)),['quote']);await page.keyboard.press('Escape');await click('← Comparer les circuits');await page.waitForSelector('[data-screen="distribution"]');assert.deepEqual(await page.evaluate(()=>window.__actions.map(a=>a.action)),['quote']);checks.push({case:'authoritative-quote',cancelDoesNotSell:true});
+ }
+ if(!before){
+  await show('ready&earned-mission');
+  await page.click('[aria-label="Voir l’offre Grossistes"]');
+  await click('Voir le montant net');
+  await page.waitForSelector('dialog[open]');
+  await click('Confirmer');
+  const mission = await page.waitForSelector('[data-screen="receipt"] a[href="/arene/placard?view=missions"]',{visible:true});
+  assert.equal(await mission.evaluate(node => node.textContent.normalize('NFKC')), 'Ta première récolte · 50 € à récupérer');
+  assert.deepEqual(await page.evaluate(()=>window.__actions.map(action=>action.action)), ['quote','sell']);
+  checks.push({case:'earned-cash-mission-after-sale',claimableCents:5000,automaticClaims:0});
  }
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);console.log(JSON.stringify({checks:checks.length,errors,external}));
 }catch(error){if(page)await shotFailure();throw error;}

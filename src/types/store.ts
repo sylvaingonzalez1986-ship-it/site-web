@@ -42,7 +42,7 @@ export type CmsOrder = {
   id: string;
   createdAt: string;
   status: OrderStatus;
-  paymentProvider: "viva" | "swiss_bitcoin_pay";
+  paymentProvider: "viva" | "swiss_bitcoin_pay" | "arena_reward";
   paymentState: "pending" | "paid" | "failed" | "not_configured";
   archivedAt?: string;
   archivedReason?: string;

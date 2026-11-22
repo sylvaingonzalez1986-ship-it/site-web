@@ -11,7 +11,8 @@ function silhouette(a: Art, points: readonly [number, number][], x: number, y: n
   a.add(new ShapeGeometry(shape), paint, [x, y, z]);
 }
 
-function loic(a: Art, x: number, z: number, pose: "parcel" | "cards") {
+function loic(room: Art, x: number, z: number, pose: "parcel" | "cards") {
+  const a = room.pivot("daytime-resident", [0, 0, 0]);
   for (const side of [-1, 1]) {
     const leg = x + .18 * side;
     a.sphere(.23, leg, .43, z, "darkTeal", [.9, 1.75, .9]);

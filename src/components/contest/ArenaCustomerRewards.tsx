@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, Dices, Gift, Sprout, Trophy } from "lucide-react";
-import { ARENA_CUSTOMER_REWARD_DICE_RATES, projectArenaCustomerRewardPool } from "@/lib/arena-customer-rewards";
+import { ARENA_CUSTOMER_PRIZE_FORMULA, ARENA_CUSTOMER_REWARD_DICE_RATES, projectArenaCustomerRewardPool } from "@/lib/arena-customer-rewards";
 import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
 import { formatArenaRewardGrams, getArenaRewardJarFill, isArenaRewardSeasonOpen } from "@/lib/arena-reward-presentation";
 import styles from "./ArenaCustomerRewards.module.css";
@@ -13,11 +13,17 @@ export type ArenaCustomerRewardPool = {
   rankingFormulaVersion?: string;
   minimumTastedFlowers?: number | null;
   seasonCode: string;
+  formulaVersion?: string;
   status: string;
   contributionRateBps: number;
   poolGrams: number;
   wholePoolGrams: number;
   carriedGrams: number;
+  baseGrams?: number;
+  carryInGrams?: number;
+  carryPending?: boolean;
+  reportGrams?: number;
+  unknownSaleLines?: number | null;
   currentWeekGrams: number;
   weeklyDice: {
     startsOn: string | null;
@@ -89,6 +95,7 @@ export function ArenaCustomerRewardPot({
   const [increase, setIncrease] = useState(0);
   const open = rewardPool ? isArenaRewardSeasonOpen(rewardPool) : false;
   const settled = rewardPool?.status === "settled";
+  const prizeRules = rewardPool?.formulaVersion === ARENA_CUSTOMER_PRIZE_FORMULA;
   const authenticated = Boolean(viewer || viewerPseudo);
   const jarFillTopInset = 84 - getArenaRewardJarFill(rewardPool?.poolGrams ?? 0) * 0.61;
   const projection = projectArenaCustomerRewardPool(rewardPool?.poolGrams ?? 0);
@@ -179,11 +186,16 @@ export function ArenaCustomerRewardPot({
       {unavailable && rewardPool ? <p className={styles.availability} role="status">Dernière estimation disponible : la mise à jour a échoué. Une nouvelle tentative sera faite automatiquement.</p> : null}
       {!rewardPool ? <p className={styles.availability} role="status">{loading ? "Comptage du bocal…" : unavailable ? "Le compteur est momentanément indisponible. Réessaie en actualisant la page." : "Aucune dotation disponible pour le moment."}</p> : null}
       {rewardPool ? <div className={styles.personal} aria-live="polite">
-        <div><span className={styles.eyebrow}>Ta place dans la récolte</span><p>{settled ? viewer?.grant ? `Tu as remporté ${viewer.grant.grams} g de fleurs${viewer.grant.kind === "surprise" ? " avec la Fleur Surprise" : " au classement"}. Retrouve ton bon dans le panier.` : viewer ? "Aucune récompense attribuée à ton compte pour cette saison." : "Les récompenses sont attribuées. Connecte-toi pour consulter ton résultat." : !open ? "Les lancers sont fermés. Les gains restent estimatifs jusqu’à leur attribution." : statusCopy}</p>
+        <div><span className={styles.eyebrow}>Ta place dans la récolte</span><p>{settled ? viewer?.grant ? `Tu as remporté ${viewer.grant.grams} g de fleurs${viewer.grant.kind === "surprise" ? " avec la Fleur Surprise" : " au classement"}. ${prizeRules ? "Commande ton lot pour 0 €, livraison comprise." : "Retrouve ton bon dans le panier."}` : viewer ? "Aucune récompense attribuée à ton compte pour cette saison." : "Les récompenses sont attribuées. Connecte-toi pour consulter ton résultat." : !open ? "Les lancers sont fermés. Les gains restent estimatifs jusqu’à leur attribution." : statusCopy}</p>
           {open && viewerEntry ? <small>Rang #{viewerEntry.rank} · {tastingEligible ? `${viewer?.tastedFlowerCount ?? 0} fleur(s) dégustée(s) · ${viewerBattles} duel(s) humain(s)` : `${Math.min(viewerBattles, rewardPool.minimumHumanBattles)}/${rewardPool.minimumHumanBattles} duels requis terminés`}</small> : null}
         </div>
-        {settled && viewer?.grant ? <button type="button" onClick={() => window.dispatchEvent(new Event("shop:open-cart"))}>Ouvrir mon panier <Gift size={17} aria-hidden="true" /></button>
-          : <Link href={authenticated ? "/arene/placard" : "/compte/connexion?next=%2Farene%3Fvue%3Dclassement"}>{authenticated ? "Jouer pour progresser" : "Me connecter"}<ArrowUpRight size={17} aria-hidden="true" /></Link>}
+        {settled && viewer?.grant ? prizeRules
+          ? <Link href="/arene/lots">Commander mon lot <Gift size={17} aria-hidden="true" /></Link>
+          : <button type="button" onClick={() => window.dispatchEvent(new Event("shop:open-cart"))}>Ouvrir mon panier <Gift size={17} aria-hidden="true" /></button>
+          : <div className={styles.actions}>
+            <Link href={authenticated ? "/arene/placard" : "/compte/connexion?next=%2Farene%3Fvue%3Dclassement"}>{authenticated ? "Jouer pour progresser" : "Me connecter"}<ArrowUpRight size={17} aria-hidden="true" /></Link>
+            {authenticated && prizeRules && <Link href="/arene/lots">Mes lots <Gift size={17} aria-hidden="true" /></Link>}
+          </div>}
       </div> : null}
       {rewardPool && open ? <div className={styles.diceQuick}>
         <div className={styles.diceAction} aria-live="polite"><span><Dices size={18} aria-hidden="true" /> Dé collectif · taux actuel {weeklyRatePercent} %</span>
@@ -195,12 +207,17 @@ export function ArenaCustomerRewardPot({
         <summary><Gift size={20} aria-hidden="true" /><span>Répartition et fonctionnement<small>Top 10, Fleur Surprise et calcul de la dotation</small></span><ChevronDown size={20} aria-hidden="true" /></summary>
         <div className={styles.overview}>
         <div className={styles.numbers}>
-          <p><strong>Les ventes remplissent le bocal.</strong> Une part des grammes de fleurs vendus devient une récompense en nature pour les joueurs éligibles.</p>
+          {prizeRules ? <p>La dotation réunit un socle de 100 g, les reports de la saison précédente et le bonus des ventes de fleurs Concours.</p>
+            : <p><strong>Les ventes remplissent le bocal.</strong> Une part des grammes de fleurs vendus devient une récompense en nature pour les joueurs éligibles.</p>}
           {rewardPool ? <>
             <div className={styles.metrics}>
-              <div><strong>{weeklyRatePercent} %</strong><span>des grammes de fleurs vendus cette semaine</span></div>
+              <div><strong>{weeklyRatePercent} %</strong><span>des grammes de fleurs {prizeRules ? "Concours " : ""}vendus cette semaine</span></div>
               <div><strong>{formatArenaRewardGrams(rewardPool.currentWeekGrams)} g</strong><span>contribution {open ? "provisoire" : "de la dernière semaine"}</span></div>
+              {prizeRules && rewardPool.baseGrams !== undefined && <div><strong>{formatArenaRewardGrams(rewardPool.baseGrams)} g</strong><span>socle de saison</span></div>}
+              {prizeRules && rewardPool.carryInGrams !== undefined && <div><strong>{rewardPool.carryPending ? "En attente" : `${formatArenaRewardGrams(rewardPool.carryInGrams)} g`}</strong><span>report de la saison précédente</span></div>}
             </div>
+            {prizeRules && rewardPool.reportGrams !== undefined && <p className={styles.note}>{settled ? "Report à la prochaine saison" : "Report estimé à la prochaine saison"} · {formatArenaRewardGrams(rewardPool.reportGrams)} g.</p>}
+            {prizeRules && Boolean(rewardPool.unknownSaleLines) && <p className={styles.note}>Des lignes de vente restent à vérifier avant d’entrer dans le bonus.</p>}
             <p className={styles.note}>Prochain palier : {formatArenaRewardGrams(rewardPool.milestone.nextGrams)} g de fleurs dans le bocal.</p>
             <p className={styles.deadline}>{rewardPool.endsAt ? `Clôture : ${new Date(rewardPool.endsAt).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Paris" })} (Paris)` : "La date de clôture sera annoncée ici."}</p>
           </> : null}
@@ -224,13 +241,17 @@ export function ArenaCustomerRewardPot({
         <div className={styles.sectionHeading}><h3>À chaque place, sa part.</h3><span>Choisis un rang</span></div>
         <div className={styles.ranks}>{projection.slots.filter(slot => slot.rewardRank !== null).map(slot => <button key={slot.code} type="button" aria-pressed={selectedRank === slot.rewardRank} onClick={() => setSelectedRank(slot.rewardRank!)}>#{slot.rewardRank}<small>{(slot.shareBps / 100).toLocaleString("fr-FR")} %</small></button>)}</div>
         <div className={styles.rankDetail} aria-live="polite"><Trophy aria-hidden="true" /><div><strong>{tiedPlayers > 1 ? `Places #${selectedPlayer!.rewardRank} à #${Math.min(10, selectedPlayer!.occupiedThroughRank!)} · ${tiedPlayers} ex æquo` : `#${selectedRank} · ${selectedPlayer?.pseudo ?? "Part réservée à un joueur éligible"}`}</strong><p>{(selectedShareBps / 100).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} % du bocal · {tiedPlayers > 1 ? "à partager entre tous les ex æquo" : selectedPlayer ? "selon la position actuelle" : eligibilityCopy}</p>{tiedPlayers > 1 ? <p>{selectedPlayers.slice(0, 5).map(player => `${player.pseudo} : ≈ ${player.estimatedGrams} g`).join(" · ")}{selectedPlayers.length > 5 ? ` · et ${selectedPlayers.length - 5} autres gains estimés` : ""}</p> : null}</div><b>≈ {selectedGrams} g<small>{tiedPlayers > 1 ? "à partager" : "estimation"}</small></b></div>
-        <p className={styles.note}>Les parts sont arrondies en grammes entiers. {tastingEligible ? "Les ex æquo partagent les parts des places qu’ils occupent, jusqu’à la 10e. Les éventuels grammes restants sont attribués selon un ordre stable des joueurs. " : ""}Un joueur non éligible conserve une part non attribuée ; elle ne revient pas aux autres. Fleur Surprise : ≈ {rewardPool.surpriseReward.estimatedGrams} g, pour un seul des {rewardPool.surpriseReward.eligiblePlayers} participants éligibles hors Top 10.</p>
+        <p className={styles.note}>Les parts sont arrondies en grammes entiers. {tastingEligible ? "Les ex æquo, y compris les inéligibles, partagent les places qu’ils occupent, jusqu’à la 10e. Les grammes indivisibles du groupe suivent un ordre stable. " : ""}{prizeRules ? "Les parts vacantes, les fractions et la Fleur Surprise sans candidat s’ajoutent au socle de la saison suivante. " : "La part des joueurs non éligibles reste vacante. "}{rewardPool.surpriseReward.eligiblePlayers ? `Fleur Surprise · ≈ ${rewardPool.surpriseReward.estimatedGrams} g pour un seul des ${rewardPool.surpriseReward.eligiblePlayers} participants éligibles hors Top 10.` : "Aucun candidat à la Fleur Surprise actuellement."}</p>
       </section> : null}
       <div className={styles.details}>
         <h3>Des ventes aux fleurs offertes</h3>
-        <ol className={styles.steps}><li><b>1. Les ventes</b>Les grammes de fleurs des commandes payées alimentent le calcul, hors cadeaux et annulations.</li><li><b>2. Le bocal</b>Le taux collectif de chaque semaine transforme une part de ce volume en dotation.</li><li><b>3. Le classement</b>{eligibilityCopy}. Le classement général détermine les parts du Top 10.</li><li><b>4. Ton cadeau</b>Après attribution, un bon en grammes de fleurs apparaît dans tes récompenses, à utiliser dans le panier.</li></ol>
+        <ol className={styles.steps}><li><b>1. Les ventes</b>Les grammes de fleurs {prizeRules ? "Concours " : ""}des commandes payées alimentent le calcul, hors cadeaux et annulations.</li><li><b>2. Le bocal</b>Le taux collectif de chaque semaine transforme une part de ce volume en dotation.</li><li><b>3. Le classement</b>{eligibilityCopy}. Le classement général détermine les parts du Top 10.</li><li><b>4. Ton lot</b>{prizeRules ? "Après attribution, une commande de remise pour le lot seul coûte 0 €, port et traitement compris." : "Après attribution, un bon en grammes de fleurs apparaît dans tes récompenses, à utiliser dans le panier."}</li></ol>
         {rewardPool ? <p className={styles.formula}><strong>{formatArenaRewardGrams(rewardPool.weeklyDice.eligibleFlowerGrams)} g vendus × {weeklyRatePercent} % = {formatArenaRewardGrams(rewardPool.currentWeekGrams)} g</strong><span>Contribution de la semaine. Le taux peut monter ou descendre jusqu’à sa finalisation. Le bocal cumule les contributions des semaines et les ajustements éventuels.</span></p> : null}
-        <p className={styles.note}>Le calcul porte sur le poids des fleurs vendues, pas sur le montant en euros ni sur les ventes virtuelles de Kanab Quest. Les récompenses ne sont pas convertibles en argent. Le bon cadeau s’utilise dans une commande ; il ne déclenche pas une expédition automatique.</p>
+        {prizeRules ? <ul className={styles.steps}>
+          <li><b>Don à la ferme</b>Soutien facultatif sans points ni crédit de jeu.</li>
+          <li><b>Commande admissible</b>Le montant des produits peut créditer la caisse du jeu. Le solde seul ne donne aucun point.</li>
+          <li><b>Dégustation</b>Un avis validé donne 100 points par fleur distincte achetée et évaluée dans la saison.</li>
+        </ul> : <p className={styles.note}>Le calcul repose sur le poids des fleurs vendues. Les récompenses sont remises en fleurs. Le bon cadeau s’utilise dans une commande.</p>}
       </div>
       {rewardPool && open ? <details className={styles.dice}>
         <summary><Dices aria-hidden="true" /><span>Le dé collectif de la semaine<small>Un lancer par joueur · taux actuel {weeklyRatePercent} %</small></span><ChevronDown aria-hidden="true" /></summary>

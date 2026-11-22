@@ -1,0 +1,396 @@
+.invitation,
+.dialog {
+  --market-ink: #172923;
+  --market-paper: #fff1d6;
+  --market-teal: #087b70;
+  --market-gold: #efc451;
+  --market-warm: var(--game-surface-warm, #ffad5c);
+  color: var(--market-ink);
+  font-family: var(--font-body), Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.invitation {
+  position: fixed;
+  inset: auto 0 max(18px, env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  width: min(390px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 12px 16px 14px;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+.invitation::backdrop { background: transparent; }
+
+.invitation h2 {
+  margin: 0 0 8px;
+  font: 900 28px/.95 var(--font-display), Impact, sans-serif;
+}
+
+.invitation p { margin: 0 0 10px; font-size: .93rem; line-height: 1.35; }
+
+.control {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--market-ink);
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  font: 800 .83rem/1.15 var(--font-body), Arial, sans-serif;
+  text-align: center;
+  cursor: pointer;
+}
+
+.control.primary {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  color: var(--market-paper);
+}
+
+.control:not(:disabled):hover,
+.dialogHeader > button:hover {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  color: var(--market-ink);
+}
+
+.control:not(:disabled):active {
+  --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
+  color: var(--market-ink);
+}
+
+.control:disabled { cursor: default; opacity: .63; }
+.control:focus-visible, .fields :is(select, input):focus-visible, .odds summary:focus-visible {
+  outline: 3px solid var(--market-teal);
+  outline-offset: 2px;
+}
+
+.dialog[open] {
+  width: min(838px, calc(100vw - 16px));
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+
+.dialog::backdrop { background: #092729cf; }
+.dialogHeader { min-height: 58px; }
+.dialogHeader h2 { margin: 0; font: 900 clamp(22px, 4vw, 38px)/.94 var(--font-display), Impact, sans-serif; }
+.dialogHeader > button { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+
+.dialogBody { scrollbar-color: #509480 #fff1d6; }
+.market { padding: 14px; }
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(10px, 3vw, 22px);
+}
+
+.machineStation {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 2px 0 4px;
+}
+
+.machine {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 400px);
+  display: grid;
+  justify-items: center;
+  padding-inline: 2% 9%;
+}
+
+.crown,
+.machineFrame,
+.base {
+  border: 3px solid var(--market-ink);
+  background-image: url("/placard/ui/panel-apricot-v1.webp");
+  background-size: 100% 100%;
+  background-color: var(--market-warm);
+  box-shadow: 0 3px 0 var(--market-ink);
+}
+
+.crown {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 48%;
+  height: 45px;
+  padding: 3px 0 1px;
+  margin-bottom: -6px;
+  border-radius: 43% 47% 9% 9% / 65% 66% 16% 17%;
+  rotate: -2deg;
+  color: var(--market-ink);
+}
+
+.crown svg:first-child { width: 24px; height: 24px; fill: var(--market-gold); }
+.crown svg:last-child { width: 18px; height: 18px; }
+
+.machineFrame {
+  width: 100%;
+  display: grid;
+  gap: 9px;
+  padding: 13px 12px 7px;
+  border-radius: 13% 10% 8% 8% / 20% 19% 14% 14%;
+  background-image: url("/placard/ui/control-teal-v2.webp");
+  background-color: var(--market-teal);
+}
+
+.reels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(3px, 1vw, 7px);
+  padding: 5px;
+  border: 2px solid var(--market-ink);
+  border-radius: 10px 11px 13px 9px;
+  background: #243f35;
+  box-shadow: 0 2px 0 #142822;
+}
+
+.reel {
+  --reel-height: clamp(60px, 11vw, 108px);
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  height: var(--reel-height);
+  overflow: hidden;
+  border: 2px solid var(--market-ink);
+  border-radius: 34% 29% 25% 26% / 8% 7% 9% 8%;
+  background: linear-gradient(#ad9162, #f5e6c9 18%, #fff7e4 45% 63%, #d7bb87 90%, #ad9162);
+  box-shadow: 0 0 0 1px #d6c195;
+}
+
+.reel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(#1729234a, transparent 18% 82%, #17292340);
+}
+
+.reel > span,
+.reelMotion > span {
+  display: grid;
+  width: 100%;
+  height: var(--reel-height);
+  padding-bottom: 4px;
+  place-content: center;
+  justify-items: center;
+  align-items: center;
+  gap: 0;
+  color: var(--market-ink);
+}
+
+.reel span[data-symbol="leaf"] { color: #1a6856; }
+.reel span[data-symbol="leaf"] svg { fill: #9cc382; }
+.reel span[data-symbol="botte"] svg { fill: #ffad5c; }
+.reel span[data-symbol="loss"] svg { fill: #d8caec; }
+.reel span[data-symbol^="x"] svg { fill: var(--market-gold); }
+.reel b { font: 900 clamp(16px, 3.8vw, 25px)/1 var(--font-display), Impact, sans-serif; }
+.reel svg { width: clamp(23px, 5vw, 42px); height: clamp(23px, 5vw, 42px); }
+.epicSymbol { display: grid; place-items: center; position: relative; }
+.epicSymbol svg:first-child { fill: #d8caec; }
+.epicSymbol svg:last-child { position: absolute; top: -18%; right: -26%; width: 60%; height: 60%; fill: #efc451; }
+.reelPack { width: clamp(32px, 6vw, 64px); height: clamp(42px, 8vw, 78px); }
+.reelMotion { width: 100%; animation: reels 410ms linear infinite; }
+.reel:nth-child(2) .reelMotion { animation-duration: 470ms; }
+.reel:nth-child(3) .reelMotion { animation-duration: 535ms; }
+@keyframes reels { to { transform: translateY(calc(-8 * var(--reel-height))); } }
+
+.machineReadout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  color: #fff6dc;
+  font-size: .75rem;
+  font-weight: 850;
+}
+
+.lamps { display: flex; gap: 4px; }
+.lamps i {
+  height: 10px;
+  width: 10px;
+  border: 1px solid #fff1d6;
+  border-radius: 50%;
+  background: #35594d;
+}
+.lamps i[data-lit] { background: var(--market-gold); box-shadow: 0 0 0 1px var(--market-ink); }
+
+.lever {
+  z-index: -1;
+  position: absolute;
+  right: 5%;
+  bottom: 24%;
+  width: 12px;
+  height: 55%;
+  rotate: 12deg;
+  transform-origin: bottom center;
+  border: 2px solid var(--market-ink);
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f8dc99, #c58b4a 45%, #f8dc99);
+}
+
+.lever::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  translate: -50%;
+  width: 24px;
+  height: 23px;
+  border: 2px solid var(--market-ink);
+  border-radius: 45% 52% 51% 45%;
+  background: radial-gradient(circle at 36% 30%, var(--market-warm) 10%, #c75530 66%);
+}
+.machine[data-spinning] .lever { animation: lever 400ms ease-out both; }
+@keyframes lever { 50% { rotate: 27deg; } }
+
+.base {
+  width: 106%;
+  height: 14px;
+  margin-top: -2px;
+  border-radius: 43% 39% 12% 9% / 34% 38% 37% 43%;
+  background-color: var(--market-gold);
+  background-image: url("/placard/ui/panel-gold-v1.webp");
+}
+
+.result {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 8px;
+  min-height: 26px;
+  margin-top: 2px;
+  color: #32483b;
+  text-align: center;
+  font-size: .81rem;
+}
+.result strong { color: var(--market-ink); font-size: 1.05rem; }
+
+.marketControls { min-width: 0; display: grid; gap: 7px; }
+.operation {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+.operation h3 { margin: 0; font: 900 clamp(22px, 3vw, 30px)/.97 var(--font-display), Impact, sans-serif; }
+.operation p, .odds p { margin: 0; font-size: .83rem; line-height: 1.4; }
+.actions { display: flex; gap: 5px; flex-wrap: wrap; }
+.fields { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 5.5rem); gap: 8px; }
+.fields label { display: grid; gap: 3px; min-width: 0; font-size: .79rem; font-weight: 800; }
+.fields :is(select, input) {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 44px;
+  width: 100%;
+  padding: 2px 5px;
+  border: 1px solid #476758;
+  border-radius: 3px;
+  background: #fff9eb;
+  color: var(--market-ink);
+  font: 650 1rem/1.15 var(--font-body), Arial, sans-serif;
+}
+
+.quote {
+  display: grid;
+  gap: 3px;
+  align-self: stretch;
+  width: 100%;
+  padding: 6px 8px;
+  --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp"));
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  background: transparent;
+  box-shadow: none;
+  font-size: .8rem;
+}
+.quote span { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; }
+.quote strong { font: 900 1.6rem/1 var(--font-display), Impact, sans-serif; }
+.quote small { font-size: .78rem; }
+
+.totals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; margin: 0; }
+.totals > div { border-bottom: 2px solid #38574666; padding-block: 3px; }
+.totals dt { font-size: .76rem; }
+.totals dd { margin: 0; font: 900 1.5rem/1.1 var(--font-display), Impact, sans-serif; }
+.register { width: 100%; padding: 0; margin: 0; list-style: none; }
+.register li { display: flex; justify-content: space-between; gap: 5px; border-bottom: 1px solid #38574666; padding-block: 5px; font-size: .81rem; }
+.register li > div { display: grid; gap: 2px; text-align: right; }
+.register small { font-size: .74rem; color: #32483b; }
+.deadline { display: grid; gap: 2px; font-size: .8rem; }
+.deadline time { font-weight: 850; }
+
+.notice, .error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 9px;
+  padding: 6px 8px;
+  border-left: 3px solid var(--market-ink);
+  background: var(--market-warm);
+  font-size: .84rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.notice svg { flex: none; }
+.error { color: #742620; background: #f7dfc9; border-color: currentColor; }
+
+.odds { margin-top: 8px; border-top: 1px solid #38574666; }
+.odds summary { display: flex; align-items: center; gap: 6px; width: fit-content; min-height: 44px; padding: 4px; font-weight: 800; font-size: .88rem; cursor: pointer; list-style: none; }
+.odds summary::-webkit-details-marker { display: none; }
+.odds[open] summary svg:last-child { rotate: 180deg; }
+.odds table { border-collapse: collapse; width: min(100%, 390px); margin-top: 6px; font-size: .83rem; }
+.odds th, .odds td { padding: 4px 4px 4px 0; border-bottom: 1px solid #38574666; text-align: left; }
+.odds td, .odds th:last-child { text-align: right; }
+.odds tbody th { font-weight: 650; }
+
+@media (max-width: 615px) {
+  .columns { grid-template-columns: 1fr; gap: 6px; }
+  .machine { max-width: 296px; }
+  .machineStation { gap: 4px; padding-top: 0; }
+  .crown { height: 34px; }
+  .crown svg:first-child { width: 19px; height: 19px; }
+  .crown svg:last-child { width: 15px; height: 15px; }
+  .machineFrame { gap: 5px; padding: 8px 8px 6px; }
+  .base { height: 12px; }
+  .result { min-height: 19px; }
+  .market { padding: 10px; }
+}
+
+@media (max-width: 385px) {
+  .dialogHeader > button > span { display: none; }
+  .market { padding: 8px; }
+  .operation { padding: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reelMotion, .machine[data-spinning] .lever { animation: none; }
+}

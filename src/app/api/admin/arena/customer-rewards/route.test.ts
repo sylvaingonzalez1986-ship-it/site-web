@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   freeze: vi.fn(),
   pool: vi.fn(),
   settle: vi.fn(),
+  recordReturn: vi.fn(),
 }));
 
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext: mocks.admin }));
@@ -12,6 +13,7 @@ vi.mock("@/lib/supabase/arena-customer-rewards-backend", () => ({
   freezeArenaCustomerRewardSeason: mocks.freeze,
   getArenaCustomerRewardPool: mocks.pool,
   settleArenaCustomerRewards: mocks.settle,
+  recordArenaPrizeReturn: mocks.recordReturn,
 }));
 
 import { GET, POST } from "@/app/api/admin/arena/customer-rewards/route";
@@ -48,5 +50,13 @@ describe("admin Arena customer rewards API", () => {
     await post({ action: "settle", execute: true });
     expect(mocks.freeze).toHaveBeenCalledWith(true);
     expect(mocks.settle).toHaveBeenCalledWith(true);
+  });
+  it("requires a confirmed, itemised return before recording refunded grams", async () => {
+    const body = { action: "record-return", itemId: 12, grams: 2.5, reference: "refund-line-3" };
+    expect((await post(body)).status).toBe(400);
+    expect(mocks.recordReturn).not.toHaveBeenCalled();
+    mocks.recordReturn.mockResolvedValue({ grams: 2.5 });
+    expect((await post({ ...body, execute: true })).status).toBe(200);
+    expect(mocks.recordReturn).toHaveBeenCalledWith(12, "refund-line-3", 2.5);
   });
 });

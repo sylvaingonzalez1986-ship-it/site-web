@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "firstVisit": {
+    "historyShown": false,
+    "serverCuringDeadlineShown": true
+  },
+  "otherAccount": {
+    "historyShown": false,
+    "currentStatusShown": true
+  },
+  "returns": [
+    {
+      "day": 1,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "gesture": "keyboard",
+      "initialCuring": "Affinage automatique : 1 lot rangé, fin le 10 novembre à 17:00 (Paris).",
+      "current": {
+        "serverNow": "2026-11-11T10:00:00.000Z",
+        "protectedLot": {
+          "stage": "ready",
+          "readyAt": "2026-11-10T16:00:00.000Z"
+        },
+        "supplier": {
+          "id": "invoice-due",
+          "remainingCents": 2200,
+          "dueAt": "2026-11-15T10:00:00.000Z"
+        },
+        "paidCents": 0,
+        "cashCents": 2000,
+        "listing": {
+          "id": "listing-lot-retour",
+          "name": "Lot du retour",
+          "remainingPackets": 3,
+          "status": "active",
+          "qualityScore": 5.84
+        }
+      },
+      "history": "Depuis ton passage du 10/11/2026 11:00Caisse de 20 € à 20 € (0 €).Lots à valoriser au dernier passage · 0. Actuellement · 0.",
+      "currentAction": "Culture en coursReprends là où tu t’es arrêtéReprendreTa partie officielle est sauvegardée. Termine la prochaine étape avant de préparer une autre culture.1 Fleur d’Arène prête pour le jury.",
+      "navigation": [
+        {
+          "view": "game"
+        }
+      ],
+      "onlyReadRequests": true
+    },
+    {
+      "day": 7,
+      "viewport": {
+        "width": 320,
+        "height": 540
+      },
+      "gesture": "touch",
+      "initialCuring": "Affinage automatique : 1 lot rangé, fin le 10 novembre à 17:00 (Paris).",
+      "current": {
+        "serverNow": "2026-11-17T10:00:00.000Z",
+        "protectedLot": {
+          "stage": "ready",
+          "readyAt": "2026-11-10T16:00:00.000Z"
+        },
+        "supplier": {
+          "id": "invoice-due",
+          "remainingCents": 200,
+          "dueAt": "2026-11-15T10:00:00.000Z"
+        },
+        "paidCents": 2000,
+        "cashCents": 0,
+        "listing": {
+          "id": "listing-lot-retour",
+          "name": "Lot du retour",
+          "remainingPackets": 3,
+          "status": "quality-blocked",
+          "qualityScore": 5.76
+        }
+      },
+      "history": "Depuis ton passage du 10/11/2026 11:00Caisse de 20 € à 0 € (-20 €).Lots à valoriser au dernier passage · 0. Actuellement · 0.",
+      "currentAction": "Échéance atteinteUne facture est échueVoir mes facturesFournisseur : 2 € restent à régler sur cette facture. Échéance atteinte le 15 nov. 2026, 11:00 (heure de Paris).Qualité insuffisante : 3 paquets de « Lot du retour » à vérifier.Ta culture est sauvegardée et prête à reprendre.Autres activités (1)1 Fleur d’Arène prête pour le jury.",
+      "navigation": [
+        {
+          "view": "staff",
+          "options": {
+            "staffSection": "accounting"
+          }
+        },
+        {
+          "view": "market",
+          "options": {
+            "marketSection": "dashboard",
+            "listingId": "listing-lot-retour"
+          }
+        },
+        {
+          "view": "game"
+        }
+      ],
+      "onlyReadRequests": true
+    }
+  ],
+  "errors": []
+}

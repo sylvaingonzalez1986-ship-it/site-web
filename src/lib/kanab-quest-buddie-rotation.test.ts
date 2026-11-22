@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   getKqBuddieRotationRemaining,
+  getKqNextCampaignCapacity,
   recordKqBuddieUse,
 } from "./kanab-quest-buddie-rotation";
 
@@ -49,5 +50,11 @@ describe("Buddie rotation", () => {
     const original = ["E", "D", "C", "B", "A"];
     expect(recordKqBuddieUse("B", original)).toEqual(["B", "E"]);
     expect(original).toEqual(["E", "D", "C", "B", "A"]);
+  });
+
+  it("shows whether the next two-zone campaign has two distinct available Buddies", () => {
+    expect(getKqNextCampaignCapacity(["A", "B", "C", "C"], [], ["A", "B"])).toBe(1);
+    expect(getKqNextCampaignCapacity(["A", "B", "C", "D"], [], ["A", "B"])).toBe(2);
+    expect(getKqNextCampaignCapacity(["A", "B", "C", "D"], ["B", "A"], ["C", "D"])).toBe(2);
   });
 });

@@ -681,6 +681,9 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
         const receipt = c.receipts.at(-1)!; receipt.flowerId = lot.id;
         if (receipt.channel === 'wholesale') state.wholesaleSales.push({ at: state.operations.trial.clock, equivalentUnits: state.operations.quotes[String(body.quoteId)].offer.equivalentSold });
         payInvoices(c.business!.suppliers!.invoices, receipt.supplierPaidCents ?? 0, state.operations.trial.clock, true);
+        updateCalendar(state);
+        receipt.lotName = lot.name;
+        receipt.remainingInvoiceCents = getReleveCommerceOutstanding(state).totalCents;
         mark(state, 'delivered'); account = receipt.channel === 'wholesale' ? 'revenue_wholesale' : 'revenue_shop'; kind = 'sale';
       }
       c.stocks.push(...otherStocks);

@@ -111,6 +111,8 @@ export function readSylvainObservations(root: ParentNode): SylvainObservations {
   else if (controls("prepare-pack-welcome")) hints.prepare = "Récupère ton pack de bienvenue offert, puis ouvre-le pour ajouter tes premiers Buddies à ton album.";
   else if (find("[data-empty-buddie-collection]")) hints.prepare = "Ta collection est vide. Découvre les Packs Buddies, puis reviens affecter une variété à ta zone.";
   else if (find("[data-culture-buddies][aria-busy=true]")) hints.prepare = "L’affectation est en cours d’enregistrement.";
+  else if (controls("prepare-choice")) hints.prepare = "Choisis un Buddie disponible dans le carrousel de ta zone.";
+  else if (controls("prepare-buddie")) hints.prepare = "Ouvre « Choisir » sur la zone à laquelle tu veux affecter une variété.";
   else if (culturePreparation && !achieved.includes("prepare")) {
     const reason = find("[data-culture-preparation] p[role=status]")?.textContent?.trim();
     if (reason) hints.prepare = reason;

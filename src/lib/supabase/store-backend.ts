@@ -573,7 +573,7 @@ function mapOrderRow(
     status: validOrderStatus.has(statusCandidate as OrderStatus)
       ? (statusCandidate as OrderStatus)
       : "new",
-    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" ? "swiss_bitcoin_pay" : "viva",
+    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" || row.payment_provider === "arena_reward" ? row.payment_provider : "viva",
     paymentState: validPaymentState.has(paymentStateCandidate)
       ? paymentStateCandidate
       : "pending",

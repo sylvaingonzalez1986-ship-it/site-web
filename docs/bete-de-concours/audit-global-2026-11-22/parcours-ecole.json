@@ -1,0 +1,81 @@
+{
+  "browser": "Chrome/157.0.8103.79",
+  "runs": [
+    {
+      "width": 390,
+      "steps": [
+        {
+          "label": "Salle → encyclopédie",
+          "elapsedMs": 6946,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Encyclopédie → premier rayon",
+          "elapsedMs": 395,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Rayon → article",
+          "elapsedMs": 470,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Article → salle",
+          "elapsedMs": 664,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Salle → tournoi",
+          "elapsedMs": 6929,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Tournoi → salle",
+          "elapsedMs": 279,
+          "horizontalOverflowPx": 0
+        }
+      ],
+      "articleTitle": "Cannabis sativa",
+      "tournament": "Dimanche 22 Novembre\n\nClôture des finales dimanche à minuit · heure de Paris\n\nOuvert toute la semaine",
+      "ranking": "Classement de QuizzShow\nLA SALLE\nENCYCLOPÉDIE\nClassement\n\nÉdition du 22 novembre 2026.\n\nTOURNOI\nACTUALISER\nLe fauteuil\n\nLe fauteuil est libre. Aucun champion n’a encore été désigné.\n\nTa semaine\n\nTon résultat ne figure pas dans le classement affiché. Retrouve le tournoi pour jouer une finale.\n\nCette semaine\n\nMeilleure finale par joueur · score sur 450 points\n\nAttribution du titre : 23 novembre à 00:00, heure de Paris.\n\nAucune finale enregistrée cette semaine.\n\nPalmarès\n\nAucun "
+    },
+    {
+      "width": 1440,
+      "steps": [
+        {
+          "label": "Salle → encyclopédie",
+          "elapsedMs": 7197,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Encyclopédie → premier rayon",
+          "elapsedMs": 319,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Rayon → article",
+          "elapsedMs": 540,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Article → salle",
+          "elapsedMs": 646,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Salle → tournoi",
+          "elapsedMs": 747,
+          "horizontalOverflowPx": 0
+        },
+        {
+          "label": "Tournoi → salle",
+          "elapsedMs": 347,
+          "horizontalOverflowPx": 0
+        }
+      ],
+      "articleTitle": "Cannabis sativa",
+      "tournament": "Dimanche 22 Novembre\n\nClôture des finales dimanche à minuit · heure de Paris\n\nOuvert toute la semaine",
+      "ranking": "Classement de QuizzShow\nLA SALLE\nENCYCLOPÉDIE\nClassement\n\nÉdition du 22 novembre 2026.\n\nTOURNOI\nACTUALISER\nLe fauteuil\n\nLe fauteuil est libre. Aucun champion n’a encore été désigné.\n\nTa semaine\n\nTon résultat ne figure pas dans le classement affiché. Retrouve le tournoi pour jouer une finale.\n\nCette semaine\n\nMeilleure finale par joueur · score sur 450 points\n\nAttribution du titre : 23 novembre à 00:00, heure de Paris.\n\nAucune finale enregistrée cette semaine.\n\nPalmarès\n\nAucun "
+    }
+  ]
+}

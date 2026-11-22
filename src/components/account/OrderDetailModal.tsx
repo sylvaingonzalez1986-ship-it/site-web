@@ -153,7 +153,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             Statut: {orderStatusLabels[order.status]}
           </span>
           <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
-            {order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : {paymentStateLabels[order.paymentState]}
+            {order.paymentProvider === "arena_reward" ? "Remise de lot · 0 €" : `${order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : ${paymentStateLabels[order.paymentState]}`}
           </span>
         </div>
 

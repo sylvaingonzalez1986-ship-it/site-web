@@ -82,11 +82,23 @@ export async function conditionChecks({ db, sql, scalar, equal, reject, player, 
     const quote = warehouse.getKqWarehouseQuote({ ...original.state, zones: [...original.state.zones, zone] }, original.state);
     const key = randomUUID(), charged = Math.max(0, quote.totalCostCents - original.migrationCreditCents);
     const nextAssets = condition.reconcileKqWarehouseCondition(original.state, quote.nextState, original.cultureEquipment,
-      { requestKey: key, fundedFraction: charged / quote.totalCostCents }, randomUUID).assets;
+      { requestKey: key, fundedFraction: charged / quote.totalCostCents, fundedCents: charged, investmentCents: quote.totalCostCents }, randomUUID).assets;
     const purchased = nextAssets.filter(asset => asset.sourceAssetKey === `warehouse:${key}`);
     const request = { state: quote.nextState, expectedRevision: original.revision, expectedCostCents: quote.totalCostCents };
     const buy = (assets = nextAssets) => scalar("SELECT rpc_kq_warehouse_save_condition($1,$2,$3,$4,$5,$6,$7,$8,$9)", [buyer, key, request,
       original.revision, original.state, quote.nextState, quote.totalCostCents, original.cultureEquipment.assets, assets]);
+    const retailBasis = asset => scalar(`SELECT floor((CASE $1 WHEN 'device' THEN kq_warehouse_device($2)->>'priceCents'
+      ELSE kq_warehouse_option($2)->>'equipmentCentsPerM2' END)::numeric*$3::numeric/$4::numeric)::int`,
+    [asset.kind, asset.code, charged, quote.totalCostCents]);
+    const beforeRetail = await Promise.all(purchased.map(async asset => ({ code: asset.code, sql: await retailBasis(asset), application: asset.purchaseUnitCents })));
+    equal(beforeRetail.some(asset => asset.sql !== asset.application), true, "the historical fixture must expose the acquisition-price mismatch");
+    await reject(() => buy(), "warehouse_condition_invalid");
+    console.log("Condition acquisition bases before retail migration:", JSON.stringify(beforeRetail));
+    await db.exec("COMMIT");
+    await db.exec(await sql("20261121002200_kq_warehouse_retail_prices.sql"));
+    await db.exec("BEGIN");
+    for (const asset of purchased) equal(await retailBasis(asset), asset.purchaseUnitCents, `${asset.code}: current SQL acquisition basis matches the application`);
+    equal((await layout(buyer)).cultureEquipment, original.cultureEquipment, "the retail migration preserves the historical acquisition basis");
     await reject(() => buy(nextAssets.map((asset, index) => index === 0 ? { ...asset, wearPercent: 1 } : asset)), "warehouse_condition_changed");
     const bought = await buy();
     equal(bought.cashCents, original.cashCents - charged, "condition save charges the true existing fit-out quote once");
@@ -179,7 +191,8 @@ export async function conditionChecks({ db, sql, scalar, equal, reject, player, 
     equal(mixedRemoved.receipt.soldCount, 1, "mixed zone sells only the newly funded lamp");
     equal(mixedRemoved.receipt.keptCount, 2, "mixed zone keeps the two devices with unknown historical purchase prices");
     equal(mixedRemoved.cultureEquipment.assets.filter(asset => asset.zoneId === null).every(asset => asset.purchaseUnitCents === null), true, "unknown historical basis remains unknown in reserve");
-    equal(mixedResale, Number(BigInt(14900) * BigInt(mixedFunded) / BigInt(mixedQuote.totalCostCents)), "conversion credit never becomes cash through resale");
+    const lampPrice = (await scalar("SELECT kq_warehouse_device('MH-TS1000')")).priceCents;
+    equal(mixedResale, Number(BigInt(lampPrice) * BigInt(mixedFunded) / BigInt(mixedQuote.totalCostCents)), "conversion credit never becomes cash through resale");
 
     await initialize(legacyOwner);
     await harvest(legacy.run.id);
@@ -207,6 +220,10 @@ export async function conditionChecks({ db, sql, scalar, equal, reject, player, 
     await db.exec("COMMIT");
     await db.exec("CREATE FUNCTION public.kq_staff_production_reservation(UUID) RETURNS JSONB LANGUAGE sql STABLE AS 'SELECT NULL::JSONB'");
     await db.exec(await sql("20261120000200_kq_warehouse_handling_cart.sql"));
+    // The full handling migration also installs staff and workshop features.
+    // Retain the real quote guards in this focused acquisition-basis fixture.
+    const handling = await sql("20261121001200_kq_warehouse_handling_equipment.sql");
+    await db.exec(handling.slice(handling.indexOf("CREATE FUNCTION public.kq_warehouse_handling_codes"), handling.indexOf("-- Convert only")));
     await db.exec("BEGIN");
     const converted = await scalar("SELECT rpc_kq_warehouse_convert_handling_cart($1,$2)", [cartOwner, oldCart.revision]);
     equal(converted.state.optionInventory, [{ code: cartCode, quantity: 1 }], "historical area modules become one common cart");
@@ -225,10 +242,13 @@ export async function conditionChecks({ db, sql, scalar, equal, reject, player, 
     const fundedCart = Math.max(0, freshCart.totalCostCents - withoutCart.migrationCreditCents);
     const cartAssets = condition.reconcileKqWarehouseCondition(withoutCart.state, freshCart.nextState, withoutCart.cultureEquipment,
       { requestKey: cartKey, fundedFraction: fundedCart / freshCart.totalCostCents, fundedCents: fundedCart, investmentCents: freshCart.totalCostCents }, randomUUID);
+    const cartPrice = (await scalar("SELECT kq_warehouse_option($1)", [cartCode])).equipmentCentsPerM2;
+    equal(freshCart.totalCostCents, cartPrice, "the current TypeScript quote charges the retail cart without installation");
+    await reject(() => scalar("SELECT kq_warehouse_validate_options_change($1,$2,$3)", [withoutCart.state, freshCart.nextState, cartPrice - 1]), "warehouse_price_changed");
     const cartPurchase = await scalar("SELECT rpc_kq_warehouse_save_condition($1,$2,$3,$4,$5,$6,$7,$8,$9)", [newCartOwner, cartKey,
-      { state: freshCart.nextState, expectedRevision: withoutCart.revision, expectedCostCents: 1600 }, withoutCart.revision,
-      withoutCart.state, freshCart.nextState, 1600, withoutCart.cultureEquipment.assets, cartAssets.assets]);
-    equal(cartPurchase.receipt.investmentCents, 1600, "only the flat cart price is billed for a new purchase");
+      { state: freshCart.nextState, expectedRevision: withoutCart.revision, expectedCostCents: cartPrice }, withoutCart.revision,
+      withoutCart.state, freshCart.nextState, cartPrice, withoutCart.cultureEquipment.assets, cartAssets.assets]);
+    equal(cartPurchase.receipt.investmentCents, cartPrice, "only the flat cart price is billed for a new purchase");
     equal(cartPurchase.cultureEquipment.assets.find(asset => asset.code === cartCode)?.zoneId, null, "the cart attaches to no zone");
     console.log("Warehouse condition: real purchase, reserve, quote CAS, one-shot wear, reduced yield, resale, disposal and private grants passed.");
   } finally { await vite.close(); }

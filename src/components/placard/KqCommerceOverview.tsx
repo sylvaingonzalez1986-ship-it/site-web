@@ -6,6 +6,7 @@ import { KQ_CHANNELS, getKqShopNetworkBonus, type KqCommerceReceipt, type KqComm
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqMarketReputationProgress, KQ_MARKET_REPUTATION_TIERS } from "@/lib/kanab-quest-market-demand";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KqSaleReceiptAmounts } from "./KqSaleReceiptAmounts";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqCommerceOverview.module.css";
 
@@ -20,11 +21,9 @@ function SaleRow({ receipt }: { receipt: KqCommerceReceipt }) {
     : receipt.channel === "online" && receipt.clientsBefore !== undefined && receipt.clientsAfter !== undefined ? receipt.clientsAfter - receipt.clientsBefore : undefined;
   return <li className={styles.saleRow}>
     {channel ? <Image src={channel.image} alt="" width={56} height={56} sizes="56px" /> : <ShoppingBag size={24} aria-hidden="true" />}
-    <div><strong>{channel?.name ?? "Vente"}</strong><span>{receipt.units === undefined ? "Volume indisponible" : `${number(receipt.units / 10)} g vendus`}</span>
+    <div><strong>{receipt.lotName ? `${receipt.lotName} · ${channel?.name ?? "Vente"}` : channel?.name ?? "Vente"}</strong><span>{receipt.units === undefined ? "Volume indisponible" : `${number(receipt.units / 10)} g vendus`}</span>
       <small>{reputation === undefined ? "Réputation non renseignée" : reputation ? `${signed(reputation)} réputation` : "Réputation stable"}{networkChange ? ` · ${signed(networkChange)} ${receipt.channel === "cbd-shop" ? "partenaire(s)" : "client(s)"}` : ""}</small>
-      <details className={styles.saleDetails}><summary>Détail du versement</summary><dl>{[
-        ["Vente TTC", receipt.payoutCents], ["TVA", receipt.vatCents], ["Laboratoire", receipt.labPaidCents], ["Électricité et soins", receipt.electricityPaidCents],
-      ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{typeof value === "number" ? formatKqCash(value) : "Non renseigné"}</dd></div>)}</dl></details></div>
+      <details className={styles.saleDetails}><summary>Ouvrir le reçu</summary><KqSaleReceiptAmounts receipt={receipt} /></details></div>
     <span className={styles.saleAmount}><strong>{receipt.netPayoutCents === undefined ? "—" : formatKqCash(receipt.netPayoutCents)}</strong><small>{receipt.netPayoutCents === undefined ? "indisponible" : "versés"}</small></span>
   </li>;
 }

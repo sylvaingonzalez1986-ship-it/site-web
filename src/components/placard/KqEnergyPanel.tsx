@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check, Leaf, RefreshCw, Zap } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
+import { getKqCultureBudget, KQ_LAB_ANALYSIS_CENTS, KQ_VAT_PERCENT } from "@/lib/kanab-quest-business";
+import { KQ_INDOOR_WHOLESALE_CENTS_PER_GRAM } from "@/lib/kanab-quest-customer-demand";
+import { KQ_MARKET_ROUTES } from "@/lib/kanab-quest-market";
 import { formatKqCash, getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_ENERGY_MODES, quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { getKqEffectiveTentProfiles, getKqProductionUnits } from "@/lib/kanab-quest-production";
@@ -19,9 +22,10 @@ import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 const kwh = (wattHours: number) => `${(wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh`;
 const finiteNonNegative = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
 
-export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, lockedWarehouse, runId, zoneId, campaign = false, campaignMembers, productionUnits = 1, disabled = false }: {
+export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, lockedWarehouse, runId, zoneId, campaign = false, campaignMembers, campaignZoneCount, productionUnits = 1, disabled = false }: {
   campaign?: boolean;
   campaignMembers?: KqCampaignMember[];
+  campaignZoneCount?: number;
   lockedWarehouse?: KqWarehouseRunSnapshot;
   productionUnits?: number;
   disabled?: boolean;
@@ -75,6 +79,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const campaignEnergy = campaignTotals?.energyCostCents ?? quote?.totalCents;
   const campaignConsumables = campaignTotals?.consumablesCostCents ?? warehouse?.consumablesCostCents;
   const campaignArea = campaignTotals?.areaM2 ?? warehouse?.activeAreaM2;
+  const campaignLots = campaignMembers?.length ?? snapshot?.campaignZoneCount ?? campaignZoneCount;
   const campaignBudget = finiteNonNegative(campaignEnergy) && finiteNonNegative(campaignConsumables)
     && finiteNonNegative(campaignArea) && Number.isFinite(campaignEnergy + campaignConsumables)
     ? { energy: campaignEnergy, consumables: campaignConsumables, area: campaignArea, total: campaignEnergy + campaignConsumables } : null;
@@ -155,20 +160,36 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   if (campaign) {
     const invoices = (snapshot?.supplierInvoices ?? []).filter(item => campaignMembers?.some(member => member.runId === item.runId));
     const visibleBudget = recordedCampaign || !loading && !error ? campaignBudget : null;
+    const reserve = visibleBudget && !recordedCampaign && campaignLots && Number.isSafeInteger(campaignLots) && campaignLots > 0
+      ? getKqCultureBudget(visibleBudget.energy, visibleBudget.consumables, campaignLots) : null;
     const chargeStatus = visibleBudget ? "ready" : loading ? "loading" : error ? "error" : "incomplete";
     return <section className={styles.panel} aria-label="Charges de la campagne" data-campaign-energy data-campaign-charge-status={chargeStatus} aria-busy={loading}>
       <header><Zap aria-hidden="true" /><div><h3>{recordedCampaign ? "Charges enregistrées" : "Charges prévues"}</h3></div><button type="button" aria-label="Actualiser les charges" disabled={disabled} onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
-      {visibleBudget ? <><div className={styles.budgetHeader}><span>{visibleBudget.area.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} m² engagés</span><strong data-campaign-budget>{formatKqCash(visibleBudget.total)}<small>Électricité et consommables</small></strong></div>
+      {visibleBudget ? <><div className={styles.budgetHeader}><span>{visibleBudget.area.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} m² {recordedCampaign ? "cultivés" : "à semer"}</span><strong data-campaign-budget>{formatKqCash(visibleBudget.total)}<small>Énergie et fournitures</small></strong></div>
         <dl className={styles.campaignBilling} data-campaign-billing>
-          <div><dt>Électricité</dt><dd>{formatKqCash(visibleBudget.energy)}</dd><dd className={styles.billingTiming}>Facturée à la récolte.</dd></div>
-          <div><dt>Consommables</dt><dd>{formatKqCash(visibleBudget.consumables)}</dd><dd className={styles.billingTiming}>À régler sous 5 jours réels après le lancement.</dd></div>
+          <div><dt>Électricité</dt><dd>{formatKqCash(visibleBudget.energy)}</dd><dd className={styles.billingTiming}>Facturée à la récolte ou si la culture meurt.</dd></div>
+          <div><dt>Fournitures</dt><dd>{formatKqCash(visibleBudget.consumables)}</dd><dd className={styles.billingTiming}>Engagées au semis sans débit immédiat. À régler sous 5 jours réels.</dd></div>
+          {reserve && <>
+            <div><dt>{reserve.lotCount === 1 ? "Analyse si cette zone va à la récolte" : "Analyses si ces zones vont à la récolte"}</dt><dd data-campaign-analysis-cents={reserve.analysisCents}>{formatKqCash(reserve.analysisCents)}</dd><dd className={styles.billingTiming}>{formatKqCash(KQ_LAB_ANALYSIS_CENTS)} par lot terminé, à régler sous 5 jours réels.</dd></div>
+            <div><dt>Réserve complète</dt><dd data-campaign-reserve-cents={reserve.reserveCents}>{formatKqCash(reserve.reserveCents)}</dd></div>
+            {finiteNonNegative(snapshot?.cashCents) && <div><dt>Disponible après réserve complète</dt><dd data-campaign-cash-after-reserve-cents={snapshot.cashCents - reserve.reserveCents}>{formatKqCash(snapshot.cashCents - reserve.reserveCents)}</dd></div>}
+          </>}
         </dl>
+        {reserve && <details><summary>Quel poids vendre pour couvrir cette réserve ?</summary>
+          <p>Scénarios au tarif de base, après TVA, hors soins et bonus. La qualité sera connue après récolte et évaluation du lot.</p>
+          <ul>{[
+            { name: "Fleur au tarif commercial dès 6,5/10", price: KQ_INDOOR_WHOLESALE_CENTS_PER_GRAM },
+            { name: "Reprise en biomasse", price: KQ_MARKET_ROUTES.find(route => route.code === "biomass")!.basePriceCentsPerProductGram },
+          ].map(({ name, price }) => <li key={name}>{name} · {formatKqCash(price)}/g TTC · environ {((reserve.reserveCents / price) * (1 + KQ_VAT_PERCENT / 100)).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g à vendre au grossiste.</li>)}</ul>
+        </details>}
         <details><summary>Répartition des charges</summary><KqAllocationBar label="Répartition des charges" items={[
           { label: "Électricité", value: visibleBudget.energy, displayValue: formatKqCash(visibleBudget.energy), tone: "gold" },
-          { label: "Consommables", value: visibleBudget.consumables, displayValue: formatKqCash(visibleBudget.consumables), tone: "teal" },
+          { label: "Fournitures", value: visibleBudget.consumables, displayValue: formatKqCash(visibleBudget.consumables), tone: "teal" },
+          ...(reserve ? [{ label: "Analyses éventuelles", value: reserve.analysisCents, displayValue: formatKqCash(reserve.analysisCents), tone: "gold" as const }] : []),
         ]} /><KqHelpGrid art="help-care" items={[
           { label: "Cartes et soins", value: "1 consommation", detail: "Pour toutes les cultures réunies.", art: "collection" },
-          { label: "Soins choisis en culture", value: "Hors charges", detail: "Payés séparément." },
+          { label: "Soins facultatifs", value: "Hors réserve", detail: "Payés séparément." },
+          { label: "À la vente", value: `TVA de jeu de ${KQ_VAT_PERCENT} % du HT`, detail: "Les frais éventuels dépendent du canal choisi." },
         ]} /></details>
       </> : loading ? <p role="status">{snapshot ? "Actualisation des charges…" : "Calcul des charges…"}</p>
         : !error ? <p className={styles.error} role="alert">Les charges sont incomplètes. Actualise pour vérifier les montants et la surface avant de commencer.</p> : null}

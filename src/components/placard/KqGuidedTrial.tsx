@@ -138,7 +138,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
      <button type="button" data-trial-check="deck" onClick={()=>dispatch({type:'check',value:'deck'})}>{s.checked.includes('deck')?'✓ Deck prêt':'Préparer ce deck d’essai'}</button>
     </>:null}
     {s.chapter===2?<>
-     <Image className={`${styles.scene} ${styles.panorama}`} src="/placard/card-shop-sylvain-v1.webp" alt="Loïc présente les packs de cartes au comptoir de la Boutique" width={1536} height={512} sizes="(max-width: 760px) 100vw, 1020px"/>
+     <Image className={`${styles.scene} ${styles.panorama}`} src="/placard/card-shop-buddies-v2.webp" alt="Loïc présente un pack Buddies devant les cartes de la collection." width={1536} height={512} sizes="(max-width: 760px) 100vw, 1020px"/>
      <section className={styles.panel}><h3>{getKqEquipmentDefinition('LED-300')!.name}</h3><p>{getKqEquipmentDefinition('LED-300')!.benefit}</p><p>{getKqEquipmentDefinition('LED-300')!.tradeoff} La qualité maximale n’est pas garantie : tes réussites en culture comptent aussi.</p><button type="button" disabled={s.bought} onClick={()=>dispatch({type:'buy'})}>{s.bought?'✓ LED achetée':`Acheter pour ${euro(getKqEquipmentDefinition('LED-300')!.priceCents)} fictifs`}</button></section>
      <details><summary>Packs, collection, niveaux et prérequis</summary><KqHelpDashboard>
       <KqHelpGrid art="collection" items={[
@@ -158,9 +158,9 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
       <KqHelpGrid art="help-accounts" items={[
        {label:'Électricité',value:'Selon matériel et mode',detail:'Factures prélevables progressivement sur les ventes.',art:'help-workshop'},
        {label:'Site',value:'1 000 € à créer',detail:'Puis 100 € / 30 jours de jeu (5 jours réels), premier mois inclus.',art:'help-social'},
-       {label:'Analyse',value:'45 € / session terminée',detail:'Même prix pour plusieurs tentes. À payer sous 5 jours réels.',art:'help-quality'},
+       {label:'Analyse',value:'45 € / lot terminé',detail:'À payer sous 5 jours réels après la récolte.',art:'help-quality'},
        {label:'Temps',value:'1 jour de jeu = 4 h réelles',detail:'Continue hors connexion.',art:'help-time'},
-       {label:'TVA de jeu',value:'20 % incluse',detail:'Mise de côté sur les ventes.'},
+       {label:'TVA de jeu',value:'20 % du HT',detail:'Mise de côté sur les ventes.'},
        {label:'Entrepôt',value:'2 → 3 → 4 tentes',detail:'Second entrepôt : jusqu’à 8 tentes.',art:'warehouse'},
       ]}/>
       <details><summary>Installation et protections</summary><KqHelpGrid art="help-workshop" items={[

@@ -30,6 +30,8 @@ async function postHarvestChecks({ db, sql, scalar, equal, reject, player, layou
     const beforeMonthly = await scalar("SELECT jsonb_build_object('runs',(SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM kq_runs r),'layouts',(SELECT jsonb_agg(to_jsonb(l) ORDER BY user_id) FROM kq_warehouse_layouts l),'energy',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_energy_invoices i))");
     await db.exec(await sql("20261018000600_kq_postharvest_prices_and_climate_billing.sql"));
     equal(await scalar("SELECT jsonb_build_object('runs',(SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM kq_runs r),'layouts',(SELECT jsonb_agg(to_jsonb(l) ORDER BY user_id) FROM kq_warehouse_layouts l),'energy',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_energy_invoices i))"), beforeMonthly, "monthly migration preserves every owned layout, run and historical invoice exactly");
+    await db.exec(await sql("20261121002200_kq_warehouse_retail_prices.sql"));
+    equal(await scalar("SELECT jsonb_build_object('runs',(SELECT jsonb_agg(to_jsonb(r) ORDER BY id) FROM kq_runs r),'layouts',(SELECT jsonb_agg(to_jsonb(l) ORDER BY user_id) FROM kq_warehouse_layouts l),'energy',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_energy_invoices i))"), beforeMonthly, "retail pricing preserves owned layouts, runs and historical invoices exactly");
     await db.exec("BEGIN");
 
     for (const code of ["SIM-STORAGE-CLIMATE-01", "SIM-STORAGE-CLIMATE-02", "SIM-STORAGE-CLIMATE-03"]) {

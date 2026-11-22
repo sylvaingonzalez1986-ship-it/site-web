@@ -23,6 +23,13 @@ beforeAll(async () => {
     CREATE TABLE public.kq_rank_profiles(user_id UUID,season_code TEXT,wins INTEGER,losses INTEGER);
     CREATE TABLE public.lottery_reward_claims(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID,
       reward_snapshot JSONB,status TEXT,gift_weight_grams INTEGER,gift_label TEXT);
+    CREATE TABLE public.orders(id TEXT PRIMARY KEY, status TEXT, payment_provider TEXT, payment_state TEXT,
+      customer_id UUID, customer_name TEXT, customer_email TEXT, shipping_address TEXT, shipping_city TEXT,
+      shipping_postal_code TEXT, shipping_country TEXT, shipping_phone TEXT, delivery_method TEXT, delivery_fee NUMERIC,
+      items_count INTEGER, total_ht NUMERIC, total_vat NUMERIC, total_amount NUMERIC, viva_order_code TEXT, viva_transaction_id TEXT);
+    CREATE TABLE public.order_items(order_id TEXT REFERENCES public.orders(id), product_id TEXT, name TEXT, unit_price NUMERIC,
+      unit_price_ht NUMERIC, quantity INTEGER, line_total NUMERIC, line_total_ht NUMERIC, line_vat_amount NUMERIC,
+      vat_rate NUMERIC, product_category TEXT, unit_weight_grams NUMERIC);
     CREATE TABLE public.kq_arena_leaderboard_snapshots(season_code TEXT PRIMARY KEY,formula_version TEXT,leaderboard JSONB);
     CREATE FUNCTION public.rpc_kq_get_arena_leaderboard(p_season_code TEXT,p_force_refresh BOOLEAN DEFAULT false)
     RETURNS public.kq_arena_leaderboard_snapshots LANGUAGE sql AS $$
@@ -46,9 +53,10 @@ beforeAll(async () => {
     INSERT INTO public.arena_customer_reward_seasons(season_code,status,starts_at) VALUES('LEGACY','frozen','2026-01-01');
   `);
   await db.exec(readFileSync("supabase/migrations/20261018000400_arena_reward_score_v3.sql", "utf8"));
+  await db.exec(readFileSync("supabase/migrations/20261122001200_arena_prize_season_delivery.sql", "utf8"));
 }, 30_000);
 beforeEach(async () => {
-  await db.exec(`TRUNCATE public.arena_customer_reward_grants,public.arena_customer_reward_draws,
+  await db.exec(`TRUNCATE public.arena_customer_reward_grants,public.arena_customer_reward_draws, public.orders, public.order_items,
     public.arena_customer_reward_weeks,public.arena_customer_reward_adjustments,public.lottery_reward_claims,
     public.kq_rank_profiles,public.kq_arena_leaderboard_snapshots;
     DELETE FROM public.arena_customer_reward_seasons WHERE season_code<>'LEGACY';
@@ -85,6 +93,82 @@ async function settle(plan: Plan, execute = false, season = "S1") {
   return (await db.query<{ value: Record<string, unknown> }>("SELECT public.rpc_arena_settle_customer_rewards($1,$2,$3,$4,$5,$6) AS value",
     [season, plan.topRewards, plan.surpriseCandidates, plan.candidateHash, plan.surpriseGrams, execute])).rows[0].value;
 }
+
+async function configurePrizes(season = "S1", from = "2026-11-14 23:00:00Z", until = "2026-12-31 23:00:00Z", carry: string | null = null) {
+  return (await db.query<{ value: { configured: boolean } }>("SELECT public.rpc_arena_configure_prize_season_v3($1,$2,$3,$4) AS value", [season, from, until, carry])).rows[0].value;
+}
+
+describe("versioned physical prizes and free delivery", () => {
+  it.each([
+    { name: "three tied including an ineligible player", rows: [standing(1, 1), { ...standing(2, 1), tastedFlowerCount: 0 }, standing(3, 1)], grants: [20, 19], report: 61 },
+    { name: "one eligible player", rows: [standing(1)], grants: [27], report: 73 },
+    { name: "no eligible player", rows: [{ ...standing(1), tastedFlowerCount: 0 }], grants: [], report: 100 },
+  ])("closes and replays a 100 g season with $name", async ({ rows, grants, report }) => {
+    expect(await configurePrizes()).toMatchObject({ configured: true });
+    expect(await configurePrizes()).toMatchObject({ configured: false });
+    await setStandings(rows, true, 0);
+    const plan = tsPlan(rows, 100);
+    const expected = { poolGrams: 100, baseGrams: 100, carryInGrams: 0, reportGrams: report,
+      rankingGrams: 100 - report, surpriseGrams: 0 };
+    expect(await settle(plan)).toMatchObject({ ...expected, ready: true, executed: false });
+    expect(await settle(plan, true)).toMatchObject({ ...expected, executed: true, granted: grants.length });
+    expect(await settle(plan, true)).toMatchObject({ ...expected, executed: false, alreadySettled: true });
+    expect((await db.query<{ gift_weight_grams: number; claim_id: string | null }>(
+      "SELECT gift_weight_grams, claim_id FROM public.arena_customer_reward_grants ORDER BY user_id",
+    )).rows).toEqual(grants.map(grams => ({ gift_weight_grams: grams, claim_id: null })));
+
+    await db.exec(`INSERT INTO public.kq_seasons VALUES('S2'),('DUPLICATE') ON CONFLICT DO NOTHING;
+      INSERT INTO public.arena_customer_reward_seasons(season_code,status,starts_at) VALUES
+      ('S2','planned','2026-12-31 23:00:00Z'),('DUPLICATE','planned','2026-12-31 23:00:00Z');`);
+    expect(await configurePrizes("S2", "2026-12-31 23:00:00Z", "2027-03-31 22:00:00Z", "S1")).toMatchObject({ configured: true });
+    const funding = await db.query("SELECT public.kq_arena_customer_prize_funding('S2') AS value");
+    expect(funding.rows[0]).toMatchObject({ value: { baseGrams: 100, carryInGrams: report, carryPending: false } });
+    await expect(configurePrizes("DUPLICATE", "2026-12-31 23:00:00Z", "2027-03-31 22:00:00Z", "S1")).rejects.toThrow();
+  });
+
+  it("authorizes only the winner and recovers the same fulfilment receipt after a lost response", async () => {
+    await configurePrizes();
+    const rows = [standing(1)];
+    await setStandings(rows, true, 0);
+    await settle(tsPlan(rows, 100), true);
+    const grants = await db.query<{ id: string }>("SELECT id FROM public.arena_customer_reward_grants");
+    const grant = grants.rows[0].id;
+    const address = { name: "Camille Martin", address: "2 rue des Fleurs", postalCode: "29200", city: "Brest", email: "test@example.invalid", phone: "+33612345678" };
+    const order = async (userId: string, shipping: Partial<typeof address>) => (await db.query<{ value: { orderId: string } }>(
+      "SELECT public.rpc_arena_order_customer_prize($1,$2,$3) AS value", [grant, userId, shipping],
+    )).rows[0].value;
+    await expect(order(player(2), address)).rejects.toThrow("arena_customer_prize_not_found");
+    await expect(order(player(1), { ...address, postalCode: "97400" })).rejects.toThrow("arena_customer_prize_shipping_invalid");
+    const receipt = await order(player(1), address);
+    expect(receipt).toMatchObject({ grams: 27, totalCents: 0 });
+    expect(await order(player(1), {})).toEqual(receipt);
+    const orders = await db.query("SELECT id, payment_provider, payment_state, total_amount::FLOAT, delivery_fee::FLOAT FROM public.orders");
+    expect(orders.rows).toEqual([{ id: receipt.orderId, payment_provider: "arena_reward", payment_state: "not_configured", total_amount: 0, delivery_fee: 0 }]);
+    expect((await db.query("SELECT line_total::FLOAT, unit_weight_grams::FLOAT FROM public.order_items")).rows).toEqual([{ line_total: 0, unit_weight_grams: 27 }]);
+    const persistent = await db.query("SELECT fulfillment_order_id FROM public.arena_customer_reward_grants WHERE id=$1", [grant]);
+    expect(persistent.rows[0]).toEqual({ fulfillment_order_id: receipt.orderId });
+    await expect(db.exec("UPDATE public.orders SET payment_state='paid'")).rejects.toThrow("arena_reward_order_has_no_payment");
+  });
+
+  it("preserves the rule version of frozen seasons", async () => {
+    await expect(configurePrizes("LEGACY")).rejects.toThrow("arena_customer_prize_season_not_configurable");
+    const legacy = await db.query("SELECT formula_version, prize_settlement FROM public.arena_customer_reward_seasons WHERE season_code='LEGACY'");
+    expect(legacy.rows).toEqual([{ formula_version: "arena-customer-v1", prize_settlement: null }]);
+  });
+
+  it("settles the frozen snapshot after a new live score would change the winner", async () => {
+    await configurePrizes();
+    const frozen = [standing(1), { ...standing(2), tastedFlowerCount: 0 }];
+    await setStandings(frozen, false, 0);
+    await db.query("SELECT public.rpc_arena_freeze_customer_reward_snapshot('S1',$1,true)", [frozen]);
+    await db.query(`UPDATE public.kq_arena_leaderboard_snapshots SET leaderboard =
+      '[{"userId":"${player(2)}","rank":1,"score":999.9,"rating":1000,"wins":3,"losses":0,"tastedFlowerCount":2}]' WHERE season_code='S1'`);
+    const live = [{ ...standing(2, 1), score: 999.9, wins: 3, tastedFlowerCount: 2 }];
+    await expect(settle(tsPlan(live, 100), true)).rejects.toThrow("arena_customer_reward_allocation_changed");
+    expect(await settle(tsPlan(frozen, 100), true)).toMatchObject({ rankingGrams: 27, reportGrams: 73, granted: 1 });
+    expect((await db.query("SELECT user_id FROM public.arena_customer_reward_grants")).rows).toEqual([{ user_id: player(1) }]);
+  });
+});
 
 describe("v3 reward scoring, frozen evidence and exact allocations", () => {
   it("matches the public projection for decimals, tiny pools and tie groups", async () => {

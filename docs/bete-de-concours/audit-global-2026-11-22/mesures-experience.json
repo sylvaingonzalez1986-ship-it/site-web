@@ -1,0 +1,484 @@
+{
+  "contexte": "Dépôt de travail local du 22 novembre 2026, Chromium 157 headless sous Windows. Fixtures isolées. Les délais ne mesurent pas le temps humain.",
+  "entrepot": [
+    {
+      "fenetre": [
+        320,
+        710
+      ],
+      "interactions": "toucher émulé",
+      "approbationDuDevis": {
+        "coutCentimes": 78674,
+        "tresorerieApresCentimes": 21326,
+        "boutonDevis": [
+          37,
+          569.2,
+          246,
+          71.2
+        ],
+        "refus": "Installation refusée. Vérifie le devis puis réessaie.",
+        "messageDessinApresEnregistrement": "Plan enregistré"
+      },
+      "planDeDepart": {
+        "bouton": [
+          33,
+          926.9,
+          176.6,
+          42
+        ],
+        "panneau": [
+          8,
+          254.7,
+          304,
+          443.3
+        ],
+        "clicAccessible": false
+      },
+      "apresInstallation": {
+        "panneau": [
+          8,
+          253.6,
+          304,
+          444.4
+        ],
+        "defilementPx": 1462,
+        "positionPilotage": [
+          27,
+          -1014.6,
+          133,
+          51
+        ],
+        "boutonPreparerPresent": false,
+        "boutonPreparerApresPilotageSeul": false,
+        "boutonPreparerApresPriorites": true,
+        "focusApresConfirmation": "BODY",
+        "focusApresPrioritesEtMeMontrer": "Préparer mes cultures"
+      },
+      "aide": {
+        "focusOuverture": "Fermer le carnet",
+        "focusApresEchap": "Carnet",
+        "focusApresFermetureGuide": "Ouvrir le menu du quartier"
+      },
+      "delaisActionAutomatiseeMs": {
+        "entrepot": 169,
+        "amenager": 99,
+        "proposerPlan": 279,
+        "devis": 68,
+        "sauvegarde": 100
+      },
+      "erreurs": []
+    },
+    {
+      "fenetre": [
+        1440,
+        900
+      ],
+      "interactions": "clavier et souris",
+      "approbationDuDevis": {
+        "coutCentimes": 78674,
+        "tresorerieApresCentimes": 21326,
+        "boutonDevis": [
+          63,
+          675.6,
+          280.1,
+          49.6
+        ],
+        "refus": "Installation refusée. Vérifie le devis puis réessaie.",
+        "messageDessinApresEnregistrement": "Plan enregistré"
+      },
+      "planDeDepart": {
+        "bouton": [
+          1194.4,
+          563.7,
+          176.6,
+          40
+        ],
+        "panneau": [
+          14,
+          209.3,
+          1412,
+          678.7
+        ],
+        "clicAccessible": true
+      },
+      "apresInstallation": {
+        "panneau": [
+          14,
+          161.7,
+          1412,
+          698.3
+        ],
+        "defilementPx": 741,
+        "positionPilotage": [
+          48,
+          -450.9,
+          185,
+          51
+        ],
+        "boutonPreparerPresent": false,
+        "boutonPreparerApresPilotageSeul": false,
+        "boutonPreparerApresPriorites": true,
+        "focusApresConfirmation": "BODY",
+        "focusApresPrioritesEtMeMontrer": "Préparer mes cultures"
+      },
+      "aide": {
+        "focusOuverture": "Fermer le carnet",
+        "focusApresEchap": "Carnet",
+        "focusApresFermetureGuide": "Ouvrir le menu du quartier"
+      },
+      "delaisActionAutomatiseeMs": {
+        "entrepot": 85,
+        "amenager": 153,
+        "proposerPlan": 442,
+        "devis": 84,
+        "sauvegarde": 204
+      },
+      "erreurs": []
+    }
+  ],
+  "avatar": [
+    {
+      "fenetre": [
+        320,
+        710
+      ],
+      "focusRenduAuDeclencheurApresEchap": true,
+      "surnomApresInterruption": "",
+      "focusApresCreation": "BODY",
+      "requetesCreation": 1,
+      "villageApresRechargement": true,
+      "enregistrementVersInvitationMs": 637,
+      "enregistrementVersVillagePretMs": 7976,
+      "appelsDistants": 0,
+      "erreurs": []
+    },
+    {
+      "fenetre": [
+        1440,
+        900
+      ],
+      "focusRenduAuDeclencheurApresEchap": true,
+      "surnomApresInterruption": "",
+      "focusApresCreation": "BODY",
+      "requetesCreation": 1,
+      "villageApresRechargement": true,
+      "enregistrementVersInvitationMs": 611,
+      "enregistrementVersVillagePretMs": 3105,
+      "appelsDistants": 0,
+      "erreurs": []
+    }
+  ],
+  "invitationCourte": {
+    "before": {
+      "scrollTop": 0,
+      "box": [
+        146,
+        206
+      ],
+      "actions": {
+        "close": {
+          "y": 13,
+          "visibleHeight": 44,
+          "hit": true
+        },
+        "start": {
+          "y": 146.546875,
+          "visibleHeight": 0,
+          "hit": false
+        },
+        "off": {
+          "y": 146.546875,
+          "visibleHeight": 0,
+          "hit": false
+        }
+      }
+    },
+    "swipe": {
+      "scrollTop": 60,
+      "box": [
+        146,
+        206
+      ],
+      "actions": {
+        "close": {
+          "y": -47,
+          "visibleHeight": 0,
+          "hit": false
+        },
+        "start": {
+          "y": 86.546875,
+          "visibleHeight": 44,
+          "hit": true
+        },
+        "off": {
+          "y": 86.546875,
+          "visibleHeight": 44,
+          "hit": true
+        }
+      }
+    },
+    "tabs": [
+      [
+        "Aller à l’activité",
+        null
+      ],
+      [
+        "",
+        "close"
+      ],
+      [
+        "Commencer avec Loïc",
+        "start"
+      ],
+      [
+        "Jouer librement",
+        "off"
+      ]
+    ],
+    "afterTabs": {
+      "scrollTop": 60,
+      "box": [
+        146,
+        206
+      ],
+      "actions": {
+        "close": {
+          "y": -47,
+          "visibleHeight": 0,
+          "hit": false
+        },
+        "start": {
+          "y": 86.546875,
+          "visibleHeight": 44,
+          "hit": true
+        },
+        "off": {
+          "y": 86.546875,
+          "visibleHeight": 44,
+          "hit": true
+        }
+      }
+    }
+  },
+  "rendu": {
+    "contexte": "Scène localement au repos, animation active, un échantillon de 2,4 s par largeur sortant à la prochaine image ; logiciels et charges en parallèle. rAF et effacements canvas espacés de plus de 2 ms, échantillons trop petits pour interpréter les queues SwiftShader.",
+    "villageIntel": [
+      {
+        "viewport": [
+          320,
+          710
+        ],
+        "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "raf": {
+          "samples": 145,
+          "spanMs": 2399.9,
+          "medianMs": 16.7,
+          "p95Ms": 16.8,
+          "maxMs": 16.8
+        },
+        "webglClearSeparatedBy2ms": {
+          "samples": 73,
+          "spanMs": 2401.1,
+          "medianMs": 33.3,
+          "p95Ms": 34.4,
+          "maxMs": 35.6
+        }
+      },
+      {
+        "viewport": [
+          1440,
+          900
+        ],
+        "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "raf": {
+          "samples": 145,
+          "spanMs": 2399.9,
+          "medianMs": 16.7,
+          "p95Ms": 16.8,
+          "maxMs": 17
+        },
+        "webglClearSeparatedBy2ms": {
+          "samples": 145,
+          "spanMs": 2425.2,
+          "medianMs": 16.7,
+          "p95Ms": 17.9,
+          "maxMs": 39.3
+        }
+      }
+    ],
+    "villageSwiftShader": [
+      {
+        "fenetre": [
+          320,
+          540
+        ],
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "raf": {
+          "n": 7,
+          "spanMs": 2766.5,
+          "medianMs": 466.7,
+          "p95Ms": 483.4,
+          "maxMs": 483.4
+        },
+        "webglClears": {
+          "n": 7,
+          "spanMs": 2766.2,
+          "medianMs": 482.5,
+          "p95Ms": 531.5,
+          "maxMs": 531.5
+        }
+      },
+      {
+        "fenetre": [
+          390,
+          844
+        ],
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "raf": {
+          "n": 7,
+          "spanMs": 2416.8,
+          "medianMs": 483.3,
+          "p95Ms": 516.5,
+          "maxMs": 516.5
+        },
+        "webglClears": {
+          "n": 7,
+          "spanMs": 2407.8,
+          "medianMs": 479.8,
+          "p95Ms": 507.3,
+          "maxMs": 507.3
+        }
+      },
+      {
+        "fenetre": [
+          1440,
+          900
+        ],
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "raf": {
+          "n": 6,
+          "spanMs": 3017,
+          "medianMs": 700,
+          "p95Ms": 816.6,
+          "maxMs": 816.6
+        },
+        "webglClears": {
+          "n": 6,
+          "spanMs": 2991.3,
+          "medianMs": 695.7,
+          "p95Ms": 818,
+          "maxMs": 818
+        }
+      }
+    ],
+    "studioIntel": {
+      "renderer": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "frames": [
+        {
+          "label": "1360 × 900 · marche",
+          "count": 149,
+          "meanFps": 60,
+          "medianMs": 16.7,
+          "p95Ms": 17.4,
+          "slowestMs": 19.1,
+          "heapMiB": 31.6
+        },
+        {
+          "label": "390 × 844 · marche",
+          "count": 145,
+          "meanFps": 60,
+          "medianMs": 16.7,
+          "p95Ms": 17.2,
+          "slowestMs": 18.5,
+          "heapMiB": 31
+        }
+      ]
+    }
+  },
+  "recettes": {
+    "village": {
+      "cas": 21,
+      "erreurs": 0,
+      "appelsDistants": 0
+    },
+    "avatar": {
+      "reussie": true,
+      "erreurs": 0
+    },
+    "loic": [
+      {
+        "fenetre": [
+          1440,
+          900
+        ],
+        "pointsDeControle": 17,
+        "gestesVersBrouillon": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "etapesValidees": [
+          "quarter",
+          "warehouse",
+          "install",
+          "prepare",
+          "supplies",
+          "launch",
+          "next"
+        ]
+      },
+      {
+        "fenetre": [
+          320,
+          710
+        ],
+        "pointsDeControle": 17,
+        "gestesVersBrouillon": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "etapesValidees": [
+          "quarter",
+          "warehouse",
+          "install",
+          "prepare",
+          "supplies",
+          "launch",
+          "next"
+        ]
+      }
+    ],
+    "packDeBienvenue": {
+      "fenetre": [
+        320,
+        710
+      ],
+      "pointsDeControle": 16,
+      "reclamations": 1,
+      "ouvertures": 1,
+      "raretés": [
+        "common",
+        "common",
+        "common"
+      ],
+      "points": 0,
+      "achats": 0,
+      "etapePassee": [
+        "next"
+      ]
+    },
+    "navigation": {
+      "groupesAvantArret": [
+        "world-3d-only-entry",
+        "world-3d-without-webgl",
+        "world-3d-all-navigation",
+        "world-3d-building-destinations",
+        "world-3d-profile-and-resume"
+      ],
+      "arret": "TimeoutError: Waiting for selector `[data-farm-guide]` failed"
+    }
+  }
+}

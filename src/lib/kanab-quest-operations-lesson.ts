@@ -451,6 +451,9 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       c.ownVolumes[stock.route] = (c.ownVolumes[stock.route] ?? 0) + offer.equivalentSold / 10;
       c.revision++; state.events.push('sell');
       const receipt: KqCommerceReceipt = { action: 'sell', stockId: stock.id, flowerId: LOT_ID, channel: offer.channel, units: offer.units, payoutCents: offer.payoutCents, ...payment, cashAfterCents: c.cashCents, reputationGain: offer.reputationDelta, satisfaction: offer.satisfaction, clientsBefore: offer.clientsBefore, clientsAfter: offer.clientsAfter, shopPartnersBefore: offer.shopPartnersBefore, shopPartnersAfter: offer.shopPartnersAfter, shopPartnersDelta: offer.shopPartnersAfter - offer.shopPartnersBefore, shopPricePercent: offer.shopPricePercent, remainingUnits: stock.remainingUnits };
+      receipt.lotName = stock.name;
+      receipt.remainingInvoiceCents = state.trial.electricity + c.business!.lab.outstandingCents
+        + (c.business!.suppliers?.outstandingCents ?? 0) - payment.supplierPaidCents;
       c.receipts.push(receipt); payload = receipt;
     } else throw new Error('Cette opération ne fait pas partie de cet essai. La gestion se trouve au Marché et les factures au Bureau.');
   } else throw new Error('Action indisponible dans cet atelier.');

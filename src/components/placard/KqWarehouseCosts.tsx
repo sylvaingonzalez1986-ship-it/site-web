@@ -1,14 +1,15 @@
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import { KQ_LAB_ANALYSIS_CENTS, type KqCultureBudget } from "@/lib/kanab-quest-business";
 import {
   KQ_WAREHOUSE_SIMULATION,
   type KqWarehouseQuote,
-  type KqWarehouseSummary,
 } from "@/lib/kanab-quest-warehouse";
+import { getKqWarehousePlanPayment } from "@/lib/kanab-quest-warehouse-plan-review";
 import { WarehouseBars, WarehouseStackedBar } from "./KqWarehouseCharts";
 import styles from "./KqWarehouseCosts.module.css";
 
 type Props = {
-  summary: KqWarehouseSummary;
+  budget?: KqCultureBudget;
   quote: KqWarehouseQuote | null;
   dirty: boolean;
   migrationCreditCents: number;
@@ -16,10 +17,9 @@ type Props = {
 
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
 
-export function KqWarehouseCosts({ summary, quote, dirty, migrationCreditCents }: Props) {
+export function KqWarehouseCosts({ budget, quote, dirty, migrationCreditCents }: Props) {
   const availableCredit = Math.max(0, migrationCreditCents);
-  const creditUsed = Math.min(availableCredit, quote?.totalCostCents ?? 0);
-  const payable = Math.max(0, (quote?.totalCostCents ?? 0) - creditUsed);
+  const { creditUsedCents, payableCents } = getKqWarehousePlanPayment(quote, 0, availableCredit);
 
   return (
     <div className={styles.grid}>
@@ -28,33 +28,42 @@ export function KqWarehouseCosts({ summary, quote, dirty, migrationCreditCents }
           <h4>Charges par cycle</h4>
           <span>{dirty ? "Aperçu du plan modifié" : "Estimation du plan actuel"}</span>
         </div>
-        <div className={styles.total} data-warehouse-operating-cost-cents={summary.operatingCostCents}>
-          <strong>{formatKqCash(summary.operatingCostCents)}</strong>
-          <span>pour {number(summary.activeAreaM2)} m² de culture actifs</span>
-        </div>
-        {summary.activeAreaM2 === 0 && <p className={styles.note}>Active une zone de culture pour estimer ses charges.</p>}
-        <WarehouseStackedBar
-          label="Répartition des charges par cycle"
+        {budget && budget.lotCount > 0 ? <>
+          <div className={styles.total} data-warehouse-operating-cost-cents={budget.committedCents}>
+            <strong>{formatKqCash(budget.reserveCents)}</strong>
+            <span>à prévoir pour {budget.lotCount} {budget.lotCount === 1 ? "zone de culture" : "zones de culture"}</span>
+          </div>
+          <WarehouseStackedBar
+          label="Répartition de la réserve par cycle"
           segments={[
             {
               id: "energy",
               label: "Électricité",
-              value: summary.energyCostCents,
-              displayValue: formatKqCash(summary.energyCostCents),
-              note: `${number(summary.energyKwh)} kWh · règlement en fin de culture`,
+              value: budget.energyCostCents,
+              displayValue: formatKqCash(budget.energyCostCents),
+              note: "Facturée à la récolte ou si la culture meurt",
               tone: "amber",
             },
             {
               id: "supplies",
               label: "Fournitures",
-              value: summary.consumablesCostCents,
-              displayValue: formatKqCash(summary.consumablesCostCents),
-              note: "Facturées à 30 jours de jeu, soit 5 jours réels",
+              value: budget.consumablesCostCents,
+              displayValue: formatKqCash(budget.consumablesCostCents),
+              note: "Engagées au semis · règlement sous 5 jours réels",
               tone: "green",
+            },
+            {
+              id: "analysis",
+              label: "Analyses éventuelles",
+              value: budget.analysisCents,
+              displayValue: formatKqCash(budget.analysisCents),
+              note: `${formatKqCash(KQ_LAB_ANALYSIS_CENTS)} par lot terminé · règlement sous 5 jours réels`,
+              tone: "blue",
             },
           ]}
         />
-        <p className={styles.note}>Électricité : {formatKqCash(KQ_WAREHOUSE_SIMULATION.electricityCentsPerKwh)}/kWh. Montants et durées de simulation.</p>
+          <p className={styles.note}>Énergie et fournitures · {formatKqCash(budget.committedCents)}. Soins facultatifs et retenues à la vente en supplément.</p>
+        </> : <p className={styles.note}>Active et équipe une zone disponible pour calculer ses charges.</p>}
       </section>
 
       <section className={styles.panel} aria-label={dirty ? "Coût des modifications" : "Tarifs d’aménagement"}>
@@ -95,8 +104,8 @@ export function KqWarehouseCosts({ summary, quote, dirty, migrationCreditCents }
             />
             <dl className={styles.invoice}>
               <div><dt>Total des modifications</dt><dd>{formatKqCash(quote.totalCostCents)}</dd></div>
-              {creditUsed > 0 && <div><dt>Crédit de reprise utilisé</dt><dd>− {formatKqCash(creditUsed)}</dd></div>}
-              <div className={styles.payable} data-warehouse-draft-payable-cents={payable}><dt>À payer</dt><dd>{formatKqCash(payable)}</dd></div>
+              {!!creditUsedCents && <div><dt>Crédit de reprise utilisé</dt><dd>− {formatKqCash(creditUsedCents)}</dd></div>}
+              {payableCents !== null && <div className={styles.payable} data-warehouse-draft-payable-cents={payableCents}><dt>À payer maintenant</dt><dd>{formatKqCash(payableCents)}</dd></div>}
             </dl>
           </>
         ) : (

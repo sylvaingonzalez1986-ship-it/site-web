@@ -116,6 +116,10 @@ function juryHall(a: Art) {
   a.bevelBox(2.53, .022, 3.65, .009, 0, .027, 2.35, "velvet");
   for (const x of [-1.13, 1.13]) a.box(.048, .01, 3.65, x, .043, 2.35, "gold");
 
+  addJudge(a.pivot("daytime-resident", [0, 0, 0]));
+}
+
+function addJudge(a: Art) {
   // The judge in the Quartier's illustration wears a bow tie and reads a
   // clipboard into a ribbed microphone, behind the samples under the lanterns.
   const x = -.65, z = -2.65;

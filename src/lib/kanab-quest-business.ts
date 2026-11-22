@@ -8,8 +8,17 @@ export const KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS = 30;
 export const KQ_SUPPLIER_PAYMENT_TERM_MS = KQ_SUPPLIER_PAYMENT_TERM_GAME_DAYS * KQ_GAME_DAY_MS;
 export const KQ_SHOP_CREATION_CENTS = 100_000;
 export const KQ_SHOP_MONTHLY_CENTS = 10_000;
-/** One analysis for the session's shared harvest, regardless of tent count. */
+/** One analysis for each completed lot. Historical shared-tent runs produced one lot. */
 export const KQ_LAB_ANALYSIS_CENTS = 4_500;
+
+/** Reserve for a complete cycle. Optional care and sale charges are separate. */
+export function getKqCultureBudget(energyCostCents: number, consumablesCostCents: number, lotCount: number) {
+  const committedCents = energyCostCents + consumablesCostCents;
+  const analysisCents = lotCount * KQ_LAB_ANALYSIS_CENTS;
+  return { lotCount, energyCostCents, consumablesCostCents, committedCents, analysisCents, reserveCents: committedCents + analysisCents };
+}
+
+export type KqCultureBudget = ReturnType<typeof getKqCultureBudget>;
 /** Historical culture modes stay readable; new cultures use the normal theft risk. */
 export type KqDomiciliation = "home" | "external" | "retired";
 export const KQ_VAT_PERCENT = 20;

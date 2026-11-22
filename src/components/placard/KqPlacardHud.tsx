@@ -238,7 +238,7 @@ export function KqPlacardHud({
     storage: "/contest/mascot/arena-scene-placard-v1.png",
     market: "/placard/market-workshop-sylvain-v2.webp",
     arena: "/contest/mascot/arena-scene-classement-v2.png",
-    shop: "/placard/card-shop-sylvain-v1.webp",
+    shop: "/placard/card-shop-buddies-v2.webp",
     workshop: "/placard/market-workshop-sylvain-v2.webp",
   };
   const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }, { id: "energy", label: "Charges" }] as const;

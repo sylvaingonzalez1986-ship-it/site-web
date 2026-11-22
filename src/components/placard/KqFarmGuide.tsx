@@ -245,6 +245,10 @@ export function KqFarmGuide({ ownerId, initialOpen = false, destination, onNavig
     const root = activeDialog() ?? anchor.current?.closest("[data-placard-view]");
     const target = root && findTarget(current, root);
     if (target) {
+      if (current.id === "prepare" && target.matches('[data-warehouse-zone-prepare], [data-sylvain-target="prepare-open"]')) {
+        target.click();
+        return;
+      }
       target.scrollIntoView({ block: "center", inline: "nearest" });
       if (target.matches(focusableSelector)) target.focus({ preventScroll: true });
       return;
@@ -267,10 +271,11 @@ export function KqFarmGuide({ ownerId, initialOpen = false, destination, onNavig
     <div ref={anchor} className={styles.anchor} data-farm-guide-anchor data-sylvain-guide
       data-mode={state.mode} data-lesson={current?.id} hidden={!shown}>
       {shown && <section className={styles.guide} aria-labelledby={titleId} data-invitation={invite || undefined}>
+        {invite && closeButton}
         <div className={styles.dialogue}>
           <Image src={`/placard/tutorial/sylvain-${portrait(current)}-v1.webp`} alt="" width={76} height={76} unoptimized className={styles.portrait} />
           <div className={styles.copy}>
-            {closeButton}
+            {!invite && closeButton}
             {!invite && <span className={styles.speaker}>Loïc{replay ? " · Relecture" : stage ? ` · Étape ${stage} sur ${initialLessons.length}` : ""}</span>}
             <h2 id={titleId}>{title}</h2>
             {invite ? <p>{SYLVAIN_INVITATION.body}</p> : active && instruction ? <p className={hint ? styles.hint : undefined}>{instruction}</p> : null}

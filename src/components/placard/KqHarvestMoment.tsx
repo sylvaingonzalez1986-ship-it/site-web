@@ -40,12 +40,14 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
     alt: lost ? "" : "Loïc présente la récolte",
   };
   const reserveConfirmed = alive && result.confirmedFlowers === result.rows.length;
+  const soloAdjustments = !campaign ? result.rows[0].adjustments : [];
+  const firstAdjustment = soloAdjustments[0];
   const description = lost
-    ? "Prends le temps de lire le bilan avant la prochaine culture."
+    ? "Regarde où la culture s’est arrêtée avant de préparer le prochain semis."
     : reserveConfirmed
       ? `${result.confirmedFlowers === 1 ? "Ta Fleur d’Arène est enregistrée" : `${result.confirmedFlowers} Fleurs d’Arène sont enregistrées`}. Choisis les contenants de chaque variété et prépare le trim à l’Atelier. L’affinage dure 6 heures réelles dès la récolte ; affinage et trim doivent être terminés avant le jury.`
       : alive
-        ? "Le fruit de tes choix. Retrouve le détail de chaque récolte ci-dessous."
+        ? "Retrouve le détail de la récolte dans le bilan."
         : "Les valeurs de cette récolte ne sont pas encore disponibles.";
   return <section
     className={styles.moment}
@@ -68,7 +70,7 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
       </p> : null}
       {!lost ? <dl className={styles.metrics}>
         <div>
-          <dt><Scale aria-hidden="true" />{campaign ? "Récolte totale" : "Récolte"}</dt>
+          <dt><Scale aria-hidden="true" />{campaign ? "Total récolté" : "Récolté"}</dt>
           <dd>{result.totalGrams === null ? "—" : <>{number(result.totalGrams)} <small>g</small></>}</dd>
           {result.totalGrams === null ? <span>Quantité indisponible</span> : null}
         </div>
@@ -78,10 +80,16 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
           {!quality ? <span>Qualité indisponible</span> : null}
         </div>
       </dl> : null}
-      <p>{description}</p>
+      {alive && result.potentialGrams !== null && <p data-harvest-material-potential><strong>Potentiel matériel</strong> · {number(result.potentialGrams)} g</p>}
+      {firstAdjustment && <p data-harvest-first-adjustment><strong>{firstAdjustment.label}</strong> · {firstAdjustment.grams > 0 ? "+" : ""}{number(firstAdjustment.grams)} g</p>}
+      <p><strong>Loïc</strong> · {description}</p>
       {alive && onContinue ? <button type="button" className={styles.continue} onClick={onContinue}>
         Ranger ma récolte <ArrowRight aria-hidden="true" />
       </button> : null}
+      {soloAdjustments.length > 1 && <details className={styles.yieldDetails}>
+        <summary>Détail du rendement</summary>
+        <ul>{soloAdjustments.map(adjustment => <li key={adjustment.label}>{adjustment.label} · {adjustment.grams > 0 ? "+" : ""}{number(adjustment.grams)} g</li>)}</ul>
+      </details>}
     </div>
   </section>;
 }

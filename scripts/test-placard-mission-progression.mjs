@@ -191,6 +191,23 @@ try {
   await db.query("INSERT INTO lottery_card_instances(user_id,card_definition_id,pioneer_grant_id) SELECT $1,id,gen_random_uuid() FROM lottery_card_definitions WHERE code='HH2026-020'", [fresh]);
   equal((await mission(fresh, "collection-five")).progress, 1, "Collection excludes duplicate copies, support cards and nonplayable catalogues");
 
+  // Isolate three real claims from all other one-off rewards in this fixture.
+  // The two weak lots and balances are the A beginner's paired simulation.
+  const comparison = JSON.parse(await readFile(new URL("../docs/bete-de-concours/plan-80-recette/comparaison-ab.json", import.meta.url), "utf8"));
+  const second = comparison.runs.find(run => run.scenario === "depart-loic" && run.profile === "debutant"
+    && run.serie === "A" && run.mode === "information").cycles[1];
+  await db.exec("BEGIN");
+  await db.query("INSERT INTO kq_equipment_wallets(user_id,cash_cents) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET cash_cents=EXCLUDED.cash_cents",
+    [fresh, second.cashCents]);
+  for (const code of ["first-harvest", "trim-one", "jury-one"]) {
+    equal((await mission(fresh, code)).claimable, true, code + " is earned on the fixture");
+    equal((await claim(fresh, code)).reward.amountCents, 5000, code + " pays through the real RPC");
+    equal((await claim(fresh, code)).replayed, true, code + " uses one receipt after interruption");
+  }
+  const recovered = await scalar("SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1", [fresh]);
+  equal([recovered, recovered - second.outstandingCents, second.remainingHours], [37889, 13731, 10.5], "After two weak lots, all debts and the next 128.60 reserve are financeable");
+  await db.exec("ROLLBACK");
+
   const cash = await claim(fresh, "first-harvest");
   equal(cash.xpAwarded, 50, "Claiming a first objective awards exactly fifty permanent XP");
   equal((await claim(fresh, "trim-one")).xpAwarded, 50, "A second sector contributes to the same progression");

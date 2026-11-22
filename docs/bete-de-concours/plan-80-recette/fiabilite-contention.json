@@ -1,0 +1,33 @@
+{
+  "plan": {
+    "pids": [
+      59612,
+      2460
+    ],
+    "before": 1,
+    "after": 2,
+    "walletCents": 10000000,
+    "rejectedWith": "warehouse_revision_changed"
+  },
+  "lastInput": {
+    "pids": [
+      59612,
+      2460
+    ],
+    "dosesBefore": 1,
+    "dosesAfter": 0,
+    "packCents": 1188,
+    "walletCents": 9998812,
+    "rejectedWith": "kq_preparation_reserved"
+  },
+  "sale": {
+    "pids": [
+      59612,
+      2460
+    ],
+    "unitsBefore": 2311,
+    "unitsAfter": 0,
+    "netCents": 27435,
+    "rejectedWith": "commerce_offer_changed"
+  }
+}

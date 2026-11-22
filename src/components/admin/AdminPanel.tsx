@@ -1719,7 +1719,7 @@ export function AdminPanel() {
                         {orderStatusLabels[order.status]}
                       </span>
                       <span className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
-                        {order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : {({ pending: "En attente", paid: "Payé", failed: "Échec", not_configured: "Validation manuelle" })[order.paymentState]}
+                        {order.paymentProvider === "arena_reward" ? "Remise de lot · 0 €" : `${order.paymentProvider === "swiss_bitcoin_pay" ? "Bitcoin (Lightning)" : "Paiement"} : ${({ pending: "En attente", paid: "Payé", failed: "Échec", not_configured: "Validation manuelle" })[order.paymentState]}`}
                       </span>
                     </div>
                     {order.trackingNumber && (
@@ -1766,7 +1766,7 @@ export function AdminPanel() {
                     >
                       {updatingOrderId === order.id ? "..." : "Mettre à jour"}
                     </button>
-                    {order.paymentProvider !== "swiss_bitcoin_pay" && !order.swissBitcoinCardStartedAt && <button
+                    {order.paymentProvider === "viva" && !order.swissBitcoinCardStartedAt && <button
                       type="button"
                       onClick={() => markOrderAsPaid(order.id)}
                       disabled={updatingOrderId === order.id || order.paymentState === "paid"}

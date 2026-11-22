@@ -10,10 +10,10 @@
     "verification": "Paramètres explicites transmis à spawn_agent ; trois agents, sans délégation récursive. L’outil ne renvoie pas l’identifiant du modèle exécuté et le modèle du coordinateur n’est pas exposé : aucune attestation indépendante du routage Astra/Sol. Aucun chiffre de tokens inventé."
   },
   "observe": {
-    "entry": "/arene/placard?world=3d → Observer (près du montant du jeu)",
+    "entry": "Dans /arene/placard?world=3d, Observer propose le sonneur de biniou, le pêcheur près du pont et Loïc.",
     "animals": "Loup au croisement du marché, renard entre courrier et jury, belette devant la Maison des cartes. Promenade, observation, flairage, pauses ; pattes liées à la vitesse, trajectoires validées contre le vrai terrain et les bâtiments.",
     "musician": "Sonneur au bord du chemin entre courrier et jury : biniou kozh à un bourdon, souffle, compression de poche, doigts et appuis. Animation visuelle sans audio ajouté.",
-    "fishing": "Bateau au nord, d’abord en approche. Descente du casier après 10 s, pêche à 15 s, prise visible vers 31,5 s, rangement puis départ à 40 s. Tour complet de 376 s avec quatre postes ; toutes les étapes visibles via Observer → Le bateau de pêche.",
+    "fishing": "Le bateau navigue au nord de l’île. Descente du casier après 10 s, pêche à 15 s, prise visible vers 31,5 s, rangement puis départ à 40 s. Le tour complet dure 376 s et passe par quatre postes.",
     "camera": "Observer suit le sujet ; glisser reprend le contrôle, zoom et rotation conservés, Recentrer revient au village. Commandes sur deux colonnes en paysage court."
   },
   "quality": "Mer opaque sans passe de reflet ni texture, houle CPU/GLSL partagée avec bateau et bouées, rivage/écume dérivés du contour existant. 24 traits de sillage maximum (12 en qualité basse). 21 meshes pour les animaux, 14 pour le sonneur, 12 appels maximum pour le milieu marin. Détails fins et cadence réduits sous 600 px de hauteur ou largeur ; articulations hors champ suspendues. Ombres statiques mises en cache, horloge demand corrigée et télémétrie bornée à 4 Hz.",

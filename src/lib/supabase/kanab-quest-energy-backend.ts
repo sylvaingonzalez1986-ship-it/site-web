@@ -7,7 +7,7 @@ import { getKqEffectiveTentProfiles } from "../kanab-quest-production";
 import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
 import { quoteKqWarehouseEnergy } from "../kanab-quest-warehouse-run";
 import { getKqPlayerActiveRun, type KqRunSelection } from "./kanab-quest-backend";
-import { getKqCampaignParticipants, getKqCampaignWarehouse } from "../kanab-quest-campaign";
+import { getKqCampaignParticipants, getKqCampaignTotals, getKqCampaignWarehouse } from "../kanab-quest-campaign";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function getKqEnergySummary(userId: string): Promise<KqEnergySummary> {
@@ -26,7 +26,10 @@ export async function getKqEnergySnapshot(userId: string, selection: KqRunSelect
   ]);
   const campaignMembers = selected?.state.campaign?.members ?? (selection.campaign && storedWarehouse
     ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment, storedWarehouse.productionReservedZoneId, 1) : null);
-  const warehouse = campaignMembers ? getKqCampaignWarehouse(campaignMembers) : storedWarehouse;
+  const aggregate = campaignMembers ? getKqCampaignWarehouse(campaignMembers) : storedWarehouse;
+  const totals = campaignMembers ? getKqCampaignTotals(campaignMembers) : null;
+  const warehouse = aggregate && totals ? { ...aggregate, energyCostCents: totals.energyCostCents, consumablesCostCents: totals.consumablesCostCents,
+    operatingCostCents: totals.energyCostCents + totals.consumablesCostCents } : aggregate;
   const supplierInvoices = rawSummary.supplierInvoices ?? (rawSummary.supplierInvoice ? [rawSummary.supplierInvoice] : []);
   const memberRunIds = selected?.state.campaign?.members.map(member => member.runId);
   const summary = { ...rawSummary, supplierInvoices: memberRunIds ? supplierInvoices.filter(invoice => memberRunIds.includes(invoice.runId)) : supplierInvoices,
@@ -35,6 +38,7 @@ export async function getKqEnergySnapshot(userId: string, selection: KqRunSelect
   if (warehouse) {
     const quote = quoteKqWarehouseEnergy(warehouse);
     return { ...summary, dogCare: null, warehouse, cashCents: shop.cashCents, chanvrierStrength: shop.strength,
+      ...(campaignMembers ? { campaignZoneCount: campaignMembers.length } : {}),
       quotes: { eco: quote, balanced: quote, intensive: quote }, maintenanceDueNext: [],
       cultureEquipmentCodes: [], cultureOperationalCodes: [], cultureWear: {} };
   }

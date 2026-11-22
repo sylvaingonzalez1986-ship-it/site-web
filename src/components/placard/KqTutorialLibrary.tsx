@@ -24,9 +24,27 @@ const statusLabels = {
 function LibraryContents({ mode, guide, onAction, onSelect }: LibraryProps) {
   const navigate = useDialogNavigation();
   const active = mode === "active";
-  const completed = guide.lessons.filter(item => item.status === "completed").length;
+  const firstSteps = guide.lessons.filter(({ lesson }) => lesson.kind === "initial");
+  const additionalLessons = guide.lessons.filter(({ lesson }) => lesson.kind === "context");
+  const completed = firstSteps.filter(item => item.status === "completed").length;
+  const register = (lessons: typeof guide.lessons) => <ol className={styles.register}>
+    {lessons.map(({ lesson, status }) => <li key={lesson.id} data-sylvain-lesson={lesson.id} data-status={status}>
+      <details>
+        <summary>
+          <strong>{lesson.title}</strong>
+          <span className={styles.lessonStatus}>{statusLabels[status]}</span>
+        </summary>
+        <p>{lesson.body}</p>
+        <p><strong>{lesson.action}</strong></p>
+        {guide.current?.id !== lesson.id && active && status === "available"
+          && <button type="button" className={styles.primary} data-sylvain-select={lesson.id}
+            onClick={() => navigate(() => onSelect(lesson.id))}>Suivre cette étape</button>}
+      </details>
+    </li>)}
+  </ol>;
   return <>
-    <KqProgressMeter label="Étapes validées" value={completed} max={guide.lessons.length} />
+    <KqProgressMeter label="Gestes de départ validés" value={completed} max={firstSteps.length} />
+    {guide.initialComplete && <p data-sylvain-initial-complete>Tu as terminé le parcours de départ.</p>}
     {guide.current && active ? <div className={styles.current}>
       <h3>{guide.current.title}</h3>
       <p>{guide.current.body}</p>
@@ -48,21 +66,14 @@ function LibraryContents({ mode, guide, onAction, onSelect }: LibraryProps) {
       <summary data-sylvain-control="help">Fonctionnement du guide</summary>
       <p>« Me montrer » repère le geste à faire dans le jeu. Tu peux passer une étape, explorer à ton rythme et relire une fiche ici. Tes étapes sont conservées dans ce navigateur pour ce compte.</p>
     </details>
-    <ol className={styles.register}>
-      {guide.lessons.map(({ lesson, status }) => <li key={lesson.id} data-sylvain-lesson={lesson.id} data-status={status}>
-        <details>
-          <summary>
-            <strong>{lesson.title}</strong>
-            <span className={styles.lessonStatus}>{statusLabels[status]}</span>
-          </summary>
-          <p>{lesson.body}</p>
-          <p><strong>{lesson.action}</strong></p>
-          {guide.current?.id !== lesson.id && active && status === "available"
-            && <button type="button" className={styles.primary} data-sylvain-select={lesson.id}
-              onClick={() => navigate(() => onSelect(lesson.id))}>Suivre cette étape</button>}
-        </details>
-      </li>)}
-    </ol>
+    <section className={styles.librarySection} data-sylvain-library-first-steps>
+      <h3>Parcours de départ</h3>
+      {register(firstSteps)}
+    </section>
+    <section className={styles.librarySection} data-sylvain-library-additional>
+      <h3>Fiches facultatives</h3>
+      {register(additionalLessons)}
+    </section>
   </>;
 }
 

@@ -10,6 +10,7 @@ import styles from "./KqEquipmentUpgrade.module.css";
 import summaryStyles from "./KqMachineSummaryActions.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqWorkshopTiers } from "./KqWorkshopTiers";
+import { KqWorkshopInvestmentComparison } from "./KqWorkshopInvestmentComparison";
 
 export function KqEquipmentUpgrade({ code, level, cashCents, career, productionUnits = 1, tentNumber = 1, equipmentScopeVersion = 2, disabled, onUpdated, onBusyChange, workshopOnly = false, maintenanceDue = false, compact = false }: {
   career?: ChanvrierCareerSnapshot;
@@ -85,6 +86,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
       <div><dt>Capacité / lot</dt><dd>{machine.capacityGrams.toLocaleString("fr-FR")}{nextMachine ? <><span> → </span><strong>{nextMachine.capacityGrams.toLocaleString("fr-FR")}</strong></> : null} g</dd></div>
       <div><dt>Précision</dt><dd>{machine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}{nextMachine ? <><span> → </span><strong>{nextMachine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}</strong></> : null} %</dd></div>
     </dl> : gains.length ? <ul className={summaryStyles.gains}>{gains.map((gain) => <li key={gain}>{gain}</li>)}</ul> : null}
+    {machine && nextMachine && cost !== null && <KqWorkshopInvestmentComparison code={code} level={level} targetLevel={level + 1} priceCents={cost} />}
     <div className={summaryStyles.actionArea}>
       <button className={summaryStyles.action} data-machine-upgrade type="button" disabled={!next || pending || tierBusy || maintenanceDue || disabled || !affordable || !careerGate?.allowed || level < completedLevel} onClick={() => void upgrade()}>
         {pending ? <LoaderCircle className={summaryStyles.spinner} size={16} aria-hidden="true" /> : next ? <ArrowUp size={16} aria-hidden="true" /> : <Check size={16} aria-hidden="true" />}
@@ -109,6 +111,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
       <p><ArrowUp size={14} aria-hidden="true" /> Au niveau {level + 1}</p>
       {nextMachine ? <p className={styles.evolution}>{nextMachine.improvement}{nextMachine.configuration !== machine?.configuration ? ` · ${nextMachine.name}` : ""}</p> : null}
       <ul>{gains.map((gain) => <li key={gain}>{gain}</li>)}</ul>
+      {machine && nextMachine && cost !== null && <KqWorkshopInvestmentComparison code={code} level={level} targetLevel={level + 1} priceCents={cost} />}
       {!careerGate?.allowed ? <p className={styles.gate}>{careerGate?.reason ?? "Chargement de la progression du Chanvrier…"}</p> : null}
       <button type="button" disabled={pending || tierBusy || maintenanceDue || disabled || !affordable || !careerGate?.allowed || level < completedLevel} onClick={() => void upgrade()}>
         {pending ? <LoaderCircle size={18} aria-hidden="true" /> : <ArrowUp size={18} aria-hidden="true" />}

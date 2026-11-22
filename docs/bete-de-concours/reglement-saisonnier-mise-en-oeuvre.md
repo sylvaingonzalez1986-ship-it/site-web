@@ -1,8 +1,45 @@
 # Règlement saisonnier : décisions et concordance avant publication
 
-9 novembre 2026 — note interne accompagnant le [règlement QRT-REG-1](projet-reglement-saisonnier.md). Ne pas afficher cette note dans le parcours joueur.
+Note interne accompagnant le [projet QRT-REG-2](projet-reglement-saisonnier.md). Ne pas afficher cette note dans le parcours joueur.
 
-## Ce qui est confirmé
+## Décisions du 22 novembre 2026
+
+Le Quartier est en bêta fermée avec deux testeurs. Le Carnet de dégustation est ouvert et aucun règlement saisonnier n’a été communiqué. Pour la bêta et les saisons configurées sous la version `arena-customer-prizes-v3`, le rang général fixe les parts. Les ex æquo inéligibles occupent leur place dans le groupe. Les places vacantes, les parts inéligibles, les fractions et la Fleur Surprise sans candidat sont reportées et s’ajoutent aux 100 g de la saison suivante. Les contributions issues des ventes concernent les fleurs Concours dont la gamme et le poids sont documentés. Le dé collectif est conservé.
+
+Le gagnant peut passer une commande de remise contenant le seul lot, pour 0 € livraison et traitement compris. La commande est accessible depuis « Mes lots » après clôture. Elle figure dans les commandes de la boutique avec la référence de remise, son poids et un total de 0 €. Un rejeu retrouve la commande existante. Les bons panier attribués sous un autre règlement gardent leur mode de remise. Les parts déjà attribuées restent réservées à leurs gagnants pendant la remise.
+
+Le don à la ferme ne procure ni crédit de jeu ni points. Une commande admissible peut créditer la caisse fictive selon le montant des produits. Le solde lui-même ne donne aucun point de Gestion. Une fleur distincte achetée et évaluée dans la saison donne 100 points de dégustation après validation de l’avis.
+
+### Configuration de la bêta
+
+Après application des migrations de la version, relever le code de saison réellement utilisé par le classement et le pot. Vérifier le lien avec l’édition du Carnet, les dates et l’absence de clôture ou de lot déjà attribué. Appliquer ensuite cette configuration sous le code relevé, sur l’environnement d’essai d’abord. Les migrations seules n’activent aucune saison.
+
+```sql
+SELECT r.season_code, k.status AS classement, r.status AS pot,
+       r.starts_at, r.ends_at, r.contest_season_id, r.formula_version
+FROM public.arena_customer_reward_seasons r JOIN public.kq_seasons k USING (season_code)
+ORDER BY r.starts_at DESC;
+
+SELECT public.rpc_arena_configure_prize_season_v3(
+  '<code bêta relevé>',
+  TIMESTAMPTZ '2026-11-14 23:00:00+00',
+  TIMESTAMPTZ '2026-12-31 23:00:00+00',
+  NULL
+);
+```
+
+Pour le premier trimestre, utiliser le code de sa saison préparée et les dates du tableau ci-dessous, avec le code bêta en quatrième argument. Le lien accepte un seul successeur dont le début égale la fin de la saison précédente. Le report est crédité à partir du reçu de clôture. Les lignes inconnues apparaissent dans l’aperçu d’administration. Vérifier leurs justificatifs avant clôture, et rapprocher le reçu d’attribution du détail du Pot de la Canopée.
+
+La recette SQL compare pour une dotation de 100 g les cas de trois ex æquo dont un inéligible (20 + 19 g, report de 61 g), d’un premier seul éligible (27 g, report de 73 g) et d’aucun éligible (report de 100 g). Elle couvre le rejeu de la clôture, le passage du report vers une seule saison, le refus d’un tiers et la commande à 0 € retrouvée. À 320 px au clavier, la commande de remise reprend après une réponse perdue et présente la même référence au rechargement. Les notifications, relances et remises effectives restent du ressort de l’organisateur. [Attribution et remise](../../src/lib/supabase/arena-reward-score-v3-sql.test.ts) · [Assiette des ventes](../../scripts/test-arena-prize-funding.mjs) · [Recette navigateur](../../output/arena-prize-delivery/rapport.json)
+
+Les essais couvrent les reports constatés au moment de la clôture. Le report ultérieur d’un lot non réclamé à l’issue des 45 jours demande la preuve des notifications et des relances, puis le rapprochement avec les commandes déjà créées. Cette procédure après attribution reste à vérifier avant la première échéance réelle.
+
+## Historique des décisions du 9 novembre 2026
+
+Cette archive décrit le projet QRT-REG-1 avant arbitrage. Pour la bêta, les modalités applicables figurent en tête de cette note et dans QRT-REG-2.
+
+
+### Ce qui est confirmé
 
 L'utilisateur demande un classement doté où les achats permettent des avis validés, donnant des points de dégustation intégrés au classement des gains. Ne pas supprimer ou neutraliser cette contribution et ne pas remplacer le classement par un tirage général.
 
@@ -18,7 +55,7 @@ La dotation de base est de 100 g au total par saison, augmentée selon les vente
 
 Les dates ne sont pas une preuve que les saisons existent déjà dans la base. Aucun identifiant technique de saison n'a été inventé ou écrit en production.
 
-## Choix de rédaction complétés
+### Choix de rédaction complétés
 
 Ces modalités concrétisent la demande « go complete ». Elles ne sont pas présentées comme des faits déjà configurés :
 
@@ -33,7 +70,7 @@ Ces modalités concrétisent la demande « go complete ». Elles ne sont pas pr�
 - Notification dans les sept jours après résultats ; trente jours pour répondre, relances à quinze et trente jours, dernière grâce de quinze jours ; expédition dans les trente jours après dossier complet. Sans commande ni frais imposés.
 - Durées de données définies par finalité : opérationnel saison jusqu'à trois mois après remise, preuves restreintes cinq ans, journaux six mois, copies d'identité exceptionnelles trente jours après vérification, classement public un an, avis publics cinq ans maximum. Ce sont des durées de politique proposées dans la rédaction, pas des durées légales universelles ni une preuve de purge existante.
 
-## Nouvelle demande sur la réclamation du lot
+### Nouvelle demande sur la réclamation du lot
 
 Après la rédaction, l'utilisateur demande que le gagnant passe une commande sans minimum pour réclamer son lot, en faisant valoir la gratuité du jeu. Cette demande remplace l'hypothèse selon laquelle la remise sans commande serait une préférence approuvée par l'utilisateur. Elle est enregistrée comme une modalité souhaitée, pas comme une conformité établie.
 
@@ -45,7 +82,7 @@ Proposition de clause alternative : « Le gagnant réclame son lot depuis son es
 
 La commande payante obligatoire n'est pas intégrée comme règle validée à l'article 10. Le règlement de travail conserve la remise gratuite recommandée, avec un avertissement de statut en tête ; le choix de remise reste à résoudre avant publication. Aucun code de commande ou paiement n'a été modifié.
 
-## Mention factuelle non résolue
+### Mention factuelle non résolue
 
 **Médiateur de la consommation : aucun organisme conventionné identifié.** Le dépôt et les pages publiques consultées ne donnent pas de nom. Une recherche ciblée dans la messagerie connectée n'a pas établi de convention ; aucune pièce d'identité ou pièce jointe sans rapport n'a été ouverte. L'utilisateur a répondu sur les dates mais n'a pas encore renseigné le médiateur. Cette absence de preuve ne permet pas de conclure qu'aucun contrat n'existe.
 
@@ -53,7 +90,7 @@ Il faut obtenir le nom exact, l'adresse postale et le site du médiateur compét
 
 L'article 13 signale honnêtement cette information manquante. Ne pas qualifier le texte de « prêt à publier » avant de la renseigner et de vérifier la concordance opérationnelle.
 
-## Écarts du code à traiter
+### Écarts du code à traiter
 
 | Sujet | État observé | Travail avant application du nouveau texte |
 | --- | --- | --- |
@@ -72,7 +109,7 @@ L'article 13 signale honnêtement cette information manquante. Ne pas qualifier 
 
 Le changement de calendrier ne doit pas effacer les engagements éventuels de la période antérieure au 15 novembre. L'état déployé et les engagements aux participants restent à examiner avant migration ; aucune inspection des données privées de production n'a été réalisée ici.
 
-## Vérifications de mise en œuvre à prévoir
+### Vérifications de mise en œuvre à prévoir
 
 Dotation : 0 vente donne 100 g ; recalcul et rejeu n'ajoutent pas le socle ; Regular/cadeaux inconnus ne deviennent pas Concours ; retours partiels ; validation hebdomadaire ; report sans double crédit. Dates : bornes exclusives, dimanche d'ouverture, semaines partielles, changement d'heure et photographie réelle de clôture.
 
@@ -84,7 +121,7 @@ Les contrôles métier seront exécutés lors des changements applicatifs. Les m
 
 Vérifications réalisées sur la rédaction : relecture indépendante du barème et de la cohérence du texte ; publication provisoire explicitement bornée à J+7 ; convention d'arrondi commune aux entiers, dixièmes et centièmes. Somme des parts égale à 100 %, allocation d'exemple égale à 100 g, exemples Duels 20/5 et Gestion 90 vérifiés. Les six bornes UTC de la table donnent bien minuit en Europe/Paris, y compris les changements d'heure, et le 15 novembre 2026 est un dimanche. Les trois documents, leurs liens locaux, l'absence de champs génériques à compléter et le JSON de reprise ont été contrôlés. La mention non résolue du médiateur est volontairement conservée.
 
-## Sources complémentaires du texte
+### Sources complémentaires du texte
 
 Le maintien du lien achat → avis → classement doté appelle une analyse de l'opération promotionnelle et de sa loyauté. Une obligation d'achat n'est pas interdite en toute circonstance ; elle n'autorise pas pour autant un accès au hasard vendu sous couvert de produit. Le règlement ne certifie pas cette qualification : [DGCCRF, fiche loteries du 11 mars 2026](https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/loterie-des-pratiques-commerciales-reglementees).
 

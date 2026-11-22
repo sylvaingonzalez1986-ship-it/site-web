@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdir} from 'node:fs/promises';
+import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 
 const roomActivities = {
@@ -24,6 +24,105 @@ const link = query => `a[href="${path}?${query}"]`;
 const fromRoom = (id, query) => `${query}&fromRoom=${id}`;
 const liveCanvas = 'canvas[data-live="true"]';
 export const bankReturnLink = `${activityPanel} ${link(roomQuery('bank'))}`;
+
+export async function auditNightBuildingRooms({page, visit, results, output, exportPosters}) {
+  const {default: sharp} = await import('sharp');
+  const screenshotDir = resolve(output, 'building-rooms-night');
+  await mkdir(screenshotDir, {recursive: true});
+  const nightRoomQuery = id => `${roomQuery(id)}&world=3d&villageDay=1&villageMinute=1380`;
+  const openNightRoom = id => page.evaluate(query => {
+    history.replaceState(history.state, '', `/arene/placard?scenario=starter&${query}`);
+    dispatchEvent(new PopStateEvent('popstate'));
+  }, nightRoomQuery(id));
+  const phase = minute => page.evaluate(minute => {
+    const url = new URL(location.href);
+    url.searchParams.set('villageMinute', minute);
+    history.replaceState(history.state, '', url);
+    dispatchEvent(new PopStateEvent('popstate'));
+  }, minute);
+  const capture = async selector => {
+    const canvas = await page.waitForSelector(selector, {visible: true});
+    const transparent = await page.addStyleTag({content: `
+      html, body { background: transparent !important; }
+      body * { visibility: hidden !important; }
+      [data-building-room] ${liveCanvas} { visibility: visible !important; }
+    `});
+    try {
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      return await canvas.screenshot({type: 'png', omitBackground: true});
+    } finally {
+      await transparent.evaluate(node => node.remove());
+      await canvas.dispose();
+    }
+  };
+  const enterService = async (id, destinations) => {
+    const [object, query] = Object.entries(destinations)[0];
+    const sign = `${roomSelector(id)} [data-building-object="${object}"]`;
+    await page.focus(sign);
+    await page.keyboard.press('Enter');
+    const url = new URLSearchParams(fromRoom(id, query));
+    await page.waitForFunction(expected => {
+      const current = new URLSearchParams(location.search);
+      return Object.entries(expected).every(([key, value]) => current.get(key) === value) && !current.has('room');
+    }, {}, Object.fromEntries(url));
+    await page.waitForSelector(activityPanel, {visible: true});
+    if (id === 'bank') await page.waitForSelector('#bank-panel-loans [data-bank-offer]', {visible: true});
+    if (id === 'office') await page.waitForSelector('[data-staff-desk]', {visible: true});
+  };
+  await page.setViewport({width: 1440, height: 1000, deviceScaleFactor: 1.5});
+  await visit('starter', nightRoomQuery('bank'));
+  for (const [id, destinations] of Object.entries(roomActivities)) {
+    await openNightRoom(id);
+    const canvas = `${roomSelector(id)} ${liveCanvas}`;
+    const absent = `${canvas}[data-residents="absent"]`;
+    const original = await page.waitForSelector(absent, {visible: true});
+    const night = await capture(absent);
+    await phase(720);
+    const day = await capture(`${canvas}[data-residents="present"]`);
+    await phase(1380);
+    const nightAfterDay = await capture(absent);
+    assert.equal(await original.evaluate(node => node.isConnected && node.dataset.residents === 'absent'), true);
+    await original.dispose();
+    const pixels = await sharp(night).ensureAlpha().raw().toBuffer({resolveWithObject: true});
+    const pixelsDay = await sharp(day).ensureAlpha().raw().toBuffer();
+    const pixelsAfterDay = await sharp(nightAfterDay).ensureAlpha().raw().toBuffer();
+    assert.equal(pixels.data[3], 0, `${id}: the poster background is transparent`);
+    assert(pixels.data.some((value, index) => index % 4 === 3 && value === 255), `${id}: the scene is rendered`);
+    assert(pixels.data.reduce((count, value, index) => count + Number(Math.abs(value - pixelsDay[index]) > 12), 0) > 500, `${id}: the rendered occupant changes`);
+    assert.equal(pixels.data.equals(pixelsAfterDay), true, `${id}: no resident or stale daytime shadow after nightfall`);
+    const webp = await sharp(night).resize({width: 920}).webp({quality: 88}).toBuffer();
+    await writeFile(resolve(screenshotDir, `${id}-night.webp`), webp);
+    if (exportPosters) await writeFile(resolve('public/placard/building-rooms', `${id}-night.webp`), webp);
+    console.log(`${id}: stable nocturnal render`);
+    await enterService(id, destinations);
+    results.push({scenario: 'isometric-building-room-night', room: id, existingCanvas: true, shadowMatchesFirstNight: true, service: Object.keys(destinations)[0]});
+  }
+  const noWebGL = await page.evaluateOnNewDocument(() => {
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (context, ...args) {
+      return ['webgl', 'webgl2', 'experimental-webgl'].includes(context) ? null : getContext.call(this, context, ...args);
+    };
+  });
+  try {
+    await page.setViewport({width: 320, height: 568, isMobile: true, hasTouch: true});
+    await visit('starter', nightRoomQuery('bank'));
+    for (const [id, destinations] of Object.entries(roomActivities)) {
+      await openNightRoom(id);
+      const poster = `${roomSelector(id)} [style*="${id}-night.webp"]`;
+      await page.waitForSelector(poster, {visible: true});
+      await page.$eval(poster, async node => {
+        const image = new Image();
+        image.src = getComputedStyle(node).backgroundImage.slice(5, -2);
+        await image.decode();
+      });
+      assert.equal(await page.$(`${roomSelector(id)} ${liveCanvas}`), null);
+      await enterService(id, destinations);
+      results.push({scenario: 'isometric-building-room-night-without-webgl', room: id, width: 320, poster: true, service: Object.keys(destinations)[0]});
+    }
+  } finally {
+    await page.removeScriptToEvaluateOnNewDocument(noWebGL.identifier);
+  }
+}
 
 export async function assertBankService(page, section) {
   await page.waitForSelector('[data-treasury-bank]', {visible: true});

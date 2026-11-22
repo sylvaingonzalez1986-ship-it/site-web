@@ -1,0 +1,11 @@
+.scenario { display: grid; gap: 6px; min-width: 0; }
+.scenario label { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
+.scenario input { width: min(100%, 8rem); box-sizing: border-box; min-height: 44px; color: #172923; background: transparent; border: 1px solid #172923; font: inherit; padding: 5px 8px; }
+.scenario input:focus-visible { outline: 3px solid #087c6c; outline-offset: 2px; }
+.scenario p { margin: 0; }
+.comparison { min-width: 0; border-top: 1px solid #17292335; }
+.comparison > summary { box-sizing: border-box; min-height: 44px; padding-block: 12px; cursor: pointer; font-weight: 700; }
+.comparison > summary:focus-visible { outline: 3px solid #087c6c; outline-offset: 2px; }
+.workshopRows { display: grid; gap: 6px; }
+.workshopRows > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.workshopRows dd { margin: 0; font-weight: 700; }

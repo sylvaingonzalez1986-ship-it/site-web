@@ -9,9 +9,11 @@ import puppeteer from 'puppeteer-core';
 
 const loicCleaning = process.argv.includes('--loic-cleaning');
 const loicWelcome = process.argv.includes('--loic-welcome');
-const loic = loicCleaning || loicWelcome || process.argv.includes('--loic');
-const root = process.cwd(), output = resolve(root, loic ? 'output/parcours-loic' : 'output/placard-journey-continuity');
-const port = Number(process.env.KQ_JOURNEY_PORT ?? (loic ? 0 : 3426));
+const loicZoneChoice = process.argv.includes('--loic-zone-choice');
+const loic = loicCleaning || loicWelcome || loicZoneChoice || process.argv.includes('--loic');
+const prizeDelivery = process.argv.includes('--arena-prize-delivery');
+const root = process.cwd(), output = resolve(root, loic ? 'output/parcours-loic' : prizeDelivery ? 'output/arena-prize-delivery' : 'output/placard-journey-continuity');
+const port = Number(process.env.KQ_JOURNEY_PORT ?? (loic || prizeDelivery ? 0 : 3426));
 let origin = `http://127.0.0.1:${port}`;
 const preview = process.argv.includes('--preview');
 const preparationOnly = process.argv.includes('--preparation-only'), storageOnly = process.argv.includes('--storage-only');
@@ -61,8 +63,11 @@ const supportReceipt=(attempt,state)=>{
  const provider=attempt.provider??'viva';
  return {id:attempt.id,state,provider,amountCents:attempt.amountCents,refundedCents:0,checkoutUrl:state==='ready'?supportCheckoutUrls[provider]:null,expiresAt:new Date(Date.now()+600000).toISOString()};
 };
-const supportCampaign={title:'Soutenir les producteurs',goalCents:50000,minCents:100,maxCents:100000,active:true,createdAt:'2026-11-11T10:00:00Z'};
-const supportSummary={campaign:supportCampaign,collectedCents:15000,contributionCount:3,feesCents:null,needsReconciliation:false,checkoutAvailable:true,providers:['viva','swiss-bitcoin-pay'],updatedAt:'2026-11-11T12:00:00Z',nextOffset:20,contributions:[{id:'one',pseudonym:'Camille',amountCents:10000,paidAt:'2026-11-11T11:00:00Z'},{id:'two',pseudonym:'Anonyme',amountCents:null,paidAt:'2026-11-11T10:00:00Z'}]};
+const supportCampaign={title:'Soutenir les producteurs',goalCents:50000,minCents:100,maxCents:100000,active:scenario!=='financial-support-closed',createdAt:'2026-11-11T10:00:00Z'};
+let supportProviders=['viva','swiss-bitcoin-pay'];
+if (!supportCampaign.active || scenario==='financial-support-no-providers') supportProviders=[];
+if (scenario==='financial-support-viva-only') supportProviders=['viva'];
+const supportSummary={campaign:supportCampaign,collectedCents:15000,contributionCount:3,feesCents:null,needsReconciliation:false,checkoutAvailable:supportProviders.length>0,providers:supportProviders,updatedAt:'2026-11-11T12:00:00Z',nextOffset:20,contributions:[{id:'one',pseudonym:'Camille',amountCents:10000,paidAt:'2026-11-11T11:00:00Z'},{id:'two',pseudonym:'Anonyme',amountCents:null,paidAt:'2026-11-11T10:00:00Z'}]};
 const supportRow={id:'11111111-1111-4111-8111-111111111111',pseudonym:'Camille',publishName:true,publishAmount:true,amountCents:1000,capturedCents:1000,refundedCents:0,feesCents:null,feeReference:null,feeUpdatedAt:null,feeUpdatedBy:null,createdAt:'2026-11-11T11:00:00Z',paidAt:'2026-11-11T11:01:00Z',provider:'viva',orderCode:'987654321012345678',transactionId:'22222222-2222-4222-8222-222222222222',sourceCode:'4321',checkoutState:'ready',reviewRequired:false,hidden:false};
 const lightningRow={...supportRow,id:'44444444-4444-4444-8444-444444444444',pseudonym:'Breton',provider:'swiss-bitcoin-pay',invoiceId:'33333333-3333-4333-8333-333333333333',providerStatus:'expired',sourceCode:'producer-support',orderCode:null,transactionId:null,amountCents:250,capturedCents:0,checkoutState:'expired',paidAt:null};
 if(scenario==='financial-support-return-legacy'||scenario==='financial-support-return-wrong'){
@@ -167,7 +172,7 @@ const request=async(input,init={})=>{
  if(path==='/api/support'){
   if(scenario==='financial-support-error')return response({error:'Cagnotte indisponible.'},503);
   if(scenario==='financial-support-malformed')return response({});
-  return response({...supportSummary,...(scenario==='financial-support-review'?{needsReconciliation:true}:{}),...(scenario==='financial-support-no-goal'?{campaign:{...supportCampaign,goalCents:null}}:{}),...(scenario==='financial-support-closed'?{checkoutAvailable:false,providers:[]}:{}),...(url.searchParams.has('offset')?{contributions:[{id:'three',pseudonym:'Breton',amountCents:5000,paidAt:'2026-11-10T10:00:00Z'}],nextOffset:null}:{})});
+  return response({...supportSummary,...(scenario==='financial-support-review'?{needsReconciliation:true}:{}),...(scenario==='financial-support-no-goal'?{campaign:{...supportCampaign,goalCents:null}}:{}),...(url.searchParams.has('offset')?{contributions:[{id:'three',pseudonym:'Breton',amountCents:5000,paidAt:'2026-11-10T10:00:00Z'}],nextOffset:null}:{})});
  }
  if(path==='/api/support/profile')return response({pseudonym:'Breton29'});
  if(path==='/api/support/checkout'){
@@ -300,7 +305,7 @@ else if(location.pathname==='/soutenir')fixtureRoot.render(<main style={{maxWidt
 else renderFixture('journey-local-fixture');
 `;
 const modules = {
-  entry: loic ? await readFile(resolve(root, 'scripts/fixtures/loic-journey.jsx'), 'utf8') : entry,
+  entry: loic || prizeDelivery ? await readFile(resolve(root, prizeDelivery ? 'scripts/fixtures/arena-prize-delivery.jsx' : 'scripts/fixtures/loic-journey.jsx'), 'utf8') : entry,
   ...(financialSupportOnly ? { 'support-audit-scene': 'export { _roots as fiberRoots } from "@react-three/fiber"; export { Vector3 } from "three";' } : {}),
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
   'next/image': `import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
@@ -318,7 +323,7 @@ const server = await createServer({ root, configFile: false, envDir: false, cach
   resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{ name: 'journey-continuity-audit', enforce: 'pre', resolveId(id) { if (/\/CookieConsentProvider(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/components/cookies/CookieConsentProvider'; if (/\/src\/context\/CartContext(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/context/CartContext'; if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets'; if (id in modules) return '\0' + id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
-    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Real API disabled'); return; } if (!['/', '/arene/placard', '/soutenir', '/soutenir/retour'].includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Démo locale du Quartier</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
+    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Real API disabled'); return; } if (!['/', '/arene', '/arene/lots', '/arene/placard', '/soutenir', '/soutenir/retour'].includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Démo locale du Quartier</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
   }], server: { host: '127.0.0.1', port, strictPort: true, hmr: false, watch: null },
 });
 const results = [], errors = [], forbiddenRequests = [];
@@ -333,10 +338,12 @@ function mockSupportRedirect(provider, contributionId) {
 let browser, page;
 await mkdir(output, { recursive: true }); await server.listen();
 origin = 'http://127.0.0.1:' + server.httpServer.address().port;
-if (loic && !preview) {
+if ((loic || prizeDelivery) && !preview) {
   try {
     browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--enable-unsafe-swiftshader'] });
-    if (loicCleaning) await (await import('./audit-loic-cleaning.mjs')).auditLoicCleaning({ origin, output, browser });
+    if (prizeDelivery) await (await import('./audit-arena-prize-delivery.mjs')).auditArenaPrizeDelivery({ origin, output, browser });
+    else if (loicCleaning) await (await import('./audit-loic-cleaning.mjs')).auditLoicCleaning({ origin, output, browser });
+    else if (loicZoneChoice) await (await import('./audit-loic-journey.mjs')).auditLoicZoneChoice({ origin, output, browser });
     else await (await import('./audit-loic-journey.mjs')).auditLoicJourney({ origin, output, browser, welcomeOnly: loicWelcome });
   } finally { await browser?.close(); await server.close(); }
 } else if (preview) {

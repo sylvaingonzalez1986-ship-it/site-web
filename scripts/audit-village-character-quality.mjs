@@ -5,6 +5,7 @@ import { cpus } from 'node:os';
 import { relative, resolve } from 'node:path';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
+import { frameVillageSubject } from './fixtures/village-audit-camera.mjs';
 
 const baseline = process.argv.includes('--baseline');
 const humanFinish = process.argv.includes('--human-finish');
@@ -713,7 +714,7 @@ try {
       await mountVillage(page, viewport);
       for (let repeat = 0; repeat < 3; repeat++) await measureVillage(page, viewport);
       if(humanFinish) {
-        await observeVillage(page,'player');
+        await frameVillageSubject(page,'player');
         await measureVillage(page,viewport,'observation-joueur');
       }
     }

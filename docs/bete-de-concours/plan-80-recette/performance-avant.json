@@ -1,0 +1,128 @@
+{
+  "label": "avant",
+  "browser": "Chrome/157.0.8103.79",
+  "fixture": "http://127.0.0.1:3663/arene/placard?view=school",
+  "webgl": false,
+  "runs": [
+    {
+      "width": 390,
+      "repeat": 1,
+      "cache": "cold",
+      "firstControlMs": 9140,
+      "shelvesMs": 2254,
+      "entriesMs": 243,
+      "articleMs": 249,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 390,
+      "repeat": 1,
+      "cache": "warm",
+      "firstControlMs": 916,
+      "shelvesMs": 583,
+      "entriesMs": 185,
+      "articleMs": 106,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 390,
+      "repeat": 2,
+      "cache": "cold",
+      "firstControlMs": 1414,
+      "shelvesMs": 1189,
+      "entriesMs": 232,
+      "articleMs": 203,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 390,
+      "repeat": 2,
+      "cache": "warm",
+      "firstControlMs": 970,
+      "shelvesMs": 731,
+      "entriesMs": 206,
+      "articleMs": 181,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 390,
+      "repeat": 3,
+      "cache": "cold",
+      "firstControlMs": 1327,
+      "shelvesMs": 725,
+      "entriesMs": 236,
+      "articleMs": 204,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 390,
+      "repeat": 3,
+      "cache": "warm",
+      "firstControlMs": 1133,
+      "shelvesMs": 731,
+      "entriesMs": 245,
+      "articleMs": 217,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 1,
+      "cache": "cold",
+      "firstControlMs": 1462,
+      "shelvesMs": 758,
+      "entriesMs": 311,
+      "articleMs": 135,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 1,
+      "cache": "warm",
+      "firstControlMs": 840,
+      "shelvesMs": 587,
+      "entriesMs": 229,
+      "articleMs": 53,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 2,
+      "cache": "cold",
+      "firstControlMs": 1328,
+      "shelvesMs": 804,
+      "entriesMs": 307,
+      "articleMs": 121,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 2,
+      "cache": "warm",
+      "firstControlMs": 743,
+      "shelvesMs": 713,
+      "entriesMs": 245,
+      "articleMs": 329,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 3,
+      "cache": "cold",
+      "firstControlMs": 1201,
+      "shelvesMs": 671,
+      "entriesMs": 201,
+      "articleMs": 66,
+      "article": "Cannabis sativa"
+    },
+    {
+      "width": 1440,
+      "repeat": 3,
+      "cache": "warm",
+      "firstControlMs": 623,
+      "shelvesMs": 566,
+      "entriesMs": 203,
+      "articleMs": 51,
+      "article": "Cannabis sativa"
+    }
+  ]
+}

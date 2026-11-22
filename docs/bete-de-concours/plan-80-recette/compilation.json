@@ -1,0 +1,42 @@
+{
+  "commande": "next build --webpack --experimental-build-mode compile",
+  "next": "16.4.6",
+  "codeSortie": 0,
+  "entreesAppRouter": 295,
+  "bundlesVerifies": {
+    "/arene/placard/page": "app/arene/placard/page.js",
+    "/arene/lots/page": "app/arene/lots/page.js",
+    "/api/arena/placard/warehouse/preparations/route": "app/api/arena/placard/warehouse/preparations/route.js",
+    "/api/arena/placard/test-target/route": "app/api/arena/placard/test-target/route.js",
+    "/api/arena/rewards/delivery/route": "app/api/arena/rewards/delivery/route.js"
+  },
+  "journal": "output/next-build-plan-80-20261122-124306/compile.log",
+  "journalSha256": "3c3957220761c200805c013832a9dadce9c7ad559f98e893ba2b4fe31a7e6c16",
+  "base": "Supabase fictif local, aucun fichier .env utilisateur.",
+  "ecartsAvecDerniereCorrection": [
+    "src/components/placard/KqCultureBuddies.tsx",
+    "src/components/placard/KqWarehouse.tsx",
+    "src/components/placard/KqWarehouseCulture.tsx"
+  ],
+  "phases": "Compilation, collecte des données de page et traces. La phase generate du site marchand et le parcours hébergé relèvent d’une autre recette.",
+  "verificationCibleeDerniereCorrection": {
+    "commande": "next build --webpack --experimental-build-mode compile --debug-build-paths=src/app/arene/placard/page.tsx",
+    "selectionWindows": {
+      "NEXT_PRIVATE_APP_PATHS": ["\\arene\\placard\\page.tsx"],
+      "raison": "Le filtre Next 16.4.6 compare les chemins à barres obliques du sélecteur aux chemins à barres inverses de la découverte sous Windows. Le premier essai ne contenait que /404. L’override de test de Next est limité au processus du build jetable."
+    },
+    "fichiersSynchronisesSha256": {
+      "src/components/placard/KqCultureBuddies.tsx": "b0ae1e70e96e9b15260afc78eafc6b9e6b4910d39f186f1a7b39e375d8acd914",
+      "src/components/placard/KqWarehouse.tsx": "29fb797e4623bcca90c1ec7fe41a4bd4fa066070577ad2ca26691a177b3812f5",
+      "src/components/placard/KqWarehouseCulture.tsx": "6a222e6b943a38ded5016f58c978615c3d577b584bd9bfdc1f6eee09f7b66008"
+    },
+    "codeSortie": 0,
+    "compilationSecondes": 82,
+    "cacheReutilise": true,
+    "route": "/arene/placard",
+    "bundle": "app/arene/placard/page.js",
+    "tailleBundleOctets": 277515,
+    "journal": "output/next-build-plan-80-20261122-124306/compile-quartier-windows.log",
+    "journalSha256": "0b859abe524869f8958ace04f1806d1791e6250870d315b97486a537dcba0225"
+  }
+}

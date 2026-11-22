@@ -1666,14 +1666,16 @@ Le prototype peut utiliser un profil de simulation provisoire clairement marque 
 
 ### Garde de performance en recette
 
-`npm run load-test:placard` simule par defaut 100 participants et mesure en
-lecture seule la page Placard, le bootstrap, le classement, la reserve de
+`npm run load-test:placard` simule par defaut 100 participants et mesure
+la page Placard, le bootstrap, le classement, la reserve de
 Fleurs et l'historique des duels. Ces deux dernieres routes reproduisent le
 rafraichissement de la file sans engager ni bruler de Fleur. Le test refuse une
 cible distante, exige deux sessions distinctes et prevalide pour chacune la
 page et le bootstrap en `200`. Une recette distante exige simultanement l'autorisation
-explicite, la confirmation `STAGING_READ_ONLY` et un hote autorise identique a
-celui de l'URL cible. Le test applique deux budgets distincts:
+explicite, la confirmation `ISOLATED_STAGING` et un hote autorise identique a
+celui de l'URL cible. Le bootstrap peut créditer des avantages. Avant de lancer les requêtes, le script vérifie la version de l’application et la base de recette. [Configuration de recette](plan-80-recette/terrain.md)
+
+Le test applique deux budgets distincts:
 
 - page HTML: p95 inferieur ou egal a 2 500 ms;
 - routes API: p95 inferieur ou egal a 1 200 ms;

@@ -137,7 +137,7 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     id: toText(row.id),
     createdAt: toIsoString(row.created_at),
     status: toOrderStatus(row.status),
-    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" ? "swiss_bitcoin_pay" : "viva",
+    paymentProvider: row.payment_provider === "swiss_bitcoin_pay" || row.payment_provider === "arena_reward" ? row.payment_provider : "viva",
     paymentState: toPaymentState(row.payment_state),
     paymentReviewRequired: row.payment_review_required === true,
     paymentReviewReason: toOptionalText(row.payment_review_reason),

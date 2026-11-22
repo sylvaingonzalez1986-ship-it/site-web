@@ -5,6 +5,7 @@ import { relative, resolve } from 'node:path';
 import { createServer, transformWithOxc } from 'vite';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
+import { auditCameraScene } from './fixtures/village-audit-camera.mjs';
 
 const lifecycle = process.argv.includes('--interiors-lifecycle');
 const interiors = process.argv.includes('--interiors') || process.argv.includes('--interiors-builder') || lifecycle;
@@ -16,6 +17,8 @@ const npcs = process.argv.includes('--npcs');
 const characterQuality = process.argv.includes('--character-quality');
 const worldFinish = process.argv.includes('--world-finish');
 const calendar = process.argv.includes('--calendar');
+const korriganPg = process.argv.includes('--korrigans-postgres');
+const korrigans = process.argv.includes('--korrigans') || korriganPg;
 const port = Number(process.env.VILLAGE_PREVIEW_PORT ?? 3618), origin = `http://127.0.0.1:${port}`;
 const modules = {
   'audit-village-camera': 'export { _roots as fiberRoots } from "@react-three/fiber"; export { Vector3 } from "three";',
@@ -25,7 +28,17 @@ const modules = {
   'next/navigation': `export function usePathname(){return '/arene/village-3d'}export function useRouter(){return {push:href=>${preview ? 'window.location.assign(href)' : '(window.__villageNavigations??=[]).push(href)'}}}`,
   'next/dynamic': `import React from 'react';export default function dynamic(loader,options={}){const Lazy=React.lazy(()=>Promise.resolve(loader()).then(value=>typeof value==='function'?{default:value}:value));return function Dynamic(props){const Loading=options.loading;return <React.Suspense fallback={Loading?<Loading/>:null}><Lazy {...props}/></React.Suspense>}}`,
 };
-if (life && !process.argv.includes('--baseline')) modules.entry = modules.entry.replace('render(<VillagePrototype/>)', 'render(new URLSearchParams(location.search).has("strict") ? <React.StrictMode><VillagePrototype/></React.StrictMode> : <VillagePrototype/>)');
+if (life || studio || worldFinish || characterQuality) modules['audit-camera-scene'] = auditCameraScene;
+if (korrigans) modules['audit-korrigan-account'] = 'export const useCart = () => ({ user: { id: "korrigan-fixture" } });';
+if (life && !process.argv.includes('--baseline')) modules.entry = `
+  import React from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { VillagePrototype } from '/src/components/placard/world/VillagePrototype';
+  const root = createRoot(document.getElementById('main-content'));
+  const village = new URLSearchParams(location.search).has('strict') ? <React.StrictMode><VillagePrototype/></React.StrictMode> : <VillagePrototype/>;
+  window.addEventListener('audit:mount-village', event => root.render(event.detail ? village : null));
+  root.render(village);
+`;
 if (npcs || characterQuality) modules.entry = (await import('./audit-village-npcs.mjs')).npcAuditEntry;
 if (calendar) modules.entry = `import React from 'react';import {createRoot} from 'react-dom/client';
   import {VillagePrototype} from '/src/components/placard/world/VillagePrototype';
@@ -50,11 +63,12 @@ const snapshotPrefix = `${characterSnapshot.replaceAll('\\', '/')}/`;
 const playerSnapshotPrefix = `${resolve(characterSnapshot, '../player-before').replaceAll('\\', '/')}/`;
 await mkdir(output, { recursive: true });
 const server = await createServer({ root, configFile: false, envDir: false, publicDir: resolve(root, 'public'), cacheDir: resolve(output, 'vite-cache'),
-  resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom', 'three'] },
+  resolve: { alias: { ...(korrigans && { '@/context/CartContext': 'audit-korrigan-account' }), '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom', 'three'] },
   optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'lucide-react', 'three', '@react-three/fiber', 'three/addons/controls/OrbitControls.js', 'three/addons/utils/BufferGeometryUtils.js'] },
   css: { postcss: { plugins: [] } },
   plugins: [{ name: 'isolated-village', enforce: 'pre',
     resolveId(id, importer) {
+      if (modules['audit-camera-scene'] && id === './VillageCanvas' && importer?.endsWith('/VillagePrototype.tsx')) return '\0audit-camera-scene';
       if (id in modules) return '\0' + id;
       if (beforeCharacters && process.argv.includes('--human-finish') && importer?.startsWith(worldPrefix) && id === '../kq-grow-worker-model') {
         return playerSnapshotPrefix + 'kq-grow-worker-model.ts';
@@ -89,6 +103,10 @@ if (preview) {
   console.log(`Village 3D : ${origin}`);
   const stop = async () => { await server.close(); process.exit(0); };
   process.on('SIGINT', stop); process.on('SIGTERM', stop);
+} else if (korriganPg) {
+  try { await (await import('./audit-korrigan-postgres.mjs')).auditKorriganPostgres(origin); } finally { await server.close(); }
+} else if (korrigans) {
+  try { await (await import('./audit-korrigan-market.mjs')).auditKorriganMarket(origin); } finally { await server.close(); }
 } else if (calendar) {
   try { await (await import('./audit-village-calendar.mjs')).auditVillageCalendar(origin, server); } finally { await server.close(); }
 } else if (studio) {
@@ -118,7 +136,8 @@ if (preview) {
   try {
     browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true,
       userDataDir: resolve(output, 'audit-chrome'), args: ['--no-sandbox', '--enable-unsafe-swiftshader'] });
-    const page = await browser.newPage(); page.setDefaultTimeout(45000);
+    const context = await browser.createBrowserContext();
+    const page = await context.newPage(); page.setDefaultTimeout(45000);
     page.on('pageerror', error => report.errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') report.errors.push(message.text()); });
     await page.setRequestInterception(true);
@@ -242,9 +261,11 @@ if (preview) {
       await page.waitForFunction(href => window.__villageNavigations?.at(-1) === href, {}, `/arene/placard?view=${key}`);
     }
     await page.click(menuButton); await page.waitForSelector(menuDialog);
-    await page.click(`${menuDialog} [data-arena-learning-trigger]`); await waitMenuClosed();
+    const carnetButton = `${menuDialog} [data-arena-learning-trigger]`;
+    await page.waitForFunction(selector => document.querySelector(selector)?.textContent.trim() === 'Carnet de Loïc', {}, carnetButton);
+    await page.focus(carnetButton); await page.keyboard.press('Enter'); await waitMenuClosed();
     await page.waitForFunction(() => window.__villageNavigations?.at(-1) === '/arene/placard?guide=1');
-    report.cases.push('Village side menu with all eleven entries, tutorial, keyboard, Escape/Back/backdrop, focus return and desktop resizing');
+    report.cases.push('Village side menu with all eleven entries, Carnet de Loïc, keyboard, Escape/Back/backdrop, focus return and desktop resizing');
     async function projectWorldPoint(position) {
       await page.evaluate(() => new Promise(done => requestAnimationFrame(done)));
       await waitCamera();
@@ -350,10 +371,83 @@ if (preview) {
       assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.tagName, point), 'CANVAS');
       await page.touchscreen.tap(point.x, point.y);
     };
-    await page.setViewport({ width: 320, height: 844, isMobile: true, hasTouch: true });
+    for (const width of [390, 320]) {
+      await page.setViewport({ width, height: 844, isMobile: true, hasTouch: true });
+      await page.reload({ waitUntil: 'networkidle0' });
+      await page.waitForSelector('canvas[data-village-ready="true"]');
+      await page.evaluate(() => document.fonts.ready);
+      const signs = await page.$$eval(destinations, nodes => nodes.map(node => {
+        const rect = node.getBoundingClientRect();
+        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        return {
+          name: node.getAttribute('aria-label'),
+          visible: node.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true }),
+          showsName: node.innerText.includes(node.getAttribute('aria-label')),
+          reachable: node.contains(hit),
+          withinScreen: rect.left >= 0 && rect.right <= innerWidth && rect.top >= 0 && rect.bottom <= innerHeight,
+          left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
+        };
+      }));
+      await page.screenshot({ path: resolve(output, width === 320 ? 'mobile.png' : 'mobile-390.png') });
+      assert.equal(signs.length, 9);
+      for (const [index, sign] of signs.entries()) {
+        assert.ok(sign.visible && sign.showsName && sign.reachable && sign.withinScreen, `${width}px: ${sign.name} must be readable and tappable on the map`);
+        for (const other of signs.slice(index + 1)) {
+          assert.ok(sign.right <= other.left || other.right <= sign.left || sign.bottom <= other.top || other.bottom <= sign.top,
+            `${width}px: ${sign.name} overlaps ${other.name}`);
+        }
+      }
+      const mailbox = await projectWorldPoint(mailboxPosition);
+      assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.tagName, mailbox), 'CANVAS',
+        `${width}px: building signs must leave the mailbox model reachable`);
+      await page.tap('[data-village-building="collection"]');
+      await page.waitForSelector('[data-building="collection"][data-positioned]');
+      await page.tap('[aria-label="Fermer les activités du bâtiment"]');
+      await page.waitForSelector('[data-building="collection"]', { hidden: true });
+    }
+    report.cases.push('All nine building names are visible, separated and touchable at 320px and 390px; the mailbox model remains reachable');
+    const labelToggle = '[data-village-toggle-labels]';
+    const observer = 'details:has([data-observe-life])';
+    const settings = '[data-village-settings]';
+    await page.tap(`${observer} > summary`);
+    assert.deepEqual(await page.$$eval(`${observer}[open] button`, nodes => nodes.map(node => node.innerText.trim())),
+      ['Le sonneur de biniou', 'Le pêcheur près du pont', 'Loïc, le guide']);
+    await page.screenshot({ path: resolve(output, 'mobile-observer-320.png') });
+    for (const id of ['breton', 'fisherman', 'loic']) {
+      await page.tap(`${observer} [data-observe-life="${id}"]`);
+      await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
+      assert.equal(await page.$eval(observer, node => !node.open && document.activeElement === node.querySelector('summary')), true);
+      await page.tap(`${observer} > summary`);
+    }
+    report.cases.push('320px Observer offers only the three NPCs; tapping each follows that character and returns focus to Observer');
+    const toggleNames = async caption => {
+      await page.tap(`${settings} > summary`);
+      assert.equal(await page.$eval(observer, node => node.open), false);
+      assert.ok(await page.$(`${settings}[open] ${labelToggle}`));
+      assert.equal(await page.$eval(labelToggle, node => node.innerText.trim()), caption);
+      await page.tap(labelToggle);
+      assert.equal(await page.$eval(settings, node => node.open), false);
+    };
+    const visibleNames = () => page.$$eval(destinations, nodes => nodes.filter(node =>
+      node.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })).length);
+    await toggleNames('Masquer les noms des bâtiments');
+    assert.equal(await visibleNames(), 0);
+    await page.tap('[aria-label="Recentrer la vue isométrique"]');
+    await page.waitForSelector('canvas[data-camera-transition="idle"][data-life-observe=""]');
+    await page.focus(destinations);
+    await page.keyboard.press('Tab');
+    await page.waitForSelector('[data-village-building]:focus-visible');
+    assert.equal(await visibleNames(), 1, 'Keyboard navigation reveals the focused name');
+    await tapBuildingModel('warehouse');
+    await page.waitForSelector('[data-building="warehouse"][data-positioned]');
+    await page.tap('[aria-label="Fermer les activités du bâtiment"]');
     await page.reload({ waitUntil: 'networkidle0' });
     await page.waitForSelector('canvas[data-village-ready="true"]');
-    await page.screenshot({ path: resolve(output, 'mobile.png') });
+    assert.equal(await visibleNames(), 0, 'The hidden preference survives reload');
+    await page.screenshot({ path: resolve(output, 'mobile-noms-masques-320.png') });
+    await toggleNames('Afficher les noms des bâtiments');
+    assert.equal(await visibleNames(), 9);
+    report.cases.push('320px touch toggles building names; hiding survives reload, keyboard focus reveals one name, models still open and all nine names can be restored');
     assert.equal(await page.$$eval('[data-village-prototype] > header > div:first-child > button, [data-village-prototype] > header > div:first-child > a, [data-village-prototype] > header > button', nodes => nodes.every(node => {
       const rect = node.getBoundingClientRect(); return rect.left >= 0 && rect.right <= innerWidth;
     })), true);

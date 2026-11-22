@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, DoorOpen, Pause, Play } from "lucide-react";
 import type { IsometricBuilding } from "@/lib/kanab-quest-world-mode";
 import { KqChapterHeading } from "../KqChapterHeading";
 import { createInteriorRoom } from "./interior-rooms";
 import type { createBuildingIsometricRenderer } from "./building-isometric-renderer";
 import styles from "./BuildingRoom.module.css";
+import { VillageNightContext } from "./VillageNightContext";
 
 const ROOM_DESCRIPTIONS: Record<IsometricBuilding, string> = {
   bank: "Le banquier reçoit les demandes de prêt. Une tirelire cochon repose sur son bureau, un panneau CAC 40 est accroché au mur et un ordinateur affiche le signe Bitcoin.",
@@ -19,6 +20,7 @@ const ROOM_DESCRIPTIONS: Record<IsometricBuilding, string> = {
 const VILLAGE_HREF = "/arene/placard?view=hub";
 
 export default function BuildingRoom({ id, onNavigate }: { id: IsometricBuilding; onNavigate: (href: string) => void }) {
+  const night = useContext(VillageNightContext);
   const room = useMemo(() => createInteriorRoom(id), [id]);
   const destinations = useMemo(() => room.objects.flatMap(object => object.href
     ? [{ ...object, href: `${object.href}&fromRoom=${id}` }] : []), [room, id]);
@@ -27,6 +29,11 @@ export default function BuildingRoom({ id, onNavigate }: { id: IsometricBuilding
   const runtime = useRef<ReturnType<typeof createBuildingIsometricRenderer> | null>(null);
   const [paused, setPaused] = useState(false);
   const playback = useRef(true);
+  const nightRef = useRef(night);
+  useEffect(() => {
+    nightRef.current = night;
+    runtime.current?.setNight(night);
+  }, [night]);
   useEffect(() => {
     playback.current = !paused;
     runtime.current?.setMotion(!paused);
@@ -59,6 +66,7 @@ export default function BuildingRoom({ id, onNavigate }: { id: IsometricBuilding
         },
       });
       runtime.current.setMotion(playback.current);
+      runtime.current.setNight(nightRef.current);
       runtime.current.setFocus(section?.querySelector<HTMLElement>("a:focus-visible")?.dataset.buildingObject ?? null);
     }).catch(() => { if (mounted) unavailable(); });
     return () => { mounted = false; runtime.current?.dispose(); runtime.current = null; unavailable(); };
@@ -67,8 +75,8 @@ export default function BuildingRoom({ id, onNavigate }: { id: IsometricBuilding
   return <section ref={entry} tabIndex={-1} aria-labelledby="building-room-title" data-building-room={id} className={styles.room}>
     <KqChapterHeading title={room.name} titleId="building-room-title" level={1} />
     <div className={styles.layout}>
-      <div className={styles.stage} role="img" aria-label={ROOM_DESCRIPTIONS[id]}>
-        <div className={styles.poster} style={{ backgroundImage: `url("/placard/building-rooms/${id}.webp")` }} />
+      <div className={styles.stage} role="img" aria-label={night ? `${room.name} · le comptoir de nuit` : ROOM_DESCRIPTIONS[id]}>
+        <div className={styles.poster} style={{ backgroundImage: `url("/placard/building-rooms/${id}${night ? "-night" : ""}.webp")` }} />
         <canvas ref={canvas} aria-hidden="true" data-live="false" />
       </div>
       <nav aria-label={`Activités · ${room.name}`} className={styles.signs}>

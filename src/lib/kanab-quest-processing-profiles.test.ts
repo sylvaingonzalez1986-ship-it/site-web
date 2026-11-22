@@ -1,7 +1,27 @@
 import { describe, expect, it } from "vitest";
 import { createKqProcessingPlan, getKqProcessingMachineReference } from "./kanab-quest-processing-profiles";
+import { getKqInvestmentPayback, getKqWorkshopInvestmentComparison } from "./kanab-quest-investment";
 
 describe("processing profiles retain manufacturer material distinctions", () => {
+  it("compares the same press input volume across a tier change", () => {
+    const comparison = getKqWorkshopInvestmentComparison("PRESS-0600", 3, 4)!;
+    expect(comparison).toMatchObject({ grams: 100, material: "fleurs sèches", passiveHours: 0 });
+    expect(comparison.currentHours).toBeCloseTo(100 / getKqProcessingMachineReference("PRESS-0600", 3)!.gramsPerHour!, 5);
+    expect(comparison.targetHours).toBeCloseTo(100 / getKqProcessingMachineReference("PRESS-0600", 4)!.gramsPerHour!, 5);
+    expect(comparison.savedHours).toBeGreaterThan(0);
+  });
+
+  it("preserves the estimated passive delay and avoids inventing a dryer saving", () => {
+    expect(getKqWorkshopInvestmentComparison("FREEZE-DRYER", 1, 4)).toMatchObject({ grams: 100,
+      material: "produit fini prévu", currentHours: .5, targetHours: .5, savedHours: 0, passiveHours: 24 });
+    expect(getKqWorkshopInvestmentComparison("FREEZE-DRYER", 0, 4)).toBeNull();
+  });
+
+  it("rounds conditional payback up to a complete cycle and leaves non-positive gains without a period", () => {
+    expect(getKqInvestmentPayback(36309, 12860)).toBe(3);
+    expect(getKqInvestmentPayback(36309, 0)).toBeNull();
+    expect(getKqInvestmentPayback(36309, -12860)).toBeNull();
+  });
   it("derives the washer ceiling from dry material rather than fresh frozen mass", () => {
     const reference = getKqProcessingMachineReference("WASHER-25L", 10)!;
     expect(reference).toMatchObject({ basis: "input", material: "fleurs sèches", gramsPerHour: 1050, estimated: true });

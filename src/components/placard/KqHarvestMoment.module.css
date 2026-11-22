@@ -40,6 +40,9 @@
   border-color: transparent;
   color: #fff1d6; }
 .continue:focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
+.yieldDetails { margin-block-start: 12px; font-size: 14px; }
+.yieldDetails summary { min-height: 44px; padding-block: 12px; box-sizing: border-box; cursor: pointer; font-weight: 700; }
+.yieldDetails summary:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .moment[data-outcome="dead"], .moment[data-outcome="empty"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .moment[data-outcome="dead"] .illustration, .moment[data-outcome="empty"] .illustration { opacity: .85; }
 

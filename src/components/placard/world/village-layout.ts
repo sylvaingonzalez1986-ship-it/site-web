@@ -32,6 +32,9 @@ export function paintingToGround(px: number, py: number): [number, number] {
   return [(horizontal + depth) / Math.sqrt(2), (depth - horizontal) / Math.sqrt(2)];
 }
 
+const [oakX, oakZ] = paintingToGround(780, 680);
+export const VILLAGE_KORRIGAN_GLADE = { x: oakX, z: oakZ, orbitRadius: 2.17, trunkRadius: 1.18 } as const;
+
 // Foot of KqMailbox's separate overlay: left 59%, top 35%, width 12%.
 const [mailboxX, mailboxZ] = paintingToGround(998, 533);
 export const VILLAGE_MAILBOX_POSITION: [number, number, number] = [mailboxX, 0.04, mailboxZ];

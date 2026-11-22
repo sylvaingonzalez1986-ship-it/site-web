@@ -1,8 +1,89 @@
 {
+  "marcheKorrigans20261122": {
+    "livraison": "Quartier nocturne, ronde de trois flûtistes Three.js autour du chêne, alternance des habitants, offrande de récolte et trois tirages sauvegardés.",
+    "economie": "Minimum de reprise 100 € de jeu. Pertes 85 % par tirage, rendement monétaire moyen de 0,765 fois la valeur de vente par session, délai réel de 168 heures.",
+    "preuves": ["docs/bete-de-concours/korrigans/marche.md", "output/korrigans/navigateur.json", "output/korrigans/navigateur-postgres.json", "output/placard-navigation/building-rooms-night-report.json", "scripts/test-korrigan-market.mjs"],
+    "pointDeReprise": "Valider sur téléphone physique et préproduction Supabase avec la migration 20261122001400_kq_korrigan_market.sql."
+  },
+  "maisonCartesBuddies20261122": {
+    "livraison": "Loïc présente le booster Buddies illustré du champ de cannabis au couchant. Les deux cartes du comptoir reprennent les personnages HH2026-001 et HH2026-010.",
+    "verification": "Boutique ouverte dans Chromium à 320 et 1440 px. Loïc, son pack, les deux cartes et l’enseigne Buddies restent visibles aux deux formats.",
+    "preuves": ["public/placard/card-shop-buddies-v2.json", "output/placard-card-shop/buddies-panorama-v2/maison-des-cartes-320.png", "output/placard-card-shop/buddies-panorama-v2/maison-des-cartes-1440.png"],
+    "nextBoundedTask": "Recueillir le retour visuel sur la reconnaissance du pack dans la boutique."
+  },
+  "plan80Execution20261122": {
+    "base": "d6f48a16bc67c7f9b2850ffa9ef66c595052d4d9",
+    "version": "d6f48a1+local.5eeca6221d46",
+    "premiereLivraison": {
+      "etat": "vérifié sur fixture Chromium",
+      "lots": [
+        1,
+        2
+      ],
+      "scenario": "Compte neuf, collection vide, pack gratuit, refus puis réessai du devis, action Préparer mes cultures, choix de variété, semis et Carnet repris à 6/6.",
+      "resultat": "18 contrôles à chacun des trois formats 320 × 540, 320 × 710 et 1440 × 900. Un débit de 78674 centimes, caisse 21326, énergie et fournitures 8360, laboratoire éventuel 4500, réserve 12860, disponible 8466.",
+      "preuves": [
+        "output/parcours-loic/loic-welcome/rapport.json",
+        "docs/bete-de-concours/plan-80-recette/series.json"
+      ],
+      "sources": [
+        "src/components/placard/KqWarehouse.tsx",
+        "src/components/placard/KqCultureBuddies.tsx",
+        "src/components/placard/KqEnergyPanel.tsx",
+        "src/lib/kanab-quest-business.ts"
+      ]
+    },
+    "suite": "Rejouer l’étape 3 avec le testeur : depuis Pilotage ou Aménager, sélectionner la zone puis Choisir mon Buddie. Consigner la séance et engager la recette hébergée isolée et le suivi de trois semaines. Pour le prochain réglage économique, conserver C et réserver une nouvelle validation.",
+    "etatDesLots": {
+      "1": "Parcours du semis vérifié en Chromium. Correction de la consigne de Loïc après le signalement au format 968 × 536.",
+      "2": "Budget au centime et reçus de vente directe vérifiés, avec anciens soldes inconnus explicités.",
+      "3": "1 005 contrôles PostgreSQL natifs et trois courses entre deux connexions vérifiées.",
+      "4": "Offres, investissements et trois missions de reprise vérifiés. Marge récurrente de validation ouverte : six profils en perte sur C.",
+      "5": "Récolte, vente, rotation 3/4 Buddies et retours J+1/J+7 vérifiés sur états synthétiques.",
+      "6": "Navigation QuizzShow et repli HTML vérifiés en local ; mesures physiques et service hébergé attendus.",
+      "7": "Saison fictive vérifiée : rangs généraux, report unique des parts vacantes et commande de remise autonome à 0 € port compris.",
+      "8": "Protocoles prêts. Un signalement spontané du testeur ; séances débutants, groupe avancé et appareils à observer."
+    },
+    "notation": {
+      "points": 65,
+      "denominateur": 87.5,
+      "sousCriteresEvalues": 28,
+      "sousCriteres": 32,
+      "sur100Provisoire": 74.29,
+      "complete": false
+    },
+    "preuvesFinales": [
+      "docs/bete-de-concours/plan-80-recette/bilan.md",
+      "docs/bete-de-concours/plan-80-recette/version.json",
+      "docs/bete-de-concours/plan-80-recette/recettes-chromium.json",
+      "docs/bete-de-concours/plan-80-recette/fiabilite-lot-3.md",
+      "docs/bete-de-concours/plan-80-recette/economie.md",
+      "docs/bete-de-concours/plan-80-recette/performance.md",
+      "docs/bete-de-concours/plan-80-recette/retour-j1-j7.json",
+      "docs/bete-de-concours/plan-80-recette/terrain.md"
+    ]
+  },
+  "auditGlobalTycoon20261122": {
+    "date": "2026-11-22",
+    "rapport": "docs/bete-de-concours/audit-global-2026-11-22/rapport.md",
+    "planAmelioration": "docs/bete-de-concours/audit-global-2026-11-22/plan-80.md",
+    "verdict": "Bêta locale, note provisoire de 66/100. 57,75 points acquis sur 87,50 évalués. Dix-neuf domaines recensés.",
+    "preuves": "Parcours Loïc, village et QuizzShow en Chromium à plusieurs largeurs. Deux séries appariées de douze campagnes sur deux plans et trois profils, devis du moteur et écritures SQL isolées. Écart établi entre le coût du laboratoire par lot et l’aide de Factures.",
+    "nextBoundedTask": "Lors du chantier de corrections, relier directement la validation du premier plan à Préparer mes cultures, puis vérifier le trajet à 320 et 1440 px sans sortie de l’entrepôt."
+  },
+  "pancartesVillageMobile20261122": {
+    "date": "2026-11-22",
+    "livraison": "Les neuf bâtiments portent leur nom dès l’ouverture du village sur smartphone. Les pancartes s’écartent les unes des autres et laissent la boîte aux lettres accessible. Dans les réglages du village, le joueur peut masquer ou réafficher les noms et modifier son personnage. Le navigateur mémorise le choix des pancartes. Observer propose les trois PNJ du village, le sonneur de biniou, le pêcheur près du pont et Loïc.",
+    "verification": "21 scénarios Chromium réussis pour le village. À 320 et 390 px en portrait, les neuf noms sont lisibles et leurs cibles tactiles distinctes. À 320 px, chaque choix d’Observer cadre le PNJ correspondant. Le réglage des pancartes persiste après rechargement, et le clavier comme le toucher permettent toujours d’ouvrir les bâtiments. Le scénario de l’atelier confirme l’accès à l’éditeur du personnage depuis les réglages.",
+    "evidence": ["output/village-3d/report.json", "output/village-3d/mobile-observer-320.png", "output/village-3d/mobile.png", "output/village-3d/mobile-390.png", "output/village-3d/mobile-noms-masques-320.png", "output/chanvrier-studio/report.json", "output/village-npcs/report.json"],
+    "deployed": false,
+    "nextBoundedTask": "Contrôler la lisibilité des pancartes sur un téléphone physique après publication."
+  },
   "fermeLienBitcoin20261122": {
     "date": "2026-11-22",
     "diagnostic": "Campagne ouverte et Lightning activé en production. Le 22 novembre à 09 h 03, heure de Paris, Swiss Bitcoin Pay a refusé la création de facture (HTTP 403). La fonction de don était déployée en Virginie, celle de la boutique à Paris.",
     "livraison": "La fiche du don affiche Ouvrir Swiss Bitcoin Pay dès que la facture est prête. Les appels marchands de la Ferme passent par Paris. Un refus définitif permet de préparer une nouvelle contribution. Une réponse perdue conserve la référence à vérifier.",
+    "local": "Sur localhost:3000, l’API de soutien propose uniquement Viva. La tuile Bitcoin Lightning ouvre le formulaire officiel dans un nouvel onglet. Vérification du lien de la Ferme à 320 px parmi 18 scénarios Chromium, puis sélection de Bitcoin sur le site officiel depuis le serveur local, sans création de facture.",
     "verification": "Don simulé de 2,50 € depuis la Ferme à 320 px, ouverture du lien Swiss Bitcoin Pay au clavier et retour confirmé. 129 tests ciblés de paiement. Droits vérifiés sur 435 migrations.",
     "evidence": ["scripts/fixtures/support-campaign-browser.mjs", "src/lib/supabase/support-campaign-sql.test.ts", "supabase/migrations/20261122000700_support_swiss_creation_refused.sql"],
     "nextBoundedTask": "Vérifier le rapprochement du prochain soutien effectivement réglé avec le relevé marchand."

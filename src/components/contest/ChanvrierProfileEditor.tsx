@@ -21,7 +21,10 @@ const NEW_PROFILE: ChanvrierProfile = {
 type Step = "inheritance" | "look" | "strength" | "review";
 const STEP_LABELS: Record<Step, string> = { inheritance: "Héritage", look: "Personnage", strength: "Spécialité", review: "Départ" };
 
-export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInheritance = false }: { profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void; skipInheritance?: boolean }) {
+export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, open = true, skipInheritance = false }: {
+  profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void;
+  onDiscard?: () => void; open?: boolean; skipInheritance?: boolean;
+}) {
   const api = useKqTutorialApi();
   const isArrival = !profile && !api.isTutorial;
   const showInheritance = isArrival && !skipInheritance;
@@ -56,21 +59,23 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInherita
     setView(next === "look" ? wardrobe.category.view : "full");
   };
 
-  useBodyScrollLock(true);
+  useBodyScrollLock(open);
   useEffect(() => {
+    if (!open) return;
     const modal = dialog.current;
     const previous = document.activeElement as HTMLElement | null;
     modal?.showModal();
     return () => { modal?.close(); if (previous?.isConnected) previous.focus(); };
-  }, []);
+  }, [open]);
   useEffect(() => {
+    if (!open) return;
     const frame = requestAnimationFrame(() => {
       heading.current?.focus({ preventScroll: true });
       dialog.current?.scrollTo({ top: 0, behavior: "instant" });
       controls.current?.scrollTo({ top: 0, behavior: "instant" });
     });
     return () => cancelAnimationFrame(frame);
-  }, [step]);
+  }, [open, step]);
   useEffect(() => {
     if (!error) return;
     errorMessage.current?.focus({ preventScroll: true });
@@ -103,6 +108,8 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInherita
       {step === "look" ? null : <p>{step === "inheritance" ? "Ton grand-père t’a légué sa maison et la grange qui l’accompagne. Tu reviens au Quartier pour y créer ta ferme indoor." : step === "strength" ? "Cultiver, gérer, vendre ou bricoler : choisis l’avantage qui t’aidera à faire vivre la ferme." : profile ? "Vérifie ton surnom et ton apparence avant d’enregistrer." : "Voici le personnage avec lequel tu vas commencer."}</p>}
     </KqChapterHeading>
   </div>;
+
+  if (!open) return null;
 
   return <dialog ref={dialog} className={styles.dialog} data-chanvrier-profile data-profile-step={step} aria-labelledby={titleId} aria-busy={busy} onCancel={event => { event.preventDefault(); if (!inFlight.current) onClose(); }}>
     <div data-farm-guide-host />
@@ -158,6 +165,7 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, skipInherita
             <p className={styles.note}>{api.isTutorial ? "Ce personnage appartient à ta partie d’essai." : "Ton surnom et ton apparence pourront toujours changer."}</p>
           </div>}
         </>}
+        {onDiscard && <button type="button" className={styles.editLink} data-profile-discard disabled={busy} onClick={onDiscard}>Abandonner les modifications</button>}
         {error ? <p ref={errorMessage} role="alert" tabIndex={-1} className={styles.error}>{error}</p> : null}
       </section>
     </div>

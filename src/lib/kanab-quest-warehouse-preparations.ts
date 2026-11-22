@@ -1,4 +1,6 @@
 import retailSupplies from "./kanab-quest-warehouse-retail-supplies.json";
+
+export const KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER = "X-Kq-Preparation-Account";
 export const KQ_WAREHOUSE_PREPARATION_CATALOG = {
   "WAREHOUSE-VACUUM": { name: "Aspirateur", kind: "equipment", priceCents: retailSupplies["WAREHOUSE-VACUUM"].unitPriceCents, unit: "outil" },
   "WAREHOUSE-MOP": { name: "Serpillière", kind: "equipment", priceCents: retailSupplies["WAREHOUSE-MOP"].unitPriceCents, unit: "outil" },

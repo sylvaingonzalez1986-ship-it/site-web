@@ -1,15 +1,48 @@
 // Local in-memory PostgreSQL only. No credentials, environment files or network.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createServer } from "vite";
 import { PGlite } from "@electric-sql/pglite";
+import { openPlacardIsolatedPostgres } from "./lib/placard-isolated-postgres.mjs";
+import { installWarehousePreparations } from "./lib/warehouse-preparation-fixture.mjs";
 
 let fixtureVite;
 async function createFixtureServer(config) {
-  fixtureVite = await createServer(config);
+  fixtureVite = await createServer({ ...config, server: { ...config.server, hmr: false, ws: false } });
   return fixtureVite;
+}
+
+async function concurrentCheck(db, peer, first, second, expectedError) {
+  const pid = async socket => (await socket.query("SELECT pg_backend_pid() AS pid")).rows[0].pid;
+  const [blocking, blocked] = await Promise.all([pid(db), pid(peer)]);
+  assert.notEqual(blocking, blocked, "the race uses independent PostgreSQL sessions");
+  await db.exec("BEGIN");
+  await db.exec("SET LOCAL ROLE service_role");
+  await peer.exec("SET ROLE service_role");
+  let contender;
+  try {
+    const result = await first();
+    contender = second().then(value => ({ value }), error => ({ error }));
+    const deadline = Date.now() + 3000;
+    let waiting = false;
+    while (!waiting && Date.now() < deadline) {
+      waiting = (await db.query("SELECT $1::int = ANY(pg_blocking_pids($2::int)) AS waiting", [blocking, blocked])).rows[0].waiting;
+      if (!waiting) await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    assert(waiting, "the competing PostgreSQL session actually waits for the first transaction");
+    await db.exec("COMMIT");
+    const outcome = await contender;
+    assert.match(outcome.error?.message ?? "", expectedError);
+    return { result, pids: [blocking, blocked], rejectedWith: outcome.error.message };
+  } catch (error) {
+    await db.exec("ROLLBACK");
+    await contender;
+    throw error;
+  } finally {
+    await peer.exec("RESET ROLE");
+  }
 }
 
 async function campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote }) {
@@ -89,10 +122,10 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
       const code = `HH2026-${String(n).padStart(3, "0")}`;
       equal(await scalar("SELECT kq_campaign_cultivation_profile($1)", [code]), profiles.getKqBuddieCultivationProfile(code), `profile ${code}: SQL/TS exact parity`);
     }
-    const build = async (owner, { tokens = 1, deck = ["BOTTE-ZONE-A"], heritageCode, heritageCard, reservedZoneId } = {}) => {
+    const build = async (owner, { tokens = 1, deck = ["BOTTE-ZONE-A"], heritageCode, heritageCard, reservedZoneId, preparationKey } = {}) => {
       const saved = await layout(owner);
       const members = campaignEngine.getKqCampaignParticipants(saved.state, saved.revision, undefined, reservedZoneId)
-        .map(member => ({ ...member, runId: randomUUID() }));
+        .map(member => ({ ...member, runId: randomUUID(), warehouse: preparationKey ? { ...member.warehouse, preparationVersion: 1 } : member.warehouse }));
       const campaign = { version: 1, id: randomUUID(), leaderRunId: members[0].runId, members };
       const lead = game.startKqGame(123, { warehouse: members[0].warehouse, varietyCode: members[0].buddieCode, domiciliation: "home",
         startingXp: 1 + tokens, ...(heritageCode ? { heritageCode, heritageCard } : {}) });
@@ -102,7 +135,8 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
         - game.KQ_BUDDIES.find(b => b.code === members[0].buddieCode).advantageLevel;
       return { members: members.map(member => ({ runId: member.runId, state: campaignEngine.getKqCampaignMemberState(lead, member) })),
         request: { campaign: true, buddieCode: members[0].buddieCode, deckCodes: deck, cultureTokens: tokens,
-          heritageCode: heritageCode ?? null, energyMode: "balanced", expectedEnergyCents: null }, tokens, heritageCode: heritageCode ?? null };
+          heritageCode: heritageCode ?? null, energyMode: "balanced", expectedEnergyCents: null,
+          ...(preparationKey ? { expectedPreparationKey: preparationKey } : {}) }, tokens, heritageCode: heritageCode ?? null };
     };
     const launch = (owner, prepared, key = randomUUID()) => scalar("SELECT rpc_kq_start_campaign($1,$2,$3,$4,$5,$6)",
       [owner, key, prepared.request, prepared.members, prepared.tokens, prepared.heritageCode]);
@@ -354,6 +388,229 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
       equal(await scalar("SELECT has_function_privilege($1,'kq_update_run_before_campaign(uuid,uuid,timestamptz,text,jsonb,jsonb)','EXECUTE')", [role]), false, `${role}: private finalizer cannot be used as bypass`);
     }
     console.log("Shared campaigns: profiles, replay, common cards/care/dice, atomic flowers, costs, capacity, two-variety rotation and grants passed.");
+    if (db.openPeer) {
+      const raceOwner = await player(plan(3));
+      const before = await layout(raceOwner);
+      const planChange = (connection, name) => {
+        const draft = { ...before.state, zones: before.state.zones.map((zone, index) => index === 0 ? { ...zone, name } : zone) };
+        const quote = getKqWarehouseQuote(draft, before.state);
+        return connection.query("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7) AS saved", [raceOwner, randomUUID(),
+          { expectedCostCents: quote.totalCostCents }, before.revision, before.state, quote.nextState, quote.totalCostCents]);
+      };
+      await db.exec("COMMIT");
+      const peer = db.openPeer();
+      const planRace = await concurrentCheck(db, peer, () => planChange(db, "Plan A"), () => planChange(peer, "Plan B"), /warehouse_revision_changed/);
+      const current = await layout(raceOwner);
+      equal(current.revision, before.revision + 1, "concurrent saves advance the revision once");
+      equal(current.state.zones[0].name, "Plan A", "losing save cannot overwrite the committed plan");
+      equal(current.cashCents, before.cashCents, "a rejected revision creates no extra debit");
+
+      await installWarehousePreparations(db);
+      await db.exec("CREATE OR REPLACE FUNCTION public.kq_treasury_initialize(UUID) RETURNS VOID LANGUAGE sql AS 'INSERT INTO public.kq_treasury_accounts(user_id) VALUES($1) ON CONFLICT DO NOTHING'");
+      const preparations = await sql("20261121001020_kq_warehouse_preparations_runs.sql");
+      const preparationPatch = preparations.indexOf("CREATE FUNCTION pg_temp.kq_preparation_patch");
+      await db.exec(preparations.slice(preparationPatch, preparations.indexOf("SELECT pg_temp.kq_preparation_patch", preparationPatch)));
+      const patchStart = preparations.indexOf("DO $$ DECLARE signature REGPROCEDURE");
+      await db.exec(preparations.slice(patchStart, preparations.indexOf("SELECT pg_temp.kq_preparation_patch('public.kq_work_inner_start_zone_run", patchStart))
+        .replace(/^.*'public\.kq_work_inner_start_zone_run.*\r?\n/m, ""));
+      const campaignPatch = preparations.indexOf("SELECT pg_temp.kq_preparation_patch('public.kq_work_inner_start_campaign");
+      await db.exec(preparations.slice(campaignPatch, preparations.indexOf("REVOKE ALL", campaignPatch)));
+      await db.exec(await sql("20261122000500_kq_warehouse_supply_packs.sql"));
+      await db.exec(await sql("20261122000510_kq_supply_clock_after_lock.sql"));
+      const code = "WAREHOUSE-PBI";
+      const stockOwner = await player(plan(3));
+      const supplies = connection => async (command, key = randomUUID()) => (await connection.query(
+        "SELECT rpc_kq_warehouse_preparation_command($1,$2,$3) AS snapshot", [stockOwner, key, { ...command, requestKey: key }],
+      )).rows[0].snapshot;
+      const beforeStock = await scalar("SELECT rpc_kq_warehouse_preparations($1)", [stockOwner]);
+      const offer = beforeStock.items.find(item => item.code === code);
+      const purchase = await supplies(db)({ action: "purchasePack", code, quantity: 1, expectedCents: offer.packPriceCents });
+      equal(purchase.cashCents, beforeStock.cashCents - offer.packPriceCents, "one quoted pack debit before the stock race");
+      const prepared = await build(stockOwner, { deck: [], tokens: 0, preparationKey: purchase.quoteKey });
+      await launch(stockOwner, prepared);
+      const members = await runRows(stockOwner);
+      // Leave one dose by updating the shared ledger as a fixture precondition.
+      await db.query("UPDATE kq_warehouse_input_stock SET quantity=1, remaining_units=int8multirange(int8range(0,1,'[)')) WHERE user_id=$1 AND code=$2", [stockOwner, code]);
+      const use = (connection, runId) => supplies(connection)({ action: "use", runId, quantities: { [code]: 1 } });
+      const stocks = await concurrentCheck(db, peer, () => use(db, members[0].id), () => use(peer, members[1].id), /kq_preparation_reserved/);
+      const stockAfter = await scalar("SELECT rpc_kq_warehouse_preparations($1)", [stockOwner]);
+      equal(stockAfter.items.find(item => item.code === code).availableQuantity, 0, "last shared dose is consumed once");
+      equal(stockAfter.runs.map(run => run.consumed[code] ?? 0).sort(), [0, 0, 1], "the winning zone alone records the dose");
+      equal(stockAfter.cashCents, purchase.cashCents, "concurrent use creates no duplicate debit");
+      const contention = { plan: { pids: planRace.pids, before: before.revision, after: current.revision, walletCents: current.cashCents, rejectedWith: planRace.rejectedWith },
+        lastInput: { pids: stocks.pids, dosesBefore: 1, dosesAfter: 0, packCents: offer.packPriceCents, walletCents: stockAfter.cashCents, rejectedWith: stocks.rejectedWith } };
+      await writeFile("output/placard-reliability/contention.json", JSON.stringify(contention, null, 2));
+      console.log("Real PostgreSQL contention:", JSON.stringify(contention));
+
+      // Continue over the same database and RPCs with the current retail, harvest, trim and sale migrations.
+      const historicalInvoices = () => scalar(`SELECT jsonb_build_object(
+        'energy',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_energy_invoices i),
+        'analyses',(SELECT jsonb_agg(to_jsonb(i) ORDER BY run_id) FROM kq_lab_invoices i))`);
+      const oldInvoices = await historicalInvoices();
+      assert(oldInvoices.analyses?.length > 0, "a saved historical invoice must be present before migration");
+      await db.exec(`CREATE TABLE IF NOT EXISTS public.kq_random_battle_queue(flower_id uuid);
+        CREATE TABLE public.kq_social_platforms(user_id uuid,platform text,followers integer,PRIMARY KEY(user_id,platform));
+        DROP TABLE public.kq_staff_accounts;`);
+      for (const file of ["20261018000500_kq_postharvest_quality.sql", "20261018000600_kq_postharvest_prices_and_climate_billing.sql",
+        "20261029000300_kq_curing_before_jury.sql", "20261029000400_kq_pay_all_invoices.sql", "20261107000100_kq_staff.sql",
+        "20261107000200_kq_staff_trim.sql", "20261108000100_kq_shared_trim.sql", "20261121002200_kq_warehouse_retail_prices.sql",
+        "20261122000800_kq_sale_receipt_open_invoices.sql"]) await db.exec(await sql(file));
+      equal(await historicalInvoices(), oldInvoices, "historical accounting rows survive the current migrations verbatim");
+
+      const cycle = await player(plan(1));
+      const original = await layout(cycle);
+      // The inherited runner replaces current catalog prices for its historical
+      // cases. Load the public quote in an independent Vite module cache.
+      const retailVite = await createServer({ configFile: false, envDir: false, resolve: { alias: { "@": path.resolve("src") } },
+        server: { middlewareMode: true, watch: null, hmr: false, ws: false } });
+      let investment;
+      try {
+        const { getKqWarehouseQuote: getRetailQuote } = await retailVite.ssrLoadModule("/src/lib/kanab-quest-warehouse.ts");
+        investment = getRetailQuote(plan(3), original.state);
+      } finally { await retailVite.close(); }
+      const planKey = randomUUID();
+      const install = () => scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7)", [cycle, planKey,
+        { expectedCostCents: investment.totalCostCents }, original.revision, original.state, investment.nextState, investment.totalCostCents]);
+      const installed = await install().catch(async error => {
+        const devices = await Promise.all(investment.purchases.map(async line => ({ code: line.code, quantity: line.quantity,
+          quoteCents: line.device.priceCents, sqlCents: (await scalar("SELECT kq_warehouse_device($1)", [line.code])).priceCents })));
+        console.error("Plan quote:", JSON.stringify({ devices, optionCents: investment.optionEquipmentCostCents,
+          addedAreaM2: investment.addedAreaM2, installationCents: investment.installationCostCents, totalCents: investment.totalCostCents }));
+        throw error;
+      });
+      equal(installed.cashCents, original.cashCents - investment.totalCostCents, "the three-zone plan debits the offered investment");
+      equal((await install()).receipt.replayed, true, "the saved configuration replays from a lost response");
+      const inputKey = randomUUID(), order = { action: "purchasePack", code, quantity: 1, expectedCents: offer.packPriceCents, requestKey: inputKey };
+      const buy = () => scalar("SELECT rpc_kq_warehouse_preparation_command($1,$2,$3)", [cycle, inputKey, order]);
+      const ordered = await buy(), restored = await buy();
+      equal(restored.cashCents, ordered.cashCents, "an interrupted input purchase reconciles to the original balance");
+      equal(restored.items, ordered.items, "input quantities survive order replay");
+      const sowing = await build(cycle, { deck: [], tokens: 0, preparationKey: ordered.quoteKey }), sowKey = randomUUID();
+      const sown = await launch(cycle, sowing, sowKey);
+      const reserveSnapshot = await scalar("SELECT rpc_kq_warehouse_preparations($1)", [cycle]);
+      equal(reserveSnapshot.runs.map(run => run.available[code]), [1, 1, 1], "each one-square-metre zone inherits access to one shared dose at sowing");
+      equal((await launch(cycle, sowing, sowKey)).run.id, sown.run.id, "sowing replay keeps exactly the same campaign");
+
+      const finish = async (owner, leaderId) => {
+        const beforeHarvest = await row(leaderId);
+        let ripe = beforeHarvest.state;
+        while (ripe.phase !== "complete") {
+          if (ripe.phase === "prepare") ripe = game.rollKqDice(ripe);
+          else if (ripe.phase === "rolled") ripe = game.resolveKqStage({ ...ripe, dice: [6, 6, 6] });
+          else ripe = game.advanceKqStage(ripe);
+        }
+        const flowers = ripe.campaign.members.map(member => {
+          const state = campaignEngine.getKqCampaignMemberState(ripe, member), flower = battle.createKqFlower(state);
+          return { runId: member.runId, state, flower: { varietyCode: state.varietyCode, varietyName: state.varietyName,
+            quality: state.quality, traits: flower.traits, combos: state.combos, battleStats: flower.stats,
+            integrityCode: flower.integrityCode, cannabinoidReport: flower.cannabinoidReport,
+            cultivationProfile: flower.cultivationProfile, terpeneReport: flower.terpeneReport } };
+        });
+        const complete = () => action(owner, beforeHarvest, ripe, "advance", flowers);
+        const harvested = await complete();
+        equal((await complete()).flowers.map(flower => flower.id).sort(), harvested.flowers.map(flower => flower.id).sort(), "harvest replay preserves the exact lot identifiers");
+        return harvested;
+      };
+      const harvested = await finish(cycle, sown.run.id);
+      const { quoteKqMarketRoutes } = await vite.ssrLoadModule("/src/lib/kanab-quest-market.ts");
+      const { quoteKqCommerce } = await vite.ssrLoadModule("/src/lib/kanab-quest-commerce.ts");
+      const { projectKqStorageLot } = await vite.ssrLoadModule("/src/lib/kanab-quest-storage.ts");
+      const { previewKqBusinessPayment } = await vite.ssrLoadModule("/src/lib/kanab-quest-business.ts");
+      const commerce = (action, payload, key = randomUUID()) => scalar("SELECT rpc_kq_commerce_command($1,$2,$3,$4)", [cycle, action, payload, key]);
+      const commerceState = () => scalar("SELECT rpc_kq_commerce_state($1)", [cycle]);
+      const closeLots = [];
+      for (const flower of harvested.flowers) {
+        const grams = (await row(flower.run_id)).state.harvestGrams;
+        const lot = () => scalar("SELECT to_jsonb(s) FROM kq_storage_lots s WHERE flower_id=$1", [flower.id]);
+        const trim = await scalar("SELECT to_jsonb(t) FROM kq_staff_trim_lots t WHERE flower_id=$1", [flower.id]);
+        equal(Number(trim.total_grams), grams, "trim starts with the engine harvest mass");
+        const staff = await scalar("SELECT rpc_kq_staff_snapshot($1)", [cycle]);
+        const next = { version: 1, employees: [], tasks: [], payroll: [], playerWorkDays: {}, supplierDiscountPercent: 0,
+          supplierDiscountUntil: null, ...(staff.state ?? {}), lastSettledAt: staff.serverNow };
+        const effect = [{ kind: "trim-work", flowerId: flower.id, work: grams, qualityDelta: 1, mode: "manual", unit: "g" }];
+        await scalar("SELECT rpc_kq_staff_commit($1,$2,$3,$4,$5,0,$6)", [cycle, staff.revision, randomUUID(), { action: "settle" }, next, effect]);
+        const stored = (await lot()).state;
+        equal(stored.capacity.totalUnits, Math.round(grams * 10), "protected stock reconciles with the trimmed harvest");
+        const elapsed = Date.parse(stored.readyAt) - Date.now() + 3_600_000;
+        const dates = Object.fromEntries(["harvestedAt", "curingStartedAt", "lastSettledAt", "readyAt"].map(key =>
+          [key, new Date(Date.parse(stored[key]) - elapsed).toISOString()]));
+        await db.query("UPDATE kq_storage_lots SET state=state||$2::jsonb WHERE flower_id=$1", [flower.id, dates]);
+        await scalar("SELECT rpc_kq_prepare_flower_jury($1,$2)", [cycle, flower.id]);
+        // Set the synthetic jury verdict at the external scoring boundary.
+        await db.query("UPDATE kq_flowers SET status='burned',burned_at=now() WHERE id=$1", [flower.id]);
+        const mature = await lot();
+        const options = quoteKqMarketRoutes({ juryScore: 9, harvestGrams: grams, equipmentCodes: ["TENT-080-STARTER"] }).map(item => ({
+          ...item, storageRevision: mature.revision, storageChangeAt: projectKqStorageLot(mature.state, Date.now()).nextChangeAt,
+          warehouseRevision: installed.revision, warehouseState: installed.state,
+        }));
+        await scalar("SELECT rpc_kq_prepare_market_lot($1,$2,$3,9,'signature',$4,$5)", [cycle, flower.id, grams, ["TENT-080-STARTER"], options]);
+        await commerce("prepare", { flowerId: flower.id, route: "raw", expectedCostCents: 0 });
+        const before = await commerceState();
+        const stock = before.stocks.find(item => item.flowerId === flower.id);
+        const now = Date.parse(before.business.serverNow);
+        const offer = quoteKqCommerce(before, { ...stock, storage: projectKqStorageLot(stock.storageState, now, stock.juryScore) }, "wholesale", "advised", stock.remainingUnits, now);
+        const outstandingEnergy = await scalar(`SELECT (COALESCE((SELECT sum(remaining_cents) FROM kq_energy_invoices WHERE user_id=$1),0)
+          + COALESCE((SELECT sum(remaining_cents) FROM kq_storage_climate_invoices WHERE user_id=$1),0))::int`, [cycle]);
+        Object.assign(offer, previewKqBusinessPayment(offer.payoutCents, before.business, outstandingEnergy));
+        const quoteId = randomUUID(), saleKey = randomUUID();
+        await db.query(`INSERT INTO kq_commerce_quotes(id,user_id,stock_id,account_revision,campaign_id,campaign_revision,stock_units,reputation,offer,expires_at,storage_revision,energy_outstanding_cents)
+          VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,now()+interval '1 minute',$10,$11)`, [quoteId, cycle, stock.id, before.revision, before.campaign?.id ?? null,
+          before.campaign?.revision ?? null, stock.remainingUnits, before.reputation, offer, stock.storageRevision, outstandingEnergy]);
+        const sale = { quoteId, expectedPayoutCents: offer.payoutCents };
+        const sell = () => commerce("sell", sale, saleKey);
+        const settleSale = async () => {
+          if (closeLots.length) return sell();
+          const competingSale = () => peer.query("SELECT rpc_kq_commerce_command($1,'sell',$2,$3)", [cycle, sale, randomUUID()]);
+          const race = await concurrentCheck(db, peer, sell, competingSale, /commerce_offer_changed/);
+          contention.sale = { pids: race.pids, unitsBefore: stock.remainingUnits, unitsAfter: race.result.remainingUnits,
+            netCents: race.result.netPayoutCents, rejectedWith: race.rejectedWith };
+          return race.result;
+        };
+        const receipt = await settleSale().catch(async error => {
+          const body = await scalar("SELECT prosrc FROM pg_proc WHERE oid='kq_commerce_command_before_invoice_batch(uuid,text,jsonb,uuid)'::regprocedure");
+          const line = Number(/line (\d+) at RAISE/.exec(error.where ?? "")?.[1]);
+          if (Number.isInteger(line)) console.error("Sale guard:", body.split("\n").slice(line - 2, line + 1).join("\n"));
+          throw error;
+        });
+        const after = await commerceState();
+        equal(await sell(), { ...receipt, replayed: true }, "sale replay returns the stored historical receipt");
+        equal((await commerceState()).cashCents, after.cashCents, "sale replay never credits twice");
+        equal(receipt.remainingUnits, 0, "the sale consumes the complete stock");
+        equal(await scalar("SELECT remaining_units FROM kq_commerce_stock WHERE id=$1", [stock.id]), 0, "persisted stock stays cleared after replay");
+        const unpaid = await scalar(`SELECT (COALESCE((SELECT sum(remaining_cents) FROM kq_lab_invoices WHERE user_id=$1),0)
+          + COALESCE((SELECT sum(remaining_cents) FROM kq_energy_invoices WHERE user_id=$1),0)
+          + COALESCE((SELECT sum(remaining_cents) FROM kq_supplier_invoices WHERE user_id=$1),0)
+          + COALESCE((SELECT sum(remaining_cents) FROM kq_storage_climate_invoices WHERE user_id=$1),0))::int`, [cycle]);
+        equal(receipt.remainingInvoiceCents, unpaid, "the sale records the exact outstanding balance after collection");
+        closeLots.push({ grams, stockUnits: stock.remainingUnits, payoutCents: receipt.payoutCents, netCents: receipt.netPayoutCents,
+          remainingInvoiceCents: unpaid, cashCents: after.cashCents });
+      }
+      const analysis = owner => scalar(`SELECT jsonb_build_object('invoices',count(*),'cents',coalesce(sum(amount_cents),0))
+        FROM kq_lab_invoices WHERE user_id=$1`, [owner]);
+      const sowSeparate = async count => {
+        const owner = await player(plan(count));
+        const { quoteKey } = await scalar("SELECT rpc_kq_warehouse_preparations($1)", [owner]);
+        const seeded = await launch(owner, await build(owner, { deck: [], tokens: 0, preparationKey: quoteKey }));
+        return { owner, leaderId: seeded.run.id };
+      };
+      const one = await sowSeparate(1);
+      await finish(one.owner, one.leaderId);
+      const interrupted = await sowSeparate(3);
+      const saved = await row(interrupted.leaderId);
+      const ended = await action(interrupted.owner, saved, { ...saved.state, phase: "complete", cultureDead: true, harvestGrams: 0,
+        care: { ...saved.state.care, vitality: 0 } }, "resolve");
+      equal(ended.flowers, [], "an interruption before harvest creates no lot");
+      const analyses = { oneZone: await analysis(one.owner), threeZones: await analysis(cycle), interrupted: await analysis(interrupted.owner),
+        historicalInvoicesPreserved: oldInvoices.analyses.length };
+      equal(analyses.oneZone, { invoices: 1, cents: 4500 }, "a completed one-zone campaign has one 45 EUR analysis");
+      equal(analyses.threeZones, { invoices: 3, cents: 13500 }, "three lot analyses reconcile to 135 EUR");
+      equal(analyses.interrupted, { invoices: 0, cents: 0 }, "interrupting before harvest issues no analysis");
+      const report = { investmentCents: investment.totalCostCents, inputCents: offer.packPriceCents, zones: closeLots, analyses };
+      await writeFile("output/placard-reliability/contention.json", JSON.stringify(contention, null, 2));
+      await writeFile("output/placard-reliability/reconciliation.json", JSON.stringify(report, null, 2));
+      console.log("Three-zone reconciliation:", JSON.stringify(report));
+      await db.exec("BEGIN");
+    }
   }
 }
 
@@ -368,8 +625,11 @@ assert(source.includes(marker), "zone fixture end marker changed");
 source = source.replace(marker, marker + '\n  await campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote });')
   .replace(/^import .*;\n/gm, "").replace('new URL("./test-placard-warehouse.mjs", import.meta.url)', `new URL("./test-placard-warehouse.mjs", ${JSON.stringify(sourceUrl.href)})`);
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+let cluster;
 try {
-  await new AsyncFunction("assert", "randomUUID", "readFile", "path", "createServer", "PGlite", "campaignChecks", source)(assert, randomUUID, readFile, path, createFixtureServer, PGlite, campaignChecks);
+  if (process.env.KQ_TEST_POSTGRES_CLIENT) cluster = await openPlacardIsolatedPostgres();
+  const Database = cluster ? function () { return { ...cluster.open(), close: cluster.close, openPeer: cluster.open }; } : PGlite;
+  await new AsyncFunction("assert", "randomUUID", "readFile", "path", "createServer", "PGlite", "campaignChecks", source)(assert, randomUUID, readFile, path, createFixtureServer, Database, campaignChecks);
 } catch (error) {
   console.error(error.stack?.split("\n").slice(0, 8).join("\n") ?? error.message);
   if (error.where) console.error(error.where);

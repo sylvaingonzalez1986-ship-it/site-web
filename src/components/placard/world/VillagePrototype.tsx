@@ -3,30 +3,54 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Component, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, Binoculars, BookOpen, House, Landmark, Mail, Minus, NotebookPen, Pause, Play, Plus, RotateCcw, RotateCw, Scan, ShoppingBag, Sprout, Store, Swords, Target, UsersRound } from "lucide-react";
+import { Component, useCallback, useContext, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { ArrowLeft, Binoculars, BookOpen, House, Landmark, Mail, Minus, NotebookPen, Pause, Play, Plus, RotateCcw, RotateCw, Scan, Settings, ShoppingBag, Sprout, Store, Swords, Target, UsersRound } from "lucide-react";
 import { QuarterAppearanceEditorContext, QuarterCharacterContext } from "../../contest/QuarterCharacterContext";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import type { KorriganReaction } from "@/lib/kanab-quest-korrigan";
 import { navigateWithDraftGuard } from "@/lib/navigation-guard";
 import type { VillageBuildingKind } from "./village-buildings";
 import { HEMP_FARM, HEMP_FARM_ID, VILLAGE_PLACES, type VillagePlaceId } from "./village-layout";
 import { KqMailbox } from "../KqMailbox";
 import { KqPlacardNavigation, type PlacardNavKey } from "../KqPlacardNavigation";
-import type { VillageCameraRequest, VillageLifeSubject } from "./VillageCanvas";
+import type { VillageCameraRequest } from "./VillageCanvas";
 import { VillageActivities } from "./VillageActivities";
 import { VillageNpcDialogue, useVillageNpcDialogue, VILLAGE_NPC_NAMES } from "./VillageNpcDialogue";
 import type { VillageNpcId } from "./village-npc-types";
 import { useVillageActivity, useVillageMotionPreference, villageBuildingStatus } from "./useVillageActivity";
 import { useVillageCalendar } from "./useVillageCalendar";
 import { VillageCalendarSign } from "./VillageCalendarSign";
+import { VillageNightContext } from "./VillageNightContext";
 import retro from "../../contest/ArenaRetro.module.css";
 import styles from "./VillagePrototype.module.css";
 
 const Scene = dynamic(() => import("./VillageCanvas"), { ssr: false });
+const KorriganMarket = dynamic(() => import("./KorriganMarket").then(module => module.KorriganMarket), { ssr: false });
 const ICONS = { warehouse: House, bank: Landmark, office: UsersRound, market: Store, shop: ShoppingBag, arena: Swords, missions: Target, collection: BookOpen, [HEMP_FARM_ID]: Sprout };
 const DESTINATIONS = [...VILLAGE_PLACES, HEMP_FARM];
 const DEFAULT_CAMERA: VillageCameraRequest = { rotation: 0, zoom: 1, reset: 0 };
-const LIFE_SUBJECTS: readonly [VillageLifeSubject, string][] = [["player", "Mon personnage"], ["sheep", "Le troupeau de moutons"], ["wolf", "Le loup"], ["fox", "Le renard"], ["weasel", "La belette"], ["boat", "Le bateau de pêche"], ["breton", "Le sonneur de biniou"], ["fisherman", "Le pêcheur près du pont"], ["loic", "Loïc, le guide"]];
+const HIDDEN_LABELS_KEY = "kq:village:building-labels-hidden";
+const OBSERVER_NAMES: Record<VillageNpcId, string> = {
+  breton: "Le sonneur de biniou",
+  fisherman: "Le pêcheur près du pont",
+  loic: "Loïc, le guide",
+};
+const NPC_IDS = Object.keys(OBSERVER_NAMES) as VillageNpcId[];
+
+function closeVillageMenu(element: HTMLElement) {
+  const menu = element.closest("details");
+  if (menu) {
+    menu.open = false;
+    menu.querySelector("summary")?.focus();
+  }
+}
+
+function handleMenuKeyDown(event: KeyboardEvent<HTMLDetailsElement>) {
+  if (event.key === "Escape" && event.currentTarget.open) {
+    event.stopPropagation();
+    closeVillageMenu(event.currentTarget);
+  }
+}
 
 class SceneBoundary extends Component<{ children: ReactNode; onError: () => void }, { failed: boolean }> {
   state = { failed: false };
@@ -53,6 +77,7 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
   const editingAppearance = editor?.editing === true;
   const { snapshot, status, retry, clock } = useVillageActivity();
   const calendar = useVillageCalendar(clock);
+  const isNight = calendar?.phase === "night";
   const awaitingCalendar = !calendar && status === "loading";
   const { reduced, hidden } = useVillageMotionPreference();
   const [paused, setPaused] = useState(false);
@@ -63,7 +88,10 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
   const [reaction, setReaction] = useState<{ building: VillageBuildingKind; sequence: number } | null>(null);
   const [selected, setSelected] = useState<VillagePlaceId | null>(null);
   const [camera, setCamera] = useState(DEFAULT_CAMERA);
+  const [marketOpen, setMarketOpen] = useState(false);
+  const [korriganReaction, setKorriganReaction] = useState<KorriganReaction>("idle");
   const [ready, setReady] = useState(false);
+  const [labelsHidden, setLabelsHidden] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const labels = useRef(new Map<string, HTMLButtonElement>());
   const headerNode = useRef<HTMLElement>(null);
@@ -73,11 +101,36 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
   const restoringFocus = useRef(false);
   const previousActivityOpen = useRef(activityOpen);
   const selectedPlace = VILLAGE_PLACES.find(place => place.id === selected);
-  const onReady = useCallback(() => setReady(true), []);
+  const onReady = useCallback(() => {
+    try { setLabelsHidden(localStorage.getItem(HIDDEN_LABELS_KEY) === "true"); }
+    catch { /* The map still works without browser storage. */ }
+    setReady(true);
+  }, []);
   const onUnavailable = useCallback(() => setUnavailable(true), []);
   const beforeNpcInteraction = useCallback(() => { setSelected(null); setFocused(null); setMailboxFocused(false); }, []);
   const npc = useVillageNpcDialogue(hidden, beforeNpcInteraction);
   const closeNpc = npc.close;
+  const observeKorrigans = () => {
+    closeNpc();
+    setSelected(null);
+    setFocused(null);
+    setMailboxFocused(false);
+    setCamera(previous => ({ ...previous, zoom: 1, observe: "korrigans" }));
+  };
+  const closeMarket = useCallback(() => {
+    setMarketOpen(false);
+    setKorriganReaction("idle");
+    requestAnimationFrame(() => (labels.current.get("korrigans") ?? headerNode.current?.querySelector<HTMLElement>("summary"))?.focus({ preventScroll: true }));
+  }, []);
+  useEffect(() => {
+    if (isNight) closeNpc();
+  }, [isNight, closeNpc]);
+  // Drop an observation when its inhabitants leave. Returning to night starts from the village view.
+  const [previousNight, setPreviousNight] = useState(isNight);
+  if (isNight !== previousNight) {
+    setPreviousNight(isNight);
+    if (camera.observe) setCamera({ ...DEFAULT_CAMERA, reset: camera.reset + 1 });
+  }
   const select = useCallback((id: VillagePlaceId) => {
     if (id === HEMP_FARM_ID && activityOpen) return;
     closeNpc();
@@ -163,21 +216,34 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
             : status === "loading" ? <span role="status">Chargement de ta partie…</span>
               : status === "signed-out" ? <Link href="/compte/connexion?next=%2Farene%2Fplacard" prefetch={false}>Me connecter pour retrouver ma partie</Link>
                 : <><span role="status">État de la partie indisponible.</span><button type="button" className={styles.control} onClick={retry}>Réessayer</button></>}
-          {!unavailable ? <details className={styles.lifeMenu} onKeyDown={event => {
-            if (event.key === "Escape") { event.stopPropagation(); event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
-          }}>
-            <summary className={styles.control}><Binoculars size={16} aria-hidden="true" /><span>Observer</span></summary>
-            <div className={styles.lifeChoices} aria-label="Vie de l’île">
-              {editor && profile && <button className={styles.control} type="button" onClick={event => {
-                const menu = event.currentTarget.closest("details"); if (menu) { menu.open = false; menu.querySelector("summary")?.focus(); }
-                editor.open();
-              }}>Modifier mon personnage</button>}
-              {LIFE_SUBJECTS.filter(([id]) => id !== "player" || profile).map(([id, label]) => <button key={id} type="button" className={styles.control} data-observe-life={id} aria-pressed={camera.observe === id} onClick={event => {
-                closeNpc(); setSelected(null); setFocused(null); setMailboxFocused(false); setCamera(previous => ({ ...previous, zoom: 1, observe: id }));
-                const menu = event.currentTarget.closest("details"); if (menu) { menu.open = false; menu.querySelector("summary")?.focus(); }
-              }}>{label}</button>)}
-            </div>
-          </details> : null}
+          {!unavailable && <>
+            <details name="village-toolbar" className={styles.lifeMenu} onKeyDown={handleMenuKeyDown}>
+              <summary className={styles.control}><Binoculars size={16} aria-hidden="true" /><span>Observer</span></summary>
+              <div className={styles.lifeChoices} role="group" aria-label="Personnages du village">
+                {isNight ? <button type="button" className={styles.control} data-observe-life="korrigans" aria-pressed={camera.observe === "korrigans"} onClick={event => {
+                  observeKorrigans(); closeVillageMenu(event.currentTarget);
+                }}>La ronde des korrigans</button> : NPC_IDS.map(id => <button key={id} type="button" className={styles.control} data-observe-life={id} aria-pressed={camera.observe === id} onClick={event => {
+                  closeNpc(); setSelected(null); setFocused(null); setMailboxFocused(false); setCamera(previous => ({ ...previous, zoom: 1, observe: id }));
+                  closeVillageMenu(event.currentTarget);
+                }}>{OBSERVER_NAMES[id]}</button>)}
+              </div>
+            </details>
+            <details name="village-toolbar" className={styles.lifeMenu} data-village-settings onKeyDown={handleMenuKeyDown}>
+              <summary className={styles.control} aria-label="Réglages du village" title="Réglages du village"><Settings size={16} aria-hidden="true" /><span className={styles.settingsText}>Réglages</span></summary>
+              <div className={styles.lifeChoices} role="group" aria-label="Réglages du village">
+                <button type="button" className={styles.control} data-village-toggle-labels onClick={event => {
+                  setLabelsHidden(!labelsHidden);
+                  try { localStorage.setItem(HIDDEN_LABELS_KEY, String(!labelsHidden)); }
+                  catch { /* Keep the choice for this visit. */ }
+                  closeVillageMenu(event.currentTarget);
+                }}>{labelsHidden ? "Afficher les noms des bâtiments" : "Masquer les noms des bâtiments"}</button>
+                {editor && profile && <button className={styles.control} type="button" aria-label="Modifier mon personnage" onClick={event => {
+                  closeVillageMenu(event.currentTarget);
+                  editor.open();
+                }}>Modifier mon personnage</button>}
+              </div>
+            </details>
+          </>}
         </div>
         {!calendar && snapshot && <small>Calendrier indisponible</small>}
       </div>
@@ -188,11 +254,11 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
         : <SceneBoundary onError={onUnavailable}>
           <Scene calendar={calendar} profile={profile} selected={selected} onSelect={select} onOpenMailbox={openMailbox} cameraRequest={camera} labelNodes={labels}
             headerNode={headerNode} bubbleNode={bubble} bubbleTail={bubbleTail} onCloseActivities={closeActivities} onReady={onReady} onUnavailable={onUnavailable}
-            npc={npc.bridge} controlsBlocked={activityOpen} supportOpen={supportOpen} restoreSupportView={restoreSupportView}
+            npc={npc.bridge} korriganReaction={korriganReaction} controlsBlocked={activityOpen || marketOpen} supportOpen={supportOpen} restoreSupportView={restoreSupportView}
             activity={activity} motion={motion} onHover={setHovered} focusBuilding={hovered === HEMP_FARM_ID || focused === HEMP_FARM_ID ? null : hovered ?? focused ?? selectedPlace?.id ?? null} keyboardFocus={mailboxFocused ? "mailbox" : focused} reaction={reaction} />
         </SceneBoundary>}
       {!unavailable && (!ready || awaitingCalendar) ? <div className={styles.loading} role="status">Chargement du village…</div> : null}
-      <nav className={unavailable ? styles.destinations : styles.labels} hidden={unavailable && !!selectedPlace} aria-label="Les bâtiments du village">
+      <nav className={unavailable ? styles.destinations : styles.labels} data-hide-labels={!unavailable && labelsHidden || undefined} hidden={unavailable && !!selectedPlace} aria-label="Les bâtiments du village">
         {DESTINATIONS.map(place => {
           const Icon = ICONS[place.id];
           const support = place.id === HEMP_FARM_ID;
@@ -215,9 +281,14 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
             <Mail className={styles.labelIcon} size={18} aria-hidden="true" /><span>Courrier</span>
           </button>
         } />
+        {isNight && <button type="button" ref={node => {
+          if (node) labels.current.set("korrigans", node); else labels.current.delete("korrigans");
+        }} className={unavailable ? styles.control : `${styles.label} ${styles.korriganAccess}`} data-korrigan-access
+          onFocus={event => { if (event.currentTarget.matches(":focus-visible") && !unavailable) observeKorrigans(); }}
+          onClick={() => { observeKorrigans(); setKorriganReaction("invite"); setMarketOpen(true); }}>Parler aux korrigans</button>}
       </nav>
-      {!unavailable ? <nav className={styles.labels} aria-label="Les habitants du village">
-        {(Object.keys(VILLAGE_NPC_NAMES) as VillageNpcId[]).map(id => <button key={id} type="button"
+      {!unavailable && !isNight ? <nav className={styles.labels} aria-label="Les habitants du village">
+        {NPC_IDS.map(id => <button key={id} type="button"
           ref={node => { if (node) labels.current.set(`npc-${id}`, node); else labels.current.delete(`npc-${id}`); }}
           className={`${styles.label} ${styles.npcAccess}`} data-npc-access={id}
           aria-label={id === "loic" ? "Ouvrir le tutoriel avec Loïc" : `Parler avec ${VILLAGE_NPC_NAMES[id].toLowerCase()}`}
@@ -239,9 +310,10 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
         {!unavailable ? <svg className={styles.bubbleTail} data-village-bubble-tail aria-hidden="true"><path ref={bubbleTail} /></svg> : null}
         <VillageActivities key={selectedPlace.id} id={selectedPlace.id} name={selectedPlace.name} nodeRef={bubble} fallback={unavailable} onClose={closeActivities} snapshot={snapshot} onNavigate={onNavigateHref} />
       </> : null}
-      {!unavailable && npc.dialogue ? <VillageNpcDialogue dialogue={npc.dialogue} bridge={npc.bridge} onClose={() => closeNpc(true)} onReading={npc.setReading} /> : null}
+      {!unavailable && !isNight && npc.dialogue ? <VillageNpcDialogue dialogue={npc.dialogue} bridge={npc.bridge} onClose={() => closeNpc(true)} onReading={npc.setReading} /> : null}
     </section>
-    {children}
+    {marketOpen && !activityOpen && <KorriganMarket isNight={isNight} onClose={closeMarket} onReaction={setKorriganReaction} />}
+    <VillageNightContext.Provider value={isNight}>{children}</VillageNightContext.Provider>
     <span className={styles.srOnly} role="status">{selectedPlace ? `${selectedPlace.name} sélectionné. ${selectedPlace.description}` : unavailable ? null : ready ? "Village 3D prêt. Choisis un bâtiment dans le village ou avec la touche Tab." : "Chargement du village."}</span>
   </div>;
 }

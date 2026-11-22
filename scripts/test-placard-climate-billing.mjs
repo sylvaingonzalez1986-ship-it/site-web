@@ -18,7 +18,7 @@ export async function climateBillingChecks({ db, scalar, equal, reject, player, 
     return { owner, saved };
   };
 
-  for (const [code, price] of Object.entries({ "SJ-DRYIT90": 14900, "SIM-DRYING-02": 69900, "SIM-DRYING-03": 249900, "LP-SUPER-1L": 2990, "BROR-JARS-48": 64900, "CURTEC-60L": 89900, "SIM-STORAGE-CLIMATE-01": 49900, "SIM-STORAGE-CLIMATE-02": 179900, "SIM-STORAGE-CLIMATE-03": 499900 })) {
+  for (const [code, price] of Object.entries({ "SJ-DRYIT90": 4490, "SIM-DRYING-02": 13320, "SIM-DRYING-03": 19560, "LP-SUPER-1L": 2870, "BROR-JARS-48": 35960, "CURTEC-60L": 3490, "SIM-STORAGE-CLIMATE-01": 39500, "SIM-STORAGE-CLIMATE-02": 57900, "SIM-STORAGE-CLIMATE-03": 107900 })) {
     equal((await scalar("SELECT kq_warehouse_device($1)", [code])).priceCents, price, `${code} new price is authoritative in SQL`);
     equal(catalog.getKqWarehouseDevice(code).priceCents, price, `${code} advertised price agrees`);
   }

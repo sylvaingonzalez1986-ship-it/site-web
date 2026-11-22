@@ -45,6 +45,7 @@
 .campaignLaunch { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; padding: 10px 12px; background: #efc451; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); box-shadow: var(--game-panel-shadow, none); }
 .campaignLaunch > span { font-size: 12px; color: #172923; }
 .campaignLaunch > :is(a,button) { min-height: 44px; }
+.inspector [data-warehouse-zone-prepare] { min-height: 44px; }
 .preparationAccess { background: var(--game-surface-warm, #ffb05c); }
 .preparationAccess > span { display: grid; gap: 4px; flex: 1 1 230px; }
 .preparationAccess strong { font-size: 15px; }

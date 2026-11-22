@@ -9,9 +9,10 @@ const lightingOnly = process.argv.includes('--lighting-only');
 const handlingOnly = process.argv.includes('--handling-only');
 const climateControlOnly = process.argv.includes('--climate-control-only');
 const preview = process.argv.includes('--fresh');
-const resetAudit = process.argv.includes('--reset-audit');
+const recoveryOnly = process.argv.includes('--recovery-only');
+const resetAudit = process.argv.includes('--reset-audit') || recoveryOnly;
 const fresh = preview || resetAudit;
-const output = resolve(fresh ? 'output/warehouse-fresh-local' : handlingOnly ? 'output/warehouse-handling-placement' : lightingOnly ? 'output/warehouse-lighting' : climateControlOnly ? 'output/warehouse-climate-control' : 'output/warehouse-shop-first');
+const output = resolve(recoveryOnly ? 'output/warehouse-preparation-recovery' : fresh ? 'output/warehouse-fresh-local' : handlingOnly ? 'output/warehouse-handling-placement' : lightingOnly ? 'output/warehouse-lighting' : climateControlOnly ? 'output/warehouse-climate-control' : 'output/warehouse-shop-first');
 await mkdir(output, { recursive: true });
 
 
@@ -19,6 +20,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
   .split("if(process.argv.includes('--preview'))")[0]
   .replace("'output/warehouse-v4'", JSON.stringify(output))
   .replace('?? 3248', '?? 3395')
+  .replace('window.__snapshot.cashCents=4_000_000;', `if (!${fresh}) window.__snapshot.cashCents=4_000_000;`)
   .replace("'react-dom/client', 'lucide-react']", lightingOnly
     ? "'react-dom/client', 'lucide-react', 'three', 'three/addons/utils/BufferGeometryUtils.js']"
     : "'react-dom/client', 'lucide-react']")
@@ -38,7 +40,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
     }`)
   .replace("import {KqWarehouse} from '/src/components/placard/KqWarehouse';", `
     import {KqWarehouse} from '/src/components/placard/KqWarehouse';
-    import {KQ_WAREHOUSE_PREPARATION_CATALOG,getKqWarehouseInputPack,isKqWarehouseInputCode} from '/src/lib/kanab-quest-warehouse-preparations';
+    import {KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER,KQ_WAREHOUSE_PREPARATION_CATALOG,getKqWarehouseInputPack,isKqWarehouseInputCode} from '/src/lib/kanab-quest-warehouse-preparations';
     import {getKqWarehouseStationEntrance} from '/src/lib/kanab-quest-warehouse-stations';
     import {getKqBusinessClock,KQ_GAME_DAY_MS} from '/src/lib/kanab-quest-business';
     import {KQ_PLAYER_DAILY_HOURS} from '/src/lib/kanab-quest-player-work';
@@ -56,14 +58,30 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
     }
     if (${fresh} && String(url) === '/api/arena/placard/warehouse/preparations') {
       const current = window.__snapshot;
-      return (${previewPreparations})(current, init, {
-        catalog: KQ_WAREHOUSE_PREPARATION_CATALOG, packFor: getKqWarehouseInputPack, gameClock: getKqBusinessClock,
+      const account = sessionStorage.getItem('audit-preparation-account') ?? 'warehouse-preview';
+      const headers = { [KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER]: account };
+      const expected = new Headers(init.headers).get(KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER);
+      const post = init.method === 'POST';
+      if (post && expected !== null && expected !== account) return Response.json({ error: 'Le compte a changé.' }, { status: 409, headers });
+      const interruption = post && sessionStorage.getItem('audit-preparation-interruption');
+      if (interruption) sessionStorage.removeItem('audit-preparation-interruption');
+      if (post) (window.__preparationAttempts ??= []).push(JSON.parse(init.body).requestKey);
+      if (interruption === 'before') throw new TypeError('Réponse perdue pendant la recette.');
+      const snapshot = account === 'warehouse-preview' ? current : { ...current, cashCents: 100000, previewInputInventory: {}, previewPackReceipts: {} };
+      const response = (${previewPreparations})(snapshot, init, {
+        catalog: KQ_WAREHOUSE_PREPARATION_CATALOG, packFor: code => {
+          const pack = getKqWarehouseInputPack(code);
+          return pack && code === 'CARE-IRON' && sessionStorage.getItem('audit-preparation-new-price')
+            ? { ...pack, packPriceCents: pack.packPriceCents + 1 } : pack;
+        }, gameClock: getKqBusinessClock,
         dayMs: KQ_GAME_DAY_MS, dailyHours: KQ_PLAYER_DAILY_HOURS, entrance: getKqWarehouseStationEntrance(getKqWarehouseDimensions(current.state)),
         save: next => {
           window.__snapshot = next;
           try { persistFixture(); } catch (error) { window.__snapshot = current; throw error; }
         },
       });
+      if (interruption === 'after') throw new TypeError('Réponse perdue pendant la recette.');
+      return new Response(response.body, { status: response.status, headers });
     }
     if (${climateControlOnly} && String(url) === '/api/arena/placard/warehouse/preparations' && (!init.method || init.method === 'GET')) {
       const unused = { completedAt: null, expiresAt: null, pending: null };
@@ -88,6 +106,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
     function restart(){
       if(!window.confirm('Recommencer cette partie locale avec 1 000 € et un entrepôt vide ?'))return;
       if(persistenceKey)sessionStorage.removeItem(persistenceKey);
+      sessionStorage.removeItem('kq:preparation:pending:warehouse-preview');
       writeWarehouseDraft(warehouseDraftStorage(),'warehouse-preview',null);
       location.reload();
     }
@@ -766,27 +785,52 @@ try {
   });
   assert.equal(purchase.bought.cashCents, 100000 - ${retail['SIM-LOGISTICS-02'].unitPriceCents});
   assert.equal(purchase.bought.revision, 2);
-  await page.reload({ waitUntil: 'domcontentloaded' });
+  const reopen = () => page.goto(origin + ${JSON.stringify(freshUrl + '&rayon=nutrition')}, { waitUntil: 'domcontentloaded' });
+  await reopen();
   await page.waitForFunction(() => window.__snapshot?.revision === 2);
-  const enter = '[data-building="warehouse"] a[href="/arene/placard?view=workshop"]';
   const press = async selector => {
     await page.waitForSelector(selector, { visible: true });
     await page.focus(selector);
     await page.keyboard.press('Enter');
   };
-  await press(enter);
-  await press('[data-warehouse-build-shop]');
-  await press('dialog[open] [data-warehouse-shop-category="nutrition"]');
+  await page.evaluate(() => sessionStorage.setItem('audit-preparation-interruption', 'after'));
   await press('[data-warehouse-buy-pack="CARE-IRON"]');
-  await page.waitForSelector('[data-warehouse-supply="CARE-IRON"] [data-supply-stock="100"]');
+  await page.waitForFunction(() => document.body.textContent.includes('Vérifier l’opération'));
   const boughtPack = await page.evaluate(() => ({
     cash: window.__snapshot.cashCents, requestKey: Object.keys(window.__snapshot.previewPackReceipts)[0],
     products: document.querySelectorAll('[data-warehouse-buy-pack]').length,
   }));
   assert.equal(boughtPack.cash, purchase.bought.cashCents - 1390);
   assert.equal(boughtPack.products, 18);
-  await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => window.__snapshot?.previewInputInventory?.['CARE-IRON'] === 100);
+  const verify = 'button::-p-text(Vérifier l’opération)';
+  await page.evaluate(() => sessionStorage.setItem('audit-preparation-account', 'warehouse-preview-other'));
+  await reopen();
+  await page.waitForSelector('[data-warehouse-supply="CARE-IRON"] [data-supply-stock="0"]');
+  assert.equal(await page.$(verify), null, 'the other account never receives the pending operation');
+  assert.equal(await page.evaluate(() => window.__preparationAttempts?.length ?? 0), 0);
+  await page.evaluate(() => sessionStorage.removeItem('audit-preparation-account'));
+  await reopen();
+  await page.waitForSelector('[data-warehouse-supply="CARE-IRON"] [data-supply-stock="100"]');
+  await page.waitForSelector(verify);
+  assert.equal(await page.evaluate(() => window.__preparationAttempts?.length ?? 0), 0, 'loading the register does not submit the command');
+  await page.click(verify);
+  await page.waitForSelector(verify, { hidden: true });
+  assert.deepEqual(await page.evaluate(() => window.__preparationAttempts), [boughtPack.requestKey]);
+  assert.equal(await page.evaluate(() => window.__snapshot.cashCents), boughtPack.cash);
+
+  await page.evaluate(() => sessionStorage.setItem('audit-preparation-interruption', 'before'));
+  await press('[data-warehouse-buy-pack="CARE-IRON"]');
+  await page.waitForSelector(verify);
+  const outdated = await page.evaluate(() => window.__preparationAttempts.at(-1));
+  await page.evaluate(() => sessionStorage.setItem('audit-preparation-new-price', '1'));
+  await reopen();
+  await page.waitForSelector(verify);
+  await page.click(verify);
+  await page.waitForFunction(() => document.body.textContent.includes('Le prix a changé.'));
+  assert.deepEqual(await page.evaluate(() => window.__preparationAttempts), [outdated]);
+  assert.equal(await page.$(verify), null, 'expired quote resolves the uncertain operation');
+  assert.equal(await page.evaluate(() => window.__snapshot.cashCents), boughtPack.cash);
+  await page.evaluate(() => sessionStorage.removeItem('audit-preparation-new-price'));
   const replay = await page.evaluate(async key => {
     const path = '/api/arena/placard/warehouse/preparations';
     const order = { action: 'purchasePack', code: 'CARE-IRON', quantity: 1, expectedCents: 1390, requestKey: key };
@@ -796,6 +840,8 @@ try {
     return { cash: repeated.cashCents, stock: repeated.items.find(item => item.code === order.code).availableQuantity, stale: stale.status };
   }, boughtPack.requestKey);
   assert.deepEqual(replay, { cash: boughtPack.cash, stock: 100, stale: 409 });
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('dialog[open]', { hidden: true });
   page.once('dialog', dialog => void dialog.accept());
   await Promise.all([page.waitForNavigation({ waitUntil: 'domcontentloaded' }), page.click('[data-warehouse-preview-reset]')]);
   await page.waitForFunction(() => window.__snapshot?.revision === 1);
@@ -814,8 +860,9 @@ try {
   const report = { cashCents: result.state.cashCents, floor: result.state.state.floor, zones: result.state.state.zones.length,
     equipment: result.state.state.equipment.length, stockGrams: result.state.stockGrams, activeRuns: result.state.activeRuns.length,
     receipts: result.receipts.length, previewPacks: { products: boughtPack.products, persistedCharges: replay.stock, cashAfterCents: replay.cash },
+    recoveredCommand: boughtPack.requestKey, rejectedExpiredCommand: outdated, otherAccountUntouched: true,
     fixtureAccountPreserved: true, fixtureOrderPreserved: true, cleaning: [] };
-  for (const width of [1440, 320]) report.cleaning.push(await checkCleaning(browser, width));
+  if (!${recoveryOnly}) for (const width of [1440, 320]) report.cleaning.push(await checkCleaning(browser, width));
   await writeFile(resolve(output,'rapport.json'),JSON.stringify(report,null,2));
   console.log(JSON.stringify(report));
 } finally {

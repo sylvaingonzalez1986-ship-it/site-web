@@ -68,6 +68,9 @@ export type KqCommerceReceipt = {
   action: string; stockId?: string; flowerId?: string; channel?: KqSalesChannel; units?: number; payoutCents?: number;
   electricityPaidCents?: number; netPayoutCents?: number; cashAfterCents: number; reputationGain?: number;
   vatCents?: number; labPaidCents?: number; supplierPaidCents?: number;
+  lotName?: string;
+  /** Unpaid supplier, lab and energy invoices at the time of this sale. */
+  remainingInvoiceCents?: number;
   satisfaction?: KqCustomerSatisfaction; clientsBefore?: number; shopPartnersBefore?: number; shopPartnersAfter?: number; shopPartnersDelta?: number; shopPricePercent?: number;
   expertiseBonus?: number; clientsAfter?: number; remainingUnits?: number; replayed?: boolean;
 };

@@ -7,6 +7,7 @@ const district = 'canvas[data-village-ready="true"]';
 const farm = '[data-village-building="hemp-farm"]';
 const amount = support + ' input[name="amount"]';
 const submit = support + ' button[type="submit"]';
+const officialBitcoin = panel + ' ' + support + ' a[href="https://www.leschanvriersbretons.com/soutenir"]';
 
 async function viewAtFarm(page) {
   return page.evaluate(async district => {
@@ -240,12 +241,38 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     results.push({ scenario: terminal, provider, originalAttemptTracked: true });
   }
 
+  for (const scenario of ['viva-only', 'no-providers']) {
+    await load('financial-support-' + scenario, 320, 'view=hub');
+    await keyClick(farm);
+    await openPanel();
+    await page.waitForSelector(officialBitcoin, { visible: true });
+    const link = await page.$eval(officialBitcoin, node => {
+      // Exercise keyboard activation while keeping the real merchant site outside this fixture.
+      node.addEventListener('click', event => {
+        event.preventDefault();
+        node.dataset.auditActivated = 'true';
+      }, { once: true });
+      return { text: node.innerText, target: node.target };
+    });
+    assert.match(link.text, /Bitcoin Lightning\s*Formulaire officiel/i);
+    assert.equal(link.target, '_blank');
+    assert.equal(Boolean(await page.$(submit)), scenario === 'viva-only');
+    if (scenario === 'viva-only') {
+      assert.equal(await page.$eval(support + ' input[name="provider"]:checked', node => node.value), 'viva');
+    }
+    await keyClick(officialBitcoin);
+    assert.equal(await page.$eval(officialBitcoin, node => node.dataset.auditActivated), 'true');
+    assert.deepEqual(await calls(), []);
+    results.push({ scenario, width: 320, officialBitcoinForm: true, localPaymentRequests: 0 });
+  }
+
   for (const [scenario, expected] of [['error', /momentanément indisponible/], ['malformed', /momentanément indisponible/], ['review', /Total en cours de vérification/], ['no-goal', /150,00/], ['closed', /actuellement fermées/]]) {
     await load('financial-support-' + scenario, 320, 'view=hub&support=1');
     await openPanel();
     await waitText(support, expected);
     assert.equal(Boolean(await page.$(support + ' [role="meter"]')), scenario === 'closed');
     if (['error', 'malformed', 'closed'].includes(scenario)) assert.equal(await page.$(submit), null);
+    if (scenario === 'closed') assert.equal(await page.$(officialBitcoin), null);
     if (['error', 'malformed'].includes(scenario)) assert.doesNotMatch(await page.$eval(support, node => node.textContent), /0,00/);
     await layout();
     results.push({ scenario, truthfulSummary: true });

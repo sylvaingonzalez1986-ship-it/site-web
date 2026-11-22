@@ -1,6 +1,6 @@
 /** Local UI audit. Real lobby, shell, collection and progression; destination stubs isolate navigation. */
 import assert from 'node:assert/strict';
-import {mkdir, stat, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, stat, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createServer, transformWithOxc} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
@@ -30,7 +30,9 @@ const coast=coastCorner||process.argv.includes('--coast');
 const coastBaseline=coast&&process.argv.includes('--baseline');
 const coastReport=`coast${coastCorner?'-corner':''}-${coastBaseline?'before':'after'}.json`;
 const bankOfficeOnly=process.argv.includes('--bank-office');
-const buildingRooms=bankOfficeOnly||process.argv.includes('--building-rooms');
+const buildingRoomsNight=process.argv.includes('--building-rooms-night');
+const exportNightPosters=buildingRoomsNight&&process.argv.includes('--export-night-posters');
+const buildingRooms=buildingRoomsNight||bankOfficeOnly||process.argv.includes('--building-rooms');
 const world3d=coast||quarterTeam||buildingRooms||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
@@ -51,7 +53,7 @@ const schoolReal=process.argv.includes('--school-real')||schoolVisual||schoolHis
 const schoolFixture=schoolReal?await createSchoolFixture():null;
 const schoolPlayerFixtures=new Map([[1,Promise.resolve(schoolFixture)]]);
 let tournamentFixturePromise;
-const reportName=bankOfficeOnly?'bank-office-report.json':buildingRooms?'building-rooms-report.json':world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
+const reportName=buildingRoomsNight?'building-rooms-night-report.json':bankOfficeOnly?'bank-office-report.json':buildingRooms?'building-rooms-report.json':world3d?'world-3d-report.json':schoolChallenge?'school-challenge-report.json':schoolQuizFlow?'school-quiz-flow-report.json':schoolHarvest?'school-harvest-report.json':schoolProducts?'school-products-report.json':schoolSoil?'school-soil-report.json':schoolHealth?'school-health-report.json':schoolCultivation?'school-cultivation-report.json':schoolCannabinoids?'school-cannabinoids-report.json':schoolTerpenes?'school-terpenes-report.json':schoolBotany?'school-botany-report.json':schoolHistory?'school-history-report.json':schoolVisual?(process.env.SCHOOL_VISUAL_LAYOUT_ONLY?(process.env.SCHOOL_AUDIT_WIDTHS?'school-visual-layout-320-report.json':'school-visual-layout-report.json'):'school-visual-report.json'):schoolReal?(process.env.SCHOOL_AUDIT_WIDTHS?'school-regression-report.json':'school-real-report.json'):cardsOnly?'cards-school-report.json':focusOnly?'focus-report.json':motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json';
 const MAP_ASSET='/placard/map/placard-world-quizzshow-v9.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
 // Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
@@ -194,6 +196,12 @@ else try {
   const url=new URL(request.url());
   if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();
   if(url.origin!==origin)return void request.abort();
+  const poster=exportNightPosters&&url.pathname.match(/^\/placard\/building-rooms\/(bank|office|market|missions|arena|shop)-night\.webp$/);
+  if(poster){
+   // Vite may have indexed public files before this run exported the posters.
+   const body=await readFile(resolve(root,`public/placard/building-rooms/${poster[1]}-night.webp`)).catch(()=>null);
+   if(body)return void request.respond({status:200,contentType:'image/webp',body});
+  }
   if(!url.pathname.startsWith('/api/'))return void request.continue();
   requests.push({path:url.pathname,method:request.method()});
   if(teamFixture&&url.pathname==='/api/arena/placard/staff')return void teamFixture.handle(request);
@@ -205,7 +213,18 @@ else try {
   if(scenario==='overflow-equipment-error'&&url.pathname==='/api/arena/placard/equipment')return void request.respond({status:503,contentType:'application/json',body:'{"error":"Résumé indisponible"}'});
   void request.respond({status:payload?200:404,contentType:'application/json',body:JSON.stringify(payload??{error:'API non simulée'})});
  });
- const visit=async(state='starter',query='')=>{scenario=state;failed=false;await page.goto(`${origin}/arene/placard?scenario=${state}${query?'&'+query:''}`,{waitUntil:'networkidle0'});await page.evaluate(()=>document.fonts.ready);};
+ const visit=async(state='starter',query='')=>{
+  scenario=state;failed=false;
+  const url=`${origin}/arene/placard?scenario=${state}${query?'&'+query:''}`;
+  if(buildingRoomsNight){
+   // The room's rendered-canvas and destination checks are the readiness condition.
+   await page.goto(url,{waitUntil:'domcontentloaded',timeout:12000}).catch(error=>{
+    if(error.name!=='TimeoutError'||page.url()!==url)throw error;
+   });
+   return;
+  }
+  await page.goto(url,{waitUntil:'networkidle0'});await page.evaluate(()=>document.fonts.ready);
+ };
  const view=async destination=>{await page.waitForSelector(`[data-placard-view="${destination}"]`);if(destination!=='hub')await page.waitForSelector('[data-destination], [data-placard-collections], [data-school]');else{await page.waitForSelector('[data-map-zoom-toggle]');assert.equal(await page.$('[data-placard-map] [aria-label="Aide du quartier"], [data-placard-map] [data-help-facts], [data-map-motion-toggle]'),null,'The map help panel and manual animation control are absent');}};
  const visible=async selector=>page.waitForFunction(selector=>[...document.querySelectorAll(selector)].find(element=>element.checkVisibility()),{},selector);
  const mapPoint=async(id,kind='hit')=>page.evaluate(async({id,kind})=>{
@@ -366,6 +385,9 @@ else try {
    await auditVillageCoast({page,visit,results,baseline:coastBaseline,output,corner:coastCorner});
  }else if(quarterTeam){
    await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
+ }else if(buildingRoomsNight){
+   const {auditNightBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
+   await auditNightBuildingRooms({page,visit,results,output,exportPosters:exportNightPosters});
  }else if(buildingRooms){
    const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
    await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output,bankOfficeOnly});

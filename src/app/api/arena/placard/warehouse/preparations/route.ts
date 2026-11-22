@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { readRequestBody } from "@/lib/body-size-guard";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { isKqWarehouseInputCode, isKqWarehouseInputQuantities, isKqWarehousePreparationCode, type KqWarehousePreparationCommand } from "@/lib/kanab-quest-warehouse-preparations";
+import { isKqWarehouseInputCode, isKqWarehouseInputQuantities, isKqWarehousePreparationCode, KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER, type KqWarehousePreparationCommand } from "@/lib/kanab-quest-warehouse-preparations";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { commitKqWarehousePreparation, getKqWarehousePreparations } from "@/lib/supabase/kanab-quest-warehouse-preparations-backend";
 
@@ -10,6 +10,7 @@ export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const id = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0 && value.length <= 80;
+const accountHeaders = (customerId: string) => ({ ...headers, [KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER]: customerId });
 
 function readCommand(value: unknown): KqWarehousePreparationCommand | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
@@ -50,7 +51,7 @@ export async function GET() {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers });
   try {
-    return NextResponse.json(await getKqWarehousePreparations(session.customerId), { headers });
+    return NextResponse.json(await getKqWarehousePreparations(session.customerId), { headers: accountHeaders(session.customerId) });
   } catch {
     return NextResponse.json({ error: "Préparations momentanément indisponibles." }, { status: 503, headers });
   }
@@ -60,6 +61,11 @@ export async function POST(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers });
+  const scopedHeaders = accountHeaders(session.customerId);
+  const expectedAccount = request.headers.get(KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER);
+  if (expectedAccount !== null && expectedAccount !== session.customerId) {
+    return NextResponse.json({ error: "Le compte a changé. Relis le registre du compte connecté." }, { status: 409, headers: scopedHeaders });
+  }
   const ip = getRequestIp(request);
   const key = `kq_warehouse_preparations:${session.customerId}:${ip}`;
   const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
@@ -72,7 +78,7 @@ export async function POST(request: Request) {
     if (!bounded.ok) return bounded.response;
     const command = readCommand(await bounded.body.json().catch(() => null));
     if (!command) return NextResponse.json({ error: "Préparation invalide." }, { status: 400, headers });
-    return NextResponse.json(await commitKqWarehousePreparation(session.customerId, command), { headers });
+    return NextResponse.json(await commitKqWarehousePreparation(session.customerId, command), { headers: scopedHeaders });
   } catch (error) {
     const message = error instanceof Error ? error.message : "[supabase]";
     if (message.startsWith("[supabase")) return NextResponse.json({ error: "Préparations momentanément indisponibles." }, { status: 503, headers });

@@ -1,0 +1,45 @@
+{
+  "investmentCents": 105639,
+  "inputCents": 1188,
+  "zones": [
+    {
+      "grams": 231.1,
+      "stockUnits": 2311,
+      "payoutCents": 50958,
+      "netCents": 27435,
+      "remainingInvoiceCents": 20100,
+      "cashCents": 9920608
+    },
+    {
+      "grams": 194.6,
+      "stockUnits": 1946,
+      "payoutCents": 40866,
+      "netCents": 34055,
+      "remainingInvoiceCents": 20100,
+      "cashCents": 9954663
+    },
+    {
+      "grams": 213,
+      "stockUnits": 2130,
+      "payoutCents": 44730,
+      "netCents": 37275,
+      "remainingInvoiceCents": 20100,
+      "cashCents": 9991938
+    }
+  ],
+  "analyses": {
+    "oneZone": {
+      "cents": 4500,
+      "invoices": 1
+    },
+    "threeZones": {
+      "cents": 13500,
+      "invoices": 3
+    },
+    "interrupted": {
+      "cents": 0,
+      "invoices": 0
+    },
+    "historicalInvoicesPreserved": 16
+  }
+}

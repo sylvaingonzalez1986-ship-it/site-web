@@ -1,7 +1,7 @@
 ﻿import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { MAP_ENTRANCES, MAP_SCENERY } from "../KqPlacardMap.scene";
-import { paintingToGround, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
+import { paintingToGround, VILLAGE_KORRIGAN_GLADE, VILLAGE_MAILBOX_POSITION, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
 import { createVillageMainland } from "./village-mainland";
 import { VILLAGE_SHEEP_PASTURE } from "./village-sheep-pasture";
 import { projectVillageSurface, villageGraniteBlock, villageMaterial, type VillageSurface } from "./village-surfaces";
@@ -462,6 +462,41 @@ export function createVillageTerrain() {
     p.foliage(C.leafTip, [trunk[0] + size * 0.28, trunk[1] + size * 0.27, trunk[2] - size * 0.28], [size * 0.55, size * 0.32, size * 0.53], px, canopy);
   }
   [[80, 100, 1.05], [150, 65, 1.1], [540, 95, 1.2], [620, 150, 0.9], [985, 165, 0.85], [1470, 555, 0.95], [110, 790, 1.05], [40, 930, 1.1], [170, 1030, 0.8], [1100, 790, 0.72], [1420, 1040, 1.2]].forEach(([px, py, size]) => tree(px, py, size));
+
+  // The old oak and its roots are part of the permanent, season-tinted terrain.
+  const { x: oakX, z: oakZ, trunkRadius } = VILLAGE_KORRIGAN_GLADE;
+  const oakAt = (x: number, y: number, z: number): XYZ => [oakX + x, y, oakZ + z];
+  navigationObstacles.push({ x: oakX, z: oakZ, radius: trunkRadius });
+  const barkShadow = new THREE.Color("#543a2b");
+  const bark = (color: THREE.Color, x: number, y: number, z: number) => {
+    const a = Math.atan2(x - oakX + y * .046, z - oakZ);
+    color.set("#a5744e").lerp(barkShadow, .31 + .26 * Math.sin(8 * a + .46 * y));
+  };
+  const trunkProfile = [[.77, .004], [.63, .14], [.51, .41], [.428, .83], [.379, 1.38], [.342, 2.12], [.319, 2.63], [.253, 3.21], [.185, 3.75]];
+  const trunk = new THREE.LatheGeometry(trunkProfile.map(([radius, height]) => new THREE.Vector2(radius, height)), 26);
+  const rings = trunk.getAttribute("position");
+  for (let i = 0; i < rings.count; i++) {
+    const px = rings.getX(i), py = rings.getY(i), pz = rings.getZ(i), angle = Math.atan2(pz, px);
+    const flare = Math.max(0, Math.cos(6 * angle - 1.02)) ** 3 * (.54 * Math.exp(-py * 5.7));
+    const groove = .041 * Math.cos(8 * angle + .32 * py) + .024 * Math.sin(15 * angle - .64 * py);
+    const spread = 1 + flare + groove;
+    rings.setXYZ(i, px * spread - py * .046, py, pz * spread + .063 * Math.sin(py * .7));
+  }
+  const facets = trunk.toNonIndexed();
+  trunk.dispose(); facets.computeVertexNormals();
+  p.add(facets, bark, oakAt(0, 0, 0));
+  for (let index = 0; index < 6; index++) {
+    const angle = index * Math.PI / 3 + .17;
+    const dx = Math.cos(angle), dz = Math.sin(angle);
+    const branch = oakAt(dx * (1.33 + .12 * (index % 2)), 3.62 + .24 * (index % 3), dz * 1.35);
+    p.beam(index % 2 ? "#9a6d41" : "#7f573a", oakAt(-.19, 2.22 + .24 * (index % 3), .08), branch, .23);
+    p.beam("#9a6d41", branch, oakAt(dx * 1.82, 4.33, dz * 1.70), .117);
+    p.foliage(index % 3 ? "#538a4b" : "#2e6345", oakAt(dx * 1.37, 4.30 + .25 * (index % 3), dz * 1.38), [1.13, .89, 1.15], index * 1.7, "crown");
+    p.foliage(index % 2 ? "#60944e" : "#3d744b", oakAt(dx * .64 - .19, 4.63 + .28 * (index % 3), dz * .71), [.98, .81, 1.02], index * 2.85, "crownWarm");
+  }
+  const oakCrown = oakAt(-.20, 5.13, .07);
+  p.foliage("#548445", oakCrown, [1.26, .98, 1.18], 3.8, "crownWarm");
+  seasonAnchors.push(oakCrown);
 
   function fence(points: readonly Point[]) {
     const samples = curve(points, 0.9);

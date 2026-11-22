@@ -2,7 +2,10 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '/src/app/globals.css';
 import { PlacardPlayerShell } from '/src/components/placard/PlacardPlayerShell';
-import { createKqWarehouseEmpty } from '/src/lib/kanab-quest-warehouse';
+import { QuarterCharacterGate } from '/src/components/contest/QuarterCharacterGate';
+import { createKqWarehouseEmpty, getKqWarehouseQuote } from '/src/lib/kanab-quest-warehouse';
+import { proposeFirstWarehousePlan } from '/src/lib/kanab-quest-warehouse-first-plan';
+import { sylvainStorageKey } from '/src/lib/kanab-quest-sylvain-guide';
 import { KQ_STARTING_CASH_CENTS } from '/src/lib/kanab-quest-equipment';
 import { createReleveCultureTransport } from '/src/lib/kanab-quest-releve-culture';
 import { createKqReleveProduction } from '/src/lib/kanab-quest-releve-production';
@@ -20,11 +23,19 @@ import { installPlacardCardShopFixture } from '/scripts/fixtures/placard-card-sh
 const key = 'loic-local-fixture';
 const empty = createKqWarehouseEmpty();
 const startedAt = new Date().toISOString();
-const welcome = new URLSearchParams(location.search).has('welcome');
+const params = new URLSearchParams(location.search);
+const welcome = params.has('welcome');
+const avatar = params.has('avatar');
+const zoneChoice = params.has('zone-choice');
+const starter = zoneChoice ? getKqWarehouseQuote(proposeFirstWarehousePlan(empty), empty) : null;
+if (zoneChoice && !localStorage.getItem(sylvainStorageKey(key))) {
+  localStorage.setItem(sylvainStorageKey(key), JSON.stringify({ mode: 'active', completed: ['warehouse', 'install'], skipped: [] }));
+}
+let character = JSON.parse(sessionStorage.getItem('loic-character'));
 let farm = JSON.parse(sessionStorage.getItem(key)) ?? {
-  ...createKqReleveProduction(), clock: Date.now(), warehouse: empty, draftWarehouse: empty,
+  ...createKqReleveProduction(), clock: Date.now(), warehouse: starter?.nextState ?? empty, draftWarehouse: starter?.nextState ?? empty, revision: starter ? 1 : 0,
   ownedBuddies: welcome ? [] : ['HH2026-020','HH2026-021','HH2026-022'], recentBuddieCodes: [],
-  supportInventory: {}, deckCodes: [], heritageCode: null, cashCents: KQ_STARTING_CASH_CENTS,
+  supportInventory: {}, deckCodes: [], heritageCode: null, cashCents: KQ_STARTING_CASH_CENTS - (starter?.totalCostCents ?? 0),
 };
 const request = createReleveCultureTransport({
   getState: () => farm,
@@ -85,9 +96,15 @@ window.fetch = async (input, init = {}) => {
   if (path.endsWith('/staff')) return json(projectKqStaffSnapshot({ state:createKqStaffState(startedAt), revision:0,
     serverNow:new Date().toISOString(), cashCents:farm.cashCents, context:{businessStartedAt:startedAt,
       reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],trimLots:[]} }));
-  if (path.endsWith('/tutorial')) return json({ userId:key, chanvrier:null });
-  if (path.endsWith('/social/player')) return json({ firstName:'Camille', profile:null });
+  if (path.endsWith('/tutorial')) return json({ userId:key, chanvrier:character });
+  if (path === '/api/arena/chanvrier' && method === 'POST' && avatar) {
+    character = body;
+    sessionStorage.setItem('loic-character', JSON.stringify(character));
+    return json({ profile:character, created:true });
+  }
+  if (path.endsWith('/social/player')) return json({ firstName:'Camille', profile:character });
   if (path.endsWith('/missions')) return json({collectionActive:true, missions:[]});
   return request(input, init);
 };
-createRoot(document.getElementById('root')).render(<PlacardPlayerShell draftOwnerId={key}/>);
+const village = <PlacardPlayerShell draftOwnerId={key}/>;
+createRoot(document.getElementById('root')).render(avatar ? <QuarterCharacterGate ownerId={key}>{village}</QuarterCharacterGate> : village);

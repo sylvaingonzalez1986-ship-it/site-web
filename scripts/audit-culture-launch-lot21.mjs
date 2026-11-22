@@ -26,6 +26,19 @@ let production=createKqReleveProduction();const act=action=>production=applyKqRe
 act({type:'draft',warehouse:suggestKqRelevePlan(production,count)});act({type:'save-plan'});
 for(let index=0;index<3;index++)act({type:'reveal-buddie'});
 production.warehouse.zones.forEach((zone,index)=>act({type:'assign',zoneId:zone.id,buddieCode:production.ownedBuddies[index]}));act({type:'save-plan'});
+if(scenario.startsWith('rotation-4'))production={...production,ownedBuddies:[...production.ownedBuddies,KQ_BUDDIES.find(b=>!production.ownedBuddies.includes(b.code)).code]};
+if(scenario.endsWith('-after')){
+ const recentBuddieCodes=production.warehouse.zones.map(zone=>zone.buddieCode).reverse();
+ const available=production.ownedBuddies.filter(code=>!recentBuddieCodes.includes(code));
+ production={...production,recentBuddieCodes};
+ const zones=production.warehouse.zones.map((zone,index)=>{
+  const next={...zone};delete next.buddieCode;
+  if(available[index])next.buddieCode=available[index];
+  return next;
+ });
+ act({type:'draft',warehouse:{...production.warehouse,zones}});
+ act({type:'save-plan'});
+}
 const transport=createReleveCultureTransport({getState:()=>production,setState:next=>{production=next;window.__production=next;}});
 const offered={energy:12345,consumables:6789};let energyState=scenario,release;
 window.__calls=[];window.__starts=[];window.__production=production;
@@ -46,6 +59,10 @@ const request=async(input,init)=>{
  if(path.endsWith('/runs')&&method==='POST'){window.__starts.push(JSON.parse(init.body));return Response.json({error:'Lancement indisponible dans la recette locale. Réessaie.'},{status:503});}
  if(method!=='GET')throw new Error('Unexpected local mutation '+method+' '+path);
  if(path.includes('/contracts'))return Response.json({error:'Contrat hors recette'},{status:404});
+ if(path.endsWith('/warehouse/preparations')){
+  const empty={completedAt:null,expiresAt:null,pending:null};
+  return Response.json({cashCents:production.cashCents,quoteKey:'recette-lancement:'+production.revision,serverNow:new Date(production.clock).toISOString(),items:[],programs:[],coverage:[],runs:[],cleaning:{vacuum:empty,mop:empty}});
+ }
  if(path.endsWith('/energy')){
   if(energyState==='loading')return new Promise(resolve=>{release=resolve;window.__energyPending=true;});
   return energyResponse();
@@ -94,6 +111,7 @@ try {
   const assertBlocked = async () => {
     await page.waitForFunction(() => document.querySelector('[data-culture-confirm-start]')?.disabled === true);
     assert.equal(await page.$('[data-campaign-budget]'), null, 'An unavailable quote does not show its previous amount or a fabricated zero');
+    assert.equal(await page.$('[data-campaign-analysis-cents]'), null, 'An unavailable quote has no synthetic reserve');
     assert.equal(await page.evaluate(() => window.__starts.length), 0, 'Reading/retrying costs must not start a culture');
   };
   const geometry = () => page.$eval('[data-app-dialog]', dialog => {
@@ -109,6 +127,10 @@ try {
       await page.setViewport({ width: size.width, height: size.height }); await open('known', count); await ready();
       const observed = await geometry(); assert.equal(observed.overflow, false); assert(observed.budget.visibleOnOpening, 'Offered budget visible before scrolling, even at 320×422');
       assert.match(observed.budget.text, /191,34\s*€/); assert.match(await page.$eval('[data-culture-launch-scope]', node => node.innerText), count === 1 ? /1 Buddie/ : /2 Buddies/);
+      const analyses = await page.$eval('[data-campaign-analysis-cents]', node => Number(node.dataset.campaignAnalysisCents));
+      const reserve = await page.$eval('[data-campaign-reserve-cents]', node => Number(node.dataset.campaignReserveCents));
+      assert.equal(analyses, count * 4500, 'Each future lot has one conditional analysis');
+      assert.equal(reserve, 19134 + analyses, 'Reserve includes the current server quote and conditional lab charges');
       assert.equal(await page.$eval('[data-culture-launch-participants]', node => node.open), false); assert.equal(await page.$eval('[data-culture-launch-cards]', node => node.open), false);
       assert.match(await page.$eval('[data-campaign-billing]', node => node.innerText), /récolte/); assert.match(await page.$eval('[data-campaign-billing]', node => node.innerText), /5 jours réels/);
       assert.equal(await page.$eval('[data-campaign-billing]', node => node.closest('details:not([open])')), null, 'Payment timing is never hidden in a closed accordion');
@@ -122,8 +144,21 @@ try {
       assert.equal(focus.focused, true); assert.equal(focus.visible, true); assert.notEqual(focus.outline, 'none'); await shot(`launch-action-${count}-${size.name}`);
       await page.keyboard.press('Tab'); assert.equal(await page.$eval('[data-app-dialog]', node => node.contains(document.activeElement)), true, 'Focus remains in the modal');
       await closed(); assert.equal(await page.evaluate(() => window.__production.game), null); assert.equal(await page.evaluate(() => window.__starts.length), 0);
-      checks.push({ scenario: 'responsive-review', participants: count, viewport: size, ...observed, keyboardDetails: true, focus, escapeRestoresOpener: true });
+      checks.push({ scenario: 'responsive-review', participants: count, viewport: size, ...observed, analyses, reserve, keyboardDetails: true, focus, escapeRestoresOpener: true });
     }
+  }
+  await page.setViewport({ width: 320, height: 710 });
+  for (const owned of [3, 4]) {
+    await page.goto(`${origin}/?scenario=rotation-${owned}&count=2`, { waitUntil: 'networkidle0' });
+    await page.waitForSelector('[data-next-rotation]', { visible: true });
+    const available = owned - 2;
+    const forecast = await page.$eval('[data-next-rotation]', node => node.innerText);
+    assert.match(forecast, new RegExp(`préparer ${available} zone${available === 1 ? '' : 's'} sur 2`));
+    await open(`rotation-${owned}-after`, 2); await ready();
+    assert.match(await page.$eval('[data-culture-launch-scope]', node => node.innerText), new RegExp(`^${available} Buddie`));
+    assert.equal(await page.$eval('[data-campaign-analysis-cents]', node => Number(node.dataset.campaignAnalysisCents)), available * 4500);
+    await shot(`rotation-${owned}-buddies`); await closed();
+    checks.push({ scenario: 'next-campaign-rotation', owned, played: 2, zones: 2, available, forecast });
   }
   await page.setViewport({ width: 390, height: 844 });
   for (const scenario of ['loading', 'error', 'incomplete', 'missing-quote', 'null-consumables']) {

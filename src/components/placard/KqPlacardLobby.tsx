@@ -12,6 +12,7 @@ import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-quest-storage-refresh";
 import { useKqTentSelection } from "./KqTentSelector";
+import { KqVisitChanges } from "./KqVisitChanges";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { PlacardMapOpen } from "./KqPlacardMap";
 import styles from "./KqPlacardLobby.module.css";
@@ -27,7 +28,8 @@ type LobbySnapshot = {
   cashCents: number;
 };
 
-export function KqPlacardLobby({ onOpen, workAvailability, children, teamPanel }: {
+export function KqPlacardLobby({ onOpen, workAvailability, children, teamPanel, visitOwnerId }: {
+  visitOwnerId?: string;
   onOpen: PlacardMapOpen;
   workAvailability?: KqPlayerWorkAvailability;
   children?: ReactNode;
@@ -147,6 +149,9 @@ export function KqPlacardLobby({ onOpen, workAvailability, children, teamPanel }
   return <main className={styles.lobby} data-placard-lobby aria-label="Mon quartier" tabIndex={-1}>
     <div className={styles.dayBrief}>
     {teamPanel}
+    {visitOwnerId && !api.isTutorial && snapshot && storage && !error ?
+      <KqVisitChanges key={`${visitOwnerId}:${tentNumber}`} storageKey={`kq:visit:v1:${visitOwnerId}:${tentNumber}`}
+        at={storage.serverNow} cashCents={snapshot.cashCents} readyLotCount={snapshot.readyLotCount} /> : null}
     {loading ? <div className={styles.loading} role="status">Vérification de tes activités et de ton stockage…</div> : <section className={styles.nextAction} aria-label={resume.tone === "attention" ? "À faire maintenant" : resume.tone === "waiting" ? "Attente automatique" : "Reprendre ma partie"} data-placard-next-action data-priority={resume.kind} data-tone={resume.tone}>
       <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
       <div className={styles.actionCopy}><span>{nextAction?.eyebrow ?? "Informations à vérifier"}</span><h2 ref={resumeHeading} tabIndex={-1}>{nextAction?.title ?? "Ton résumé est indisponible"}</h2></div>

@@ -9,19 +9,26 @@ export const npcAuditEntry = `
 import React from 'react';import{createRoot}from'react-dom/client';
 import{VillagePrototype}from'/src/components/placard/world/VillagePrototype';
 import{KqFarmGuide}from'/src/components/placard/KqFarmGuide';
-import{FARM_GUIDE_STEPS,emptyFarmProgress}from'/src/lib/kanab-quest-farm-progress';
-import{farmProgressStorageKey,farmPreferenceStorageKey}from'/src/lib/kanab-quest-farm-persistence';
-import{KQ_FARM_GUIDE_OPEN_EVENT}from'/src/lib/kanab-quest-farm-guide';
+import { SYLVAIN_LESSONS, sylvainStorageKey, writeSylvainState } from '/src/lib/kanab-quest-sylvain-guide';
+import{KQ_FARM_GUIDE_OPEN_EVENT}from'/src/lib/kanab-quest-guide-navigation';
 import styles from'/src/components/placard/PlacardPlayerShell.module.css';
 window.__npcGuideOpens=0;window.__npcNavigation=[];
 window.addEventListener(KQ_FARM_GUIDE_OPEN_EVENT,()=>window.__npcGuideOpens++);
-window.__npcProgressKey=farmProgressStorageKey('npc-audit');
-window.__npcSeed=kind=>{const state={...emptyFarmProgress(),started:kind!=='empty',completed:kind==='complete'?FARM_GUIDE_STEPS.map(s=>s.id):kind==='current'?['welcome','zone']:[],...(kind==='current'?{selectedStepId:'assign',flowerId:'saved-flower'}:{})};localStorage.setItem(window.__npcProgressKey,JSON.stringify(state));localStorage.removeItem(farmPreferenceStorageKey('npc-audit'));return state;};
-function App(){const[active,setActive]=React.useState(false);const[destination,setDestination]=React.useState({view:'hub'});
-const changed=React.useCallback(active=>setActive(active),[]);const navigate=React.useCallback(next=>{const target=typeof next==='string'?{view:next}:next;window.__npcNavigation.push(target);setDestination(target);},[]);
+window.__npcProgressKey=sylvainStorageKey('npc-audit');
+window.__npcSeed=kind=>{
+  if(kind==='empty'){localStorage.removeItem(window.__npcProgressKey);return;}
+  const state=kind==='current'
+    ? {mode:'active',completed:['warehouse'],skipped:['install'],selected:'prepare'}
+    : {mode:'off',completed:SYLVAIN_LESSONS.filter(lesson=>lesson.kind==='initial').map(lesson=>lesson.id),skipped:[],selected:null};
+  writeSylvainState(localStorage,'npc-audit',state);
+  return state;
+};
+const changed=()=>{};
+function App(){const[destination,setDestination]=React.useState({view:'hub'});
+const navigate=React.useCallback(next=>{const target=typeof next==='string'?{view:next}:next;window.__npcNavigation.push(target);setDestination(target);},[]);
 return <div className={styles.worldShell} data-placard-view={destination.view}>
-<VillagePrototype tutorialActive={active} onNavigate={navigate} onNavigateHref={href=>navigate({view:new URL(href,location.origin).searchParams.get('view')||'hub'})}/>
-<KqFarmGuide ownerId="npc-audit" destination={destination} onNavigate={navigate} onActiveChange={changed}/></div>}
+<KqFarmGuide ownerId="npc-audit" destination={destination} onNavigate={navigate} onActiveChange={changed}/>
+<VillagePrototype onNavigate={navigate} onNavigateHref={href=>navigate({view:new URL(href,location.origin).searchParams.get('view')||'hub'})}/></div>}
 createRoot(document.getElementById('main-content')).render(<React.StrictMode><App/></React.StrictMode>);
 `;
 
@@ -105,24 +112,37 @@ export async function runVillageNpcAudit(origin) {
     report.cases.push('Fisherman exact two-part joke, all six fishing/bottle phases, click interruption during sip and resumed routine');
 
     await observe('loic'); await page.screenshot({ path: resolve(output, 'loic-promenade.png') });
+    const book = 'dialog[data-sylvain-library][open]';
+    const openBook = async (touch = false) => {
+      await tap('loic', touch);
+      await page.waitForSelector(book, { visible: true });
+      assert.equal(await page.$eval(book, node => node.matches(':modal') && node.contains(document.activeElement)), true);
+    };
+    const closeBook = async () => {
+      await page.click(`${book} [aria-label="Fermer le carnet"]`);
+      await page.waitForSelector(book, { hidden: true });
+      assert.equal(await page.$eval('canvas', node => node.dataset.villageReady), 'true');
+    };
     const opensBefore = await page.evaluate(() => window.__npcGuideOpens);
-    await tap('loic'); await tap('loic'); await tap('loic');
-    await page.waitForSelector('[data-farm-guide]'); await page.waitForSelector('canvas[data-camera-controls="suspended"]');
+    await openBook(); await tap('loic'); await tap('loic');
     assert.equal(await page.evaluate(() => window.__npcGuideOpens), opensBefore + 1);
-    assert.equal(await page.$eval('[data-farm-guide]', node => node.dataset.guideStep), 'welcome');
+    assert.ok(await page.$(`${book} [data-sylvain-control="start"]`));
     assert.equal(await page.$('[data-npc-dialogue]'), null);
     await page.screenshot({ path: resolve(output, 'loic-tutoriel.png') });
-    await page.click('[data-farm-guide-close]'); await page.waitForSelector('canvas[data-camera-controls="enabled"]');
+    await closeBook(); await openBook();
+    assert.equal(await page.evaluate(() => window.__npcGuideOpens), opensBefore + 2);
+    await closeBook();
     for (const kind of ['current', 'complete']) {
       const saved = await page.evaluate(kind => window.__npcSeed(kind), kind);
-      await page.reload({ waitUntil: 'domcontentloaded' }); await ready(); await observe('loic'); await tap('loic'); await page.waitForSelector('[data-farm-guide]'); await sleep(300);
-      const after = await page.evaluate(() => JSON.parse(localStorage.getItem(window.__npcProgressKey)));
-      assert.deepEqual(after.completed, saved.completed); assert.equal(after.flowerId, saved.flowerId);
-      if (kind === 'current') assert.equal(await page.$eval('[data-farm-guide]', node => node.dataset.guideStep), 'assign');
-      else { assert.equal(await page.$eval('[data-farm-guide]', node => node.dataset.guideStep), 'complete'); await page.click('[data-tutorial-library-trigger]'); await page.waitForSelector('dialog[open], [role="dialog"]'); await page.keyboard.press('Escape'); }
-      await page.click('[data-farm-guide-close]');
+      await page.reload({ waitUntil: 'domcontentloaded' }); await ready(); await observe('loic'); await openBook();
+      assert.deepEqual(await page.$$eval(`${book} [data-status="completed"]`, nodes => nodes.map(node => node.dataset.sylvainLesson)), saved.completed);
+      assert.deepEqual(await page.$$eval(`${book} [data-status="skipped"]`, nodes => nodes.map(node => node.dataset.sylvainLesson)), saved.skipped);
+      await page.click(`${book} [data-sylvain-lesson="warehouse"] summary`);
+      await page.waitForSelector(`${book} [data-sylvain-lesson="warehouse"] details[open]`);
+      await closeBook();
+      assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem(window.__npcProgressKey))), saved);
     }
-    report.cases.push('Loïc opens real tutorial once after repeated taps; empty/current/complete save, chapter library, tracked harvest and completed steps preserved; controls restored');
+    report.cases.push('Loïc opens one modal Carnet, closes and reopens it from his model. Browsing lessons preserves the current or completed guide, including skipped and selected lessons');
 
     for (const viewport of [{ width: 844, height: 390 }, { width: 568, height: 320 }, { width: 320, height: 568 }]) {
       await page.setViewport({ ...viewport, hasTouch: true, isMobile: true }); await ready();
@@ -134,13 +154,13 @@ export async function runVillageNpcAudit(origin) {
       else assert.equal(after.segment, 0);
       await page.screenshot({ path: resolve(output, `mobile-${viewport.width}x${viewport.height}.png`) }); await close();
       await observe('fisherman'); await tap('fisherman', true); await page.waitForSelector('[data-npc-dialogue="fisherman"]'); await bubbleFits();
-      await observe('loic'); assert.equal(await page.$('[data-npc-dialogue]'), null); await tap('loic', true); await page.waitForSelector('[data-farm-guide]'); await page.click('[data-farm-guide-close]');
+      await observe('loic'); assert.equal(await page.$('[data-npc-dialogue]'), null); await openBook(true); await closeBook();
     }
     report.cases.push('Touch at 844×390, 568×320 and 320×568; one segment per tap; bounded speech; successive musician/fisherman/guide exchanges');
     await page.setViewport({ width: 1440, height: 1000 });
     await page.evaluate(() => document.documentElement.requestFullscreen());
     assert.ok(await page.evaluate(() => !!document.fullscreenElement));
-    await observe('loic'); await tap('loic'); await page.waitForSelector('[data-farm-guide]'); await page.screenshot({ path: resolve(output, 'fullscreen-guide.png') }); await page.click('[data-farm-guide-close]'); await page.evaluate(() => document.exitFullscreen());
+    await observe('loic'); await openBook(); await page.screenshot({ path: resolve(output, 'fullscreen-guide.png') }); await closeBook(); await page.evaluate(() => document.exitFullscreen());
     await page.emulateMediaFeatures([{ name:'prefers-reduced-motion', value:'reduce' }]); await page.waitForSelector('canvas[data-motion-state="reduced"]');
     const before = await npcStats(); await sleep(350); assert.deepEqual(await npcStats(), before);
     await observe('breton'); await tap('breton'); await page.waitForSelector('[data-npc-dialogue="breton"]'); await close();

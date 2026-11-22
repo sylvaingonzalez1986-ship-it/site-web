@@ -1,0 +1,2470 @@
+{
+  "guideAlbumVide": {
+    "fichierLocal": "output/parcours-loic/loic-welcome/rapport.json",
+    "rapport": [
+      {
+        "width": 1440,
+        "height": 900,
+        "touch": false,
+        "firstDraftGestures": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "checkpoints": [
+          {
+            "name": "Invitation du Quartier",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": null,
+            "overlap": false,
+            "mode": "invited",
+            "lesson": null
+          },
+          {
+            "name": "Démarrage volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "warehouse"
+          },
+          {
+            "name": "Pilotage ouvert",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "install-shop",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Devis avant paiement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 142.265625,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Refus sans validation ni débit",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 142.265625,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Zone enregistrée au prix confirmé",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "prepare-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Depuis le plan enregistré, focus direct sur la variété ou le pack requis",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 142.265625,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pause et progression conservées au rechargement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 121.078125,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Fermeture directe du guide et du repère conservée au rechargement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet rouvert par le menu et repère restauré après reprise volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 121.078125,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pack offert récupéré et ouvert sans achat",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Variété affectée",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Prérequis retiré puis réparé sans nouveau débit",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Stocks vérifiés avant le semis",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "launch",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "launch"
+          },
+          {
+            "name": "Semis confirmé dans la partie réelle",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "next"
+          },
+          {
+            "name": "Prochaine échéance consultée",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          },
+          {
+            "name": "Relecture, passage et désactivation sans action de jeu",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet depuis le menu et reprise volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          }
+        ],
+        "welcomePack": {
+          "points": 0,
+          "bought": 0,
+          "tickets": [
+            {
+              "id": "welcome",
+              "status": "scratched"
+            }
+          ],
+          "revealed": [
+            {
+              "code": "HH2026-020",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-021",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-022",
+              "rarity": "common"
+            }
+          ],
+          "claims": 1,
+          "openings": 1
+        },
+        "installationCostCents": 78674,
+        "cashAfterInstallationCents": 21326,
+        "calls": [
+          {
+            "path": "/api/arena/tutorial",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/equipment",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/security",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/preparations",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/collection",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/runs",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/flowers",
+            "method": "GET",
+            "body": null
+          }
+        ],
+        "progress": {
+          "mode": "active",
+          "completed": [
+            "quarter",
+            "warehouse",
+            "install",
+            "prepare",
+            "supplies",
+            "launch",
+            "next"
+          ],
+          "skipped": [],
+          "selected": null
+        }
+      },
+      {
+        "width": 320,
+        "height": 710,
+        "touch": true,
+        "firstDraftGestures": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "checkpoints": [
+          {
+            "name": "Invitation du Quartier",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 135.546875,
+            "marker": null,
+            "overlap": false,
+            "mode": "invited",
+            "lesson": null
+          },
+          {
+            "name": "Démarrage volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "warehouse"
+          },
+          {
+            "name": "Pilotage ouvert",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 174.390625,
+            "marker": "install-shop",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Devis avant paiement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Refus sans validation ni débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Zone enregistrée au prix confirmé",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": "prepare-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Depuis le plan enregistré, focus direct sur la variété ou le pack requis",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pause et progression conservées au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 155.140625,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Fermeture directe du guide et du repère conservée au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet rouvert par le menu et repère restauré après reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 185.140625,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pack offert récupéré et ouvert sans achat",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 155.140625,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Variété affectée",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Prérequis retiré puis réparé sans nouveau débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Stocks vérifiés avant le semis",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": "launch",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "launch"
+          },
+          {
+            "name": "Semis confirmé dans la partie réelle",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "next"
+          },
+          {
+            "name": "Prochaine échéance consultée",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          },
+          {
+            "name": "Relecture, passage et désactivation sans action de jeu",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet depuis le menu et reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 174.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          }
+        ],
+        "welcomePack": {
+          "points": 0,
+          "bought": 0,
+          "tickets": [
+            {
+              "id": "welcome",
+              "status": "scratched"
+            }
+          ],
+          "revealed": [
+            {
+              "code": "HH2026-020",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-021",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-022",
+              "rarity": "common"
+            }
+          ],
+          "claims": 1,
+          "openings": 1
+        },
+        "installationCostCents": 78674,
+        "cashAfterInstallationCents": 21326,
+        "calls": [
+          {
+            "path": "/api/arena/tutorial",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/equipment",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/security",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/preparations",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/collection",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/runs",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/flowers",
+            "method": "GET",
+            "body": null
+          }
+        ],
+        "progress": {
+          "mode": "active",
+          "completed": [
+            "quarter",
+            "warehouse",
+            "install",
+            "prepare",
+            "supplies",
+            "launch",
+            "next"
+          ],
+          "skipped": [],
+          "selected": null
+        }
+      },
+      {
+        "width": 320,
+        "height": 540,
+        "touch": true,
+        "firstDraftGestures": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "checkpoints": [
+          {
+            "name": "Invitation du Quartier",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 135.546875,
+            "marker": null,
+            "overlap": false,
+            "mode": "invited",
+            "lesson": null
+          },
+          {
+            "name": "Démarrage volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "warehouse"
+          },
+          {
+            "name": "Pilotage ouvert",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "install-shop",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Devis avant paiement",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Refus sans validation ni débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Zone enregistrée au prix confirmé",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "prepare-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Depuis le plan enregistré, focus direct sur la variété ou le pack requis",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pause et progression conservées au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Fermeture directe du guide et du repère conservée au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet rouvert par le menu et repère restauré après reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "prepare-packs",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pack offert récupéré et ouvert sans achat",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Variété affectée",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Prérequis retiré puis réparé sans nouveau débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Stocks vérifiés avant le semis",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "launch"
+          },
+          {
+            "name": "Semis confirmé dans la partie réelle",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "next"
+          },
+          {
+            "name": "Prochaine échéance consultée",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          },
+          {
+            "name": "Relecture, passage et désactivation sans action de jeu",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet depuis le menu et reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 540,
+            "guideHeight": 145.796875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          }
+        ],
+        "welcomePack": {
+          "points": 0,
+          "bought": 0,
+          "tickets": [
+            {
+              "id": "welcome",
+              "status": "scratched"
+            }
+          ],
+          "revealed": [
+            {
+              "code": "HH2026-020",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-021",
+              "rarity": "common"
+            },
+            {
+              "code": "HH2026-022",
+              "rarity": "common"
+            }
+          ],
+          "claims": 1,
+          "openings": 1
+        },
+        "installationCostCents": 78674,
+        "cashAfterInstallationCents": 21326,
+        "calls": [
+          {
+            "path": "/api/arena/tutorial",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/equipment",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/security",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/preparations",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/collection",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/runs",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/flowers",
+            "method": "GET",
+            "body": null
+          }
+        ],
+        "progress": {
+          "mode": "active",
+          "completed": [
+            "quarter",
+            "warehouse",
+            "install",
+            "prepare",
+            "supplies",
+            "launch",
+            "next"
+          ],
+          "skipped": [],
+          "selected": null
+        }
+      }
+    ]
+  },
+  "guideAlbumRempli": {
+    "fichierLocal": "output/parcours-loic/loic/rapport.json",
+    "rapport": [
+      {
+        "width": 1440,
+        "height": 900,
+        "touch": false,
+        "firstDraftGestures": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "checkpoints": [
+          {
+            "name": "Invitation du Quartier",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": null,
+            "overlap": false,
+            "mode": "invited",
+            "lesson": null
+          },
+          {
+            "name": "Démarrage volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "warehouse"
+          },
+          {
+            "name": "Pilotage ouvert",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "install-shop",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Devis avant paiement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 142.265625,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Refus sans validation ni débit",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 142.265625,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Zone enregistrée au prix confirmé",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "prepare-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Depuis le plan enregistré, focus direct sur la variété ou le pack requis",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "prepare-choice",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pause et progression conservées au rechargement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": "prepare-choice",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Fermeture directe du guide et du repère conservée au rechargement",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet rouvert par le menu et repère restauré après reprise volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": "prepare-choice",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Variété affectée",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Prérequis retiré puis réparé sans nouveau débit",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Stocks vérifiés avant le semis",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": "launch",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "launch"
+          },
+          {
+            "name": "Semis confirmé dans la partie réelle",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "next"
+          },
+          {
+            "name": "Prochaine échéance consultée",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 122.671875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          },
+          {
+            "name": "Relecture, passage et désactivation sans action de jeu",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet depuis le menu et reprise volontaire",
+            "viewport": 1440,
+            "width": 1440,
+            "height": 900,
+            "guideHeight": 102,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          }
+        ],
+        "installationCostCents": 78674,
+        "cashAfterInstallationCents": 21326,
+        "calls": [
+          {
+            "path": "/api/arena/placard/equipment",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/security",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/preparations",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/collection",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/runs",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/flowers",
+            "method": "GET",
+            "body": null
+          }
+        ],
+        "progress": {
+          "mode": "active",
+          "completed": [
+            "quarter",
+            "warehouse",
+            "install",
+            "prepare",
+            "supplies",
+            "launch",
+            "next"
+          ],
+          "skipped": [],
+          "selected": null
+        }
+      },
+      {
+        "width": 320,
+        "height": 710,
+        "touch": true,
+        "firstDraftGestures": [
+          "Commencer avec Loïc",
+          "Rejoindre l’entrepôt avec Loïc",
+          "Aménager",
+          "Proposer un plan de départ"
+        ],
+        "checkpoints": [
+          {
+            "name": "Invitation du Quartier",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 135.546875,
+            "marker": null,
+            "overlap": false,
+            "mode": "invited",
+            "lesson": null
+          },
+          {
+            "name": "Démarrage volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "warehouse"
+          },
+          {
+            "name": "Pilotage ouvert",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 174.390625,
+            "marker": "install-shop",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Devis avant paiement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Refus sans validation ni débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "install-confirm",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "install"
+          },
+          {
+            "name": "Zone enregistrée au prix confirmé",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": "prepare-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Depuis le plan enregistré, focus direct sur la variété ou le pack requis",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 188.140625,
+            "marker": "prepare-choice",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Pause et progression conservées au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 155.140625,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Fermeture directe du guide et du repère conservée au rechargement",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet rouvert par le menu et repère restauré après reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 152.640625,
+            "marker": "prepare-choice",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "prepare"
+          },
+          {
+            "name": "Variété affectée",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Prérequis retiré puis réparé sans nouveau débit",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": "supplies-open",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "supplies"
+          },
+          {
+            "name": "Stocks vérifiés avant le semis",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 190.640625,
+            "marker": "launch",
+            "overlap": false,
+            "mode": "active",
+            "lesson": "launch"
+          },
+          {
+            "name": "Semis confirmé dans la partie réelle",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": "next"
+          },
+          {
+            "name": "Prochaine échéance consultée",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 191.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          },
+          {
+            "name": "Relecture, passage et désactivation sans action de jeu",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 0,
+            "marker": null,
+            "overlap": false,
+            "mode": "off",
+            "lesson": null
+          },
+          {
+            "name": "Carnet depuis le menu et reprise volontaire",
+            "viewport": 320,
+            "width": 320,
+            "height": 710,
+            "guideHeight": 174.6875,
+            "marker": null,
+            "overlap": false,
+            "mode": "active",
+            "lesson": null
+          }
+        ],
+        "installationCostCents": 78674,
+        "cashAfterInstallationCents": 21326,
+        "calls": [
+          {
+            "path": "/api/arena/placard/equipment",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/security",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/warehouse/preparations",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/collection",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/runs",
+            "method": "GET",
+            "body": null
+          },
+          {
+            "path": "/api/arena/placard/flowers",
+            "method": "GET",
+            "body": null
+          }
+        ],
+        "progress": {
+          "mode": "active",
+          "completed": [
+            "quarter",
+            "warehouse",
+            "install",
+            "prepare",
+            "supplies",
+            "launch",
+            "next"
+          ],
+          "skipped": [],
+          "selected": null
+        }
+      }
+    ]
+  },
+  "commerce": {
+    "fichierLocal": "output/clarity-lot16/after/report.json",
+    "rapport": {
+      "checks": [
+        {
+          "width": 320,
+          "case": "ready",
+          "comparisonTop": 864,
+          "comparisonBottom": 1763,
+          "actions": [
+            {
+              "name": "Voir l’offre CBD shops",
+              "top": 1135,
+              "height": 45.1875
+            },
+            {
+              "name": "Voir l’offre Grossistes",
+              "top": 1414,
+              "height": 45.1875
+            },
+            {
+              "name": "Préparer des paquets pour ma boutique en ligne",
+              "top": 1692,
+              "height": 45.1875
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "case": "keyboard-and-destinations",
+          "exactPreparedLot": true
+        },
+        {
+          "width": 320,
+          "case": "no-computer",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "suspended",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "low-quality",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "processing",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "curing",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "biomass",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "quota",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "partial",
+          "noWrites": true
+        },
+        {
+          "width": 320,
+          "case": "legacy",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "ready",
+          "comparisonTop": 843,
+          "comparisonBottom": 1703,
+          "actions": [
+            {
+              "name": "Voir l’offre CBD shops",
+              "top": 1094,
+              "height": 45.1875
+            },
+            {
+              "name": "Voir l’offre Grossistes",
+              "top": 1372,
+              "height": 45.1875
+            },
+            {
+              "name": "Préparer des paquets pour ma boutique en ligne",
+              "top": 1631,
+              "height": 45.1875
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "case": "keyboard-and-destinations",
+          "exactPreparedLot": true
+        },
+        {
+          "width": 390,
+          "case": "no-computer",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "suspended",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "low-quality",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "processing",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "curing",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "biomass",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "quota",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "partial",
+          "noWrites": true
+        },
+        {
+          "width": 390,
+          "case": "legacy",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "ready",
+          "comparisonTop": 563,
+          "comparisonBottom": 887,
+          "actions": [
+            {
+              "name": "Voir l’offre CBD shops",
+              "top": 820,
+              "height": 45.1875
+            },
+            {
+              "name": "Voir l’offre Grossistes",
+              "top": 820,
+              "height": 45.1875
+            },
+            {
+              "name": "Préparer des paquets pour ma boutique en ligne",
+              "top": 820,
+              "height": 45.1875
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "case": "keyboard-and-destinations",
+          "exactPreparedLot": true
+        },
+        {
+          "width": 1440,
+          "case": "no-computer",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "suspended",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "low-quality",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "processing",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "curing",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "biomass",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "quota",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "partial",
+          "noWrites": true
+        },
+        {
+          "width": 1440,
+          "case": "legacy",
+          "noWrites": true
+        },
+        {
+          "case": "authoritative-quote",
+          "cancelDoesNotSell": true
+        },
+        {
+          "case": "earned-cash-mission-after-sale",
+          "claimableCents": 5000,
+          "automaticClaims": 0
+        }
+      ],
+      "errors": [],
+      "external": []
+    }
+  },
+  "semisEtRotation": {
+    "fichierLocal": "output/clarity-lot21/report.json",
+    "rapport": {
+      "passed": true,
+      "checks": [
+        {
+          "scenario": "responsive-review",
+          "participants": 1,
+          "viewport": {
+            "width": 320,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 308,
+            "top": 8,
+            "bottom": 836
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 225.65625,
+            "bottom": 276.65625,
+            "visibleOnOpening": true
+          },
+          "analyses": 4500,
+          "reserve": 23634,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 1,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 378,
+            "top": 8,
+            "bottom": 836
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 197,
+            "bottom": 248,
+            "visibleOnOpening": true
+          },
+          "analyses": 4500,
+          "reserve": 23634,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 1,
+          "viewport": {
+            "width": 1440,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 480,
+            "right": 960,
+            "top": 12,
+            "bottom": 832
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 207,
+            "bottom": 271.5,
+            "visibleOnOpening": true
+          },
+          "analyses": 4500,
+          "reserve": 23634,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 1,
+          "viewport": {
+            "width": 320,
+            "height": 422
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 308,
+            "top": 8,
+            "bottom": 414
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 225.65625,
+            "bottom": 276.65625,
+            "visibleOnOpening": true
+          },
+          "analyses": 4500,
+          "reserve": 23634,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 2,
+          "viewport": {
+            "width": 320,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 308,
+            "top": 8,
+            "bottom": 836
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 225.65625,
+            "bottom": 276.65625,
+            "visibleOnOpening": true
+          },
+          "analyses": 9000,
+          "reserve": 28134,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 2,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 378,
+            "top": 8,
+            "bottom": 836
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 197,
+            "bottom": 248,
+            "visibleOnOpening": true
+          },
+          "analyses": 9000,
+          "reserve": 28134,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 2,
+          "viewport": {
+            "width": 1440,
+            "height": 844
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 480,
+            "right": 960,
+            "top": 12,
+            "bottom": 832
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 207,
+            "bottom": 271.5,
+            "visibleOnOpening": true
+          },
+          "analyses": 9000,
+          "reserve": 28134,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "responsive-review",
+          "participants": 2,
+          "viewport": {
+            "width": 320,
+            "height": 422
+          },
+          "overflow": false,
+          "dialog": {
+            "left": 12,
+            "right": 308,
+            "top": 8,
+            "bottom": 414
+          },
+          "budget": {
+            "text": "191,34 €\nÉnergie et fournitures",
+            "top": 225.65625,
+            "bottom": 276.65625,
+            "visibleOnOpening": true
+          },
+          "analyses": 9000,
+          "reserve": 28134,
+          "keyboardDetails": true,
+          "focus": {
+            "focused": true,
+            "visible": true,
+            "outline": "solid"
+          },
+          "escapeRestoresOpener": true
+        },
+        {
+          "scenario": "next-campaign-rotation",
+          "owned": 3,
+          "played": 2,
+          "zones": 2,
+          "available": 1,
+          "forecast": "Après ce semis, ta collection permettra de préparer 1 zone sur 2 au cycle suivant. Tu peux retirer une affectation pour semer uniquement les zones de ton choix."
+        },
+        {
+          "scenario": "next-campaign-rotation",
+          "owned": 4,
+          "played": 2,
+          "zones": 2,
+          "available": 2,
+          "forecast": "Après ce semis, ta collection permettra de préparer 2 zones sur 2 au cycle suivant. Tu pourras alterner les variétés sur toutes ces zones."
+        },
+        {
+          "scenario": "loading",
+          "blockedWithoutInventedAmount": true,
+          "recovered": true
+        },
+        {
+          "scenario": "error",
+          "blockedWithoutInventedAmount": true,
+          "recovered": true
+        },
+        {
+          "scenario": "incomplete",
+          "blockedWithoutInventedAmount": true,
+          "recovered": true
+        },
+        {
+          "scenario": "missing-quote",
+          "blockedWithoutInventedAmount": true,
+          "recovered": true
+        },
+        {
+          "scenario": "null-consumables",
+          "blockedWithoutInventedAmount": true,
+          "recovered": true
+        },
+        {
+          "scenario": "refresh-after-known",
+          "staleAmountHiddenWhileLoading": true,
+          "failureBlocks": true,
+          "recoveredWithNewServerPrice": true
+        },
+        {
+          "scenario": "reopen-review",
+          "priorQuoteCannotEnableLaunchWhileReloading": true
+        },
+        {
+          "scenario": "actual-server-zero",
+          "genuineZeroRemainsValid": true
+        },
+        {
+          "scenario": "local-launch-retry",
+          "offeredEnergySent": 12345,
+          "reviewedWarehouseRevisionSent": 2,
+          "campaign": true,
+          "sameRequestKey": true,
+          "local503Only": true
+        },
+        {
+          "scenario": "refresh-preparation-after-error",
+          "rereadsBootstrapAndWarehouse": true,
+          "newBuddie": "L’Arbre Mère - Toutes Variétés",
+          "revision": 3,
+          "newQuoteRequired": true,
+          "noAutomaticPost": true,
+          "focus": {
+            "tag": "BUTTON",
+            "review": true
+          }
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "backend": "Real player UI, local Relève GET transport. Deliberately distinct offered amounts verify API authority. Captured POSTs return a local 503; no account/database mutation.",
+      "reflow": "320×422 CSS px models available space at 200% of 640×844; not native browser zoom."
+    }
+  },
+  "recolte": {
+    "fichierLocal": "output/clarity-lot25/after/report.json",
+    "rapport": {
+      "passed": true,
+      "mode": "after",
+      "results": [
+        {
+          "scenario": "solo",
+          "width": 320,
+          "height": 2510,
+          "summaryHeight": null,
+          "headings": [
+            "La récolte est là.",
+            "Ma Fleur d’Arène",
+            "Journal et cartes",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 16
+        },
+        {
+          "scenario": "solo results, storage and keyboard disclosures",
+          "width": 320,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "campaign",
+          "width": 320,
+          "height": 2587,
+          "summaryHeight": 838.484375,
+          "headings": [
+            "La récolte est là.",
+            "Les récoltes",
+            "Tes récoltes",
+            "Journal de la campagne",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 19
+        },
+        {
+          "scenario": "campaign results, storage and keyboard disclosures",
+          "width": 320,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "solo",
+          "width": 390,
+          "height": 2493,
+          "summaryHeight": null,
+          "headings": [
+            "La récolte est là.",
+            "Ma Fleur d’Arène",
+            "Journal et cartes",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 16
+        },
+        {
+          "scenario": "solo results, storage and keyboard disclosures",
+          "width": 390,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "campaign",
+          "width": 390,
+          "height": 2561,
+          "summaryHeight": 817.6875,
+          "headings": [
+            "La récolte est là.",
+            "Les récoltes",
+            "Tes récoltes",
+            "Journal de la campagne",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 19
+        },
+        {
+          "scenario": "campaign results, storage and keyboard disclosures",
+          "width": 390,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "solo",
+          "width": 1440,
+          "height": 2571,
+          "summaryHeight": null,
+          "headings": [
+            "La récolte est là.",
+            "Ma Fleur d’Arène",
+            "Journal et cartes",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 16
+        },
+        {
+          "scenario": "solo results, storage and keyboard disclosures",
+          "width": 1440,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "campaign",
+          "width": 1440,
+          "height": 2296,
+          "summaryHeight": 583.09375,
+          "headings": [
+            "La récolte est là.",
+            "Les récoltes",
+            "Tes récoltes",
+            "Journal de la campagne",
+            "Bilan de santé",
+            "Charges et factures"
+          ],
+          "closedDetails": 19
+        },
+        {
+          "scenario": "campaign results, storage and keyboard disclosures",
+          "width": 1440,
+          "preservedGrams": true,
+          "preservedQuality": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "solo short viewport",
+          "width": 320,
+          "height": 422,
+          "button": {
+            "height": 48,
+            "visible": true,
+            "uncovered": true
+          }
+        },
+        {
+          "scenario": "campaign short viewport",
+          "width": 320,
+          "height": 422,
+          "button": {
+            "height": 48,
+            "visible": true,
+            "uncovered": true
+          }
+        },
+        {
+          "scenario": "unknown",
+          "unknownIsNotZero": true,
+          "noInventedFlower": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "zero",
+          "unknownIsNotZero": true,
+          "noInventedFlower": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "dead",
+          "unknownIsNotZero": true,
+          "noInventedFlower": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "campaign-dead",
+          "unknownIsNotZero": true,
+          "noInventedFlower": true,
+          "noWrites": true
+        },
+        {
+          "scenario": "campaign official quality",
+          "quality": [
+            21,
+            25
+          ]
+        },
+        {
+          "scenario": "solo-unconfirmed",
+          "noInventedFlower": true,
+          "noWrongStockTarget": true
+        },
+        {
+          "scenario": "solo-other-flower",
+          "noInventedFlower": true,
+          "noWrongStockTarget": true
+        },
+        {
+          "scenario": "preparation projections unchanged",
+          "noWrites": true
+        },
+        {
+          "scenario": "historical campaign member missing",
+          "unknownIsNotZero": true,
+          "noInventedProfile": true
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "backend": "Real React UI and game engine, isolated local API; no external requests or writes."
+    }
+  },
+  "atelier": {
+    "fichierLocal": "output/clarity-lot9/workshop/results.json",
+    "rapport": {
+      "passed": true,
+      "results": [
+        {
+          "width": 320,
+          "scenario": "loading",
+          "unknown": true
+        },
+        {
+          "width": 320,
+          "scenario": "loading-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 320,
+          "scenario": "error",
+          "unknown": true
+        },
+        {
+          "width": 320,
+          "scenario": "error-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 320,
+          "scenario": "invalid",
+          "unknown": true
+        },
+        {
+          "width": 320,
+          "scenario": "invalid-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 320,
+          "scenario": "empty",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [],
+          "openedMachineCards": []
+        },
+        {
+          "width": 320,
+          "scenario": "owned",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ]
+        },
+        {
+          "width": 320,
+          "scenario": "refresh-failed-and-recovered",
+          "previousDataPreserved": true,
+          "keyboard": true
+        },
+        {
+          "width": 320,
+          "scenario": "maintenance",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "WASHER-25L",
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "PRESS-0600"
+          ]
+        },
+        {
+          "width": 390,
+          "scenario": "loading",
+          "unknown": true
+        },
+        {
+          "width": 390,
+          "scenario": "loading-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 390,
+          "scenario": "error",
+          "unknown": true
+        },
+        {
+          "width": 390,
+          "scenario": "error-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 390,
+          "scenario": "invalid",
+          "unknown": true
+        },
+        {
+          "width": 390,
+          "scenario": "invalid-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 390,
+          "scenario": "empty",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [],
+          "openedMachineCards": []
+        },
+        {
+          "width": 390,
+          "scenario": "owned",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ]
+        },
+        {
+          "width": 390,
+          "scenario": "refresh-failed-and-recovered",
+          "previousDataPreserved": true,
+          "keyboard": true
+        },
+        {
+          "width": 390,
+          "scenario": "maintenance",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "WASHER-25L",
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "PRESS-0600"
+          ]
+        },
+        {
+          "width": 1440,
+          "scenario": "loading",
+          "unknown": true
+        },
+        {
+          "width": 1440,
+          "scenario": "loading-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 1440,
+          "scenario": "error",
+          "unknown": true
+        },
+        {
+          "width": 1440,
+          "scenario": "error-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 1440,
+          "scenario": "invalid",
+          "unknown": true
+        },
+        {
+          "width": 1440,
+          "scenario": "invalid-recovery",
+          "keyboard": true
+        },
+        {
+          "width": 1440,
+          "scenario": "empty",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [],
+          "openedMachineCards": []
+        },
+        {
+          "width": 1440,
+          "scenario": "owned",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ]
+        },
+        {
+          "width": 1440,
+          "scenario": "refresh-failed-and-recovered",
+          "previousDataPreserved": true,
+          "keyboard": true
+        },
+        {
+          "width": 1440,
+          "scenario": "maintenance",
+          "visibleStates": true,
+          "keyboard": true,
+          "verifiedArtwork": [
+            "WASHER-25L",
+            "SIFT-TRAY",
+            "PRESS-0600"
+          ],
+          "openedMachineCards": [
+            "PRESS-0600"
+          ]
+        }
+      ],
+      "errors": [],
+      "consoleErrors": [],
+      "external": [],
+      "backend": "In-memory responses; all mutations and remote network calls rejected."
+    }
+  },
+  "remise": {
+    "fichierLocal": "output/arena-prize-delivery/rapport.json",
+    "rapport": {
+      "viewport": "320 × 710",
+      "navigation": "clavier",
+      "receipt": "LOT-AR-TEST-1",
+      "totalCents": 0,
+      "shippingCents": 0,
+      "returnedAfterLostResponse": true
+    }
+  },
+  "preparation": {
+    "fichierLocal": "output/warehouse-preparation-recovery/rapport.json",
+    "rapport": {
+      "cashCents": 100000,
+      "floor": {
+        "columns": 10,
+        "rows": 10
+      },
+      "zones": 0,
+      "equipment": 0,
+      "stockGrams": 0,
+      "activeRuns": 0,
+      "receipts": 0,
+      "previewPacks": {
+        "products": 18,
+        "persistedCharges": 100,
+        "cashAfterCents": 91370
+      },
+      "recoveredCommand": "3ab8f060-673d-4c11-8aaf-1f7014746b2b",
+      "rejectedExpiredCommand": "836d8a97-471f-445d-b9d4-326224ea981c",
+      "otherAccountUntouched": true,
+      "fixtureAccountPreserved": true,
+      "fixtureOrderPreserved": true,
+      "cleaning": []
+    }
+  },
+  "choixZoneSuiteAuSignalement": {
+    "fichierLocal": "output/parcours-loic/choix-zone/rapport.json",
+    "rapport": [
+      {
+        "viewport": "968 × 536",
+        "collection": "remplie",
+        "input": "clavier",
+        "destination": "[data-culture-buddie-picker=premiere-zone] [data-buddie-select]",
+        "layout": {
+          "overlap": false,
+          "targetHeight": 48,
+          "overflow": false
+        }
+      },
+      {
+        "viewport": "968 × 536",
+        "collection": "vide",
+        "input": "toucher",
+        "destination": "[data-empty-buddie-collection] [data-sylvain-target=prepare-packs]",
+        "layout": {
+          "overlap": false,
+          "targetHeight": 40,
+          "overflow": false
+        }
+      }
+    ]
+  }
+}

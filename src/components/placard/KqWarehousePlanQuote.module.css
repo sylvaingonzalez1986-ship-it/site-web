@@ -18,10 +18,11 @@
 
 .heading h3 { margin: 0; font-family: var(--font-display), Impact, sans-serif; font-size: 26px; line-height: 1.15; }
 .heading p,.note { margin: 4px 0 0; color: #536058; font-size: 14px; }
-.payment,.invoice { display: grid; gap: 8px; margin: 0; }
-.payment > div,.invoice > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 3px 12px; }
-.payment dt,.invoice dt { min-width: 0; }
-.payment dd,.invoice dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.payment,.invoice,.reserve { display: grid; gap: 8px; margin: 0; }
+.payment > div,.invoice > div,.reserve > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 3px 12px; }
+.payment dt,.invoice dt,.reserve dt { min-width: 0; }
+.payment dd,.invoice dd,.reserve dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.reserve { padding-block-start: 8px; border-top: 1px solid #17292335; }
 .payable { color: #087c6c; font-weight: 700; }
 .payable dd { font-family: var(--font-display), Impact, sans-serif; font-size: 32px; line-height: 1.15; }
 .shortfall { margin: 0; color: #873321; }
@@ -36,7 +37,7 @@
 .changes li > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; }
 .changes li > div > span { color: #536058; }
 .changes p { margin: 4px 0 0; overflow-wrap: anywhere; }
-.invoice small { display: block; color: #536058; font-size: 14px; }
+.invoice small,.reserve small { display: block; color: #536058; font-size: 14px; }
 .total { padding-top: 8px; border-top: 1px solid #17292335; font-weight: 700; }
 .purchases h4 { margin: 0 0 6px; font-size: 14px; }
 .purchases li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 7px 0; border-bottom: 1px solid #17292325; }

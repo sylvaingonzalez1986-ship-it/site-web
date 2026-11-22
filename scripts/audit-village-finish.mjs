@@ -5,6 +5,7 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 import ffmpegPath from 'ffmpeg-static';
 import sharp from 'sharp';
+import { frameVillageSubject } from './fixtures/village-audit-camera.mjs';
 
 export const entry = `
 import React from "react";import {createRoot} from "react-dom/client";
@@ -178,7 +179,7 @@ async function walkOnPath(page) {
 }
 
 async function observe(page, subject) {
-  const menu='[data-village-activity-state] details';
+  const menu='details:has([data-observe-life])';
   const choice='[data-observe-life="' + subject + '"]';
   const tap=page.viewport()?.hasTouch;
   if(tap) await page.tap(menu+' summary'); else await page.click(menu+' summary');
@@ -244,7 +245,7 @@ export async function auditWorld(origin) {
           await recordCoastalFlight(page,dir);
         }
         await walkOnPath(page); report.interactions.push('player-walk');
-        await observe(page,'player');
+        await frameVillageSubject(page,'player');
         await page.screenshot({path:resolve(dir,'personnage.png')});
         await observe(page,'fisherman');
         await page.focus('[data-npc-access="fisherman"]'); await page.keyboard.press('Enter');
@@ -274,11 +275,11 @@ export async function auditWorld(origin) {
       await recorder.stop();
       if(!baseline) {
         await page.click('[aria-label="Recentrer la vue isométrique"]'); await wait(550);
-        await observe(page,'sheep');
+        await frameVillageSubject(page,'sheep');
         const flockVideo=await page.screencast({path:resolve(dir,'troupeau.webm'),ffmpegPath,fps:20,scale:.8});
         await wait(6500); await flockVideo.stop();
         await page.screenshot({path:resolve(dir,'observer-troupeau.png')});
-        report.interactions.push('sheep-observer');
+        report.interactions.push('sheep-camera-recording');
       }
       await page.click('[data-village-motion-toggle]'); await page.waitForSelector('canvas[data-motion-state="paused"]');
       const time=()=>page.$eval('canvas',c=>c.dataset.motionTime), paused=await time(); await wait(400); assert.equal(await time(),paused);

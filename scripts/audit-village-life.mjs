@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 import ffmpegPath from 'ffmpeg-static';
+import { frameVillageSubject } from './fixtures/village-audit-camera.mjs';
 
 const baseline = process.argv.includes('--baseline');
 const metricsOnly = process.argv.includes('--metrics-only');
@@ -53,15 +54,16 @@ try {
   if (!baseline && !metricsOnly) {
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     const stats = () => page.$eval('canvas', node => ({ ...node.dataset }));
+    const observer = 'details:has([data-observe-life])';
     const observe = async id => {
-      await page.click('summary'); await page.click(`[data-observe-life="${id}"]`);
+      await page.click(observer + ' > summary'); await page.click(`[data-observe-life="${id}"]`);
       await page.waitForSelector(`canvas[data-life-observe="${id}"][data-camera-transition="idle"]`);
-      assert.equal(await page.$eval('details', node => node.open), false);
+      assert.equal(await page.$eval(observer, node => node.open), false);
     };
     await page.setViewport({ width: 1100, height: 760 });
     await page.goto(`${origin}/?strict=1`, { waitUntil: 'networkidle0' });
     await page.waitForSelector('canvas[data-motion-state="running"][data-life-boat]');
-    await observe('boat');
+    await frameVillageSubject(page, 'boat');
     const recorder = await page.screencast({ path: resolve(output, 'fishing-cycle.webm'), ffmpegPath, fps: 15, scale: 0.75 });
     const phases = new Set(), catches = [];
     for (let i = 0; i < 44; i++) {
@@ -77,7 +79,9 @@ try {
     report.fishing = { phases: [...phases], catchObserved: catches.length > 0 };
     const actorRecorder = await page.screencast({ path: resolve(output, 'island-characters.webm'), ffmpegPath, fps: 15, scale: 0.75 });
     for (const id of ['wolf', 'fox', 'weasel', 'breton']) {
-      await observe(id); await sleep(700);
+      if (id === 'breton') await observe(id);
+      else await frameVillageSubject(page, id);
+      await sleep(700);
       await page.screenshot({ path: resolve(output, `portrait-${id}.png`) }); await sleep(2500);
     }
     await actorRecorder.stop();
@@ -85,8 +89,8 @@ try {
     await observe('breton'); await page.screenshot({ path: resolve(output, 'mobile-observe-breton.png') });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     assert.equal(await page.$$eval('[aria-label="Caméra du village"] button', nodes => nodes.every(node => node.getBoundingClientRect().bottom <= innerHeight)), true);
-    await page.focus('summary'); await page.keyboard.press('Enter'); await page.keyboard.press('Escape');
-    assert.equal(await page.$eval('details', node => !node.open && document.activeElement === node.querySelector('summary')), true);
+    await page.focus(observer + ' > summary'); await page.keyboard.press('Enter'); await page.keyboard.press('Escape');
+    assert.equal(await page.$eval(observer, node => !node.open && document.activeElement === node.querySelector('summary')), true);
     await page.click('[data-village-motion-toggle]'); await page.waitForSelector('canvas[data-motion-state="paused"]');
     const paused = await stats(); await sleep(500); const frozen = await stats();
     assert.equal(frozen.motionTime, paused.motionTime); assert.equal(frozen.lifeBoat, paused.lifeBoat); assert.equal(frozen.lifeAnimals, paused.lifeAnimals);
@@ -103,8 +107,10 @@ try {
     await page.setViewport({ width: 1440, height: 1000 });
     const memory = [];
     for (let mount = 0; mount < 3; mount++) {
-      await page.click('header button[aria-pressed="false"]'); await page.waitForSelector('canvas', { hidden: true });
-      await page.click('header button[aria-pressed="true"]'); await page.waitForSelector('canvas[data-motion-state="running"][data-life-animals]');
+      await page.evaluate(() => window.dispatchEvent(new CustomEvent('audit:mount-village', { detail: false })));
+      await page.waitForSelector('canvas', { hidden: true });
+      await page.evaluate(() => window.dispatchEvent(new CustomEvent('audit:mount-village', { detail: true })));
+      await page.waitForSelector('canvas[data-motion-state="running"][data-life-animals]');
       await page.click('[aria-label="Recentrer la vue isométrique"]'); await sleep(800);
       const current = await stats();
       assert.ok(JSON.parse(current.lifeAnimals).every(animal => animal.active));

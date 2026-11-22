@@ -1,7 +1,11 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { KqWarehousePlanQuote } from "../components/placard/KqWarehousePlanQuote";
 import { KQ_BUDDIES } from "./kanab-quest-game";
-import { createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseQuote, type KqWarehouseState } from "./kanab-quest-warehouse";
-import { getKqWarehousePlanChanges, getKqWarehousePlanPayment } from "./kanab-quest-warehouse-plan-review";
+import { createKqWarehouseEmpty, createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseQuote, type KqWarehouseState } from "./kanab-quest-warehouse";
+import { proposeFirstWarehousePlan } from "./kanab-quest-warehouse-first-plan";
+import { getKqWarehousePlanChanges, getKqWarehousePlanCultureBudget, getKqWarehousePlanPayment } from "./kanab-quest-warehouse-plan-review";
 
 const fixture = () => {
   const starter = createKqWarehouseStarter();
@@ -12,6 +16,37 @@ const fixture = () => {
 };
 
 describe("warehouse plan review", () => {
+  it("reconciles Loïc’s first plan and reserve to the cent before Buddie assignment", () => {
+    const empty = createKqWarehouseEmpty();
+    const quote = getKqWarehouseQuote(proposeFirstWarehousePlan(empty)!, empty);
+    const payment = getKqWarehousePlanPayment(quote, 100000, 0);
+    const budget = getKqWarehousePlanCultureBudget(quote.nextState);
+    expect(payment).toMatchObject({ payableCents: 78674, cashAfterCents: 21326 });
+    expect(budget).toEqual({ lotCount: 1, energyCostCents: 6000, consumablesCostCents: 2360,
+      committedCents: 8360, analysisCents: 4500, reserveCents: 12860 });
+    expect(payment.cashAfterCents! - budget.reserveCents).toBe(8466);
+  });
+
+  it("reserves analyses by active lot and excludes a zone reserved to production", () => {
+    const starter = createKqWarehouseStarter();
+    const [zone] = starter.zones;
+    const plan = { ...starter, zones: [zone, { ...zone, id: "second", x: 2 }, { ...zone, id: "third", x: 4 }, { ...zone, id: "paused", x: 6, active: false }] };
+    expect(getKqWarehousePlanCultureBudget(plan)).toMatchObject({ lotCount: 3, analysisCents: 13500 });
+    expect(getKqWarehousePlanCultureBudget(plan, "third")).toMatchObject({ lotCount: 2, analysisCents: 9000 });
+  });
+
+  it("compares an extension at unchanged sale revenue before testing a gain hypothesis", () => {
+    const empty = createKqWarehouseEmpty();
+    const installed = getKqWarehouseQuote(proposeFirstWarehousePlan(empty)!, empty).nextState;
+    const draft = { ...installed, zones: [...installed.zones, { ...installed.zones[0], id: "extension", x: 6 }] };
+    const quote = getKqWarehouseQuote(draft, installed);
+    const html = renderToStaticMarkup(createElement(KqWarehousePlanQuote, { previousState: installed, draftState: draft, quote,
+      cashCents: 500000, migrationCreditCents: 0, cultureBudget: getKqWarehousePlanCultureBudget(quote.nextState),
+      installedCultureBudget: getKqWarehousePlanCultureBudget(installed), potentialGrams: { installed: 189.375, proposed: 378.75 } }));
+    expect(html).toContain("Comparer avec le plan installé");
+    expect(html).toContain('data-investment-same-sale-margin-cents="-12860"');
+    expect(html).toContain("Amortissement à calculer");
+  });
   it("describes partition creation, removal, moves, lengths and rotations without changing prices", () => {
     const starter = createKqWarehouseStarter();
     const added: KqWarehouseState = { ...starter, partitions: [{ id: "wall", x: 2, y: 2, axis: "x", length: 1 }] };

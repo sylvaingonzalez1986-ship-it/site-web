@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { BookOpen, Gift, PackageOpen, Trophy, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { VillageNightContext } from "./world/VillageNightContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCart } from "@/context/CartContext";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
@@ -49,6 +50,8 @@ function KqSupportBoosterCounter({
   autoOpen = false, embedded = false, initialSection = "botte",
   onSectionChange, onExit, onOpenCollection, autoClaimWelcome = true, userId,
 }: KqSupportBoosterShopProps & { userId: string | null }) {
+  const night = useContext(VillageNightContext);
+  const shopArt = night ? "/placard/booster-shop-front-v2.webp" : "/placard/card-shop-buddies-v2.webp";
   const api = useKqTutorialApi();
   const dialogRef = useRef<HTMLElement>(null);
   const actionLock = useRef(false);
@@ -192,7 +195,7 @@ function KqSupportBoosterCounter({
 
   return <section id="boutique-la-botte" className={styles.embeddedShop} data-shop-page={embedded || undefined}>
     {!embedded ? <button type="button" onClick={() => setShopOpen(true)} aria-haspopup="dialog" className={styles.front}>
-      <Image src="/placard/card-shop-sylvain-v1.webp" alt="Loïc t’attend dans sa boutique de cartes." width={1536} height={512} sizes="(max-width: 768px) 100vw, 1100px" />
+      <Image src={shopArt} alt={night ? "La vitrine de la Maison des cartes." : "Loïc présente un pack Buddies à la Maison des cartes."} width={1536} height={512} sizes="(max-width: 768px) 100vw, 1100px" />
       <span>Ouvrir la boutique <PackageOpen aria-hidden="true" /></span>
     </button> : null}
     {shopOpen ? <div className={styles.backdrop} data-embedded={embedded || undefined} onClick={embedded ? undefined : closeShop}>
@@ -214,7 +217,7 @@ function KqSupportBoosterCounter({
             <button type="button" className={styles.exit} disabled={busy} aria-label="Quitter la boutique" onClick={closeShop}><X aria-hidden="true" /></button>
           </div>
         </header>
-        <Image className={styles.interior} src="/placard/card-shop-sylvain-v1.webp" alt="Loïc et ses cartes au comptoir d’une petite boutique bretonne." width={1536} height={512} priority sizes="(max-width: 768px) 100vw, 1100px" />
+        <Image className={styles.interior} src={shopArt} alt={night ? "Les packs sont exposés en vitrine." : "Loïc montre un pack Buddies illustré d’un champ de cannabis. Deux cartes de la collection sont exposées sur le comptoir."} width={1536} height={512} priority sizes="(max-width: 768px) 100vw, 1100px" />
         <div className={styles.shelves}>
           <nav className={styles.tabs} aria-label="Rayons de la boutique">
             <button type="button" data-shop-section="botte" aria-pressed={section === "botte"} disabled={busy} onClick={() => selectSection("botte")}>Botte du Chanvrier</button>

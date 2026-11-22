@@ -113,6 +113,7 @@ try{
  async function noOverflow(label){assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,label+' has no horizontal overflow')}
  async function noWrites(){assert.equal(await page.evaluate(()=>window.__fixture.requests.filter(r=>r.method!=='GET').length),0,'Reading harvest details spends nothing')}
  async function disclosure(selector){assert.equal(await page.$eval(selector,e=>e.open),false,selector+' starts closed');await enter(selector+' > summary');assert.equal(await page.$eval(selector,e=>e.open),true);assert.equal(await page.$eval(selector+' > summary',e=>e===document.activeElement),true,'Opening keeps focus on the summary');await noOverflow(selector+' open');await page.keyboard.press('Space');await frames();assert.equal(await page.$eval(selector,e=>e.open),false);assert.equal(await page.$eval(selector+' > summary',e=>e===document.activeElement),true,'Closing keeps focus on the summary')}
+ async function cultureTab(id){const tab='[data-culture-tab="'+id+'"]';await enter(tab);assert.equal(await page.$eval(tab,e=>e.getAttribute('aria-selected')), 'true');assert.equal(await page.$eval('[data-culture-panel="'+id+'"]',e=>e.hidden),false);await noOverflow(id+' tab')}
  if(helpLayout){
   const cases=[
    ...[320,390,1440].map(width=>({scenario:'campaign',width,container:width===1440?1100:width})),
@@ -193,17 +194,17 @@ try{
   const metric=await page.evaluate(()=>({height:document.documentElement.scrollHeight,summaryHeight:document.querySelector('[data-campaign-summary]')?.getBoundingClientRect().height??null,headings:[...document.querySelectorAll('main h1,main h2')].map(h=>h.textContent),closedDetails:[...document.querySelectorAll('main details')].filter(d=>!d.open).length}));
   results.push({scenario,width,...metric});
   if(!before){
-   const expected=await page.evaluate(()=>({grams:window.__fixture.expected.grams,qualities:window.__fixture.expected.qualities,flowers:window.__fixture.flowers}));
+   const expected=await page.evaluate(()=>({grams:window.__fixture.expected.grams,qualities:window.__fixture.expected.qualities,flowers:window.__fixture.flowers,potential:window.__fixture.ownStates.reduce((sum,own)=>sum+own.warehouse.estimatedHarvestGrams,0)}));
    const moment=await page.$eval('[data-harvest-moment]',e=>e.innerText);const total=Math.round(expected.grams.reduce((a,b)=>a+b,0)*10)/10;
    assert.ok(moment.includes(total.toLocaleString('fr-FR',{maximumFractionDigits:1})),'Hero preserves authoritative harvested grams');assert.match(moment,/points/,'Culture quality is labelled in points');
+   assert.ok((await page.$eval('[data-harvest-material-potential]',e=>e.innerText)).includes(expected.potential.toLocaleString('fr-FR',{maximumFractionDigits:1})),'Comparison preserves frozen material potential');
    await enter('[data-harvest-moment] button');assert.deepEqual(await page.evaluate(()=>window.__fixture.storageCalls),[scenario==='solo'?expected.flowers[0].id:null],'Hero leads to the exact solo stock or campaign storage');
    if(scenario==='solo'){
-    for(const selector of ['[data-harvest-journal]','[data-harvest-charges]','[data-harvest-flower]'])await disclosure(selector);
+    for(const panel of ['journal','charges','harvest'])await cultureTab(panel);
     assert.equal(await page.$$eval('[data-harvest-flower]',nodes=>nodes.length),1,'One Fleur detail destination');
    }else{
     assert.equal(await page.$$eval('[data-campaign-member]',nodes=>nodes.length),2,'Both varieties stay distinct');
-    await disclosure('[data-culture-campaign-recap]');
-    await disclosure('[data-harvest-charges]');
+    for(const panel of ['journal','charges','harvest'])await cultureTab(panel);
     for(let i=0;i<2;i++){
      const row='[data-campaign-member="'+['a','b'][i]+'"]';const text=await page.$eval(row,e=>e.innerText);
      assert.ok(text.includes(expected.grams[i].toLocaleString('fr-FR',{maximumFractionDigits:1})),'Each variety shows its own grams');assert.ok(text.includes(String(expected.qualities[i])),'Each variety shows its own culture quality');
@@ -221,18 +222,18 @@ try{
   }
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
   for(const scenario of ['unknown','zero','dead','campaign-dead']){
-   await load(scenario);await noOverflow(scenario);assert.equal(await page.$('[data-harvest-moment] button'),null,'Unavailable or zero harvest cannot open storage');assert.equal(await page.$('[data-harvest-flower]'),null,'No Fleur is invented for absent harvest');
+   await load(scenario);await noOverflow(scenario);assert.equal(await page.$('[data-harvest-moment] button'),null,'Unavailable or zero harvest cannot open storage');assert.equal(await page.$('[aria-label="Carte Fleur obtenue"]'),null,'No Fleur is invented for absent harvest');
    if(scenario==='unknown')assert.match(await page.$eval('[data-harvest-moment]',e=>e.innerText),/Quantité indisponible/);
    if(scenario==='zero')assert.match(await page.$eval('[data-harvest-moment]',e=>e.innerText),/Aucune récolte/);
    if(scenario==='dead')assert.match(await page.$eval('[data-outcome="dead"]',e=>e.innerText),/sans récolte/i);
    if(scenario==='campaign-dead'){assert.equal(await page.$('[data-campaign-harvest-profile]'),null,'A dead campaign has no harvested profile');assert.equal(await page.$('[data-campaign-member] a'),null,'A dead campaign has no nonexistent stock link');assert.ok((await page.$$eval('[data-campaign-harvest-grams]',nodes=>nodes.map(e=>e.textContent))).every(text=>/0\s*g/.test(text)),'A real terminal zero remains zero')}
-   if(scenario==='unknown'||scenario==='zero'){await disclosure('[data-harvest-journal]');await disclosure('[data-harvest-charges]')}
+   if(scenario==='unknown'||scenario==='zero'){await cultureTab('journal');await cultureTab('charges')}
    await noWrites();await shot(scenario+'-390');results.push({scenario,unknownIsNotZero:true,noInventedFlower:true,noWrites:true});
   }
   await load('campaign-official-quality');
   const official=await page.evaluate(()=>window.__fixture.flowers.map(f=>f.quality));for(let i=0;i<2;i++)assert.ok((await page.$eval('[data-campaign-member="'+['a','b'][i]+'"]',e=>e.innerText)).includes(String(official[i])),'Displayed quality follows the official flower');results.push({scenario:'campaign official quality',quality:official});
   for(const scenario of ['solo-unconfirmed','solo-other-flower']){
-   await load(scenario);await enter('[data-harvest-flower] > summary');assert.match(await page.$eval('[data-harvest-flower]',e=>e.innerText),/Fleur à confirmer/);assert.equal(await page.$('[aria-label="Carte Fleur obtenue"]'),null,'An unconfirmed official flower is never recreated from the old game state');await enter('[data-harvest-moment] button');assert.deepEqual(await page.evaluate(()=>window.__fixture.storageCalls),[null],'An unrelated stock ID is never substituted');await noOverflow(scenario);await noWrites();results.push({scenario,noInventedFlower:true,noWrongStockTarget:true});
+   await load(scenario);await cultureTab('harvest');assert.match(await page.$eval('[data-harvest-flower]',e=>e.innerText),/n’a pas encore été retrouvée/);assert.equal(await page.$('[aria-label="Carte Fleur obtenue"]'),null,'An unconfirmed official flower is never recreated from the old game state');await enter('[data-harvest-moment] button');assert.deepEqual(await page.evaluate(()=>window.__fixture.storageCalls),[null],'An unrelated stock ID is never substituted');await noOverflow(scenario);await noWrites();results.push({scenario,noInventedFlower:true,noWrongStockTarget:true});
   }
   await load('preparation');assert.equal(await page.$('[data-campaign-harvest-profile]'),null,'Preparation retains projection presentation');assert.match(await page.$eval('[data-campaign-summary]',e=>e.innerText),/estimés|estimé/);await noOverflow('preparation');results.push({scenario:'preparation projections unchanged',noWrites:true});
   await load('component-campaign-unknown');await noOverflow('historical unknown campaign member');assert.match(await page.$eval('[data-campaign-summary]',e=>e.innerText),/indisponible|à vérifier|inconnue/i);assert.match(await page.$eval('[data-campaign-member="b"] [data-campaign-harvest-grams]',e=>e.textContent),/—/,'Missing grams are not fabricated zero');assert.match(await page.$eval('[data-campaign-harvest-total]',e=>e.textContent),/—/,'An incomplete total is not fabricated');assert.match(await page.$eval('[data-campaign-member="b"] [data-campaign-harvest-profile]',e=>e.textContent),/indisponible/,'An unknown harvest has no invented profile');assert.equal(await page.$('[data-campaign-member="b"] [data-cannabinoid-report]'),null);assert.equal(await page.$('[data-campaign-member="b"] a'),null);await shot('campaign-unknown-390');results.push({scenario:'historical campaign member missing',unknownIsNotZero:true,noInventedProfile:true});

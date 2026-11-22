@@ -53,7 +53,7 @@ import { KqWarehouseAirMountPicker } from "./KqWarehouseAirMountPicker";
 import { KqWarehouseShop } from "./KqWarehouseShop";
 import { proposeFirstWarehousePlan } from "@/lib/kanab-quest-warehouse-first-plan";
 import { KqWarehousePlanQuote } from "./KqWarehousePlanQuote";
-import { describeKqWarehouseAirMount, getKqWarehousePlanPayment } from "@/lib/kanab-quest-warehouse-plan-review";
+import { describeKqWarehouseAirMount, getKqWarehousePlanCultureBudget, getKqWarehousePlanPayment } from "@/lib/kanab-quest-warehouse-plan-review";
 import { KqWarehouseCulture, warehouseCultureHref, warehouseCampaignHref, type KqWarehouseCultureSummary, type KqWarehouseBuddies } from "./KqWarehouseCulture";
 import { KqWarehouseDashboard, type KqWarehouseDashboardTab } from "./KqWarehouseDashboard";
 import { KqWarehouseBuddieDock } from "./KqWarehouseBuddieDock";
@@ -202,6 +202,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const workspace = useRef<HTMLDivElement>(null);
   const placementPanel = useRef<HTMLElement>(null);
   const [error, setError] = useState("");
+  const [planSaveError, setPlanSaveError] = useState<{ draft: KqWarehouseState; message: string } | null>(null);
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -216,6 +217,9 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const [dashboardTab, setDashboardTab] = useState<KqWarehouseDashboardTab>("performance");
   const dashboard = useRef<HTMLDivElement>(null);
   const planReview = useRef<HTMLDivElement>(null);
+  const firstInstallationAction = useRef<HTMLElement | null>(null);
+  const focusedInstallationRevision = useRef<number | null>(null);
+  const [firstInstallationRevision, setFirstInstallationRevision] = useState<number | null>(null);
   const [workshopShop, setWorkshopShop] = useState(initialShopOpen && initialWorkshopShop);
   const [resumeExtraction, setResumeExtraction] = useState(false);
   const [extractionLot, setExtractionLot] = useState({ flowerId: initialFlowerId, lotId: undefined as string | undefined });
@@ -296,6 +300,8 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     ? reconcileKqWarehouseCondition(snapshot.state, quote.nextState, snapshot.cultureEquipment, { requestKey: "preview", fundedFraction: 1 })
     : snapshot?.cultureEquipment, [quote, snapshot]);
   const summary = useMemo(() => quote ? getKqWarehouseSummary(quote.nextState, 2, 2, previewCondition, undefined, 1) : snapshot ? getKqWarehouseSummary(snapshot.state, 2, 2, previewCondition, undefined, 1) : null, [quote, snapshot, previewCondition]);
+  const cultureBudget = useMemo(() => snapshot ? getKqWarehousePlanCultureBudget(quote?.nextState ?? snapshot.state, snapshot.productionReservation?.zoneId) : undefined, [quote, snapshot]);
+  const installedCultureBudget = useMemo(() => snapshot && quote ? getKqWarehousePlanCultureBudget(snapshot.state, snapshot.productionReservation?.zoneId) : undefined, [quote, snapshot]);
   const installedSummary = useMemo(() => snapshot ? getKqWarehouseSummary(snapshot.state, 2, 2, snapshot.cultureEquipment, undefined, 1) : undefined, [snapshot]);
   const savedPlan = snapshot?.state;
   const installedAir = useMemo(() => savedPlan ? getKqWarehouseAirCoverage({ ...savedPlan, airPlacements: getKqWarehouseAirPlacements(savedPlan) }) : undefined, [savedPlan]);
@@ -327,9 +333,9 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       const panel = inspector.current;
       if (!panel) return;
       focusedInitialZone.current = true;
-      panel.scrollIntoView({ block: "center", behavior: "instant" });
-      const action = panel.querySelector<HTMLButtonElement>('[data-warehouse-action="configure-selected"]:not(:disabled)');
-      (action ?? panel).focus({ preventScroll: true });
+      const action = panel.querySelector<HTMLElement>('[data-warehouse-zone-prepare]:not(:disabled), [data-warehouse-action="configure-selected"]:not(:disabled)') ?? panel;
+      action.scrollIntoView({ block: "center", behavior: "instant" });
+      action.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
   }, [initialZoneId, initialShopOpen, initialSection, room, snapshot, selected?.id]);
@@ -387,6 +393,16 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const activeRuns = snapshot?.activeRuns ?? [];
   const directPreparation = !api.isTutorial;
   const editing = dirty || (managing ?? (!directPreparation && (!zoneCultures || Boolean(initialZoneId || initialEquipmentCode) || !draft?.zones.some(zone => zone.buddieCode) && !activeRuns.length)));
+  const firstInstallationConfirmed = directPreparation && firstInstallationRevision !== null
+    && snapshot?.revision === firstInstallationRevision && !dirty && activeRuns.length === 0;
+  useEffect(() => {
+    if (!firstInstallationConfirmed || pending || focusedInstallationRevision.current === firstInstallationRevision) return;
+    const frame = requestAnimationFrame(() => {
+      firstInstallationAction.current?.focus();
+      focusedInstallationRevision.current = firstInstallationRevision;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [firstInstallationConfirmed, firstInstallationRevision, pending]);
   const showBuddieDock = !directPreparation && zoneCultures && room === "culture" && !editing && !shopOpen;
   const activeCampaign = activeRuns.find(run => run.campaignId);
   const reservation = snapshot?.productionReservation;
@@ -456,7 +472,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       request.current = { fingerprint, key, body: JSON.stringify({ ...body, requestKey: key }) };
     }
     const attempt = request.current;
-    mutation.current = true; readVersion.current += 1; setPending(true); setError(""); setNotice("");
+    mutation.current = true; readVersion.current += 1; setPending(true); setError(""); setPlanSaveError(null); setNotice("");
     let rejected = false, conflict = false;
     try {
       const response = await api.request("/api/arena/placard/warehouse", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: attempt.body, signal: AbortSignal.timeout(20_000) });
@@ -467,6 +483,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       if (!isKqWarehouseState(result.state) || !Number.isSafeInteger(result.revision) || result.revision <= snapshot.revision || !Number.isSafeInteger(result.cashCents) || result.cashCents < 0 || result.productionReservation !== undefined && !isKqProductionReservation(result.productionReservation)) throw new Error("Le reçu est incomplet. Réessaie la même confirmation pour vérifier son résultat.");
       if (mounted.current) {
         setSnapshot(result); setDraft(result.state); setPlacementCode(null); setFixtureTarget(null);
+        if (directPreparation && !snapshot.state.zones.some(zone => zone.id !== reservation?.zoneId && isKqWarehouseZoneOperational(zone))
+          && result.state.zones.some((zone: KqWarehouseZone) => zone.id !== result.productionReservation?.zoneId && isKqWarehouseZoneOperational(zone))) {
+          setFirstInstallationRevision(result.revision);
+        }
         saveOutcomeRef.current = "idle"; setSaveOutcome("idle");
         setNotice(quote.totalCostCents > 0 ? `Aménagement installé. ${formatKqCash(payable)} prélevés${creditUsed ? ` et ${formatKqCash(creditUsed)} de crédit de reprise utilisés` : ""}.` : "Plan enregistré sans prélèvement.");
       }
@@ -480,7 +500,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
         const outcome = conflict ? "conflict" : rejected ? "idle" : "unknown";
         saveOutcomeRef.current = outcome; setSaveOutcome(outcome);
         if (rejected && !conflict) request.current = null;
-        setError(reason instanceof Error ? reason.message : "Enregistrement impossible.");
+        setPlanSaveError({ draft, message: reason instanceof Error ? reason.message : "Enregistrement impossible." });
       }
       return false;
     }
@@ -1047,7 +1067,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   if (cleaningDeadline <= serverTime + KQ_GAME_DAY_MS) alerts.push({ id: "cleaning", level: "soon", title: cleaningDeadline <= serverTime ? "Préparation de nettoyage expirée" : "Nettoyage à renouveler", detail: "Au prochain semis, le bonus des passages arrivés à échéance ne s’appliquera plus.", action: "Ouvrir le nettoyage", module: "cleaning" });
   if (monitoring && (monitoring.status === "suspended" || monitoring.status === "active" && paidUntil <= serverTime + KQ_GAME_DAY_MS)) alerts.push({ id: "security", level: "soon", title: monitoring.status === "suspended" ? "Télésurveillance suspendue" : "Télésurveillance bientôt à échéance", detail: monitoring.status === "suspended" ? "Vérifie le tarif et l’échéance avant de réactiver le service." : "Vérifie le tarif et la trésorerie avant le renouvellement.", action: "Gérer le service", module: "security" });
   if (savedPlan && airGap && airGapCoverage) alerts.push({ id: "air", level: "soon", title: "Extraction d’air à vérifier", detail: `${getKqZoneIdentity(savedPlan, airGap)?.label ?? "Culture"} · ${airGapCoverage.coveredAreaM2} sur ${airGapCoverage.areaM2} m² desservis. Le bonus dépend de la surface couverte.`, action: "Localiser la zone", module: "ventilation", zoneId: airGap });
-  if (installedSummary && installedSummary.estimatedHarvestGrams > installedSummary.dryingCapacityGrams) alerts.push({ id: "drying", level: "info", title: "Séchage à prévoir", detail: `Il manquerait ${mass(installedSummary.estimatedHarvestGrams - installedSummary.dryingCapacityGrams)} pour sécher la récolte estimée en une fois.`, action: "Voir le séchage", module: "drying" });
+  if (installedSummary && installedSummary.estimatedHarvestGrams > installedSummary.dryingCapacityGrams) alerts.push({ id: "drying", level: "info", title: "Séchage à prévoir", detail: `Si la récolte atteint le potentiel matériel, il manquerait ${mass(installedSummary.estimatedHarvestGrams - installedSummary.dryingCapacityGrams)} de capacité pour tout sécher en une fois.`, action: "Voir le séchage", module: "drying" });
 
   function openPriority(alert: KqWarehouseAlert) {
     if (alert.zoneId && alert.module === "production") selectProductionZone(alert.zoneId);
@@ -1105,7 +1125,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                   </div>
                   {zoneQuote && <div className={styles.quote} data-warehouse-zone-quote>
                       <div className={styles.quoteLine}><span>Coût neuf / m²</span><strong>{formatKqCash(zoneQuote.costPerM2Cents)}/m²</strong></div>
-                      <div className={styles.quoteLine}><span>{selectedKind === "culture" ? "Récolte estimée" : "Capacité totale"}</span><strong data-warehouse-capacity-grams={selectedCapacity}>{mass(selectedCapacity)}<small>
+                      <div className={styles.quoteLine}><span>{selectedKind === "culture" ? "Potentiel matériel" : "Capacité totale"}</span><strong data-warehouse-capacity-grams={selectedCapacity}>{mass(selectedCapacity)}<small>
                         {decimal(selectedCapacityPerM2)} g/m²
                         {"volumeLitres" in zoneQuote && zoneQuote.volumeLitres > 0 && <> · {decimal(zoneQuote.volumeLitres)} L de contenants</>}
                         {"usableSurfaceM2" in zoneQuote && zoneQuote.usableSurfaceM2 > 0 && <> · {decimal(zoneQuote.usableSurfaceM2)} m² de filet utile</>}
@@ -1117,15 +1137,15 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                 </div>
   </> : null;
 
-  const cultureAccess = zoneCultures && (activeRuns.length > 0 || draft?.zones.some(isKqWarehouseZoneOperational)) && !(editing && dirty) && (directPreparation || !editing) && <div className={`${styles.campaignLaunch} ${directPreparation ? styles.preparationAccess : ""}`} data-warehouse-campaign>
+  const cultureAccess = !firstInstallationConfirmed && zoneCultures && (activeRuns.length > 0 || snapshot?.state.zones.some(isKqWarehouseZoneOperational)) && !dirty && (directPreparation || !editing) && <div className={`${styles.campaignLaunch} ${directPreparation ? styles.preparationAccess : ""}`} data-warehouse-campaign>
                   <span>{directPreparation ? <><strong>{activeRuns.length ? "Tes cultures en cours" : "Prêt à cultiver ?"}</strong><small>{activeRuns.length ? `${activeRuns.length} culture${activeRuns.length > 1 ? "s" : ""} à suivre.` : "Choisis tes Buddies et tes cartes sur la page de préparation."}</small></> : activeCampaign ? "Une campagne · tous tes Buddies" : activeRuns.length ? "Termine tes cultures en cours" : `${campaignZones.length} Buddie${campaignZones.length > 1 ? "s" : ""} placé${campaignZones.length > 1 ? "s" : ""} pour la campagne`}</span>
                   {dirty ? <button type="button" className={styles.primary} data-warehouse-campaign-action="review" onClick={reviewPlan}>Voir le devis du plan</button>
                     : activeCampaign && !locked ? onOpenCulture
                       ? <button type="button" className={styles.primary} data-warehouse-campaign-action="resume" data-sylvain-target="next-open" onClick={() => onOpenCulture(warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId))}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></button>
                       : <Link className={styles.primary} data-warehouse-campaign-action="resume" data-sylvain-target="next-open" href={warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId)}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></Link>
                       : directPreparation && !locked ? onOpenCulture
-                        ? <button type="button" className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} onClick={() => onOpenCulture(warehouseCampaignHref())}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></button>
-                        : <Link className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} href={warehouseCampaignHref()}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></Link>
+                        ? <button type="button" className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} onClick={() => onOpenCulture(warehouseCampaignHref(undefined, !activeRuns.length))}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></button>
+                        : <Link className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} href={warehouseCampaignHref(undefined, !activeRuns.length)}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></Link>
                       : campaignReady && !locked ? onOpenCulture
                         ? <button type="button" className={styles.primary} data-warehouse-campaign-action="start" onClick={() => onOpenCulture(warehouseCampaignHref())}>Lancer mes cultures<ArrowRight size={15} /></button>
                         : <Link className={styles.primary} data-warehouse-campaign-action="start" href={warehouseCampaignHref()}>Lancer mes cultures<ArrowRight size={15} /></Link>
@@ -1133,13 +1153,18 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                 </div>;
 
   const firstPlan = editing && !dirty && !placementCode && !fixtureTarget && !staleDraft && draft ? proposeFirstWarehousePlan(draft) : null;
+  const firstPreparationHref = warehouseCampaignHref(undefined, true);
+  const firstPreparationAction = { ref: (node: HTMLElement | null) => { firstInstallationAction.current = node; },
+    className: styles.primary, "data-warehouse-campaign-action": "start", "data-sylvain-target": "prepare-open" };
+  const firstPreparationLabel = <>Préparer mes cultures<ArrowRight size={15} aria-hidden="true" /></>;
   const purchaseActions = <div className={styles.buttons}>
     <button className={styles.primary} type="button" disabled={!dirty || saveLocked || !quote || !affordable || adoptionBlocked || productionInstallationBlocked || occupiedServiceChanged} data-warehouse-action="save" data-sylvain-target="install-confirm" onClick={() => void save()}>{pending ? <LoaderCircle size={15} /> : <Save size={15} />} {pending ? "Enregistrement…" : installLabel}</button>
     {room === "culture" && <button className={styles.secondary} type="button" data-warehouse-continue-shop disabled={locked} onClick={openShop}><ShoppingBag size={15} /> Continuer en boutique</button>}
     <button className={styles.secondary} type="button" disabled={pending || saveOutcome !== "idle"} data-warehouse-action="reset" onClick={resetDraft}>Annuler les modifications du plan</button>
   </div>;
-  const quoteReview = (actions: ReactNode, compact = false) => snapshot && draft ? <KqWarehousePlanQuote previousState={snapshot.state} draftState={draft} quote={quote} cashCents={snapshot.cashCents} migrationCreditCents={snapshot.migrationCreditCents ?? 0} compact={compact} aside={<>
+  const quoteReview = (actions: ReactNode, compact = false) => snapshot && draft ? <KqWarehousePlanQuote previousState={snapshot.state} draftState={draft} quote={quote} cashCents={snapshot.cashCents} migrationCreditCents={snapshot.migrationCreditCents ?? 0} cultureBudget={cultureBudget} installedCultureBudget={installedCultureBudget} potentialGrams={summary && installedSummary ? { installed: installedSummary.estimatedHarvestGrams, proposed: summary.estimatedHarvestGrams } : undefined} compact={compact} aside={<>
     {zoneDialogError && <p className={styles.error} role="alert">{zoneDialogError}</p>}
+    {planSaveError && planSaveError.draft === draft && <p className={styles.error} role="alert" data-warehouse-plan-error>{planSaveError.message}</p>}
     {occupiedServiceChanged && <p role="status">Attends la fin des cultures dont la couverture change pour installer ce plan.</p>}
     {saveOutcome === "unknown" && <p role="status">La réponse est incertaine. Réessaie la même confirmation pour vérifier si le plan a été enregistré. L’aperçu reste verrouillé jusque-là.</p>}
     {saveOutcome === "conflict" && <div><p role="alert">Le plan enregistré a changé. Ton aperçu est conservé ; recharge le plan actuel avant de continuer.</p><button type="button" className={styles.secondary} data-warehouse-reconcile disabled={pending} onClick={() => setReloadPlanOpen(true)}>Recharger le plan enregistré</button></div>}
@@ -1228,8 +1253,17 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     onSelect={inspectRoomStation} warehouseEditor={warehouseEditor}
   /> : null;
 
+  const zonePreparationHref = directPreparation && !locked && !dirty && activeRuns.length === 0 && selected && !("kind" in selected)
+    && selected.id !== reservation?.zoneId && snapshot?.state.zones.some(zone => zone.id === selected.id && isKqWarehouseZoneOperational(zone))
+    ? warehouseCampaignHref(undefined, true, selected.id) : null;
+  const zonePreparationProps = { className: styles.primary, "data-warehouse-zone-prepare": true, "data-sylvain-target": "prepare-zone" };
+  const zonePreparationLabel = <><Sprout size={17} aria-hidden="true" />{selected && "buddieCode" in selected && selected.buddieCode ? "Changer mon Buddie" : "Choisir mon Buddie"}</>;
+  const zonePreparation = zonePreparationHref && (onOpenCulture
+    ? <button {...zonePreparationProps} type="button" onClick={() => onOpenCulture(zonePreparationHref)}>{zonePreparationLabel}</button>
+    : <Link {...zonePreparationProps} href={zonePreparationHref}>{zonePreparationLabel}</Link>);
   const zoneInspector = snapshot && draft ? <div className={styles.inspector} ref={inspector} tabIndex={-1} data-warehouse-zone-inspector data-warehouse-zone-summary={editing && !!selected || undefined}>
-                {selected && !("kind" in selected) && (!editing || selectedProduction) ? <KqWarehouseCulture key={selected.id} state={draft} zone={selected} productionReservation={selectedProduction} condition={previewCondition} zoneIdentity={selectedIdentity} run={selectedRun} previewBuddieCode={pickedBuddie} runs={activeRuns} buddies={buddies} disabled={selectedProduction ? locked : locked || !affordable || adoptionBlocked} dirty={dirty} legacy={!!snapshot.legacyActiveRun} onReviewPlan={reviewPlan} onManage={openShop} onEquipment={() => openZoneEquipment(selected)} completedRunId={snapshot.completedRuns?.find(run => run.zoneId === selected.id)?.runId} /> : selected ? <><div className={styles.inspectorHeader} style={{ backgroundColor: selectedIdentity?.tint }}><div><h3><b className={styles.zoneNumber} style={{ backgroundColor: selectedIdentity?.color }} aria-label={selectedIdentity?.label}>{selectedIdentity?.number ?? "—"}</b> {ZONE_LABELS[selectedKind]} · {selected.width * selected.height} m²</h3><span>{![...snapshot.state.zones, ...(snapshot.state.serviceZones ?? [])].some(zone => zone.id === selected.id) ? "Au devis" : "lightingCode" in selected && selected.lightingCode === KQ_WAREHOUSE_UNLIT_CODE ? "Éclairage à installer" : selectedKind === "culture" ? (zoneCultures ? !!selectedRun : snapshot.activeRun) && "active" in selected && selected.active ? "Culture en cours" : "active" in selected && !selected.active ? "En pause" : "Zone active" : "Zone installée"}</span></div></div><div className={styles.inspectorBody}>
+                {selected && !("kind" in selected) && (!editing || selectedProduction) ? <KqWarehouseCulture key={selected.id} state={draft} zone={selected} productionReservation={selectedProduction} condition={previewCondition} zoneIdentity={selectedIdentity} run={selectedRun} previewBuddieCode={pickedBuddie} runs={activeRuns} buddies={buddies} disabled={selectedProduction ? locked : locked || !affordable || adoptionBlocked} dirty={dirty} legacy={!!snapshot.legacyActiveRun} onReviewPlan={reviewPlan} onManage={openShop} onEquipment={() => openZoneEquipment(selected)} completedRunId={snapshot.completedRuns?.find(run => run.zoneId === selected.id)?.runId} prepareAction={zonePreparation} showBuddieDock={showBuddieDock} /> : selected ? <><div className={styles.inspectorHeader} style={{ backgroundColor: selectedIdentity?.tint }}><div><h3><b className={styles.zoneNumber} style={{ backgroundColor: selectedIdentity?.color }} aria-label={selectedIdentity?.label}>{selectedIdentity?.number ?? "—"}</b> {ZONE_LABELS[selectedKind]} · {selected.width * selected.height} m²</h3><span>{![...snapshot.state.zones, ...(snapshot.state.serviceZones ?? [])].some(zone => zone.id === selected.id) ? "Au devis" : "lightingCode" in selected && selected.lightingCode === KQ_WAREHOUSE_UNLIT_CODE ? "Éclairage à installer" : selectedKind === "culture" ? (zoneCultures ? !!selectedRun : snapshot.activeRun) && "active" in selected && selected.active ? "Culture en cours" : "active" in selected && !selected.active ? "En pause" : "Zone active" : "Zone installée"}</span></div></div><div className={styles.inspectorBody}>
+                  {zonePreparation}
                   <button type="button" className={styles.primary} disabled={!!placementCode || !!fixtureTarget} data-warehouse-action="configure-selected" aria-haspopup="dialog" onClick={() => openZoneMenu(selected.id)}>Actions de la zone</button>
                   <button type="button" className={styles.secondary} data-zone-effect disabled={!!fixtureTarget || !!placementCode} onClick={() => inspectCoverage("zone", selected.id, true)}>Voir la surface équipée</button>
                 </div></> : !planZones.length && !!draft.handlingPlacements?.length ?
@@ -1344,7 +1378,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     {(room === "drying" || room === "storage") && <section className={board.contextSection}>
       <h3>{room === "drying" ? "Capacité de séchage" : "Place en stockage"}</h3>
       {room === "drying" && <KqProgressMeter label="Capacité par récolte" value={summary.dryingCapacityGrams} max={Math.max(summary.dryingCapacityGrams, summary.estimatedHarvestGrams)}
-        valueLabel={mass(summary.dryingCapacityGrams)} hint={summary.activeAreaM2 ? `Récolte estimée sur le plan · ${mass(summary.estimatedHarvestGrams)}` : "La récolte dépend des zones actives."} />}
+        valueLabel={mass(summary.dryingCapacityGrams)} hint={summary.activeAreaM2 ? `Potentiel matériel du plan · ${mass(summary.estimatedHarvestGrams)}` : "La récolte dépend des zones actives."} />}
       {room === "storage" && <p>{availableStorage === null ? "Occupation à établir." : `${mass(Math.max(0, availableStorage))} libres sur ${mass(savedActualStorageCapacity)}. Les réservations de récolte sont déduites.`}</p>}
       <p>{currentService ? `${labelZone(currentService.id)} · ${currentService.width * currentService.height} m²` : "Choisis un poste pour aménager la surface dans le plan."}</p>
       <a className={board.control} href={`#${id}-activity`}>{room === "drying" ? "Gérer le séchage" : "Gérer les lots"}<ArrowRight size={15} aria-hidden="true" /></a>
@@ -1407,6 +1441,12 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                   <small id={`${id}-mode-arrangement-detail`}>Modifier le plan</small></span>
               </button>
             </div>
+            {firstPlan && <button type="button" className={board.control} data-primary data-warehouse-first-plan data-sylvain-target="install-first" disabled={locked || workInProgress} onClick={() => {
+              setDraft(firstPlan); setSelectedId(firstPlan.zones[0].id); setError("");
+              setRoom("culture"); setFloorModule("production"); setProductionView("selection");
+              setNotice("1 m² éclairé, un filet et des bocaux. Tu peux déplacer le matériel, vérifier le devis ou annuler.");
+              showDrawingPlan();
+            }}>Proposer un plan de départ</button>}
           </div>}
           <div className={board.modeActions}>
             <button type="button" className={board.control} data-warehouse-action="reserve" aria-controls={`${id}-dashboard`} disabled={!installedSummary || loading} onClick={() => openDashboard("reserve")}>
@@ -1428,6 +1468,18 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       {!snapshot || !draft || !summary || !installedSummary ? <div className={styles.loading} role="status">{loading
         ? <><LoaderCircle size={25} aria-hidden="true" />Chargement de ton installation…</>
         : "L’entrepôt n’est pas disponible. Tu peux réessayer avec le bouton Actualiser."}</div> : <>
+          {firstInstallationConfirmed && <div className={`${styles.campaignLaunch} ${styles.preparationAccess}`} data-warehouse-first-installation>
+            <span role="status"><strong>Plan installé</strong>{notice && <small>{notice}</small>}</span>
+            <div className={styles.buttons}>
+              {onOpenCulture ? <button type="button" {...firstPreparationAction} onClick={() => onOpenCulture(firstPreparationHref)}>{firstPreparationLabel}</button>
+                : <Link {...firstPreparationAction} href={firstPreparationHref}>{firstPreparationLabel}</Link>}
+              <button type="button" className={styles.secondary} data-warehouse-review-installed onClick={() => {
+                const zone = snapshot.state.zones.find(zone => zone.id !== reservation?.zoneId && isKqWarehouseZoneOperational(zone));
+                if (zone) selectProductionZone(zone.id);
+                showDrawingPlan();
+              }}>Revoir mon plan</button>
+            </div>
+          </div>}
           {room !== "processing" && <WarehouseMetrics summary={editing ? summary : installedSummary} count={zoneCultures ? activeRuns.length : Number(snapshot.activeRun)}
             stock={stock} stockFree={availableStorage === null ? null : Math.max(0, availableStorage)} disabled={workInProgress}
             onSurface={() => { openModule("production"); setProductionView("surface"); focusContext(); }}
@@ -1440,15 +1492,9 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               {dirty ? draftStored ? "Brouillon conservé dans cet onglet." : "Enregistre pour installer tes modifications." : "Place, déplace ou redimensionne sur le plan."}
               {dirty && notice && <small>{notice}</small>}
             </span>
-            {firstPlan && <button type="button" className={board.control} data-warehouse-first-plan data-sylvain-target="install-first" disabled={locked || workInProgress} onClick={() => {
-              setDraft(firstPlan); setSelectedId(firstPlan.zones[0].id); setError("");
-              setRoom("culture"); setFloorModule("production"); setProductionView("selection");
-              setNotice("1 m² éclairé, un filet et des bocaux. Tu peux déplacer le matériel, vérifier le devis ou annuler.");
-              showDrawingPlan();
-            }}>Proposer un plan de départ</button>}
             {dirty && <button type="button" className={board.control} data-primary data-sylvain-target="install-review" onClick={reviewPlan}>{payable === null ? "Voir le devis" : `Voir le devis · ${formatKqCash(payable)}`}</button>}
           </div>}
-          {notice && !dirty && <p className={styles.notice} role="status"><Check size={17} aria-hidden="true" />{notice}</p>}
+          {notice && !dirty && !firstInstallationConfirmed && <p className={styles.notice} role="status"><Check size={17} aria-hidden="true" />{notice}</p>}
           <div role={room === "processing" ? undefined : "tabpanel"} id={`${id}-module-panel`} aria-labelledby={room === "processing" ? undefined : `${id}-${activeModule}-tab`}>
             {room !== "processing" && <div className={board.floor} ref={workspace} data-warehouse-cultures={zoneCultures || undefined} data-warehouse-managing={editing || undefined}>
               <div className={board.sceneColumn}>
@@ -1553,7 +1599,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
             </div>}
           </div>
           <div ref={dashboard} id={`${id}-dashboard`}>
-            <KqWarehouseDashboard summary={summary} installedSummary={installedSummary} condition={snapshot.cultureEquipment} projectedCondition={previewCondition} quote={quote} dirty={dirty} migrationCreditCents={snapshot.migrationCreditCents ?? 0} storageCapacity={storageCapacity} storageReserved={storageReserved} reservedHarvest={reservedHarvest} salesGramsPerDay={demand} open={dashboardOpen} onOpenChange={setDashboardOpen} tab={dashboardTab} onTabChange={setDashboardTab} />
+            <KqWarehouseDashboard summary={summary} installedSummary={installedSummary} condition={snapshot.cultureEquipment} projectedCondition={previewCondition} quote={quote} dirty={dirty} migrationCreditCents={snapshot.migrationCreditCents ?? 0} cultureBudget={cultureBudget} storageCapacity={storageCapacity} storageReserved={storageReserved} reservedHarvest={reservedHarvest} salesGramsPerDay={demand} open={dashboardOpen} onOpenChange={setDashboardOpen} tab={dashboardTab} onTabChange={setDashboardTab} />
           </div>
         </>}
       <AppDialog open={!!menuZone && room === "culture"} onClose={closeZoneMenu} title={zoneMenuPage === "buddies" ? `Buddies · ${menuTitle}` : zoneMenuPage === "remove" ? `Supprimer · ${menuTitle}` : menuTitle} className={zoneMenuPage === "buddies" ? styles.zoneBuddiesDialog : styles.zoneActionsDialog} bodyClassName={styles.zoneMenuBody} dialogProps={{ "data-warehouse-zone-menu": true }}>
@@ -1567,7 +1613,12 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
             <div className={styles.zoneActions}>
               {selectedRun && <ZoneDialogAction action="resume" leave className={styles.primary} disabled={dirty || locked} onClick={() => { setZoneMenuId(null); (onOpenCulture ?? router.push)(warehouseCultureHref(menuZone.id, selectedRun.leaderRunId ?? selectedRun.runId)); }}>Suivre la culture<ArrowRight size={18} aria-hidden="true" /></ZoneDialogAction>}
               <ZoneDialogAction action="furnish" className={styles.primary} disabled={selectedEquipmentLocked} onClick={furnishZone}><ShoppingBag size={20} aria-hidden="true" /><strong>{selectedProduction ? "Choisir le matériel" : "Aménager"}</strong></ZoneDialogAction>
-              {selectedProduction ? <ZoneDialogAction action="staff" leave className={styles.secondary} disabled={locked || dirty} onClick={() => { setZoneMenuId(null); if (onOpenStaff) onOpenStaff(); else router.push("/arene/placard?view=staff"); }}>Voir le personnel<ArrowRight size={18} aria-hidden="true" /></ZoneDialogAction> : !("kind" in menuZone) && <button type="button" className={styles.secondary} data-warehouse-zone-action="buddies" disabled={selectedLocked || !zoneCultures} onClick={showZoneBuddies}><Sprout size={20} aria-hidden="true" /><span><strong>Buddies</strong><small>Choisir la variété de cette zone</small></span></button>}
+              {selectedProduction ? <ZoneDialogAction action="staff" leave className={styles.secondary} disabled={locked || dirty} onClick={() => { setZoneMenuId(null); if (onOpenStaff) onOpenStaff(); else router.push("/arene/placard?view=staff"); }}>Voir le personnel<ArrowRight size={18} aria-hidden="true" /></ZoneDialogAction> : !("kind" in menuZone) && <button type="button" className={styles.secondary} data-warehouse-zone-action="buddies" data-warehouse-zone-prepare={!!zonePreparationHref || undefined} data-sylvain-target={zonePreparationHref ? "prepare-zone" : undefined} disabled={selectedLocked || !zoneCultures} onClick={() => {
+                if (zonePreparationHref && !buddies?.ownedBuddieCodes.length) {
+                  setZoneMenuId(null);
+                  (onOpenCulture ?? router.push)(zonePreparationHref);
+                } else showZoneBuddies();
+              }}><Sprout size={20} aria-hidden="true" /><span><strong>{zonePreparationHref ? "Choisir mon Buddie" : "Buddies"}</strong><small>Choisir la variété de cette zone</small></span></button>}
               <ZoneDialogAction className={styles.secondary} action="dimensions" disabled={selectedLocked} onClick={() => { setZoneMenuId(null); setManaging(true); configureZone(menuZone.id); }}><Ruler size={20} aria-hidden="true" /><strong>Modifier les dimensions</strong></ZoneDialogAction>
               <button type="button" className={styles.danger} data-warehouse-zone-action="remove" disabled={selectedLocked && removalAttempt.current?.zoneId !== menuZone.id} onClick={() => setZoneMenuPage("remove")}><Trash2 size={20} aria-hidden="true" /><span><strong>Supprimer</strong><small>{api.isTutorial || "kind" in menuZone ? "Remettre le matériel en réserve" : "Garder le matériel ou le revendre"}</small></span></button>
             </div>

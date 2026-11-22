@@ -29,6 +29,7 @@ function CompletedCampaignSummary({ state, flowers }: { state: KqGameState; flow
     </header>
     <div className={styles.rows}>{members.map(member => {
       const result = harvest?.rows.find(row => row.runId === member.runId);
+      const firstAdjustment = result?.adjustments[0];
       const buddie = KQ_BUDDIES.find(item => item.code === member.buddieCode);
       const artwork = getBuddieArtwork(member.buddieCode);
       const zoneIdentity = getKqZoneIdentity(member.warehouse.sourceState, member.zoneId);
@@ -50,14 +51,17 @@ function CompletedCampaignSummary({ state, flowers }: { state: KqGameState; flow
           </small></span>
         </div>
         <dl className={styles.harvestMetrics}>
-          <div><dt>Récolte</dt><dd><span data-campaign-harvest-grams>{result?.grams == null ? "—" : `${number(result.grams)} g`}</span>{result?.grams == null ? <small>Quantité indisponible</small> : null}</dd></div>
+          <div><dt>Récolté</dt><dd><span data-campaign-harvest-grams>{result?.grams == null ? "—" : `${number(result.grams)} g`}</span>{result?.grams == null ? <small>Quantité indisponible</small> : null}</dd></div>
           <div><dt>Qualité de culture</dt><dd><span data-campaign-harvest-quality>{result?.quality == null ? "—" : `${number(result.quality)} pts`}</span>{result?.quality == null && !dead ? <small>Qualité indisponible</small> : null}</dd></div>
         </dl>
+        {!dead && result?.potentialGrams != null && <p className={styles.notes}>Potentiel matériel · {number(result.potentialGrams)} g</p>}
+        {firstAdjustment && <p className={styles.notes}>{firstAdjustment.label} · {firstAdjustment.grams > 0 ? "+" : ""}{number(firstAdjustment.grams)} g</p>}
         {dead ? <p className={styles.harvestStatus}>Aucun lot récolté.</p> : null}
         {flower ? <Link className={styles.link} href={`/arene/placard?view=${flower.status === "available" && flower.storage?.stage !== "ready" ? "workshop&section=storage" : "arena"}&flower=${encodeURIComponent(flower.id)}`}>{flower.status === "available" && flower.storage?.stage !== "ready" ? "Ranger et suivre l’affinage" : "Voir cette Fleur"}</Link> : null}
         {!dead ? <details className={styles.harvestProfile} data-campaign-harvest-profile>
-          <summary><span>Profil et détails</span><ChevronDown aria-hidden="true" /></summary>
+          <summary><span>Profil et détail du rendement</span><ChevronDown aria-hidden="true" /></summary>
           {own ? <>
+            {result && result.adjustments.length > 1 && <ul className={styles.notes}>{result.adjustments.map(adjustment => <li key={adjustment.label}>{adjustment.label} · {adjustment.grams > 0 ? "+" : ""}{number(adjustment.grams)} g</li>)}</ul>}
             <p className={styles.notes}>{archetypes[member.cultivationProfile.archetype]} · {member.cultivationProfile.terpeneNotes.join(" · ")}</p>
             <dl className={styles.profileMetrics}>
               <div><dt>{cannabinoid?.[0].toUpperCase() ?? "Cannabinoïde dominant"} simulé</dt><dd>{cannabinoid ? percent(cannabinoid[1]) : "—"}</dd></div>

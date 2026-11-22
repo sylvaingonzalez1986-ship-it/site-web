@@ -422,6 +422,7 @@ type KqDiceProps = {
   initialZoneId?: string;
   initialRunId?: string;
   initialCampaign?: boolean;
+  chooseVariety?: boolean;
   tutorial?: KqPlayableLessonPort;
   isolatedStorage?: { persistent: Pick<Storage, "getItem" | "setItem" | "removeItem">; session: Pick<Storage, "getItem" | "setItem" | "removeItem"> };
   onPreparationChange?: (preparation: KqPreparationSelection) => void;
@@ -449,6 +450,7 @@ function KqGameSession({
   initialZoneId,
   initialRunId,
   initialCampaign = false,
+  chooseVariety = false,
   onOpenRun,
   onOpenWarehouse,
   onOpenBuddiePacks,
@@ -2506,7 +2508,7 @@ function KqGameSession({
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           {playerPresentation ? <div className={styles.setupChoices} data-culture-setup-choices>
             {preparationNotice ? <p className={styles.preparationNotice} role="status" data-preparation-adjusted>{preparationNotice}</p> : null}
-            {isPlayerMode ? <div data-arena-tour="culture"><KqCultureBuddies snapshot={preparationWarehouse}
+            {isPlayerMode ? <div data-arena-tour="culture"><KqCultureBuddies snapshot={preparationWarehouse} chooseVariety={chooseVariety} preferredZoneId={initialZoneId}
               ownedCodes={remoteCollection.loading || remoteCollection.error ? null : ownedBuddieCodes}
               artwork={ownedBuddieArtwork} rotation={buddieRotation} loading={remoteCollection.loading} disabled={remoteAction !== null || careBusy || pendingStart}
               onSaved={applyBuddieAssignment} onBlockedChange={setBuddieAssignmentBlocked}
@@ -2709,7 +2711,7 @@ function KqGameSession({
             {isPlayerMode && !practiceSession && <div data-farm-guide-host />}
             {practiceSession ? <p className={styles.startTrialNotice}>Essai · cartes et budget fictifs</p> : null}
             {isPlayerMode && campaignParticipants.length > 0 ? <p className={styles.startScope} data-culture-launch-scope><strong>{campaignParticipants.length} Buddie{campaignParticipants.length > 1 ? "s" : ""} · {getKqCampaignTotals(campaignParticipants).areaM2.toLocaleString("fr-FR")} m²</strong></p> : null}
-            {playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}
+            {playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} campaignZoneCount={campaignParticipants.length} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}
             {isPlayerMode && !practiceSession && <KqWarehouseLaunchSupplies members={campaignParticipants} onReady={setPreparationKey} />}
             {isPlayerMode && campaignParticipants.length > 0 ? <details data-culture-launch-participants><summary>Buddies et zones</summary>
               <ul className={styles.startParticipants}>{campaignParticipants.map(member => <li key={member.zoneId}>

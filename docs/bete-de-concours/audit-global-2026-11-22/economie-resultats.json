@@ -1,0 +1,6015 @@
+{
+  "seeds": [
+    113,
+    2026,
+    15277,
+    19873,
+    27183,
+    39068,
+    51987,
+    63129,
+    73105,
+    85314,
+    92821,
+    99109
+  ],
+  "extraSeeds": [
+    211,
+    3341,
+    10613,
+    16931,
+    23909,
+    31019,
+    42331,
+    54319,
+    62003,
+    77003,
+    89069,
+    96643
+  ],
+  "support": [
+    "BOTTE-006",
+    "BOTTE-017",
+    "BOTTE-037"
+  ],
+  "estimates": [
+    {
+      "scenario": "depart-loic",
+      "capexCents": 78674,
+      "openingCashCents": 100000,
+      "energyCostCents": 6000,
+      "supplierCostCents": 2360,
+      "displayedOperatingCents": 8360,
+      "estimatedGrams": 189.375,
+      "dryingGrams": 1000,
+      "storageGrams": 1200,
+      "optionalClimate": {
+        "code": "SIM-STORAGE-CLIMATE-01",
+        "areaM2": 1,
+        "kwhPerM2": 6,
+        "monthlyKwh": 6,
+        "monthlyCents": 150,
+        "centsPerM2": 150
+      }
+    },
+    {
+      "scenario": "deux-zones",
+      "capexCents": 114983,
+      "openingCashCents": 500000,
+      "energyCostCents": 12000,
+      "supplierCostCents": 4720,
+      "displayedOperatingCents": 16720,
+      "estimatedGrams": 378.75,
+      "dryingGrams": 1000,
+      "storageGrams": 1200,
+      "optionalClimate": {
+        "code": "SIM-STORAGE-CLIMATE-01",
+        "areaM2": 1,
+        "kwhPerM2": 6,
+        "monthlyKwh": 6,
+        "monthlyCents": 150,
+        "centsPerM2": 150
+      }
+    }
+  ],
+  "extensionCents": 36309,
+  "histories": {
+    "depart-loic": {
+      "debutant": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": -5591.5,
+          "netCents": -45855,
+          "firstNetCents": -11133,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 71.15,
+          "medianQualityPerLot": 6.449999999999999,
+          "commercialLots": 6,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 10193,
+          "minPositionCents": -24529,
+          "firstDeficitCycle": 2,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "execution": {
+          "initialUncommittedCents": 21326,
+          "maxGameWorkHoursPerDay": 6,
+          "minPositionCents": -24529,
+          "elapsedHours": 336,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 167.6
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 346
+              },
+              "netCents": -11133,
+              "cashAfterReservesCents": 10193,
+              "balance": {
+                "cashCents": 22190,
+                "outstandingCents": 11997,
+                "labOutstandingCents": 4500,
+                "energyOutstandingCents": 5137,
+                "supplierOutstandingCents": 2360
+              },
+              "grossCents": 2073,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-11-23T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 149.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 279
+              },
+              "netCents": -11462,
+              "cashAfterReservesCents": -1269,
+              "balance": {
+                "cashCents": 22889,
+                "outstandingCents": 24158,
+                "labOutstandingCents": 9000,
+                "energyOutstandingCents": 10438,
+                "supplierOutstandingCents": 4720
+              },
+              "grossCents": 1677,
+              "lots": [
+                {
+                  "grams": 55.9,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 55.9,
+                      "unitCents": 30,
+                      "ttcCents": 1677,
+                      "vatCents": 279
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2026-11-24T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 172.8
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4235
+              },
+              "netCents": 8315,
+              "cashAfterReservesCents": 7046,
+              "balance": {
+                "cashCents": 33477,
+                "outstandingCents": 26431,
+                "labOutstandingCents": 13500,
+                "energyOutstandingCents": 5851,
+                "supplierOutstandingCents": 7080
+              },
+              "grossCents": 25410,
+              "lots": [
+                {
+                  "grams": 121,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 121,
+                      "unitCents": 210,
+                      "ttcCents": 25410,
+                      "vatCents": 4235
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2026-11-26T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 155
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3493
+              },
+              "netCents": 4605,
+              "cashAfterReservesCents": 11651,
+              "balance": {
+                "cashCents": 42210,
+                "outstandingCents": 30559,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 3119,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 20958,
+              "lots": [
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.8,
+                      "unitCents": 210,
+                      "ttcCents": 20958,
+                      "vatCents": 3493
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2026-11-27T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 137.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3196
+              },
+              "netCents": 3117,
+              "cashAfterReservesCents": 14768,
+              "balance": {
+                "cashCents": 43339,
+                "outstandingCents": 28571,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 1131,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 19173,
+              "lots": [
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 91.3,
+                      "unitCents": 210,
+                      "ttcCents": 19173,
+                      "vatCents": 3196
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2026-11-28T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 159.2
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 311
+              },
+              "netCents": -11302,
+              "cashAfterReservesCents": 3466,
+              "balance": {
+                "cashCents": 37258,
+                "outstandingCents": 33792,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 6352,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1869,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 311
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2026-11-29T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 142.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3115
+              },
+              "netCents": 2715,
+              "cashAfterReservesCents": 6181,
+              "balance": {
+                "cashCents": 38186,
+                "outstandingCents": 32005,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 4565,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 18690,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2026-12-01T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 126.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 312
+              },
+              "netCents": -11303,
+              "cashAfterReservesCents": -5122,
+              "balance": {
+                "cashCents": 32105,
+                "outstandingCents": 37227,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 9787,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1869,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 6.3,
+                  "saleQuality": 6.3,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 312
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2026-12-02T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 145.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3276
+              },
+              "netCents": 3520,
+              "cashAfterReservesCents": -1602,
+              "balance": {
+                "cashCents": 33435,
+                "outstandingCents": 35037,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 7597,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 19656,
+              "lots": [
+                {
+                  "grams": 93.6,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 93.6,
+                      "unitCents": 210,
+                      "ttcCents": 19656,
+                      "vatCents": 3276
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2026-12-03T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 129.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 2562
+              },
+              "netCents": -50,
+              "cashAfterReservesCents": -1652,
+              "balance": {
+                "cashCents": 32980,
+                "outstandingCents": 34632,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 7192,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 15372,
+              "lots": [
+                {
+                  "grams": 73.2,
+                  "juryScore": 7.2,
+                  "saleQuality": 7.2,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 73.2,
+                      "unitCents": 210,
+                      "ttcCents": 15372,
+                      "vatCents": 2562
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2026-12-04T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 114.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 249
+              },
+              "netCents": -11615,
+              "cashAfterReservesCents": -13267,
+              "balance": {
+                "cashCents": 26743,
+                "outstandingCents": 40010,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 12570,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1494,
+              "lots": [
+                {
+                  "grams": 49.8,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 49.8,
+                      "unitCents": 30,
+                      "ttcCents": 1494,
+                      "vatCents": 249
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2026-12-06T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 131.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 319
+              },
+              "netCents": -11262,
+              "cashAfterReservesCents": -24529,
+              "balance": {
+                "cashCents": 20682,
+                "outstandingCents": 45211,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 17771,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1917,
+              "lots": [
+                {
+                  "grams": 63.9,
+                  "juryScore": 6.3,
+                  "saleQuality": 6.3,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.9,
+                      "unitCents": 30,
+                      "ttcCents": 1917,
+                      "vatCents": 319
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      },
+      "optimiseur": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": -3096.5,
+          "netCents": -7638,
+          "firstNetCents": -11133,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 71.15,
+          "medianQualityPerLot": 6.449999999999999,
+          "commercialLots": 6,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 10193,
+          "minPositionCents": -2207,
+          "firstDeficitCycle": 2,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "execution": {
+          "initialUncommittedCents": 21326,
+          "maxGameWorkHoursPerDay": 6,
+          "minPositionCents": -2207,
+          "elapsedHours": 336,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 167.6
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 346
+              },
+              "netCents": -11133,
+              "cashAfterReservesCents": 10193,
+              "balance": {
+                "cashCents": 22190,
+                "outstandingCents": 11997,
+                "labOutstandingCents": 4500,
+                "energyOutstandingCents": 5137,
+                "supplierOutstandingCents": 2360
+              },
+              "grossCents": 2073,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-11-23T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 149.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 1000,
+                "vat": 292
+              },
+              "netCents": -12400,
+              "cashAfterReservesCents": -2207,
+              "balance": {
+                "cashCents": 21920,
+                "outstandingCents": 24127,
+                "labOutstandingCents": 9000,
+                "energyOutstandingCents": 10407,
+                "supplierOutstandingCents": 4720
+              },
+              "grossCents": 1752,
+              "lots": [
+                {
+                  "grams": 58.4,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 58.4,
+                      "unitCents": 30,
+                      "ttcCents": 1752,
+                      "vatCents": 292
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2026-11-24T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 172.8
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 6050
+              },
+              "netCents": 17390,
+              "cashAfterReservesCents": 15183,
+              "balance": {
+                "cashCents": 37045,
+                "outstandingCents": 21862,
+                "labOutstandingCents": 13500,
+                "energyOutstandingCents": 1282,
+                "supplierOutstandingCents": 7080
+              },
+              "grossCents": 36300,
+              "lots": [
+                {
+                  "grams": 121,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 121,
+                      "unitCents": 300,
+                      "ttcCents": 36300,
+                      "vatCents": 6050
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2026-11-26T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 155
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4990
+              },
+              "netCents": 12090,
+              "cashAfterReservesCents": 27273,
+              "balance": {
+                "cashCents": 54713,
+                "outstandingCents": 27440,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 29940,
+              "lots": [
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 99.8,
+                      "unitCents": 300,
+                      "ttcCents": 29940,
+                      "vatCents": 4990
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2026-11-27T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 137.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4565
+              },
+              "netCents": 9965,
+              "cashAfterReservesCents": 37238,
+              "balance": {
+                "cashCents": 64678,
+                "outstandingCents": 27440,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 27390,
+              "lots": [
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 91.3,
+                      "unitCents": 300,
+                      "ttcCents": 27390,
+                      "vatCents": 4565
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2026-11-28T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 159.2
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 1000,
+                "vat": 318
+              },
+              "netCents": -12270,
+              "cashAfterReservesCents": 24968,
+              "balance": {
+                "cashCents": 57613,
+                "outstandingCents": 32645,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 5205,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1908,
+              "lots": [
+                {
+                  "grams": 63.6,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.6,
+                      "unitCents": 30,
+                      "ttcCents": 1908,
+                      "vatCents": 318
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2026-11-29T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 142.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4450
+              },
+              "netCents": 9390,
+              "cashAfterReservesCents": 34358,
+              "balance": {
+                "cashCents": 61878,
+                "outstandingCents": 27520,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 80,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 26700,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 89,
+                      "unitCents": 300,
+                      "ttcCents": 26700,
+                      "vatCents": 4450
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2026-12-01T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 126.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 500,
+                "vat": 311
+              },
+              "netCents": -11802,
+              "cashAfterReservesCents": 22556,
+              "balance": {
+                "cashCents": 55297,
+                "outstandingCents": 32741,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 5301,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1869,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 6.3,
+                  "saleQuality": 6.3,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 311
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2026-12-02T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 145.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4680
+              },
+              "netCents": 10540,
+              "cashAfterReservesCents": 33096,
+              "balance": {
+                "cashCents": 60536,
+                "outstandingCents": 27440,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 28080,
+              "lots": [
+                {
+                  "grams": 93.6,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 93.6,
+                      "unitCents": 300,
+                      "ttcCents": 28080,
+                      "vatCents": 4680
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2026-12-03T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 129.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 500,
+                "vat": 3660
+              },
+              "netCents": 4940,
+              "cashAfterReservesCents": 38036,
+              "balance": {
+                "cashCents": 65476,
+                "outstandingCents": 27440,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 21960,
+              "lots": [
+                {
+                  "grams": 73.2,
+                  "juryScore": 7.2,
+                  "saleQuality": 7.2,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 73.2,
+                      "unitCents": 300,
+                      "ttcCents": 21960,
+                      "vatCents": 3660
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2026-12-04T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 114.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 500,
+                "vat": 255
+              },
+              "netCents": -12085,
+              "cashAfterReservesCents": 25951,
+              "balance": {
+                "cashCents": 58754,
+                "outstandingCents": 32803,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 5363,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1530,
+              "lots": [
+                {
+                  "grams": 51,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 51,
+                      "unitCents": 30,
+                      "ttcCents": 1530,
+                      "vatCents": 255
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2026-12-06T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 131.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 1000,
+                "vat": 320
+              },
+              "netCents": -12263,
+              "cashAfterReservesCents": 13688,
+              "balance": {
+                "cashCents": 51693,
+                "outstandingCents": 38005,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 10565,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 1917,
+              "lots": [
+                {
+                  "grams": 63.9,
+                  "juryScore": 6.3,
+                  "saleQuality": 6.3,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.9,
+                      "unitCents": 30,
+                      "ttcCents": 1917,
+                      "vatCents": 320
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      },
+      "absent": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": -5591.5,
+          "netCents": -45855,
+          "firstNetCents": -11133,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 71.15,
+          "medianQualityPerLot": 6.449999999999999,
+          "commercialLots": 6,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 10193,
+          "minPositionCents": -24529,
+          "firstDeficitCycle": 2,
+          "paybackCycle": null,
+          "elapsedHours": 5880
+        },
+        "execution": {
+          "initialUncommittedCents": 21326,
+          "maxGameWorkHoursPerDay": 5.5,
+          "minPositionCents": -24529,
+          "elapsedHours": 5880,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 18966,
+                "outstandingCents": 0,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 167.6
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 346
+              },
+              "netCents": -11133,
+              "cashAfterReservesCents": 10193,
+              "balance": {
+                "cashCents": 15330,
+                "outstandingCents": 5137,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5137,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 2073,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5,
+                  "saleQuality": 5,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-12-13T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 12970,
+                "outstandingCents": 5137,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5137,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 149.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 279
+              },
+              "netCents": -11462,
+              "cashAfterReservesCents": -1269,
+              "balance": {
+                "cashCents": 9169,
+                "outstandingCents": 10438,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10438,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 1677,
+              "lots": [
+                {
+                  "grams": 55.9,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 55.9,
+                      "unitCents": 30,
+                      "ttcCents": 1677,
+                      "vatCents": 279
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2027-01-03T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 6809,
+                "outstandingCents": 10438,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10438,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 172.8
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 4235
+              },
+              "netCents": 8315,
+              "cashAfterReservesCents": 7046,
+              "balance": {
+                "cashCents": 12897,
+                "outstandingCents": 5851,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5851,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 25410,
+              "lots": [
+                {
+                  "grams": 121,
+                  "juryScore": 7.6,
+                  "saleQuality": 7.6,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 121,
+                      "unitCents": 210,
+                      "ttcCents": 25410,
+                      "vatCents": 4235
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2027-01-24T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 10537,
+                "outstandingCents": 5851,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5851,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 155
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3493
+              },
+              "netCents": 4605,
+              "cashAfterReservesCents": 11651,
+              "balance": {
+                "cashCents": 14770,
+                "outstandingCents": 3119,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 3119,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 20958,
+              "lots": [
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.8,
+                      "unitCents": 210,
+                      "ttcCents": 20958,
+                      "vatCents": 3493
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2027-02-14T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 12410,
+                "outstandingCents": 3119,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 3119,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 137.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3196
+              },
+              "netCents": 3117,
+              "cashAfterReservesCents": 14768,
+              "balance": {
+                "cashCents": 15899,
+                "outstandingCents": 1131,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 1131,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 19173,
+              "lots": [
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.3,
+                  "saleQuality": 7.3,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 91.3,
+                      "unitCents": 210,
+                      "ttcCents": 19173,
+                      "vatCents": 3196
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2027-03-07T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 13539,
+                "outstandingCents": 1131,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 1131,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 159.2
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 311
+              },
+              "netCents": -11302,
+              "cashAfterReservesCents": 3466,
+              "balance": {
+                "cashCents": 9818,
+                "outstandingCents": 6352,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 6352,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 1869,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 4.6,
+                  "saleQuality": 4.6,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 311
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2027-03-28T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 7458,
+                "outstandingCents": 6352,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 6352,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 142.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3115
+              },
+              "netCents": 2715,
+              "cashAfterReservesCents": 6181,
+              "balance": {
+                "cashCents": 10746,
+                "outstandingCents": 4565,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 4565,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 18690,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2027-04-18T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 8386,
+                "outstandingCents": 4565,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 4565,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 126.4
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 312
+              },
+              "netCents": -11303,
+              "cashAfterReservesCents": -5122,
+              "balance": {
+                "cashCents": 4665,
+                "outstandingCents": 9787,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 9787,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 1869,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 6.2,
+                  "saleQuality": 6.2,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 312
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2027-05-09T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 2305,
+                "outstandingCents": 9787,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 9787,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 145.5
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 3276
+              },
+              "netCents": 3520,
+              "cashAfterReservesCents": -1602,
+              "balance": {
+                "cashCents": 10495,
+                "outstandingCents": 12097,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 12097,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 19656,
+              "lots": [
+                {
+                  "grams": 93.6,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 93.6,
+                      "unitCents": 210,
+                      "ttcCents": 19656,
+                      "vatCents": 3276
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2027-05-30T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 8135,
+                "outstandingCents": 12097,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 12097,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 129.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 2562
+              },
+              "netCents": -50,
+              "cashAfterReservesCents": -1652,
+              "balance": {
+                "cashCents": 10040,
+                "outstandingCents": 11692,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 11692,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 15372,
+              "lots": [
+                {
+                  "grams": 73.2,
+                  "juryScore": 7.1,
+                  "saleQuality": 7.1,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 73.2,
+                      "unitCents": 210,
+                      "ttcCents": 15372,
+                      "vatCents": 2562
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2027-06-20T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 7680,
+                "outstandingCents": 11692,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 11692,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 114.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 249
+              },
+              "netCents": -11615,
+              "cashAfterReservesCents": -13267,
+              "balance": {
+                "cashCents": 3803,
+                "outstandingCents": 17070,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 17070,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 1494,
+              "lots": [
+                {
+                  "grams": 49.8,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 49.8,
+                      "unitCents": 30,
+                      "ttcCents": 1494,
+                      "vatCents": 249
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2027-07-11T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 2360,
+                "yieldGrams": null,
+                "cashCents": 1443,
+                "outstandingCents": 17070,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 17070,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 1.5,
+                "prepare": 1,
+                "sell": 0.5,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 1,
+                "energyCostCents": 6000,
+                "consumablesCostCents": 2360,
+                "estimatedHarvestGrams": 131.9
+              },
+              "charges": {
+                "energy": 6000,
+                "supplier": 2360,
+                "lab": 4500,
+                "care": 0,
+                "vat": 319
+              },
+              "netCents": -11262,
+              "cashAfterReservesCents": -24529,
+              "balance": {
+                "cashCents": 2242,
+                "outstandingCents": 26771,
+                "labOutstandingCents": 3701,
+                "energyOutstandingCents": 23070,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 1917,
+              "lots": [
+                {
+                  "grams": 63.9,
+                  "juryScore": 6.3,
+                  "saleQuality": 6.3,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.9,
+                      "unitCents": 30,
+                      "ttcCents": 1917,
+                      "vatCents": 319
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "deux-zones": {
+      "debutant": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": -135,
+          "netCents": -52938,
+          "firstNetCents": -22413,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 72.9,
+          "medianQualityPerLot": 6.65,
+          "commercialLots": 16,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 362604,
+          "minPositionCents": 332079,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "execution": {
+          "initialUncommittedCents": 385017,
+          "maxGameWorkHoursPerDay": 7.5,
+          "minPositionCents": 332079,
+          "elapsedHours": 336,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 320.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 662
+              },
+              "netCents": -22413,
+              "cashAfterReservesCents": 362604,
+              "balance": {
+                "cashCents": 386671,
+                "outstandingCents": 24067,
+                "labOutstandingCents": 9000,
+                "energyOutstandingCents": 10347,
+                "supplierOutstandingCents": 4720
+              },
+              "grossCents": 3969,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                },
+                {
+                  "grams": 63.2,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.2,
+                      "unitCents": 30,
+                      "ttcCents": 1896,
+                      "vatCents": 316
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-11-23T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 340.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 637
+              },
+              "netCents": -22532,
+              "cashAfterReservesCents": 340072,
+              "balance": {
+                "cashCents": 388265,
+                "outstandingCents": 48193,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 20753,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 3825,
+              "lots": [
+                {
+                  "grams": 66.4,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 66.4,
+                      "unitCents": 30,
+                      "ttcCents": 1992,
+                      "vatCents": 332
+                    }
+                  ]
+                },
+                {
+                  "grams": 61.1,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 61.1,
+                      "unitCents": 30,
+                      "ttcCents": 1833,
+                      "vatCents": 305
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2026-11-24T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 304.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 7466
+              },
+              "netCents": 11607,
+              "cashAfterReservesCents": 351679,
+              "balance": {
+                "cashCents": 406929,
+                "outstandingCents": 55250,
+                "labOutstandingCents": 27000,
+                "energyOutstandingCents": 14090,
+                "supplierOutstandingCents": 14160
+              },
+              "grossCents": 44793,
+              "lots": [
+                {
+                  "grams": 111.4,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 111.4,
+                      "unitCents": 210,
+                      "ttcCents": 23394,
+                      "vatCents": 3899
+                    }
+                  ]
+                },
+                {
+                  "grams": 101.9,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 101.9,
+                      "unitCents": 210,
+                      "ttcCents": 21399,
+                      "vatCents": 3567
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2026-11-26T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 323.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 7287
+              },
+              "netCents": 10715,
+              "cashAfterReservesCents": 362394,
+              "balance": {
+                "cashCents": 425147,
+                "outstandingCents": 62753,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 7873,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 43722,
+              "lots": [
+                {
+                  "grams": 108.4,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 108.4,
+                      "unitCents": 210,
+                      "ttcCents": 22764,
+                      "vatCents": 3794
+                    }
+                  ]
+                },
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.8,
+                      "unitCents": 210,
+                      "ttcCents": 20958,
+                      "vatCents": 3493
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2026-11-27T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 6692
+              },
+              "netCents": 7740,
+              "cashAfterReservesCents": 370134,
+              "balance": {
+                "cashCents": 428158,
+                "outstandingCents": 58024,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 3144,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 40152,
+              "lots": [
+                {
+                  "grams": 99.9,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.9,
+                      "unitCents": 210,
+                      "ttcCents": 20979,
+                      "vatCents": 3496
+                    }
+                  ]
+                },
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 91.3,
+                      "unitCents": 210,
+                      "ttcCents": 19173,
+                      "vatCents": 3196
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2026-11-28T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 305.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 598
+              },
+              "netCents": -22730,
+              "cashAfterReservesCents": 347404,
+              "balance": {
+                "cashCents": 415933,
+                "outstandingCents": 68529,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 13649,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 3588,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 311
+                    }
+                  ]
+                },
+                {
+                  "grams": 57.3,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 57.3,
+                      "unitCents": 30,
+                      "ttcCents": 1719,
+                      "vatCents": 287
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2026-11-29T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 272.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 5964
+              },
+              "netCents": 4100,
+              "cashAfterReservesCents": 351504,
+              "balance": {
+                "cashCents": 417124,
+                "outstandingCents": 65620,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 10740,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 35784,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                },
+                {
+                  "grams": 81.4,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 81.4,
+                      "unitCents": 210,
+                      "ttcCents": 17094,
+                      "vatCents": 2849
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2026-12-01T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 6496
+              },
+              "netCents": 6760,
+              "cashAfterReservesCents": 358264,
+              "balance": {
+                "cashCents": 419645,
+                "outstandingCents": 61381,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 6501,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 38976,
+              "lots": [
+                {
+                  "grams": 96.6,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 96.6,
+                      "unitCents": 210,
+                      "ttcCents": 20286,
+                      "vatCents": 3381
+                    }
+                  ]
+                },
+                {
+                  "grams": 89,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "success"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2026-12-02T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 256.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 5232
+              },
+              "netCents": 443,
+              "cashAfterReservesCents": 358707,
+              "balance": {
+                "cashCents": 419007,
+                "outstandingCents": 60300,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 5420,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 31395,
+              "lots": [
+                {
+                  "grams": 78.1,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 78.1,
+                      "unitCents": 210,
+                      "ttcCents": 16401,
+                      "vatCents": 2733
+                    }
+                  ]
+                },
+                {
+                  "grams": 71.4,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 71.4,
+                      "unitCents": 210,
+                      "ttcCents": 14994,
+                      "vatCents": 2499
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2026-12-03T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 270.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 5002
+              },
+              "netCents": -713,
+              "cashAfterReservesCents": 357994,
+              "balance": {
+                "cashCents": 417791,
+                "outstandingCents": 59797,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 4917,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 30009,
+              "lots": [
+                {
+                  "grams": 74.4,
+                  "juryScore": 6.5,
+                  "saleQuality": 6.5,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 74.4,
+                      "unitCents": 210,
+                      "ttcCents": 15624,
+                      "vatCents": 2604
+                    }
+                  ]
+                },
+                {
+                  "grams": 68.5,
+                  "juryScore": 6.5,
+                  "saleQuality": 6.5,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 68.5,
+                      "unitCents": 210,
+                      "ttcCents": 14385,
+                      "vatCents": 2398
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2026-12-04T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 240.6
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 534
+              },
+              "netCents": -23050,
+              "cashAfterReservesCents": 334944,
+              "balance": {
+                "cashCents": 405407,
+                "outstandingCents": 70463,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 15583,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 3204,
+              "lots": [
+                {
+                  "grams": 55.8,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 55.8,
+                      "unitCents": 30,
+                      "ttcCents": 1674,
+                      "vatCents": 279
+                    }
+                  ]
+                },
+                {
+                  "grams": 51,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 51,
+                      "unitCents": 30,
+                      "ttcCents": 1530,
+                      "vatCents": 255
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2026-12-06T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 253.4
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 4571
+              },
+              "netCents": -2865,
+              "cashAfterReservesCents": 332079,
+              "balance": {
+                "cashCents": 403115,
+                "outstandingCents": 71036,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 16156,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 27426,
+              "lots": [
+                {
+                  "grams": 68,
+                  "juryScore": 6.8,
+                  "saleQuality": 6.8,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 68,
+                      "unitCents": 210,
+                      "ttcCents": 14280,
+                      "vatCents": 2380
+                    }
+                  ]
+                },
+                {
+                  "grams": 62.6,
+                  "juryScore": 6.8,
+                  "saleQuality": 6.8,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.6,
+                      "unitCents": 210,
+                      "ttcCents": 13146,
+                      "vatCents": 2191
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      },
+      "optimiseur": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": 10330,
+          "netCents": 45375,
+          "firstNetCents": -22413,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 72.9,
+          "medianQualityPerLot": 6.65,
+          "commercialLots": 16,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 362604,
+          "minPositionCents": 338217,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "execution": {
+          "initialUncommittedCents": 385017,
+          "maxGameWorkHoursPerDay": 7.5,
+          "minPositionCents": 338217,
+          "elapsedHours": 336,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 320.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 662
+              },
+              "netCents": -22413,
+              "cashAfterReservesCents": 362604,
+              "balance": {
+                "cashCents": 386671,
+                "outstandingCents": 24067,
+                "labOutstandingCents": 9000,
+                "energyOutstandingCents": 10347,
+                "supplierOutstandingCents": 4720
+              },
+              "grossCents": 3969,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                },
+                {
+                  "grams": 63.2,
+                  "juryScore": 5.1,
+                  "saleQuality": 5.1,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.2,
+                      "unitCents": 30,
+                      "ttcCents": 1896,
+                      "vatCents": 316
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-11-23T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 340.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 2000,
+                "vat": 666
+              },
+              "netCents": -24387,
+              "cashAfterReservesCents": 338217,
+              "balance": {
+                "cashCents": 386338,
+                "outstandingCents": 48121,
+                "labOutstandingCents": 18000,
+                "energyOutstandingCents": 20681,
+                "supplierOutstandingCents": 9440
+              },
+              "grossCents": 3999,
+              "lots": [
+                {
+                  "grams": 69.4,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.4,
+                      "unitCents": 30,
+                      "ttcCents": 2082,
+                      "vatCents": 347
+                    }
+                  ]
+                },
+                {
+                  "grams": 63.9,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.9,
+                      "unitCents": 30,
+                      "ttcCents": 1917,
+                      "vatCents": 319
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2026-11-24T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 304.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 10665
+              },
+              "netCents": 27605,
+              "cashAfterReservesCents": 365822,
+              "balance": {
+                "cashCents": 413001,
+                "outstandingCents": 47179,
+                "labOutstandingCents": 27000,
+                "energyOutstandingCents": 6019,
+                "supplierOutstandingCents": 14160
+              },
+              "grossCents": 63990,
+              "lots": [
+                {
+                  "grams": 111.4,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 111.4,
+                      "unitCents": 300,
+                      "ttcCents": 33420,
+                      "vatCents": 5570
+                    }
+                  ]
+                },
+                {
+                  "grams": 101.9,
+                  "juryScore": 7.7,
+                  "saleQuality": 7.7,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 101.9,
+                      "unitCents": 300,
+                      "ttcCents": 30570,
+                      "vatCents": 5095
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2026-11-26T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 323.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 10410
+              },
+              "netCents": 26330,
+              "cashAfterReservesCents": 392152,
+              "balance": {
+                "cashCents": 447032,
+                "outstandingCents": 54880,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 62460,
+              "lots": [
+                {
+                  "grams": 108.4,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 108.4,
+                      "unitCents": 300,
+                      "ttcCents": 32520,
+                      "vatCents": 5420
+                    }
+                  ]
+                },
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 99.8,
+                      "unitCents": 300,
+                      "ttcCents": 29940,
+                      "vatCents": 4990
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2026-11-27T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 9560
+              },
+              "netCents": 22080,
+              "cashAfterReservesCents": 414232,
+              "balance": {
+                "cashCents": 469112,
+                "outstandingCents": 54880,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 57360,
+              "lots": [
+                {
+                  "grams": 99.9,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 99.9,
+                      "unitCents": 300,
+                      "ttcCents": 29970,
+                      "vatCents": 4995
+                    }
+                  ]
+                },
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.4,
+                  "saleQuality": 7.4,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 91.3,
+                      "unitCents": 300,
+                      "ttcCents": 27390,
+                      "vatCents": 4565
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2026-11-28T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 305.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 2000,
+                "vat": 611
+              },
+              "netCents": -24665,
+              "cashAfterReservesCents": 389567,
+              "balance": {
+                "cashCents": 454920,
+                "outstandingCents": 65353,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 10473,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 3666,
+              "lots": [
+                {
+                  "grams": 63.6,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.6,
+                      "unitCents": 30,
+                      "ttcCents": 1908,
+                      "vatCents": 318
+                    }
+                  ]
+                },
+                {
+                  "grams": 58.6,
+                  "juryScore": 4.7,
+                  "saleQuality": 4.7,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 58.6,
+                      "unitCents": 30,
+                      "ttcCents": 1758,
+                      "vatCents": 293
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2026-11-29T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 272.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 8520
+              },
+              "netCents": 16880,
+              "cashAfterReservesCents": 406447,
+              "balance": {
+                "cashCents": 462500,
+                "outstandingCents": 56053,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 1173,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 51120,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 89,
+                      "unitCents": 300,
+                      "ttcCents": 26700,
+                      "vatCents": 4450
+                    }
+                  ]
+                },
+                {
+                  "grams": 81.4,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 81.4,
+                      "unitCents": 300,
+                      "ttcCents": 24420,
+                      "vatCents": 4070
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2026-12-01T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 9280
+              },
+              "netCents": 20680,
+              "cashAfterReservesCents": 427127,
+              "balance": {
+                "cashCents": 482007,
+                "outstandingCents": 54880,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 55680,
+              "lots": [
+                {
+                  "grams": 96.6,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 96.6,
+                      "unitCents": 300,
+                      "ttcCents": 28980,
+                      "vatCents": 4830
+                    }
+                  ]
+                },
+                {
+                  "grams": 89,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 89,
+                      "unitCents": 300,
+                      "ttcCents": 26700,
+                      "vatCents": 4450
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "success"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2026-12-02T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 256.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 1000,
+                "vat": 7475
+              },
+              "netCents": 10655,
+              "cashAfterReservesCents": 437782,
+              "balance": {
+                "cashCents": 492662,
+                "outstandingCents": 54880,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 44850,
+              "lots": [
+                {
+                  "grams": 78.1,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 78.1,
+                      "unitCents": 300,
+                      "ttcCents": 23430,
+                      "vatCents": 3905
+                    }
+                  ]
+                },
+                {
+                  "grams": 71.4,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 71.4,
+                      "unitCents": 300,
+                      "ttcCents": 21420,
+                      "vatCents": 3570
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2026-12-03T14:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 270.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 7145
+              },
+              "netCents": 10005,
+              "cashAfterReservesCents": 447787,
+              "balance": {
+                "cashCents": 502667,
+                "outstandingCents": 54880,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 42870,
+              "lots": [
+                {
+                  "grams": 74.4,
+                  "juryScore": 6.5,
+                  "saleQuality": 6.5,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 74.4,
+                      "unitCents": 300,
+                      "ttcCents": 22320,
+                      "vatCents": 3720
+                    }
+                  ]
+                },
+                {
+                  "grams": 68.5,
+                  "juryScore": 6.5,
+                  "saleQuality": 6.5,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 68.5,
+                      "unitCents": 300,
+                      "ttcCents": 20550,
+                      "vatCents": 3425
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2026-12-04T20:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 240.6
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 1000,
+                "vat": 534
+              },
+              "netCents": -24050,
+              "cashAfterReservesCents": 423737,
+              "balance": {
+                "cashCents": 489283,
+                "outstandingCents": 65546,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 10666,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 3204,
+              "lots": [
+                {
+                  "grams": 55.8,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 55.8,
+                      "unitCents": 30,
+                      "ttcCents": 1674,
+                      "vatCents": 279
+                    }
+                  ]
+                },
+                {
+                  "grams": 51,
+                  "juryScore": 5.4,
+                  "saleQuality": 5.4,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 51,
+                      "unitCents": 30,
+                      "ttcCents": 1530,
+                      "vatCents": 255
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2026-12-06T02:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": null,
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 253.4
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 1000,
+                "vat": 6675
+              },
+              "netCents": 6655,
+              "cashAfterReservesCents": 430392,
+              "balance": {
+                "cashCents": 491251,
+                "outstandingCents": 60859,
+                "labOutstandingCents": 36000,
+                "energyOutstandingCents": 5979,
+                "supplierOutstandingCents": 18880
+              },
+              "grossCents": 40050,
+              "lots": [
+                {
+                  "grams": 69.5,
+                  "juryScore": 6.8,
+                  "saleQuality": 6.8,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 69.5,
+                      "unitCents": 300,
+                      "ttcCents": 20850,
+                      "vatCents": 3475
+                    }
+                  ]
+                },
+                {
+                  "grams": 64,
+                  "juryScore": 6.8,
+                  "saleQuality": 6.8,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "cbd-shop",
+                      "grams": 64,
+                      "unitCents": 300,
+                      "ttcCents": 19200,
+                      "vatCents": 3200
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      },
+      "absent": {
+        "summary": {
+          "completed": 12,
+          "cycleNetMedianCents": -1211,
+          "netCents": -74373,
+          "firstNetCents": -22413,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 72.9,
+          "medianQualityPerLot": 6.6,
+          "commercialLots": 14,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 362604,
+          "minPositionCents": 310644,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 5880
+        },
+        "execution": {
+          "initialUncommittedCents": 385017,
+          "maxGameWorkHoursPerDay": 7,
+          "minPositionCents": 310644,
+          "elapsedHours": 5880,
+          "cycles": [
+            {
+              "seed": 113,
+              "atStart": "2026-11-22T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 380297,
+                "outstandingCents": 0,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 0,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 320.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 662
+              },
+              "netCents": -22413,
+              "cashAfterReservesCents": 362604,
+              "balance": {
+                "cashCents": 372951,
+                "outstandingCents": 10347,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10347,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 3969,
+              "lots": [
+                {
+                  "grams": 69.1,
+                  "juryScore": 5,
+                  "saleQuality": 5,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 69.1,
+                      "unitCents": 30,
+                      "ttcCents": 2073,
+                      "vatCents": 346
+                    }
+                  ]
+                },
+                {
+                  "grams": 63.2,
+                  "juryScore": 5,
+                  "saleQuality": 5,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 63.2,
+                      "unitCents": 30,
+                      "ttcCents": 1896,
+                      "vatCents": 316
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "failure",
+                "success",
+                "fragile",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 2026,
+              "atStart": "2026-12-13T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 368231,
+                "outstandingCents": 10347,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10347,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 340.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 637
+              },
+              "netCents": -22532,
+              "cashAfterReservesCents": 340072,
+              "balance": {
+                "cashCents": 360825,
+                "outstandingCents": 20753,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 20753,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 3825,
+              "lots": [
+                {
+                  "grams": 66.4,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 66.4,
+                      "unitCents": 30,
+                      "ttcCents": 1992,
+                      "vatCents": 332
+                    }
+                  ]
+                },
+                {
+                  "grams": 61.1,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 61.1,
+                      "unitCents": 30,
+                      "ttcCents": 1833,
+                      "vatCents": 305
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "failure",
+                "fragile",
+                "failure",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 15277,
+              "atStart": "2027-01-03T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 356105,
+                "outstandingCents": 20753,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 20753,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 304.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 7466
+              },
+              "netCents": 11607,
+              "cashAfterReservesCents": 351679,
+              "balance": {
+                "cashCents": 365769,
+                "outstandingCents": 14090,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 14090,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 44793,
+              "lots": [
+                {
+                  "grams": 111.4,
+                  "juryScore": 7.6,
+                  "saleQuality": 7.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 111.4,
+                      "unitCents": 210,
+                      "ttcCents": 23394,
+                      "vatCents": 3899
+                    }
+                  ]
+                },
+                {
+                  "grams": 101.9,
+                  "juryScore": 7.6,
+                  "saleQuality": 7.6,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 101.9,
+                      "unitCents": 210,
+                      "ttcCents": 21399,
+                      "vatCents": 3567
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "fragile",
+                "success",
+                "critical",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 19873,
+              "atStart": "2027-01-24T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 361049,
+                "outstandingCents": 14090,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 14090,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 323.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 7287
+              },
+              "netCents": 10715,
+              "cashAfterReservesCents": 362394,
+              "balance": {
+                "cashCents": 370267,
+                "outstandingCents": 7873,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 7873,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 43722,
+              "lots": [
+                {
+                  "grams": 108.4,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 108.4,
+                      "unitCents": 210,
+                      "ttcCents": 22764,
+                      "vatCents": 3794
+                    }
+                  ]
+                },
+                {
+                  "grams": 99.8,
+                  "juryScore": 6.9,
+                  "saleQuality": 6.9,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.8,
+                      "unitCents": 210,
+                      "ttcCents": 20958,
+                      "vatCents": 3493
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "critical",
+                "fragile",
+                "success",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 27183,
+              "atStart": "2027-02-14T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 365547,
+                "outstandingCents": 7873,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 7873,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 4,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 6692
+              },
+              "netCents": 7740,
+              "cashAfterReservesCents": 370134,
+              "balance": {
+                "cashCents": 373278,
+                "outstandingCents": 3144,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 3144,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 40152,
+              "lots": [
+                {
+                  "grams": 99.9,
+                  "juryScore": 7.3,
+                  "saleQuality": 7.3,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 99.9,
+                      "unitCents": 210,
+                      "ttcCents": 20979,
+                      "vatCents": 3496
+                    }
+                  ]
+                },
+                {
+                  "grams": 91.3,
+                  "juryScore": 7.3,
+                  "saleQuality": 7.3,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 91.3,
+                      "unitCents": 210,
+                      "ttcCents": 19173,
+                      "vatCents": 3196
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "success",
+                "fragile",
+                "success",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 39068,
+              "atStart": "2027-03-07T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 368558,
+                "outstandingCents": 3144,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 3144,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 305.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 598
+              },
+              "netCents": -22730,
+              "cashAfterReservesCents": 347404,
+              "balance": {
+                "cashCents": 361053,
+                "outstandingCents": 13649,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 13649,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 3588,
+              "lots": [
+                {
+                  "grams": 62.3,
+                  "juryScore": 4.6,
+                  "saleQuality": 4.6,
+                  "buddie": "HH2026-022",
+                  "route": "biomass",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.3,
+                      "unitCents": 30,
+                      "ttcCents": 1869,
+                      "vatCents": 311
+                    }
+                  ]
+                },
+                {
+                  "grams": 57.3,
+                  "juryScore": 4.6,
+                  "saleQuality": 4.6,
+                  "buddie": "HH2026-023",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 57.3,
+                      "unitCents": 30,
+                      "ttcCents": 1719,
+                      "vatCents": 287
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "success",
+                "failure",
+                "failure",
+                "fragile",
+                "failure"
+              ]
+            },
+            {
+              "seed": 51987,
+              "atStart": "2027-03-28T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 356333,
+                "outstandingCents": 13649,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 13649,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 272.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 5964
+              },
+              "netCents": 4100,
+              "cashAfterReservesCents": 351504,
+              "balance": {
+                "cashCents": 362244,
+                "outstandingCents": 10740,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10740,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 35784,
+              "lots": [
+                {
+                  "grams": 89,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                },
+                {
+                  "grams": 81.4,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 81.4,
+                      "unitCents": 210,
+                      "ttcCents": 17094,
+                      "vatCents": 2849
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "success",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 63129,
+              "atStart": "2027-04-18T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 357524,
+                "outstandingCents": 10740,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 10740,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3.5,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 288.3
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 6496
+              },
+              "netCents": 6760,
+              "cashAfterReservesCents": 358264,
+              "balance": {
+                "cashCents": 364765,
+                "outstandingCents": 6501,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 6501,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 38976,
+              "lots": [
+                {
+                  "grams": 96.6,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 2,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 96.6,
+                      "unitCents": 210,
+                      "ttcCents": 20286,
+                      "vatCents": 3381
+                    }
+                  ]
+                },
+                {
+                  "grams": 89,
+                  "juryScore": 7,
+                  "saleQuality": 7,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 89,
+                      "unitCents": 210,
+                      "ttcCents": 18690,
+                      "vatCents": 3115
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "fragile",
+                "critical",
+                "success",
+                "failure",
+                "fragile",
+                "success"
+              ]
+            },
+            {
+              "seed": 73105,
+              "atStart": "2027-05-09T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 360045,
+                "outstandingCents": 6501,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 6501,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 256.7
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 5232
+              },
+              "netCents": 443,
+              "cashAfterReservesCents": 358707,
+              "balance": {
+                "cashCents": 364127,
+                "outstandingCents": 5420,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5420,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 31395,
+              "lots": [
+                {
+                  "grams": 78.1,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-020",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 78.1,
+                      "unitCents": 210,
+                      "ttcCents": 16401,
+                      "vatCents": 2733
+                    }
+                  ]
+                },
+                {
+                  "grams": 71.4,
+                  "juryScore": 6.6,
+                  "saleQuality": 6.6,
+                  "buddie": "HH2026-021",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 71.4,
+                      "unitCents": 210,
+                      "ttcCents": 14994,
+                      "vatCents": 2499
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "critical",
+                "fragile",
+                "failure",
+                "fragile",
+                "fragile"
+              ]
+            },
+            {
+              "seed": 85314,
+              "atStart": "2027-05-30T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 359407,
+                "outstandingCents": 5420,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 5420,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 270.8
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 715
+              },
+              "netCents": -22148,
+              "cashAfterReservesCents": 336559,
+              "balance": {
+                "cashCents": 352193,
+                "outstandingCents": 15634,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 15634,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 4287,
+              "lots": [
+                {
+                  "grams": 74.4,
+                  "juryScore": 6.4,
+                  "saleQuality": 6.4,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 74.4,
+                      "unitCents": 30,
+                      "ttcCents": 2232,
+                      "vatCents": 372
+                    }
+                  ]
+                },
+                {
+                  "grams": 68.5,
+                  "juryScore": 6.4,
+                  "saleQuality": 6.4,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 68.5,
+                      "unitCents": 30,
+                      "ttcCents": 2055,
+                      "vatCents": 343
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "fragile",
+                "fragile",
+                "success",
+                "failure"
+              ]
+            },
+            {
+              "seed": 92821,
+              "atStart": "2027-06-20T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 347473,
+                "outstandingCents": 15634,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 15634,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 2,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 240.6
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 534
+              },
+              "netCents": -23050,
+              "cashAfterReservesCents": 313509,
+              "balance": {
+                "cashCents": 339809,
+                "outstandingCents": 26300,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 26300,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 3204,
+              "lots": [
+                {
+                  "grams": 55.8,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-020",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 55.8,
+                      "unitCents": 30,
+                      "ttcCents": 1674,
+                      "vatCents": 279
+                    }
+                  ]
+                },
+                {
+                  "grams": 51,
+                  "juryScore": 5.3,
+                  "saleQuality": 5.3,
+                  "buddie": "HH2026-021",
+                  "route": "biomass",
+                  "trimHours": 1,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 51,
+                      "unitCents": 30,
+                      "ttcCents": 1530,
+                      "vatCents": 255
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "critical",
+                "failure",
+                "critical",
+                "failure",
+                "failure",
+                "failure"
+              ]
+            },
+            {
+              "seed": 99109,
+              "atStart": "2027-07-11T08:00:00.000Z",
+              "dead": false,
+              "weekAfterSemis": {
+                "stage": 0,
+                "vitality": 100,
+                "supplierDueSinceSemisCents": 4720,
+                "yieldGrams": null,
+                "cashCents": 335089,
+                "outstandingCents": 26300,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 26300,
+                "supplierOutstandingCents": 0
+              },
+              "hours": {
+                "stages": 3,
+                "trim": 3,
+                "prepare": 2,
+                "sell": 1,
+                "assign": 0.5
+              },
+              "quoted": {
+                "areaM2": 2,
+                "energyCostCents": 12000,
+                "consumablesCostCents": 4720,
+                "estimatedHarvestGrams": 253.4
+              },
+              "charges": {
+                "energy": 12000,
+                "supplier": 4720,
+                "lab": 9000,
+                "care": 0,
+                "vat": 4571
+              },
+              "netCents": -2865,
+              "cashAfterReservesCents": 310644,
+              "balance": {
+                "cashCents": 337517,
+                "outstandingCents": 26873,
+                "labOutstandingCents": 0,
+                "energyOutstandingCents": 26873,
+                "supplierOutstandingCents": 0
+              },
+              "grossCents": 27426,
+              "lots": [
+                {
+                  "grams": 68,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-022",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 68,
+                      "unitCents": 210,
+                      "ttcCents": 14280,
+                      "vatCents": 2380
+                    }
+                  ]
+                },
+                {
+                  "grams": 62.6,
+                  "juryScore": 6.7,
+                  "saleQuality": 6.7,
+                  "buddie": "HH2026-023",
+                  "route": "raw",
+                  "trimHours": 1.5,
+                  "sales": [
+                    {
+                      "channel": "wholesale",
+                      "grams": 62.6,
+                      "unitCents": 210,
+                      "ttcCents": 13146,
+                      "vatCents": 2191
+                    }
+                  ]
+                }
+              ],
+              "usedCards": [],
+              "history": [
+                "success",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile",
+                "fragile"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "sensitivity": [
+    {
+      "scenario": "depart-loic",
+      "otherSeeds": {
+        "debutant": {
+          "completed": 12,
+          "cycleNetMedianCents": -11188.5,
+          "netCents": -98278,
+          "firstNetCents": -11348,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 66,
+          "medianQualityPerLot": 6,
+          "commercialLots": 3,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 9978,
+          "minPositionCents": -76952,
+          "firstDeficitCycle": 5,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "optimiseur": {
+          "completed": 12,
+          "cycleNetMedianCents": -11335,
+          "netCents": -83815,
+          "firstNetCents": -12310,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 66,
+          "medianQualityPerLot": 6,
+          "commercialLots": 3,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 9016,
+          "minPositionCents": -62489,
+          "firstDeficitCycle": 6,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "absent": {
+          "completed": 12,
+          "cycleNetMedianCents": -11188.5,
+          "netCents": -98278,
+          "firstNetCents": -11348,
+          "cycleWorkMedianHours": 6.5,
+          "medianGramsPerLot": 66,
+          "medianQualityPerLot": 5.9,
+          "commercialLots": 3,
+          "totalLots": 12,
+          "firstCashAfterReservesCents": 9978,
+          "minPositionCents": -76952,
+          "firstDeficitCycle": 5,
+          "paybackCycle": null,
+          "elapsedHours": 5880
+        }
+      },
+      "optimizerWithThreeCards": {
+        "completed": 12,
+        "cycleNetMedianCents": 8315,
+        "netCents": 15785,
+        "firstNetCents": 9990,
+        "cycleWorkMedianHours": 6.5,
+        "medianGramsPerLot": 84.7,
+        "medianQualityPerLot": 6.6,
+        "commercialLots": 7,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": 31316,
+        "minPositionCents": 18916,
+        "firstDeficitCycle": null,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      },
+      "optimizerOtherSeedsWithThreeCards": {
+        "completed": 12,
+        "cycleNetMedianCents": -11242.5,
+        "netCents": -64765,
+        "firstNetCents": 7740,
+        "cycleWorkMedianHours": 6.5,
+        "medianGramsPerLot": 66.85,
+        "medianQualityPerLot": 6.15,
+        "commercialLots": 4,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": 29066,
+        "minPositionCents": -43439,
+        "firstDeficitCycle": 7,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      }
+    },
+    {
+      "scenario": "deux-zones",
+      "otherSeeds": {
+        "debutant": {
+          "completed": 12,
+          "cycleNetMedianCents": -22194,
+          "netCents": -196270,
+          "firstNetCents": -22825,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 66.05,
+          "medianQualityPerLot": 6.25,
+          "commercialLots": 6,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 362192,
+          "minPositionCents": 188747,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "optimiseur": {
+          "completed": 12,
+          "cycleNetMedianCents": -23182.5,
+          "netCents": -172515,
+          "firstNetCents": -24755,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 66.05,
+          "medianQualityPerLot": 6.25,
+          "commercialLots": 6,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 360262,
+          "minPositionCents": 212502,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 336
+        },
+        "absent": {
+          "completed": 12,
+          "cycleNetMedianCents": -22261.5,
+          "netCents": -211795,
+          "firstNetCents": -22825,
+          "cycleWorkMedianHours": 9.5,
+          "medianGramsPerLot": 66.05,
+          "medianQualityPerLot": 6.2,
+          "commercialLots": 4,
+          "totalLots": 24,
+          "firstCashAfterReservesCents": 362192,
+          "minPositionCents": 173222,
+          "firstDeficitCycle": null,
+          "paybackCycle": null,
+          "elapsedHours": 5880
+        }
+      },
+      "optimizerWithThreeCards": {
+        "completed": 12,
+        "cycleNetMedianCents": 13767.5,
+        "netCents": 86115,
+        "firstNetCents": 18030,
+        "cycleWorkMedianHours": 9.5,
+        "medianGramsPerLot": 79.75,
+        "medianQualityPerLot": 6.65,
+        "commercialLots": 18,
+        "totalLots": 24,
+        "firstCashAfterReservesCents": 403047,
+        "minPositionCents": 378659,
+        "firstDeficitCycle": null,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      },
+      "optimizerOtherSeedsWithThreeCards": {
+        "completed": 12,
+        "cycleNetMedianCents": -22638.5,
+        "netCents": -134105,
+        "firstNetCents": 13655,
+        "cycleWorkMedianHours": 9.5,
+        "medianGramsPerLot": 67.75,
+        "medianQualityPerLot": 6.3,
+        "commercialLots": 8,
+        "totalLots": 24,
+        "firstCashAfterReservesCents": 398672,
+        "minPositionCents": 250912,
+        "firstDeficitCycle": null,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      }
+    }
+  ],
+  "alternativePlans": [
+    {
+      "ventilated": false,
+      "capexCents": 81315,
+      "energyCostCents": 3750,
+      "operatingCostCents": 6110,
+      "estimatedGrams": 189.375,
+      "optimizerA": {
+        "completed": 12,
+        "cycleNetMedianCents": -1172.5,
+        "netCents": 14910,
+        "firstNetCents": -8960,
+        "cycleWorkMedianHours": 6.5,
+        "medianGramsPerLot": 68.45,
+        "medianQualityPerLot": 6.4,
+        "commercialLots": 6,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": 9725,
+        "minPositionCents": -490,
+        "firstDeficitCycle": 2,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      },
+      "optimizerB": {
+        "completed": 12,
+        "cycleNetMedianCents": -9147.5,
+        "netCents": -59035,
+        "firstNetCents": -10133,
+        "cycleWorkMedianHours": 6.5,
+        "medianGramsPerLot": 63.55,
+        "medianQualityPerLot": 5.9,
+        "commercialLots": 3,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": 8552,
+        "minPositionCents": -40350,
+        "firstDeficitCycle": 6,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      }
+    },
+    {
+      "ventilated": true,
+      "capexCents": 94575,
+      "energyCostCents": 4470,
+      "operatingCostCents": 6830,
+      "estimatedGrams": 252.5,
+      "optimizerA": {
+        "completed": 12,
+        "cycleNetMedianCents": 1333.5,
+        "netCents": 56090,
+        "firstNetCents": -9128,
+        "cycleWorkMedianHours": 6.75,
+        "medianGramsPerLot": 91.3,
+        "medianQualityPerLot": 6.4,
+        "commercialLots": 6,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": -3703,
+        "minPositionCents": -13253,
+        "firstDeficitCycle": 1,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      },
+      "optimizerB": {
+        "completed": 12,
+        "cycleNetMedianCents": -9297.5,
+        "netCents": -43728,
+        "firstNetCents": -10360,
+        "cycleWorkMedianHours": 6.5,
+        "medianGramsPerLot": 84.8,
+        "medianQualityPerLot": 5.9,
+        "commercialLots": 3,
+        "totalLots": 12,
+        "firstCashAfterReservesCents": -4935,
+        "minPositionCents": -41000,
+        "firstDeficitCycle": 1,
+        "paybackCycle": null,
+        "elapsedHours": 336
+      }
+    }
+  ],
+  "processingExample": [
+    {
+      "route": "raw",
+      "available": true,
+      "reason": null,
+      "capexCents": 0,
+      "processingCostCents": 0,
+      "productGrams": 100,
+      "saleOffers": {
+        "cbd-shop": {
+          "ttcCents": 30000,
+          "vatCents": 5000,
+          "netAfterPreparationCents": 25000
+        },
+        "wholesale": {
+          "ttcCents": 21000,
+          "vatCents": 3500,
+          "netAfterPreparationCents": 17500
+        }
+      },
+      "work": 0
+    },
+    {
+      "route": "dry-sift",
+      "available": true,
+      "reason": null,
+      "capexCents": 504000,
+      "processingCostCents": 1800,
+      "productGrams": 18,
+      "saleOffers": {
+        "cbd-shop": {
+          "ttcCents": 12559,
+          "vatCents": 2093,
+          "netAfterPreparationCents": 8666
+        },
+        "wholesale": {
+          "ttcCents": 8373,
+          "vatCents": 1396,
+          "netAfterPreparationCents": 5177
+        }
+      },
+      "work": 0.133333
+    },
+    {
+      "route": "rosin-trial",
+      "available": true,
+      "reason": null,
+      "capexCents": 450000,
+      "processingCostCents": 1800,
+      "productGrams": 15,
+      "saleOffers": {
+        "cbd-shop": {
+          "ttcCents": 16752,
+          "vatCents": 2792,
+          "netAfterPreparationCents": 12160
+        },
+        "wholesale": {
+          "ttcCents": 11168,
+          "vatCents": 1861,
+          "netAfterPreparationCents": 7507
+        }
+      },
+      "work": 1.333333
+    }
+  ]
+}

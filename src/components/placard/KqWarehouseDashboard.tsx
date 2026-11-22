@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, BarChart3, ChevronDown, Coins, Package, Sprout } from "lucide-react";
 import type { KqWarehouseQuote, KqWarehouseSummary } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseCondition } from "@/lib/kanab-quest-warehouse-condition";
+import type { KqCultureBudget } from "@/lib/kanab-quest-business";
 import { WarehouseBars, WarehouseStackedBar } from "./KqWarehouseCharts";
 import { KqWarehouseCosts } from "./KqWarehouseCosts";
 import { KqWarehouseReserve } from "./KqWarehouseReserve";
@@ -20,7 +21,7 @@ const mass = (grams: number) => grams >= 1_000 ? `${(grams / 1_000).toLocaleStri
 const area = (value: number) => `${value.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} m²`;
 export type KqWarehouseDashboardTab = (typeof TABS)[number]["id"];
 
-export function KqWarehouseDashboard({ summary, installedSummary, condition, projectedCondition, quote, dirty, migrationCreditCents, storageCapacity, storageReserved, reservedHarvest, salesGramsPerDay, open, onOpenChange, tab: controlledTab, onTabChange }: {
+export function KqWarehouseDashboard({ summary, installedSummary, condition, projectedCondition, quote, dirty, migrationCreditCents, cultureBudget, storageCapacity, storageReserved, reservedHarvest, salesGramsPerDay, open, onOpenChange, tab: controlledTab, onTabChange }: {
   summary: KqWarehouseSummary;
   installedSummary?: KqWarehouseSummary;
   condition?: KqWarehouseCondition | null;
@@ -28,6 +29,7 @@ export function KqWarehouseDashboard({ summary, installedSummary, condition, pro
   quote: KqWarehouseQuote | null;
   dirty: boolean;
   migrationCreditCents: number;
+  cultureBudget?: KqCultureBudget;
   storageCapacity: number;
   storageReserved: number | null | undefined;
   reservedHarvest: number;
@@ -79,8 +81,8 @@ export function KqWarehouseDashboard({ summary, installedSummary, condition, pro
           <article className={styles.panel}>
             <header className={styles.panelHeading}><Sprout size={19} aria-hidden="true" /><h3>Récolte et séchage</h3></header>
             <p className={styles.caption}>Une récolte complète, pour {area(summary.activeAreaM2)} de culture active.</p>
-            <WarehouseBars label="Récolte estimée et capacité de séchage, à la même échelle" rows={[
-              { id: "harvest", label: "Récolte estimée", value: summary.estimatedHarvestGrams, displayValue: mass(summary.estimatedHarvestGrams), tone: "green" },
+            <WarehouseBars label="Potentiel matériel et capacité de séchage, à la même échelle" rows={[
+              { id: "harvest", label: "Potentiel matériel", value: summary.estimatedHarvestGrams, displayValue: mass(summary.estimatedHarvestGrams), tone: "green" },
               { id: "drying", label: "Capacité de séchage", value: summary.dryingCapacityGrams, displayValue: mass(summary.dryingCapacityGrams), tone: "amber" },
             ]} />
             <p className={dryingShortage > 0 ? styles.warning : styles.status}>{dryingShortage > 0 ? `Il manque ${mass(dryingShortage)} de capacité pour sécher toute la récolte à la fois.` : summary.estimatedHarvestGrams > 0 ? "Toute la récolte peut sécher en une fois." : "Active une zone de culture pour estimer ta récolte."}</p>
@@ -98,7 +100,7 @@ export function KqWarehouseDashboard({ summary, installedSummary, condition, pro
         </div>
         <div className={styles.outlets}><p><strong>Débouchés sur 24 h</strong><span>{typeof salesGramsPerDay === "number" ? `Potentiel de vente : ${mass(salesGramsPerDay)}, selon ta clientèle et ton stock prêt à vendre.` : "Les ventes dépendent de ta clientèle et de ton stock prêt à vendre."}</span></p><Link href="/arene/placard?view=market">Voir le marché <ArrowRight size={14} aria-hidden="true" /></Link></div>
       </div>
-      <div role="tabpanel" id={`${id}-costs-panel`} aria-labelledby={`${id}-costs-tab`} hidden={tab !== "costs"} tabIndex={0}><KqWarehouseCosts summary={summary} quote={quote} dirty={dirty} migrationCreditCents={migrationCreditCents} /></div>
+      <div role="tabpanel" id={`${id}-costs-panel`} aria-labelledby={`${id}-costs-tab`} hidden={tab !== "costs"} tabIndex={0}><KqWarehouseCosts budget={cultureBudget} quote={quote} dirty={dirty} migrationCreditCents={migrationCreditCents} /></div>
       <div role="tabpanel" id={`${id}-reserve-panel`} aria-labelledby={`${id}-reserve-tab`} hidden={tab !== "reserve"} tabIndex={0}>
         {expanded && tab === "reserve" && <WarehouseStockRegister />}
         {reservePreviewOnly && <p className={styles.draft}>{quote ? "La réserve enregistrée n’est pas disponible dans cette vue. Les quantités ci-dessous sont un aperçu du plan." : "La réserve enregistrée n’est pas disponible dans cette vue. Corrige le plan pour prévisualiser la réserve après installation."}</p>}

@@ -1,11 +1,12 @@
 import { KQ_BUDDIES } from "./kanab-quest-game";
-import { KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseQuote, type KqWarehouseServiceZone, type KqWarehouseState, type KqWarehouseZone } from "./kanab-quest-warehouse";
+import { getKqWarehouseZoneQuote, isKqWarehouseZoneOperational, KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseQuote, type KqWarehouseServiceZone, type KqWarehouseState, type KqWarehouseZone } from "./kanab-quest-warehouse";
 import { getKqWarehouseDevice } from "./kanab-quest-warehouse-catalog";
-import { getKqWarehouseAirPlacements, type KqWarehouseAirMount } from "./kanab-quest-warehouse-air";
+import { getKqWarehouseAirCoverage, getKqWarehouseAirPlacements, type KqWarehouseAirMount } from "./kanab-quest-warehouse-air";
 import { getKqWarehouseOption } from "./kanab-quest-warehouse-options";
-import { KQ_WAREHOUSE_STATIONS } from "./kanab-quest-warehouse-stations";
+import { getKqWarehouseStationCoverage, KQ_WAREHOUSE_STATIONS } from "./kanab-quest-warehouse-stations";
 import { KQ_WAREHOUSE_HANDLING } from "./kanab-quest-warehouse-handling";
 import { getKqZoneIdentity } from "./kanab-quest-zone-identity";
+import { getKqCultureBudget } from "./kanab-quest-business";
 
 export function describeKqWarehouseAirMount(mount?: KqWarehouseAirMount, partitions: KqWarehouseState["partitions"] = []) {
   if (!mount) return "Au sol";
@@ -31,6 +32,20 @@ export function getKqWarehousePlanPayment(quote: KqWarehouseQuote | null, cashCe
     cashAfterCents: shortfallCents > 0 ? null : cashCents - payableCents,
     affordable: shortfallCents === 0,
   };
+}
+
+/** Apply the same per-zone rounding as the run quote, before Buddies are assigned. */
+export function getKqWarehousePlanCultureBudget(state: KqWarehouseState, reservedZoneId?: string) {
+  const air = getKqWarehouseAirCoverage(state);
+  const stations = getKqWarehouseStationCoverage(state);
+  const zones = state.zones.filter(zone => isKqWarehouseZoneOperational(zone) && zone.id !== reservedZoneId);
+  const costs = zones.reduce((sum, zone) => {
+    const quote = getKqWarehouseZoneQuote(zone, 2, undefined, air?.zones[zone.id], stations?.zones[zone.id], 1);
+    sum.energy += quote.energyCostCents;
+    sum.supplies += quote.consumablesCostCents;
+    return sum;
+  }, { energy: 0, supplies: 0 });
+  return getKqCultureBudget(costs.energy, costs.supplies, zones.length);
 }
 
 type PlanZone = KqWarehouseZone | KqWarehouseServiceZone;

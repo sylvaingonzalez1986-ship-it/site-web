@@ -1,10 +1,10 @@
 # Règlement des récompenses saisonnières du Quartier
 
-Version QRT-REG-1 du 9 novembre 2026 — rédaction destinée à la bêta du 15 novembre 2026.
+Version QRT-REG-2 du 22 novembre 2026 — rédaction destinée à la bêta du 15 novembre 2026.
 
 **Statut : texte de travail non publié.** Les modalités sont rédigées ci-dessous. Les coordonnées du médiateur conventionné restent à fournir par l'organisateur. Le jeu doit être mis en accord avec ce texte avant son entrée en vigueur ; les écarts et les choix de rédaction sont consignés dans la [note de mise en œuvre](reglement-saisonnier-mise-en-oeuvre.md). Ce document ne remplace pas les règles actuellement publiées et ne constitue pas une certification juridique.
 
-**Modalité de remise en discussion :** l'utilisateur demande désormais une commande obligatoire sans minimum pour réclamer le lot. Si elle comporte un achat payé, cette condition se heurte aux règles sur les coûts de réclamation d'un prix. L'article 10 reste la proposition de remise gratuite ; il ne représente pas l'acceptation de cette proposition par l'utilisateur. L'alternative d'une commande du lot seul à 0 €, port compris, et les sources sont détaillées dans la note de mise en œuvre.
+La remise se fait par une commande du lot seul à 0 €, livraison et traitement compris.
 
 ## Article 1 — Organisateur et objet
 
@@ -68,7 +68,7 @@ Le score général est la somme des points de dégustation, de la composante Due
 
 Les joueurs sont ordonnés par score général décroissant, puis par contribution de dégustation décroissante, puis par contribution Duels décroissante et enfin par contribution Gestion décroissante. Une égalité persistante donne le même rang ; les rangs suivants tiennent compte des places occupées, par exemple 1, 1, 3.
 
-Pour attribuer les lots, on applique ce même ordre aux seuls participants éligibles de l'article 3. Ce classement d'attribution peut donc différer du classement général affichant aussi les joueurs non éligibles. Les scores ne sont pas modifiés par ce filtrage.
+Le rang général détermine la part de chaque place. Les participants inéligibles occupent leur rang et leur part reste vacante.
 
 Le classement en cours de saison et les quantités affichées avant attribution sont provisoires. Les chances d'obtenir un lot de classement ne peuvent pas être exprimées par une probabilité fixe : elles dépendent des résultats des participants.
 
@@ -111,7 +111,7 @@ Les semaines commencent le lundi à 00 h, heure de Paris. Une semaine partielle 
 
 La répartition de référence est la suivante :
 
-| Rang d'attribution | Part de la dotation |
+| Rang général | Part de la dotation |
 | --- | ---: |
 | 1 | 27 % |
 | 2 | 18 % |
@@ -121,15 +121,15 @@ La répartition de référence est la suivante :
 | 6, 7, 8, 9 et 10 | 3,6 % chacun |
 | Fleur Surprise | 10 % |
 
-Les ex æquo regroupent les parts des places qu'ils occupent parmi les dix premières, puis les partagent également entre tous les membres de leur groupe. Un groupe commençant dans les dix premières places reste concerné même s'il se prolonge au-delà de la dixième. Aucun membre de ce groupe ne participe à la Fleur Surprise.
+Les ex æquo regroupent les parts des places qu'ils occupent parmi les dix premières, puis les partagent entre tous les membres du groupe, y compris les inéligibles. Un groupe commençant dans les dix premières places reste concerné même s'il se prolonge au-delà de la dixième. Aucun membre de ce groupe ne participe à la Fleur Surprise.
 
-Si moins de dix places sont occupées, les parts des places vacantes sont réparties proportionnellement entre les parts déjà attribuables au classement. Si aucun participant n'est admissible à la Fleur Surprise, ses 10 % rejoignent également la dotation du classement selon cette même proportion.
+Les parts des places vacantes et des joueurs inéligibles, la Fleur Surprise sans candidat et les fractions de gramme sont inscrites au report de fin de saison.
 
-La Fleur Surprise est attribuée à une personne tirée au sort parmi les participants éligibles dont le rang d'attribution est supérieur à 10. Chaque candidat dispose d'une seule chance, soit 1/N lorsqu'il existe N candidats. Les achats, points et rangs au-delà de 10 ne pondèrent pas ce tirage. La liste figée des candidats, la date, le résultat et la preuve d'exécution sont conservés. Un incident après enregistrement du résultat ne justifie pas un nouveau tirage.
+La Fleur Surprise est attribuée à une personne tirée au sort parmi les participants éligibles dont le rang général est supérieur à 10. Chaque candidat dispose d'une seule chance, soit 1/N lorsqu'il existe N candidats. Les achats, points et rangs au-delà de 10 ne pondèrent pas ce tirage. La liste figée des candidats, la date, le résultat et la preuve d'exécution sont conservés. Un incident après enregistrement du résultat ne justifie pas un nouveau tirage.
 
-Après ces regroupements et réaffectations, chaque bénéficiaire théorique reçoit d'abord le nombre entier de grammes inférieur à sa part exacte. Les grammes restants sont attribués aux plus grands restes décimaux. À reste égal, le meilleur rang prime ; entre ex æquo complets, l'ordre croissant de l'identifiant permanent de participation prime. La Fleur Surprise vient après les parts du classement à reste identique. Le participant peut obtenir son identifiant auprès du support. Les arrondis peuvent produire un écart de 1 g ou un lot nul lorsque de très nombreux ex æquo partagent une même part.
+Les parts des places et de la Fleur Surprise sont calculées sur les grammes entiers du pot. Chaque part reçoit d'abord le nombre entier de grammes inférieur à sa valeur exacte. Les grammes entiers restants reviennent aux plus grands restes décimaux. À reste égal, le meilleur rang prime. La Fleur Surprise vient après les places à reste identique. Ensuite, les places occupées par un groupe d'ex æquo sont additionnées et le total est partagé en grammes entiers. Dans le groupe, les grammes indivisibles suivent l'ordre croissant des identifiants permanents de participation. Le participant peut obtenir son identifiant auprès du support. Un groupe nombreux peut laisser certains de ses membres avec une part de 0 g.
 
-Lorsqu'il existe au moins un participant éligible, tous les grammes entiers de la dotation sont ainsi affectés. À défaut de tout participant éligible, la dotation est reportée intégralement à la saison suivante et s'ajoute à son socle de 100 g. Les reports sont publiés distinctement ; ils ne remplacent jamais un nouveau socle.
+La somme des grammes attribués et du report égale la dotation de la saison. Si aucun participant n'est éligible, la dotation entière est reportée. Le report est publié séparément et s'ajoute au socle de 100 g de la saison suivante.
 
 ## Article 9 — Clôture et résultats
 
@@ -149,7 +149,7 @@ Les lots doivent respecter les conditions de commercialisation et de présentati
 
 Les gagnants reçoivent une notification dans leur espace et à l'adresse électronique du compte dans les sept jours suivant les résultats définitifs. Ils disposent de trente jours pour fournir ou confirmer les informations nécessaires à la remise. Une relance est envoyée après quinze jours, puis une dernière relance à l'échéance accorde quinze jours supplémentaires.
 
-L'expédition est prise en charge par l'organisateur en France métropolitaine, Corse comprise, dans les trente jours suivant la réception des informations complètes et les vérifications nécessaires. **Aucune nouvelle commande, aucun minimum d'achat et aucun paiement de frais de port ou de traitement ne sont exigés.** Un envoi groupé avec une commande existante n'est possible qu'au choix du gagnant, sans conditionner ou retarder son droit au lot.
+Le gagnant réclame son lot dans son espace au moyen d'une commande de remise contenant le lot seul, pour un total de **0 €, port et traitement compris**. Aucun autre article ni paiement n'est nécessaire. L'expédition est prise en charge par l'organisateur en France métropolitaine, Corse comprise, dans les trente jours suivant la réception des informations complètes et les vérifications nécessaires.
 
 Une erreur de livraison imputable à l'organisateur ou au transporteur ne fait pas perdre le lot ; une solution de remise sans surcoût est recherchée. En cas de coordonnées erronées du gagnant, celui-ci est contacté et dispose d'au moins quinze jours pour les corriger. Un délai de réponse court à partir d'une notification effectivement envoyée ; une défaillance de notification constatée le fait repartir.
 
@@ -257,4 +257,12 @@ Pour une dotation de 100 g, dix participants aux rangs distincts 1 à 10 et au m
 | Fleur Surprise | 10 |
 | Total | 100 |
 
-Il s'agit d'un exemple de calcul, pas de gains déjà obtenus. Avec un seul participant éligible et aucune Fleur Surprise possible, les réaffectations lui donnent les 100 g. Aucun participant ne peut recevoir les mêmes grammes deux fois à la suite d'un réessai ou d'un recalcul.
+Pour une même dotation de 100 g, voici trois autres exemples :
+
+| Classement et éligibilité | Grammes attribués | Report |
+| --- | ---: | ---: |
+| Trois premiers ex æquo, membre intermédiaire inéligible dans l'ordre stable | 20 g et 19 g | 61 g |
+| Premier du classement seul éligible | 27 g | 73 g |
+| Aucun éligible | 0 g | 100 g |
+
+Un réessai restitue la même attribution et, si elle a déjà été enregistrée, la même commande de remise.

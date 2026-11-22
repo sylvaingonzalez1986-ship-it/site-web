@@ -84,7 +84,8 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
     }
   }, [catalog, isHistory, state, titleId]);
   const articles = useMemo(() => [...(catalog?.articles || []), ...(catalog?.records || [])].sort(alphabetically), [catalog]);
-  const indexed = useMemo(() => articles.map(article => ({ article, title: normalize(article.title), text: normalize([article.title, article.lead, ...(article.facts || []).flatMap(fact => [fact.label, fact.value]), ...article.sections.flatMap(section => [section.title, ...section.paragraphs])].join(" ")) })), [articles]);
+  const searching = view === "search";
+  const indexed = useMemo(() => searching ? articles.map(article => ({ article, title: normalize(article.title), text: normalize([article.title, article.lead, ...(article.facts || []).flatMap(fact => [fact.label, fact.value]), ...article.sections.flatMap(section => [section.title, ...section.paragraphs])].join(" ")) })) : [], [articles, searching]);
   const words = normalize(query).split(" ").filter(Boolean);
   const matches = indexed.filter(item => words.length && words.every(word => item.text.includes(word))).sort((a, b) => {
     const rank = (item: typeof a) => item.title === normalize(query) ? 3 : item.title.includes(normalize(query)) ? 2 : words.every(word => item.title.includes(word)) ? 1 : 0;
@@ -113,7 +114,11 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
     if (articleId.startsWith('record-terpene-')) { setTerpeneCard({ id: articleId.slice(15), ids: TERPENE_CARDS.map(item => item.id) }); return; }
     remember({ ...state, returnTo: entryId, scrollY: window.scrollY }); onOpen("reference", articleId);
   }
-  function topicLink(event: MouseEvent<HTMLAnchorElement>, id: CannabisTopicId) { if (plainActivation(event)) { event.preventDefault(); navigate({ view: "topic", topicId: id }); } }
+  function topicLink(event: MouseEvent<HTMLAnchorElement>, id: CannabisTopicId) {
+    if (!plainActivation(event)) return;
+    event.preventDefault();
+    navigate({ view: "topic", topicId: id });
+  }
   function articleList(items: readonly CannabisReferenceArticle[], showTopic = false, illustrated = false) {
     return <ul className={illustrated ? styles.articleGallery : styles.articleList}>{items.map(article => <li key={article.id}>
       {showTopic ? <span className={styles.meta}>{catalog?.topics.find(item => item.id === article.topicId)?.title}</span> : null}
@@ -140,13 +145,12 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
     {!isHistory ? <search className={styles.search} aria-label="Recherche encyclopédique"><label htmlFor={searchId}><Search size={19} aria-hidden/>Rechercher dans l’encyclopédie</label><div className={styles.inputRow}><input ref={input} id={searchId} type="search" autoComplete="off" maxLength={200} value={query} placeholder="Une plante, une molécule, une variété…" onChange={event => { returnTarget.current = { id: undefined, y: undefined }; setState({ ...INITIAL, view: event.target.value ? "search" : "home", query: event.target.value }); }}/>{query ? <button type="button" aria-label="Effacer la recherche" onClick={() => { setState(INITIAL); input.current?.focus(); }}><X size={18} aria-hidden/></button> : null}</div></search> : null}
     <nav className={styles.mainNav} aria-label="Navigation de l’encyclopédie"><button type="button" aria-current={view === "home" ? "page" : undefined} onClick={() => navigate({ view: "home" })}>{isHistory ? <ArrowLeft size={17} aria-hidden/> : null}Rayons</button>{!isHistory ? <><button type="button" data-reference-index aria-current={view === "index" ? "page" : undefined} onClick={() => navigate({ view: "index" })}>Articles A–Z</button><button type="button" data-reference-glossary aria-current={view === "glossary" ? "page" : undefined} onClick={() => navigate({ view: "glossary" })}>Lexique A–Z</button></> : null}</nav>
     <div ref={content} className={styles.content} data-reference-content>
-      {error ? <div role="alert"><p>L’encyclopédie n’a pas pu être chargée.</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>Réessayer</button></div> : !catalog ? <p role="status">Chargement des articles…</p> : <>
         {view === "home" ? <>
           <div className={styles.readingRoom}>
             <KqQuizzShowScene mode="library"/>
             <nav className={styles.directory} aria-label="Rayons de la bibliothèque">
               <h3>Choisir un rayon</h3>
-              <ul>{catalog.topics.map(item => <li key={item.id}>
+              <ul>{CANNABIS_REFERENCE_TOPICS.map(item => <li key={item.id}>
                 <a href={`?view=school&section=learn&passage=library-theme-${item.id}`}
                   onClick={event => topicLink(event, item.id)} data-reference-topic={item.id}>
                   {item.title}<ArrowRight size={16} aria-hidden/>
@@ -154,6 +158,9 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
               </li>)}</ul>
             </nav>
           </div>
+        </> : null}
+      {error ? <div role="alert"><p>L’encyclopédie n’a pas pu être chargée.</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>Réessayer</button></div> : !catalog ? <p role="status">Chargement des articles…</p> : <>
+        {view === "home" ? <>
           {featured ? <section className={styles.featured}><div><h3><a href={articleHref(featured.id)} data-reference-entry={featured.id} onClick={event => openArticle(event, featured.id)}>{featured.title}</a></h3><p>{featured.lead}</p><a href={articleHref(featured.id)} className={styles.readLink} onClick={event => openArticle(event, featured.id)}>Lire l’article<ArrowRight size={16} aria-hidden/></a></div><figure><Image src={featured.image.src} alt={featured.image.alt} width={600} height={400} sizes="(max-width: 700px) 140px, 300px" unoptimized/><figcaption>{featured.image.caption}</figcaption></figure></section> : null}
         </> : null}
         {view === "topic" && topic ? <>

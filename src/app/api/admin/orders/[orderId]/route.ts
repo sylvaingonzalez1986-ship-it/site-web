@@ -56,6 +56,10 @@ export async function PATCH(
       return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
     }
 
+    if (previousOrder.paymentProvider === "arena_reward" && payload.paymentState !== undefined) {
+      return NextResponse.json({ error: "Une commande de remise ne comporte aucun paiement." }, { status: 409 });
+    }
+
     if (previousOrder.archivedAt) {
       return NextResponse.json(
         { error: "Cette commande a deja ete retiree de la liste." },

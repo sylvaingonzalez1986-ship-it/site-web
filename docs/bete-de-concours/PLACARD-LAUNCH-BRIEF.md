@@ -257,9 +257,11 @@ garde-fous concordent :
 
 ```powershell
 $env:PLACARD_LOAD_TEST_ALLOW_REMOTE="1"
-$env:PLACARD_LOAD_TEST_CONFIRM_TARGET="STAGING_READ_ONLY"
+$env:PLACARD_LOAD_TEST_CONFIRM_TARGET="ISOLATED_STAGING"
 $env:PLACARD_LOAD_TEST_ALLOWED_HOST="recette.exemple.fr"
 ```
+
+Le bootstrap peut créditer des avantages. Avant de lancer les requêtes, le script vérifie la version de l’application et la base de recette. [Configuration de recette](plan-80-recette/terrain.md)
 
 `PLACARD_LOAD_TEST_ALLOWED_HOST` doit correspondre exactement à l'hôte, port
 compris s'il est explicite, de `PLACARD_LOAD_TEST_BASE_URL`. Les cookies ne

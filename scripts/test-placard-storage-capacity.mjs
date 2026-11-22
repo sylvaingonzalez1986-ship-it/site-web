@@ -158,6 +158,9 @@ try {
  equal('late purchase replay never changes cash',lateReplay.cashCents,latePurchase.cashCents);
  equal('one-hour worker replay has no further sale',(await scalar('SELECT rpc_kq_storage_settle_due(100)')).sales,0);
  await db.exec('COMMIT');
+ // This storage-only fixture has no physical warehouse. Apply its container catalog extension.
+ const serviceZones=await sql('20261012000500_kq_warehouse_service_zones.sql');
+ await db.exec(serviceZones.slice(serviceZones.indexOf('DO $$'),serviceZones.indexOf('CREATE FUNCTION public.kq_warehouse_installed_containers')));
  for(const product of engine.KQ_STORAGE_CONTAINERS){
   equal(product.code+' catalogue parity',await scalar('SELECT kq_storage_container($1)',[product.code]),{methodCode:product.methodCode,capacityUnits:product.capacityUnits,priceCents:product.priceCents});
  }

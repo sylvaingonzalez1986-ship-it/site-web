@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import lighthouse from "lighthouse";
+import { verifyPlacardTestTarget } from "./placard-test-target.mjs";
 import { launch } from "chrome-launcher";
 
 const baseUrl = (process.env.PLACARD_MOBILE_AUDIT_BASE_URL || "http://127.0.0.1:3000").replace(/\/$/, "");
@@ -70,7 +71,6 @@ const requestedLabels = String(process.env.PLACARD_MOBILE_AUDIT_PROFILES || "")
   .filter(Boolean);
 const minimumAccounts = Math.max(1, Number(process.env.PLACARD_MOBILE_MIN_ACCOUNTS || 2));
 const requireDistinctCollections = process.env.PLACARD_MOBILE_REQUIRE_DISTINCT_COLLECTIONS !== "0";
-const isLocal = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(baseUrl);
 const minimumPerformance = Number(process.env.PLACARD_MOBILE_MIN_PERFORMANCE || 0.75);
 const minimumAccessibility = Number(process.env.PLACARD_MOBILE_MIN_ACCESSIBILITY || 0.9);
 const maximumLcpMs = Number(process.env.PLACARD_MOBILE_MAX_LCP_MS || 4000);
@@ -82,7 +82,6 @@ const auditViews = [
   { code: "market", path: "/arene/placard?view=market" },
 ];
 
-if (!isLocal) throw new Error("L’audit mobile Placard refuse toujours les cibles distantes.");
 const providedAccountCount = cookies.length || credentialProfiles.length;
 if (providedAccountCount < minimumAccounts) {
   throw new Error(
@@ -91,6 +90,7 @@ if (providedAccountCount < minimumAccounts) {
   );
 }
 
+await verifyPlacardTestTarget(baseUrl);
 const ageResponse = await fetch(`${baseUrl}/api/age-gate/verify`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },

@@ -74,7 +74,8 @@ function chair(a: Art, x: number, z: number, leather: Finish, facingFront = true
   }
 }
 
-function clerk(a: Art, x: number, z: number, shirt: Finish, hair: Finish, animated = false) {
+function clerk(room: Art, x: number, z: number, shirt: Finish, hair: Finish, animated = false) {
+  const a = room.pivot("daytime-resident", [0, 0, 0]);
   a.sphere(0.26, x, 0.91, z, shirt, [1.2, 1.28, 0.72]);
   a.box(0.35, 0.31, 0.055, x, 0.87, z + 0.18, "teal");
   for (const dx of [-0.135, 0.135]) {
@@ -112,7 +113,8 @@ function clerk(a: Art, x: number, z: number, shirt: Finish, hair: Finish, animat
   }
 }
 
-function banker(a: Art, x: number, z: number) {
+function banker(room: Art, x: number, z: number) {
+  const a = room.pivot("daytime-resident", [0, 0, 0]);
   a.sphere(0.37, x, 1.05, z, "suit", [1.08, 1.2, 0.74]);
   a.box(0.19, 0.41, 0.055, x, 1.21, z + 0.24, "cream", [-0.28, 0, 0]);
   a.box(0.071, 0.29, 0.054, x, 1.19, z + 0.29, "leather", [-0.25, 0, -0.1]);

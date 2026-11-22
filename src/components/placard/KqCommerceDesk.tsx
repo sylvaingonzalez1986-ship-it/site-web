@@ -9,13 +9,16 @@ import { ArrowRight, Check, ChevronDown, Clock3, Coins, Frown, Leaf, LoaderCircl
 import { KQ_CHANNELS, KQ_COMMERCE_EVENTS, KQ_COMPUTER_PRICE_CENTS, KQ_SHOP_QUALITY_BANDS, getKqShopNetworkBonus, getKqShopQualityBand, getKqCommerceMinimumQuality, getKqCommerceReplenishment, getKqCommerceStockQuality, isKqCommerceStockMature, quoteKqCommerce,
   type KqCommerceOffer, type KqCommerceReceipt, type KqCommerceSnapshot, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
+import { previewKqBusinessPayment } from "@/lib/kanab-quest-business";
 import { getKqCustomerDemandFlavorMatch, isKqCustomerDemandProduct } from "@/lib/kanab-quest-customer-demand";
 import { getKqCommerceFlowerSelection } from "@/lib/kanab-quest-commerce-lot-selection";
 import { parseKqSaleQuantity } from "@/lib/kanab-quest-sale-quantity";
 import { isKqCommerceOfferChangedCode, KqCommerceOfferChangedError } from "@/lib/kanab-quest-commerce-errors";
 import { KQ_MARKET_ROUTES, type KqMarketQuote, type KqMarketRouteCode } from "@/lib/kanab-quest-market";
 import { KqCommerceOverview } from "./KqCommerceOverview";
+import { KqSaleReceiptAmounts } from "./KqSaleReceiptAmounts";
 import { KqCommerceEmptyState } from "./KqCommerceEmptyState";
+import { KqEarnedMission } from "./KqEarnedMission";
 import { KqCommerceWorkshopScene } from "./KqCommerceWorkshopScene";
 import { KqCustomerDemandDashboard } from "./KqCustomerDemandDashboard";
 import { KqShopOverview } from "./KqShopOverview";
@@ -247,6 +250,8 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
   const stock = data?.stocks.find(s => s.id === selectedId);
   const raw = data?.rawLots.find(l => `raw:${l.flowerId}` === selectedId);
   const saleComplete = sales && receipt?.action === "sell";
+  const soldStock = saleComplete ? data?.stocks.find(item => item.id === receipt.stockId) : undefined;
+  const canSellRemaining = soldStock && soldStock.remainingUnits > 0;
   const onlineScreen = sales && channel === "online" && Boolean(data?.online) && Boolean(stock);
   const missingRequestedLot = sales && !saleComplete && ((Boolean(lotNotice) && !selectedId) || Boolean(selectedId && data && !raw && !stock));
   const screen = activeMode === "overview" ? "overview" : demands ? "demands" : dashboard ? "dashboard" : missingRequestedLot ? "missing-lot" : saleComplete ? "receipt" : onlineScreen ? "online" : stock ? channel ? "offer" : "distribution" : raw ? "preparation" : "lots";
@@ -474,6 +479,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
     {!workshop && <h1 className="sr-only" ref={!sales || loading || !data ? heading : undefined} data-commerce-view-heading={!sales || loading || !data || undefined} tabIndex={-1}>{demands ? "Demandes du moment" : dashboard ? "Mon stock en vente" : "Vendre"}</h1>}
     {!workshop && mode === undefined ? <nav className={styles.standaloneNav} aria-label="Mon commerce"><button type="button" aria-pressed={demands} onClick={() => changeMode("demands")}>Demandes du moment</button><button type="button" aria-pressed={sales} onClick={() => changeMode("sales")}>Vendre</button><button type="button" aria-pressed={dashboard} onClick={() => changeMode("dashboard")}>Mon stock en vente</button>{onOpenBusiness ? <button type="button" onClick={onOpenBusiness}>Développer</button> : null}</nav> : null}
     {(error || loadError) && !confirmation ? <p className={styles.error} role="alert">{error || loadError} <button onClick={() => void load()}>Actualiser</button></p> : null}
+    {!workshop && !confirmation && saleComplete ? <KqEarnedMission key={receipt?.stockId} /> : null}
     {pendingSale && !confirmation ? <div role="status" className={styles.error} data-pending-commerce-sale>
       <p>La réponse de ta vente n’a pas été confirmée. Vérifie cette demande avant d’en préparer une autre.</p>
       <button type="button" disabled={busy} onClick={() => { setConfirmation(pendingSale); setError(""); }}>Vérifier la vente</button>
@@ -496,11 +502,18 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
       </KqLotSummary></div> : null}
       {!dashboard && !saleComplete && stock && (stock.processingReadyAt || stock.processingWork) ? <><KqCommerceWorkshopScene stock={stock} now={loadError ? undefined : liveNow} />{stock.processingWork?.status === "blocked" ? <div className={styles.actions}><button type="button" className={styles.primary} data-resume-processing disabled={busy || refreshing || !!loadError} onClick={() => void askProcessingWork()}>Reprendre la transformation <ArrowRight size={18} aria-hidden="true" /></button><button type="button" disabled={busy || refreshing} onClick={() => void load()}>Actualiser les heures</button></div> : null}</> : null}
       {!workshop && !dashboard && data.strength === "merchant" ? <p><Sparkles size={16} aria-hidden="true" /> Commercial · capacité de vente +50 % en ligne et en boutique. Recettes et progression du recrutement +50 %.</p> : null}
-      {dashboard ? data.online ? <KqOnlineDashboard key={initialListingId ?? "all"} initialListingId={initialListingId} data={data} now={liveNow} busy={busy} onAsk={ask} onOpenBusiness={onOpenBusiness} onOpenMerch={onOpenMerch} onOpenShop={() => onOpenShop("COMPUTER", raw?.flowerId ?? stock?.flowerId)} onPrepareStock={browseDemandLots} /> : <div className={styles.dashboardUnavailable}><p>Le suivi des annonces en ligne n’est pas disponible dans cet atelier.</p><button className={styles.primary} onClick={browseDemandLots}>Choisir un lot <ArrowRight size={18} aria-hidden="true" /></button></div> : saleComplete ? <div className={styles.saleDone} role="status" data-commerce-sale-receipt data-new-receipt={receipt !== restoredReceipt.current && !receipt.replayed || undefined}><span className={styles.successEmblem}><Coins size={42} aria-hidden="true" /><Sparkles size={22} aria-hidden="true" /></span><small>Dans ta trésorerie</small><strong>{formatKqCash(receipt.netPayoutCents ?? 0)} versés</strong><p>{grams(receipt.units ?? 0)} vendus · {grams(receipt.remainingUnits ?? 0)} restants.</p>
-        <dl className={styles.receiptAmounts}><div><dt>Recette TTC</dt><dd>{formatKqCash(receipt.payoutCents ?? 0)}</dd></div><div><dt>TVA mise de côté</dt><dd>−{formatKqCash(receipt.vatCents ?? 0)}</dd></div><div><dt>Analyses échues réglées</dt><dd>−{formatKqCash(receipt.labPaidCents ?? 0)}</dd></div><div><dt>Électricité et soins réglés</dt><dd>−{formatKqCash(receipt.electricityPaidCents ?? 0)}</dd></div>{(receipt.supplierPaidCents ?? 0) > 0 ? <div><dt>Fournisseurs échus réglés</dt><dd>−{formatKqCash(receipt.supplierPaidCents ?? 0)}</dd></div> : null}</dl>
+      {dashboard ? data.online ? <KqOnlineDashboard key={initialListingId ?? "all"} initialListingId={initialListingId} data={data} now={liveNow} busy={busy} onAsk={ask} onOpenBusiness={onOpenBusiness} onOpenMerch={onOpenMerch} onOpenShop={() => onOpenShop("COMPUTER", raw?.flowerId ?? stock?.flowerId)} onPrepareStock={browseDemandLots} /> : <div className={styles.dashboardUnavailable}><p>Le suivi des annonces en ligne n’est pas disponible dans cet atelier.</p><button className={styles.primary} onClick={browseDemandLots}>Choisir un lot <ArrowRight size={18} aria-hidden="true" /></button></div> : saleComplete ? <div className={styles.saleDone} role="status" data-commerce-sale-receipt data-new-receipt={receipt !== restoredReceipt.current && !receipt.replayed || undefined}>
+        <span className={styles.successEmblem}><Coins size={42} aria-hidden="true" /><Sparkles size={22} aria-hidden="true" /></span>
+        <h3>Reçu de vente</h3>
+        <strong>{receipt.netPayoutCents === undefined ? "Versement non renseigné" : `${formatKqCash(receipt.netPayoutCents)} versés`}</strong>
+        <p>{receipt.lotName ?? soldStock?.name ?? "Lot vendu"}{receipt.units === undefined ? "" : ` · ${grams(receipt.units)} vendus`}{receipt.remainingUnits === undefined ? "" : ` · ${grams(receipt.remainingUnits)} restants`}.</p>
+        <KqSaleReceiptAmounts receipt={receipt} className={styles.receiptAmounts} />
         <CustomerFeedback receipt={receipt} />
-        <p>{(receipt.remainingUnits ?? 0) > 0 ? "Le reste est conservé. Tu peux le proposer à un autre circuit." : "Tout ce produit a été vendu."}</p>
-        <button className={styles.primary} onClick={() => choose((receipt.remainingUnits ?? 0) > 0 && stock ? stock.id : "")}>{(receipt.remainingUnits ?? 0) > 0 && stock ? "Vendre le reste" : "Retour aux lots"} <ArrowRight size={18} /></button>
+        <p><strong>Loïc</strong> · {receipt.remainingUnits === undefined ? "Tu retrouveras cette livraison dans tes dernières ventes." : receipt.remainingUnits > 0 ? "Le reste du lot est conservé. Tu peux le proposer à un autre circuit." : "Tout ce produit a été vendu. Tu retrouveras son reçu dans tes dernières ventes."}</p>
+        <div className={styles.receiptActions}>
+          {onOpenTreasury && <button className={`${styles.primary} ${styles.invoiceLink}`} type="button" onClick={onOpenTreasury}>Voir mes factures</button>}
+          <button className={styles.primary} type="button" onClick={() => choose(canSellRemaining ? soldStock.id : "")}>{canSellRemaining ? "Vendre le reste" : "Retour aux lots"} <ArrowRight size={18} aria-hidden="true" /></button>
+        </div>
       </div> : onlineScreen ? <KqOnlineStore key={stock?.id} data={data} selectedStockId={stock?.id} now={liveNow} busy={busy} onAsk={ask} onOpenBusiness={onOpenBusiness} onOpenShop={() => onOpenShop("COMPUTER", raw?.flowerId ?? stock?.flowerId)} /> : raw && activeProduct ? <div className={styles.preparation} data-commerce-preparation>
         <div className={styles.preparationCard}>
           <header className={styles.preparationIdentity}><h3>{raw.varietyName}</h3><p>Lot {raw.flowerId.slice(0, 8)} · Qualité actuelle : {rawSummary?.quality.value == null ? "à confirmer" : qualityScore(rawSummary.quality.value)}</p></header>
@@ -523,7 +536,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
         </div>
         <details className={styles.preparationDetails}><summary>Récolte, qualité et stockage</summary><KqLotSummary source={{ kind: "raw", lot: raw }}><Link prefetch={false} data-commerce-open-lot-storage className={styles.back} href={storageHref} onClick={openStorage}>Stockage de cette récolte <ArrowRight size={16} aria-hidden="true" /></Link></KqLotSummary></details>
       </div> : workshop ? stock ? null : extractionLots : stock && !channel ? <>
-        <p>Montants estimés TTC, avant TVA et factures échues. Le versement net sera confirmé avant la vente.</p>
+        <p>Compare les quantités achetables et le versement estimé après TVA et retenues. Le devis confirme le montant avant la vente.</p>
         {data.campaign && data.campaign.event !== "normal" ? <p className={styles.event}>{KQ_COMMERCE_EVENTS[data.campaign.event]}</p> : null}
         <div className={channelStyles.choices} aria-label="Circuits de vente">{(["cbd-shop", "wholesale", "online"] as const).map(code => {
           if (code === "online" && data.online) {
@@ -548,9 +561,11 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
             </article>;
           }
           const proposal = quoteKqCommerce(data, stock, code, "advised", undefined, liveNow);
+          const payment = !proposal.reason && data.business && Number.isSafeInteger(data.electricityOutstandingCents)
+            ? previewKqBusinessPayment(proposal.payoutCents, data.business, data.electricityOutstandingCents) : null;
           return <article key={code} className={channelStyles.choice} data-sales-channel={code} data-unavailable={proposal.reason ? "true" : undefined}>
             <header className={channelStyles.heading}><h3>{KQ_CHANNELS[code].name}</h3><small>Paiement immédiat à la vente</small></header>
-            <div className={channelStyles.amount}><strong>{proposal.reason ? "Indisponible" : formatKqCash(proposal.payoutCents)}</strong>{!proposal.reason ? <><span>TTC estimés</span><small>Pour {grams(proposal.units)} sur {grams(stock.remainingUnits)}<br />{formatKqCash(Math.round(proposal.unitCents))}/g{proposal.customerDemand && proposal.customerDemand.units < proposal.units ? " en moyenne" : ""}</small></> : null}</div>
+            <div className={channelStyles.amount}><strong>{proposal.reason ? "Indisponible" : formatKqCash(payment?.netPayoutCents ?? proposal.payoutCents)}</strong>{!proposal.reason ? <><span>{payment ? "Net estimé en caisse" : "TTC estimés · net au devis"}</span><small>{payment ? `${formatKqCash(proposal.payoutCents)} TTC · ` : ""}Pour {grams(proposal.units)} sur {grams(stock.remainingUnits)}<br />{formatKqCash(Math.round(proposal.unitCents))}/g{proposal.customerDemand && proposal.customerDemand.units < proposal.units ? " en moyenne" : ""}</small></> : null}</div>
             <div className={channelStyles.notes}>
               {proposal.customerDemand ? <p>Goûts demandés : +{proposal.customerDemand.bonusPercent.toLocaleString("fr-FR")} % sur {grams(proposal.customerDemand.units)}, déjà inclus.</p> : null}
               {proposal.reason ? <p className={channelStyles.warning}>{proposal.reason}</p> : <ChannelQuality stock={stock} channel={code} now={liveNow} />}
@@ -570,6 +585,8 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
       </> : stock && offer && channel ? <div className={offerStyles.offer}>
         <div><ChannelQuality stock={stock} channel={channel} now={liveNow} />
           {offer.reason ? <><p data-sale-blocked className={styles.error}>{offer.reason}</p>
+            {channel !== "wholesale" && quoteKqCommerce(data, stock, "wholesale", "advised", undefined, liveNow).units > 0 ?
+              <button type="button" className={styles.primary} onClick={() => chooseChannel("wholesale")}>Voir la reprise disponible au grossiste</button> : null}
             {channel === "wholesale" || isKqCommerceStockMature(stock, liveNow) ? <DemandStatus data={data} channel={channel} offer={offer} now={liveNow} /> : null}
             {channel === "online" && !data.computerOwned ? <button className={styles.primary} onClick={() => onOpenShop("COMPUTER", raw?.flowerId ?? stock?.flowerId)}>Voir l’ordinateur dans l’Entrepôt · 450 €</button>
               : channel === "online" && data.business && !data.business.shop.active ? <Link prefetch={false} href="/arene/placard?view=market&section=management" className={styles.primary} onClick={openBusiness}>{data.business.shop.createdAt ? "Réactiver mon site" : "Créer mon site"}</Link> : null}
