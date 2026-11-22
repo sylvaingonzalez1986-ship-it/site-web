@@ -2,11 +2,11 @@ import "server-only";
 
 import {
   createSwissBitcoinSupportInvoice, fetchSwissBitcoinInvoice, inspectSwissBitcoinInvoice, isSwissBitcoinSupportEnabled,
-  isSwissBitcoinSupportInvoice, swissBitcoinInvoiceId, swissBitcoinInvoiceReference, swissBitcoinSupportPurpose,
+  isSwissBitcoinSupportInvoice, SwissBitcoinCreationError, swissBitcoinInvoiceId, swissBitcoinInvoiceReference, swissBitcoinSupportPurpose,
 } from "@/lib/swiss-bitcoin-pay";
 import {
   beginSupportCheckout, claimSupportSwissChecks, findSupportBySwissInvoice, findSupportForReconciliation,
-  getOwnedSupport, observeSupportSwissInvoice, setSupportSwissCheckout, supportStatus, type SupportRecord,
+  getOwnedSupport, observeSupportSwissInvoice, recordSupportSwissCreationRefusal, setSupportSwissCheckout, supportStatus, type SupportRecord,
 } from "@/lib/support-backend";
 import { SupportError, type SupportAttempt } from "@/lib/support-campaign";
 
@@ -15,13 +15,17 @@ export async function startSwissBitcoinSupport(attempt: SupportAttempt) {
   const started = await beginSupportCheckout({ ...attempt, provider: "swiss-bitcoin-pay" }, swissBitcoinSupportPurpose);
   if (!started.created) return supportStatus(await getOwnedSupport(attempt.id, attempt.token));
 
-  try {
-    const { invoiceId } = await createSwissBitcoinSupportInvoice(attempt.id, attempt.amountCents);
-    await setSupportSwissCheckout(attempt.id, invoiceId).catch(() => setSupportSwissCheckout(attempt.id, invoiceId));
-  } catch {
-    // A timeout can occur after Swiss Bitcoin Pay allocated an invoice. Keep the same local reference for recovery.
+  const invoice = await createSwissBitcoinSupportInvoice(attempt.id, attempt.amountCents).catch(async error => {
+    if (error instanceof SwissBitcoinCreationError && error.definitive) {
+      await recordSupportSwissCreationRefusal(attempt.id);
+      return null;
+    }
+    // The provider may have created an invoice before the connection failed.
     await setSupportSwissCheckout(attempt.id, null).catch(() => {});
     throw new SupportError("La préparation du paiement n’a pas pu être confirmée. Ta référence est conservée et aucun nouveau paiement ne sera créé automatiquement.", 503);
+  });
+  if (invoice) {
+    await setSupportSwissCheckout(attempt.id, invoice.invoiceId).catch(() => setSupportSwissCheckout(attempt.id, invoice.invoiceId));
   }
   return supportStatus(await getOwnedSupport(attempt.id, attempt.token));
 }

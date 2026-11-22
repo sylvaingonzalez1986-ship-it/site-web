@@ -3,13 +3,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   createSwissBitcoinSupportInvoice: vi.fn(), fetchSwissBitcoinInvoice: vi.fn(), isSwissBitcoinSupportEnabled: vi.fn(),
   beginSupportCheckout: vi.fn(), claimSupportSwissChecks: vi.fn(), findSupportBySwissInvoice: vi.fn(), findSupportForReconciliation: vi.fn(),
-  getOwnedSupport: vi.fn(), observeSupportSwissInvoice: vi.fn(), setSupportSwissCheckout: vi.fn(), supportStatus: vi.fn(),
+  getOwnedSupport: vi.fn(), observeSupportSwissInvoice: vi.fn(), recordSupportSwissCreationRefusal: vi.fn(), setSupportSwissCheckout: vi.fn(), supportStatus: vi.fn(),
 }));
 
 vi.mock("@/lib/swiss-bitcoin-pay", async (original) => ({ ...await original<typeof import("./swiss-bitcoin-pay")>(), ...mocks }));
 vi.mock("@/lib/support-backend", () => mocks);
 
 import { receiveSwissBitcoinSupportNotification, reconcileSwissBitcoinSupport, refreshOwnedSwissBitcoinSupport, startSwissBitcoinSupport } from "./support-swiss-bitcoin-pay";
+import { SwissBitcoinCreationError } from "./swiss-bitcoin-pay";
 import type { SupportRecord } from "./support-backend";
 
 const id = "11111111-1111-4111-8111-111111111111";
@@ -42,6 +43,19 @@ describe("Lightning support checkout and reconciliation", () => {
     expect(mocks.beginSupportCheckout).toHaveBeenCalledWith({ ...attempt, provider: "swiss-bitcoin-pay" }, "producer-support");
     expect(mocks.beginSupportCheckout.mock.invocationCallOrder[0]).toBeLessThan(mocks.createSwissBitcoinSupportInvoice.mock.invocationCallOrder[0]);
     expect(mocks.setSupportSwissCheckout).toHaveBeenCalledWith(id, null);
+    expect(mocks.recordSupportSwissCreationRefusal).not.toHaveBeenCalled();
+    mocks.beginSupportCheckout.mockResolvedValueOnce({ created: false });
+    await startSwissBitcoinSupport(attempt);
+    expect(mocks.createSwissBitcoinSupportInvoice).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a confirmed refusal to the donor and does not resubmit the same attempt", async () => {
+    mocks.createSwissBitcoinSupportInvoice.mockRejectedValueOnce(new SwissBitcoinCreationError(true));
+    mocks.getOwnedSupport.mockResolvedValue({ ...record, checkout_state: "cancelled", invoice_id: null });
+    mocks.supportStatus.mockReturnValue({ state: "cancelled", checkoutUrl: null });
+    await expect(startSwissBitcoinSupport(attempt)).resolves.toMatchObject({ state: "cancelled", checkoutUrl: null });
+    expect(mocks.recordSupportSwissCreationRefusal).toHaveBeenCalledWith(id);
+    expect(mocks.setSupportSwissCheckout).not.toHaveBeenCalled();
     mocks.beginSupportCheckout.mockResolvedValueOnce({ created: false });
     await startSwissBitcoinSupport(attempt);
     expect(mocks.createSwissBitcoinSupportInvoice).toHaveBeenCalledTimes(1);

@@ -136,7 +136,7 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
       const verified = validateSupportStatus(result, current);
       setStatus(verified);
       if (supportStatusIsFinal(verified)) void refresh();
-      goToSupportPayment(verified);
+      if (verified.provider !== "swiss-bitcoin-pay") goToSupportPayment(verified);
     } catch (cause) {
       if (mounted.current) setFormError(cause instanceof Error ? cause.message : "Paiement indisponible.");
     } finally {
@@ -196,7 +196,7 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
   }
 
   const amountLabel = amountCents === null ? "" : ` ${supportEuros(amountCents)}`;
-  const payLabel = chosenProvider === "swiss-bitcoin-pay" ? `Payer${amountLabel} avec Lightning` : `Payer${amountLabel} par carte`;
+  const payLabel = chosenProvider === "swiss-bitcoin-pay" ? `Préparer le don${amountLabel ? " de" + amountLabel : ""} en Bitcoin` : `Payer${amountLabel} par carte`;
   const workLabel = work === "creating" ? "Création de la session de paiement…" : work === "cancelling" ? "Annulation en cours…" : "Vérification auprès du prestataire…";
 
   return <section className={styles.support} aria-labelledby={standalone ? id + "-title" : undefined} data-financial-support>
@@ -213,7 +213,9 @@ export function KqSupportCampaign({ standalone = false, gameReturnHref }: { stan
           </div>
           <div className={styles.actions}>
             {final ? <button type="button" onClick={newSupport} disabled={!chosenProvider}>Préparer une nouvelle contribution</button> : <>
-              {status?.state === "ready" && status.checkoutUrl && <button type="button" className={styles.primary} disabled={Boolean(work)} onClick={() => void submit()}>Reprendre sur {attemptedProvider === "viva" ? "Viva" : "Lightning"}</button>}
+              {status?.state === "ready" && status.checkoutUrl && !work && (attemptedProvider === "swiss-bitcoin-pay"
+                ? <a href={status.checkoutUrl} className={`${styles.buttonLink} ${styles.primary}`}>Ouvrir Swiss Bitcoin Pay</a>
+                : <button type="button" className={styles.primary} onClick={() => void submit()}>Reprendre sur Viva</button>)}
               {(!status || status.state === "creating") && !work && <button type="button" onClick={() => void submit()}>Reprendre la préparation</button>}
               <button type="button" disabled={Boolean(work)} onClick={() => void checkStatus()}>Vérifier mon paiement</button>
               {attemptedProvider === "viva" && status?.state === "ready" && <button type="button" disabled={Boolean(work)} onClick={() => void checkStatus(true)}>Annuler cette session</button>}

@@ -49,8 +49,9 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
   const settle = () => page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
   const openFromModel = async input => {
     const { point } = await viewAtFarm(page);
-    assert.ok(point && point.y < (await page.evaluate(() => innerHeight)) / 2, 'Farm is in the upper half');
-    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.tagName, point), 'CANVAS', 'Farm silhouette is clear of the HUD');
+    assert.ok(point, 'The farm collider is present');
+    assert.ok(await page.evaluate(({ x, y }, selector) => document.elementFromPoint(x, y) === document.querySelector(selector), point, district),
+      'The farm silhouette is on screen and clear of the village controls');
     if (input === 'touch') await page.touchscreen.tap(point.x, point.y);
     else {
       await page.mouse.move(point.x, point.y);
@@ -115,10 +116,12 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
   await screenshot('ferme-continent-nuit-320');
   await openFromModel('touch');
   await waitText(support, /Moyen de paiement/);
+  await page.focus(submit);
   await screenshot('soutien-320');
   const formFits = await page.$eval(submit, node => {
     const bounds = node.getBoundingClientRect(), container = node.closest('[data-producer-support-panel]');
-    return bounds.left >= 0 && bounds.right <= innerWidth && bounds.bottom <= container.getBoundingClientRect().bottom && container.scrollWidth <= container.clientWidth + 1;
+    const hit = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+    return node.contains(hit) && bounds.left >= 0 && bounds.right <= innerWidth && bounds.bottom <= container.getBoundingClientRect().bottom && container.scrollWidth <= container.clientWidth + 1;
   });
   assert.ok(formFits, 'Payment controls fit the narrow panel');
   await keyClick(support + ' a[href^="#"]');
@@ -169,9 +172,15 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     assert.equal(checkout.body.publishName, false);
     assert.equal(checkout.body.publishAmount, false);
     mockSupportRedirect(provider, checkout.body.id);
+    const openInvoice = support + ' a[href^="https://app.swiss-bitcoin-pay.ch/invoice/"]';
+    if (provider === 'swiss-bitcoin-pay') {
+      await page.evaluate(() => window.__supportPending.shift()());
+      await waitText(openInvoice, /Ouvrir Swiss Bitcoin Pay/);
+      assert.equal((await calls()).length, 1);
+    }
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-      page.evaluate(() => window.__supportPending.shift()()),
+      provider === 'swiss-bitcoin-pay' ? keyClick(openInvoice) : page.evaluate(() => window.__supportPending.shift()()),
     ]);
     await page.waitForSelector(receipt, { visible: true });
     await waitText(receipt, /En attente de confirmation/);
@@ -242,7 +251,9 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     results.push({ scenario, truthfulSummary: true });
   }
   await load('financial-support-tutorial', 390, 'view=hub&support=1');
-  await page.waitForSelector('[data-farm-guide]', { visible: true });
+  await page.waitForSelector('dialog[data-sylvain-library][open]', { visible: true });
+  await button('Commencer avec Loïc', 'dialog[data-sylvain-library][open]');
+  await page.waitForSelector('[data-sylvain-guide][data-mode="active"]', { visible: true });
   assert.equal(await page.$(panel), null);
   results.push({ scenario: 'guide actif', supportAbsent: true });
   await load('financial-support-standalone', 320);

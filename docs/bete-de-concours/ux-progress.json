@@ -1,4 +1,12 @@
 {
+  "fermeLienBitcoin20261122": {
+    "date": "2026-11-22",
+    "diagnostic": "Campagne ouverte et Lightning activé en production. Le 22 novembre à 09 h 03, heure de Paris, Swiss Bitcoin Pay a refusé la création de facture (HTTP 403). La fonction de don était déployée en Virginie, celle de la boutique à Paris.",
+    "livraison": "La fiche du don affiche Ouvrir Swiss Bitcoin Pay dès que la facture est prête. Les appels marchands de la Ferme passent par Paris. Un refus définitif permet de préparer une nouvelle contribution. Une réponse perdue conserve la référence à vérifier.",
+    "verification": "Don simulé de 2,50 € depuis la Ferme à 320 px, ouverture du lien Swiss Bitcoin Pay au clavier et retour confirmé. 129 tests ciblés de paiement. Droits vérifiés sur 435 migrations.",
+    "evidence": ["scripts/fixtures/support-campaign-browser.mjs", "src/lib/supabase/support-campaign-sql.test.ts", "supabase/migrations/20261122000700_support_swiss_creation_refused.sql"],
+    "nextBoundedTask": "Vérifier le rapprochement du prochain soutien effectivement réglé avec le relevé marchand."
+  },
   "retourVillageEntrepot20261122": {
     "date": "2026-11-22",
     "livraison": "Bouton Retour au village dans l’en-tête de l’entrepôt en Pilotage et en Aménager. Le bouton du bandeau du village s’efface lorsque celui de l’entrepôt est affiché. Le retour conserve le dialogue de confirmation du brouillon.",

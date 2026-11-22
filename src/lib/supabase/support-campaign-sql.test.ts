@@ -19,7 +19,9 @@ async function summary(offset = 0) {
 }
 const beginSwiss = () => db.query<{ value: { created: boolean } }>("SELECT public.rpc_begin_support_checkout($1,$2,'Breton',1000,true,true,'producer-support','swiss-bitcoin-pay') value", [id, token]);
 const swissCheckout = (invoice: string | null = invoiceId) => db.query("SELECT public.rpc_support_swiss_checkout($1,$2)", [id, invoice]);
-const observeSwiss = (state: string, status: string, options: { invoice?: string; amount?: number; paid?: string; expiry?: string; issue?: string } = {}) =>
+const refuseSwissCreation = () => db.query("SELECT public.rpc_support_swiss_creation_refused($1)", [id]);
+const creationRecord = async () => (await db.query("SELECT checkout_state, invoice_id, provider_issue, review_required FROM public.support_contributions WHERE id = $1", [id])).rows[0];
+const observeSwiss = (state: string, status: string | null, options: { invoice?: string; amount?: number; paid?: string; expiry?: string; issue?: string } = {}) =>
   db.query("SELECT public.rpc_support_swiss_observe($1,$2,$3,$4,'EUR',$5,$6,$7,$8)",
     [id, options.invoice ?? invoiceId, state, options.amount ?? 1000, status, options.expiry ?? null, options.paid ?? null, options.issue ?? null]);
 beforeAll(async () => {
@@ -27,6 +29,7 @@ beforeAll(async () => {
   await db.exec("CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role BYPASSRLS;");
   await db.exec(readFileSync("supabase/migrations/20261111000300_producer_support_campaign.sql", "utf8"));
   await db.exec(readFileSync("supabase/migrations/20261121000400_producer_support_payment_providers.sql", "utf8"));
+  await db.exec(readFileSync("supabase/migrations/20261122000700_support_swiss_creation_refused.sql", "utf8"));
 }, 30_000);
 beforeEach(async () => {
   await db.exec("RESET ROLE; TRUNCATE public.support_reversals, public.support_contributions, public.support_admin_audit; UPDATE public.support_campaigns SET active=true,goal_cents=NULL;");
@@ -148,6 +151,50 @@ describe("Lightning contributions in the existing ledger", () => {
     expect((await summary()).collectedCents).toBe(0);
   });
 
+  it("records a definitive creation refusal once and keeps the saved attempt terminal on retry", async () => {
+    await db.exec("SET ROLE service_role");
+    await beginSwiss();
+    await Promise.all([refuseSwissCreation(), refuseSwissCreation()]);
+    await swissCheckout(null);
+    expect((await beginSwiss()).rows[0].value.created).toBe(false);
+    expect(await creationRecord()).toEqual({ checkout_state: "cancelled", invoice_id: null, provider_issue: "creation_refused", review_required: false });
+    expect(await summary()).toMatchObject({ collectedCents: 0, contributionCount: 0, needsReconciliation: false });
+  });
+
+  it("keeps an ambiguous creation available for reconciliation when a refusal arrives", async () => {
+    await beginSwiss();
+    await swissCheckout(null);
+    await refuseSwissCreation();
+    expect(await creationRecord()).toEqual({ checkout_state: "uncertain", invoice_id: null, provider_issue: "creation_uncertain", review_required: false });
+  });
+
+  it("preserves pending reviews and ignores card contributions", async () => {
+    await beginSwiss();
+    await db.query("UPDATE public.support_contributions SET review_required = true WHERE id = $1", [id]);
+    await refuseSwissCreation();
+    expect(await creationRecord()).toMatchObject({ checkout_state: "creating", provider_issue: null, review_required: true });
+    await begin([tx]);
+    await db.query("SELECT public.rpc_support_swiss_creation_refused($1)", [tx]);
+    expect((await db.query("SELECT checkout_state, provider_issue FROM public.support_contributions WHERE id = $1", [tx])).rows[0])
+      .toEqual({ checkout_state: "creating", provider_issue: null });
+  });
+
+  it.each(["refusal-first", "invoice-first"])("retains the invoice and counts verified funds in either order (%s)", async order => {
+    await beginSwiss();
+    if (order === "refusal-first") {
+      await refuseSwissCreation();
+      await swissCheckout();
+    } else {
+      await swissCheckout();
+      await refuseSwissCreation();
+    }
+    expect(await creationRecord()).toMatchObject({ checkout_state: "ready", invoice_id: invoiceId, provider_issue: null });
+    await observeSwiss("paid", "paid", { paid: "2026-11-21T12:01:00Z", expiry: "2026-11-21T12:10:00Z" });
+    await refuseSwissCreation();
+    expect(await creationRecord()).toMatchObject({ checkout_state: "ready", invoice_id: invoiceId, provider_issue: null });
+    expect(await summary()).toMatchObject({ collectedCents: 1000, contributionCount: 1, needsReconciliation: false });
+  });
+
   it("restores an ambiguous binding from a verified invoice and counts timely payment once", async () => {
     await beginSwiss(); await swissCheckout(null);
     const payment = { paid: "2026-11-21T12:01:00Z", expiry: "2026-11-21T12:10:00Z" };
@@ -176,9 +223,25 @@ describe("Lightning contributions in the existing ledger", () => {
     expect((await db.query("SELECT actor,action FROM public.support_admin_audit")).rows).toEqual([{ actor: "operator", action: "ack_late_payment" }]);
   });
 
+  it("credits a verified settled invoice once and retains the provider's raw status", async () => {
+    await beginSwiss();
+    await swissCheckout();
+    const payment = { paid: "2026-11-21T12:01:00Z", expiry: "2026-11-21T12:10:00Z" };
+    for (const status of [null, "unknown"]) {
+      await expect(observeSwiss("paid", status, payment)).rejects.toThrow("support_payment_mismatch");
+    }
+    await expect(observeSwiss("paid", "settled", { ...payment, amount: 999 })).rejects.toThrow("support_payment_mismatch");
+    expect(await summary()).toMatchObject({ collectedCents: 0, contributionCount: 0 });
+    await observeSwiss("paid", "settled", payment);
+    await observeSwiss("paid", "settled", payment);
+    expect(await summary()).toMatchObject({ collectedCents: 1000, contributionCount: 1, needsReconciliation: false });
+    expect((await db.query("SELECT provider_status, next_check_at FROM public.support_contributions WHERE id = $1", [id])).rows[0])
+      .toEqual({ provider_status: "settled", next_check_at: null });
+  });
+
   it("gives the reconciliation RPCs to service_role only", async () => {
     for (const role of ["anon", "authenticated", "service_role"]) {
-      for (const rpc of ["rpc_support_swiss_checkout(uuid,uuid)", "rpc_support_swiss_observe(uuid,uuid,text,integer,text,text,timestamptz,timestamptz,text)", "rpc_claim_support_swiss_checks()", "rpc_ack_support_swiss_late(uuid,uuid,text)"]) {
+      for (const rpc of ["rpc_support_swiss_checkout(uuid,uuid)", "rpc_support_swiss_creation_refused(uuid)", "rpc_support_swiss_observe(uuid,uuid,text,integer,text,text,timestamptz,timestamptz,text)", "rpc_claim_support_swiss_checks()", "rpc_ack_support_swiss_late(uuid,uuid,text)"]) {
         expect((await db.query<{ allowed: boolean }>("SELECT has_function_privilege($1,$2,'EXECUTE') allowed", [role, `public.${rpc}`])).rows[0].allowed).toBe(role === "service_role");
       }
     }

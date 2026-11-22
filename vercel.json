@@ -3,6 +3,10 @@
   "functions": {
     "src/app/api/checkout/viva/route.ts": { "regions": ["cdg1"] },
     "src/app/api/checkout/bitcoin/*/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/support/checkout/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/support/status/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/support/swiss-bitcoin-pay/webhook/route.ts": { "regions": ["cdg1"] },
+    "src/app/api/admin/support/route.ts": { "regions": ["cdg1"] },
     "src/app/api/cron/swiss-bitcoin-pay/route.ts": { "regions": ["cdg1"] },
     "src/app/api/cron/support-payments/route.ts": { "regions": ["cdg1"] },
     "src/app/api/admin/orders/*/bitcoin/route.ts": { "regions": ["cdg1"] }

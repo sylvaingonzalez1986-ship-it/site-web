@@ -69,7 +69,7 @@ export function validateSupportStatus(value: SupportStatus, attempt: SupportAtte
     || (value.checkoutUrl !== null && typeof value.checkoutUrl !== "string")) {
     throw new Error("L’état reçu ne correspond pas à ta fiche de soutien.");
   }
-  return value;
+  return { ...value, checkoutUrl: supportCheckoutUrl(value) };
 }
 
 export function supportStatusIsFinal(status: SupportStatus | null) {
@@ -82,7 +82,9 @@ export function supportStatusMessage(status: SupportStatus): string {
     case "ready": return status.checkoutUrl ? "En attente de confirmation du paiement."
       : "Le lien de paiement est indisponible. Vérifie l’état de ton versement.";
     case "uncertain": return "Ton paiement reste à vérifier. Garde cette référence et évite un second versement.";
-    case "cancelled": return "Cette session de paiement a été annulée.";
+    case "cancelled": return status.provider === "swiss-bitcoin-pay"
+      ? "La facture Lightning n’a pas été créée. Tu peux préparer une nouvelle contribution."
+      : "Cette session de paiement a été annulée.";
     case "expired": return "Cette session de paiement a expiré.";
     case "paid": return "Paiement confirmé. Merci pour ton soutien !";
     case "refunded": return "Le remboursement de ton soutien est confirmé.";

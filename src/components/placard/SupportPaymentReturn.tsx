@@ -88,10 +88,12 @@ export function SupportPaymentReturn({ supportId, transactionId, orderCode }: { 
     </div>
     {error && <p role="alert" className={styles.error}>{error}</p>}
     <div className={styles.actions}>
-      {status?.state === "ready" && status.checkoutUrl && <button type="button" className={styles.primary} disabled={busy} onClick={() => {
-        try { goToSupportPayment(status); }
-        catch (cause) { setError(cause instanceof Error ? cause.message : "Lien de paiement indisponible."); }
-      }}>Reprendre sur {provider === "viva" ? "Viva" : "Lightning"}</button>}
+      {status?.state === "ready" && status.checkoutUrl && (provider === "swiss-bitcoin-pay"
+        ? <a href={status.checkoutUrl} className={`${styles.buttonLink} ${styles.primary}`}>Ouvrir Swiss Bitcoin Pay</a>
+        : <button type="button" className={styles.primary} disabled={busy} onClick={() => {
+          try { goToSupportPayment(status); }
+          catch (cause) { setError(cause instanceof Error ? cause.message : "Lien de paiement indisponible."); }
+        }}>Reprendre sur Viva</button>)}
       {attempt && !confirmed && <button ref={verifyButton} type="button" aria-disabled={busy} onClick={() => {
         if (controller.current) void check(attempt, controller.current.signal);
       }}>Vérifier à nouveau</button>}

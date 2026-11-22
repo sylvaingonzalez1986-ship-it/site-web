@@ -22,6 +22,7 @@ import type { KqPreparationSelection } from "@/lib/kanab-quest-preparation-selec
 import { getKqMissionTarget } from "@/lib/kanab-quest-pinned-mission";
 import { KqMissionFocusProvider, KqPinnedMission } from "./KqPinnedMission";
 import { KqStaffRecoveryProvider } from "./KqStaffRecoveryContext";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { FarmGuideDestination } from "@/lib/kanab-quest-guide-navigation";
 import { KqQuarterWorkHelp } from "./KqPlayerWorkStatus";
 import { KqPlayerWorkAvailabilityContext, useKqPlayerWorkAvailability } from "./KqPlayerActionTime";
@@ -144,6 +145,7 @@ export function PlacardPlayerShell({ draftOwnerId, initialGuideOpen = false }: {
 }
 
 function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOwnerId?: string; initialGuideOpen: boolean }) {
+  const { isTutorial } = useKqTutorialApi();
   const [overviewOpen, setOverviewOpen] = useState(false);
   const location = useSyncExternalStore(subscribePlacardLocation, getPlacardLocation, () => "");
   const activityLocation = normalizeKqVillageLocation(location);
@@ -187,7 +189,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
     if (legacyCollection) return "shop";
     return isPlacardView(requestedView) ? requestedView : "hub";
   }, [legacyStaffTrim, legacyEquipmentShop, legacySocial, legacyManagement, legacyCollection, requestedView]);
-  const supportOpen = view === "hub" && !room && params.get("support") === "1";
+  const supportOpen = !isTutorial && view === "hub" && !room && params.get("support") === "1";
   const quarterReturnHref = useMemo(() => {
     const query = new URLSearchParams(activityLocation);
     query.delete("support");
@@ -512,6 +514,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
     }));
   }, []);
   const openSupport = () => {
+    if (isTutorial) return;
     const url = new URL(quarterReturnHref, window.location.origin);
     url.searchParams.set("support", "1");
     openWorldHref(url.href);

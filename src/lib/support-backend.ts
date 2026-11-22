@@ -93,6 +93,11 @@ export async function setSupportSwissCheckout(id: string, invoiceId: string | nu
   check(result.error);
 }
 
+export async function recordSupportSwissCreationRefusal(id: string) {
+  const result = await createSupabaseServiceClient().rpc("rpc_support_swiss_creation_refused", { p_id: id });
+  check(result.error);
+}
+
 export async function observeSupportSwissInvoice(id: string, invoiceId: string, observed: ReturnType<typeof inspectSwissBitcoinInvoice>) {
   const result = await createSupabaseServiceClient().rpc("rpc_support_swiss_observe", {
     p_id: id, p_invoice: invoiceId, p_state: observed.state, p_amount: observed.eurMinor, p_currency: observed.currency,
