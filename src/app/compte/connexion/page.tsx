@@ -1,7 +1,7 @@
 ﻿import Link from "@/components/navigation/NavigationLink";
 import { AccountLoginForm } from "@/components/account/AccountLoginForm";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen } from "@/lib/kanab-quest-player-access";
 
 export default async function AccountLoginPage({
   searchParams,
@@ -24,7 +24,7 @@ export default async function AccountLoginPage({
           <h1 className="section-title">CONNEXION</h1>
           <p className="mt-3 text-charcoal">
             {enteringGame
-              ? isKqPlayerApiEnabled() ? "Connecte-toi pour retrouver ton personnage et ta progression dans le Quartier." : "Connecte-toi avec ton compte de test pour entrer dans le Quartier."
+              ? isKqGameOpen() ? "Connecte-toi pour créer ton personnage ou reprendre ta partie dans le Quartier." : "Connecte-toi avec ton compte de test pour entrer dans le Quartier."
               : "Connecte-toi pour accéder à ton profil, ton historique et tes commandes."}
           </p>
           {isVerified && (

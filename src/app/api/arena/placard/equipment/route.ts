@@ -2,7 +2,7 @@ import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
   equipKqDurableEquipment,
@@ -28,7 +28,7 @@ function publicEquipmentError(error: unknown, fallback: string) {
 }
 
 export async function GET(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
@@ -50,7 +50,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);

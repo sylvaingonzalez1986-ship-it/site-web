@@ -3,7 +3,7 @@ const mocks = vi.hoisted(() => ({
   session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), logRateLimit: vi.fn(), snapshot: vi.fn(), observe: vi.fn(), save: vi.fn(), quote: vi.fn(), remove: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "test", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.logRateLimit }));
 vi.mock("@/lib/supabase/kanab-quest-warehouse-backend", () => ({
   getKqWarehouseSnapshot: mocks.snapshot, observeKqWarehouseRoom: mocks.observe, saveKqWarehouseLayout: mocks.save,

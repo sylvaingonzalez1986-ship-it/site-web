@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
 import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { parseSavingsCommand } from "@/lib/chanvrier-savings";
@@ -12,7 +12,7 @@ async function handle(request?: Request) {
   try {
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour ouvrir ton livret." }, { status: 401, headers });
-    if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Arène indisponible." }, { status: 404, headers });
+    if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Arène indisponible." }, { status: 404, headers });
     const rate = await hitRateLimit({ key: `arena_savings:${session.customerId}`, windowSeconds: 60, maxHits: 30 });
     if (!rate.allowed) return NextResponse.json({ error: "Patiente un instant avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
     if (!request) return NextResponse.json(await getChanvrierSavings(session.customerId), { headers });

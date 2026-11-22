@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const { session, enabled, rpc, shop } = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), rpc: vi.fn(), shop: vi.fn() }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: enabled }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: session }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: async () => ({ allowed: true }) }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc }) }));

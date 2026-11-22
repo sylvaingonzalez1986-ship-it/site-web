@@ -30,7 +30,6 @@ vi.mock("@/lib/contest-backend", () => ({
   getPublicContestEntries: mocks.entries,
   isContestSchemaMissingError: () => false,
 }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: async () => false }));
 vi.mock("@/lib/supabase/contest-bundle-rewards-backend", () => ({ getContestBundleRewards: mocks.activityRead }));
 vi.mock("./ContestArenaHub", () => ({ ContestArenaHub: () => null }));
 vi.mock("./ContestHubClient", () => ({ ContestHubClient: () => null }));
@@ -60,6 +59,7 @@ beforeEach(() => {
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
   vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "true");
+  vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
   vi.stubEnv("CONTEST_NOTEBOOK_ENABLED", "true");
   vi.spyOn(Date, "now").mockReturnValue(openingAt + 1);
   mocks.cookieValues.mockReturnValue([]);
@@ -80,26 +80,20 @@ afterEach(() => {
 });
 
 describe("Arena discovery page access", () => {
-  it.each([false, true])("opens public rankings without unlocking an unapproved prize season, signed in=%s", async signedIn => {
+  it.each([false, true])("opens the game and rankings without an unapproved prize season, signed in=%s", async signedIn => {
     vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
-    vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
     if (signedIn) connectOrdinaryCustomer();
     const hub = await visit();
-    expect(hub.props).toMatchObject({ guest: !signedIn, gameOpen: false, notebookOpen: true });
+    expect(hub.props).toMatchObject({ guest: !signedIn, gameOpen: true, notebookOpen: true });
     const ranking = await visit({ vue: "classement" });
     expect(ranking.type).toBe(ContestHubClient);
-    expect(ranking.props).toMatchObject({ initialView: "classement", isAuthenticated: signedIn, isPlacardPlayerEnabled: false });
+    expect(ranking.props).toMatchObject({ initialView: "classement", isAuthenticated: signedIn, isPlacardPlayerEnabled: true, seasonPrizesOpen: false });
   });
 
-  it.each([false, true])("opens public rankings without unlocking an unapproved prize season, signed in=%s", async signedIn => {
+  it.each([false, true])("sends legacy play links to the Quarter, signed in=%s", async signedIn => {
     vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
-    vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
     if (signedIn) connectOrdinaryCustomer();
-    const hub = await visit();
-    expect(hub.props).toMatchObject({ guest: !signedIn, gameOpen: false, notebookOpen: true });
-    const ranking = await visit({ vue: "classement" });
-    expect(ranking.type).toBe(ContestHubClient);
-    expect(ranking.props).toMatchObject({ initialView: "classement", isAuthenticated: signedIn, isPlacardPlayerEnabled: false });
+    await expect(visit({ vue: "jouer" })).rejects.toMatchObject({ digest: "NEXT_REDIRECT;replace;/arene/placard;307;" });
   });
 
   it("opens the public hub for a guest while official activities remain beta restricted", async () => {

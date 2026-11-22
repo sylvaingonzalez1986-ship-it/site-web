@@ -15,7 +15,8 @@ function findRouteFiles(directory: string): string[] {
 }
 
 const playerRouteRoot = join(process.cwd(), "src/app/api/arena/placard");
-const playerRouteFiles = findRouteFiles(playerRouteRoot);
+// The deployment identity probe has its own production-denial tests and serves no game data.
+const playerRouteFiles = findRouteFiles(playerRouteRoot).filter((route) => route !== join(playerRouteRoot, "test-target", "route.ts"));
 const schoolRouteRoot = join(playerRouteRoot, "school");
 const schoolRequestPath = join(schoolRouteRoot, "_request.ts");
 const schoolRequestSource = readFileSync(schoolRequestPath, "utf8");
@@ -62,9 +63,9 @@ describe("Kanab Quest player session ownership policy", () => {
       // Summary and staff use the same policy with the already verified identity,
       // avoiding profile creation. Their route tests cover rejection.
       const identityGateRoutes = ["summary", "staff"].map((segment) => join(playerRouteRoot, segment, "route.ts"));
-      const gate = identityGateRoutes.includes(route)
-        ? "!await isKqPlayerIdentityEnabled(session)"
-        : "!await isKqPlayerRequestEnabled()";
+      let gate = "!await isKqGameRequestEnabled()";
+      if (identityGateRoutes.includes(route)) gate = "!await isKqPlayerIdentityEnabled(session)";
+      if (route === join(playerRouteRoot, "rankings", "route.ts")) gate = "!await isArenaRankingRequestEnabled()";
       expect(source, route).toContain(gate);
     }
   });

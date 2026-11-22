@@ -6,10 +6,12 @@ vi.mock("@/lib/supabase/customer-backend", () => ({ loadContestBetaTesterEnabled
 vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({ getKqPlayerRunsSnapshot: mocks.activeRun, startKqPlayerRun: mocks.startRun, readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.limit, logRateLimitRejection: vi.fn() }));
 
-import { isArenaRankingRequestEnabled, isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
-import { isKqPublicPlayerApiEnabled } from "./kanab-quest-player-access";
+import { isArenaRankingRequestEnabled, isKqGameRequestEnabled, isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
+import { isKqGameOpen, isKqPublicPlayerApiEnabled } from "./kanab-quest-player-access";
 import { ADMIN_ALLOWED_EMAIL } from "./admin-allowlist";
 import { GET, POST } from "@/app/api/arena/placard/runs/route";
+import { GET as readPrizePool } from "@/app/api/arena/rewards/route";
+import { POST as rollPrizeDice } from "@/app/api/arena/rewards/dice/route";
 
 const player = (email: string, contestBetaEnabled = false) => ({ customerId: "verified-customer-id", customer: { email, contestBetaEnabled } });
 
@@ -30,6 +32,47 @@ beforeEach(() => {
   mocks.limit.mockResolvedValue({ allowed: true });
 });
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
+
+describe("public Kanab Quest game beta", () => {
+  beforeEach(() => { vi.mocked(Date.now).mockReturnValue(Date.parse("2026-11-22T16:00:00Z")); });
+
+  it("lets an ordinary player read and write their own game while physical prize routes stay closed", async () => {
+    const identity = player("ordinary@example.test");
+    mocks.session.mockResolvedValue(identity);
+    expect(isKqGameOpen()).toBe(true);
+    expect(await isKqPlayerIdentityEnabled(identity)).toBe(true);
+    expect(mocks.beta).not.toHaveBeenCalled();
+    expect((await GET(new Request("https://example.test/api/arena/placard/runs"))).status).toBe(200);
+    expect(mocks.activeRun).toHaveBeenCalledWith(identity.customerId, {});
+    const action = new Request("https://example.test/api/arena/placard/runs", {
+      method: "POST", body: JSON.stringify({ customerId: "other-account", buddieCode: "BUDDIE-1", deckCodes: [] }),
+    });
+    expect((await POST(action)).status).toBe(201);
+    expect(mocks.startRun).toHaveBeenCalledWith(identity.customerId, expect.objectContaining({ buddieCode: "BUDDIE-1" }));
+    expect(mocks.limit).toHaveBeenCalledWith(expect.objectContaining({ key: `kq_start_run:${identity.customerId}:127.0.0.1` }));
+    expect(isKqPublicPlayerApiEnabled()).toBe(false);
+    expect((await readPrizePool()).status).toBe(404);
+    expect((await rollPrizeDice(new Request("https://example.test/api/arena/rewards/dice", { method: "POST" }))).status).toBe(404);
+  });
+
+  it("requires sign-in before any personal read or write", async () => {
+    const url = "https://example.test/api/arena/placard/runs";
+    expect((await GET(new Request(url))).status).toBe(401);
+    expect((await POST(new Request(url, { method: "POST" }))).status).toBe(401);
+    expect(mocks.activeRun).not.toHaveBeenCalled();
+    expect(mocks.startRun).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["CONTEST_BETA_ACCESS_ENABLED", "true"], ["CONTEST_BETA_ACCESS_ENABLED", undefined],
+    ["CONTEST_FEATURE_ENABLED", "false"], ["CONTEST_FEATURE_ALLOW_PRODUCTION", "false"],
+  ] as const)("keeps the public game closed with %s=%s", async (key, value) => {
+    vi.stubEnv(key, value);
+    mocks.session.mockResolvedValue(player("ordinary@example.test"));
+    expect(isKqGameOpen()).toBe(false);
+    expect(await isKqGameRequestEnabled()).toBe(false);
+  });
+});
 
 describe("private production Placard access", () => {
   it("opens public scoreboards with the lobby even when the prize season is pending", async () => {

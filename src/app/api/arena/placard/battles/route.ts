@@ -1,7 +1,7 @@
 import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { KQ_BATTLE_HISTORY_LIMIT } from "@/lib/kanab-quest-battle-history-policy";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import {
@@ -15,7 +15,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  if (!await isKqPlayerRequestEnabled()) {
+  if (!await isKqGameRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");
@@ -30,7 +30,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) {
+  if (!await isKqGameRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");

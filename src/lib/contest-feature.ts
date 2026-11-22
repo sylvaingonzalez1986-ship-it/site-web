@@ -4,34 +4,11 @@ import { isArenaPrelaunch, hasArenaBetaAccess, ARENA_OPENING_MESSAGE, ARENA_OPEN
 import { NextResponse } from "next/server";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
+import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature-config";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import type { PublicCustomer } from "@/types/customer";
 
-function isExplicitlyEnabled(raw: string | undefined): boolean {
-  const normalized = raw?.trim().toLowerCase();
-  return normalized === "1" || normalized === "true" || normalized === "on" || normalized === "yes";
-}
-
-function isExplicitlyDisabled(raw: string | undefined): boolean {
-  const normalized = raw?.trim().toLowerCase();
-  return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
-}
-
-export function isContestFeatureEnabledServer(): boolean {
-  if (!isExplicitlyEnabled(process.env.CONTEST_FEATURE_ENABLED)) {
-    return false;
-  }
-
-  if (process.env.NODE_ENV === "production") {
-    return isExplicitlyEnabled(process.env.CONTEST_FEATURE_ALLOW_PRODUCTION);
-  }
-
-  return true;
-}
-
-export function isContestBetaAccessRestrictedServer(): boolean {
-  return !isExplicitlyDisabled(process.env.CONTEST_BETA_ACCESS_ENABLED);
-}
+export { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer };
 
 export function canCustomerAccessContestFeatureServer(
   customer: Pick<PublicCustomer, "email" | "contestBetaEnabled"> | null | undefined,

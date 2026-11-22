@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ enabled: vi.fn(), session: vi.fn(), snapshot: vi.fn(), command: vi.fn(), rate: vi.fn(), log: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.log }));
 vi.mock("@/lib/supabase/kanab-quest-storage-backend", () => ({ getKqStorageSnapshot: mocks.snapshot, handleKqStorageAction: mocks.command }));
 import { GET, POST } from "./route";

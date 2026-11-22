@@ -1,32 +1,17 @@
-# Accès privé au Placard en production
+# Bêta publique de Kanab Quest
 
-L'accès de test utilise les comptes existants de l'Arène :
+Tout joueur peut entrer dans le Quartier avec un compte gratuit. Un visiteur qui ouvre `/arene/placard` est dirigé vers la connexion et retrouve ensuite sa destination. Les cartes, les cultures et la progression sont rattachées à l’identité vérifiée de son compte. Le hall, le Carnet et les classements sont consultables sans connexion.
 
-- compte client connecté dont l'adresse vérifiée appartient à la liste admin ;
-- compte client connecté avec `contestBetaEnabled=true`, enregistré côté serveur dans `contest_beta_testers`.
+## Réglages de production
 
-Le module Arène doit être activé (`CONTEST_FEATURE_ENABLED` et, en production,
-`CONTEST_FEATURE_ALLOW_PRODUCTION`). L'accès privé ne demande ni activation de
-`KQ_PLAYER_API_LIVE`, ni validation artificielle du dossier de lancement.
+Pour ouvrir la bêta après la préouverture de l’Arène, le déploiement utilise les valeurs suivantes.
 
-Quand le module est actif, ouvrir `/arene/placard` sans session client valide
-redirige vers la connexion avec un retour au Placard. Une fois connecté, le
-compte doit toujours être admin ou bêta ; les autres comptes reçoivent une 404.
+```dotenv
+CONTEST_FEATURE_ENABLED=true
+CONTEST_FEATURE_ALLOW_PRODUCTION=true
+CONTEST_BETA_ACCESS_ENABLED=false
+```
 
-Depuis le 22 novembre 2026, le hall, le Carnet et les classements de l’Arène
-sont consultables sans invitation. Les deux API de classement publient le
-pseudonyme et les scores ; la position personnelle utilise la session du lecteur.
+Sur ce déploiement, une consultation anonyme de `GET /api/contest/access` doit renvoyer `activitiesOpen: true`. Une lecture anonyme de `GET /api/arena/placard/bootstrap` doit renvoyer 401. Un compte ordinaire connecté peut créer son personnage et retrouver sa partie.
 
-Le contrôle `isKqPlayerRequestEnabled` est utilisé par la page Placard, les API
-de jeu personnel et les récompenses de l'Arène. Il relit les droits du compte à
-chaque requête, sans cache partagé. Désactiver l'accès bêta du compte révoque
-donc son accès privé dès la requête suivante. Désactiver les restrictions bêta
-générales de l'Arène ne donne pas accès au Placard aux comptes ordinaires.
-
-Le joueur conserve sa propre identité client pour ses achats, cartes, cultures
-et duels. Aucune identité admin fictive n'est utilisée. Les opérations de test
-utilisent les données de ce compte ; elles ne sont pas simulées.
-
-Le lancement public et ses validations restent contrôlés séparément par
-`isKqPublicPlayerApiEnabled`. Les fonctionnalités commerciales encore dormantes
-conservent leurs propres conditions d'activation.
+Pour repasser en test privé pendant la bêta, définir `CONTEST_BETA_ACCESS_ENABLED=true` et redéployer. Les comptes autorisés proviennent du registre serveur `contest_beta_testers` et de la liste d’administration. Les lots réels conservent leurs contrôles dédiés. Le lancement de la saison dotée utilise `KQ_PLAYER_API_LIVE`, les cinq validations et le dossier de saison.

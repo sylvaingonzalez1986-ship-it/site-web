@@ -1,7 +1,7 @@
 import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { changeKqContract, getKqContract, KqContractError } from "@/lib/supabase/kanab-quest-contracts-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
@@ -13,7 +13,7 @@ function failure(error: unknown) {
 }
 export async function GET() {
   try {
-    if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+    if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour retrouver tes contrats." }, { status: 401, headers });
     return NextResponse.json(await getKqContract(session.customerId), { headers });
@@ -21,7 +21,7 @@ export async function GET() {
 }
 export async function POST(request: Request) {
   try {
-    if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+    if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour retrouver tes contrats." }, { status: 401, headers });
     const key = `kq_contracts:${session.customerId}`;

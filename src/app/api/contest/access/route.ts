@@ -8,7 +8,7 @@ import {
 } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen } from "@/lib/kanab-quest-player-access";
 import type { PublicCustomer } from "@/types/customer";
 
 export const runtime = "nodejs";
@@ -44,7 +44,7 @@ export async function GET() {
     enabled: notebookOpen || moduleEnabled,
     notebookOpen,
     betaRestricted,
-    activitiesOpen: isKqPlayerApiEnabled() || (moduleEnabled && hasArenaBetaAccess(session?.customer)),
+    activitiesOpen: isKqGameOpen() || (moduleEnabled && hasArenaBetaAccess(session?.customer)),
     canAccess: notebookOpen || canCustomerAccessContestFeatureServer(session?.customer ?? null, {
       adminAuthorized,
     }),

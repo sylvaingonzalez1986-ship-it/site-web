@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const commit = vi.hoisted(() => vi.fn());
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: async () => ({ customerId: "player" }) }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: async () => true }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: async () => true }));
 vi.mock("@/lib/security-rate-limit", () => ({
   getRequestIp: () => "127.0.0.1", hitRateLimit: async () => ({ allowed: true }), logRateLimitRejection: vi.fn(),
 }));

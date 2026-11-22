@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { isArenaPrelaunch } from "@/lib/arena-opening";
 import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen } from "@/lib/kanab-quest-player-access";
 import { isKqPlayerIdentityEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqStaffSnapshot, handleKqStaffAction } from "@/lib/supabase/kanab-quest-staff-backend";
@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 const OWNER_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function isStaffFeatureEnabled() {
-  return (!isArenaPrelaunch() && isKqPlayerApiEnabled()) || isContestFeatureEnabledServer();
+  return (!isArenaPrelaunch() && isKqGameOpen()) || isContestFeatureEnabledServer();
 }
 function failure(error: unknown) {
   const message = error instanceof Error ? error.message : "Personnel indisponible.";

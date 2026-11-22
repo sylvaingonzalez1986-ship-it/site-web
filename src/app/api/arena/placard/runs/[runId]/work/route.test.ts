@@ -3,7 +3,7 @@ import type { KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 
 const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), quote: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/supabase/kanab-quest-culture-work-backend", () => ({ getKqCultureWorkQuote: mocks.quote }));
 import { GET } from "./route";
 

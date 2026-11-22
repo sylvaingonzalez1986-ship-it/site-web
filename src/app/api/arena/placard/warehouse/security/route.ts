@@ -1,6 +1,6 @@
 import { readRequestBody } from "@/lib/body-size-guard";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { changeKqWarehouseSecurity, getKqWarehouseSecurity, KqWarehouseSecurityError, parseKqWarehouseSecurityCommand } from "@/lib/supabase/kanab-quest-warehouse-security-backend";
 
@@ -9,7 +9,7 @@ const headers = { "Cache-Control": "no-store" };
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
 
 async function withPlayer(load: (userId: string) => Promise<Response>) {
-  if (!await isKqPlayerRequestEnabled()) return json({ error: "Introuvable." }, 404);
+  if (!await isKqGameRequestEnabled()) return json({ error: "Introuvable." }, 404);
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return json({ error: "Non autorisé." }, 401);
   try { return await load(session.customerId); }

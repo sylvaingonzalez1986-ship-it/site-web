@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), offer: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/supabase/kanab-quest-staff-backend", () => ({ getKqStaffRehireOffer: mocks.offer }));
 import { GET } from "./route";
 const id = "33333333-3333-4333-8333-333333333333";

@@ -1,4 +1,9 @@
 {
+  "betaPubliqueQuartier20261122": {
+    "livraison": "Tout compte peut jouer à Kanab Quest lorsque le module de production est actif et que les invitations sont désactivées. Le lien du Quartier conserve la destination après connexion.",
+    "preuves": ["src/lib/kanab-quest-player-request-access.test.ts", "src/app/arene/placard/page.test.ts", "src/lib/arena-opening.test.ts"],
+    "pointDeReprise": "Les réglages de la bêta et les contrôles du déploiement figurent dans PLACARD-ACCES-BETA.md."
+  },
   "tutorielZonesApresRecolte20261122": {
     "livraison": "Dans le guide de Loïc, le premier aménagement et les fiches Séchage et Stockage expliquent comment choisir le matériel, placer chaque zone sur le plan et vérifier le devis.",
     "verification": "17 tests réussis sur le guide, ses conseils contextuels et le plan de départ.",

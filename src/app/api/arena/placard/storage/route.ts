@@ -2,7 +2,7 @@ import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqStorageSnapshot, handleKqStorageAction } from "@/lib/supabase/kanab-quest-storage-backend";
 
@@ -14,14 +14,14 @@ function failure(error: unknown) {
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 400, headers });
 }
 export async function GET() {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try { return NextResponse.json(await getKqStorageSnapshot(session.customerId), { headers }); }
   catch (error) { return failure(error); }
 }
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request), key = `kq_storage:${session.customerId}:${ip}`;

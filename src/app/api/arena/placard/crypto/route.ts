@@ -2,7 +2,7 @@ import { KqCryptoRequestError } from "@/lib/kanab-quest-crypto";
 import { NextResponse } from "next/server";
 import { financeOwnerProblem } from "@/lib/kanab-quest-finance-recovery";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqCryptoSnapshot, handleKqCryptoAction } from "@/lib/supabase/kanab-quest-crypto-backend";
@@ -16,7 +16,7 @@ function failure(error: unknown) {
  return NextResponse.json({ error: unavailable ? "Le comptoir crypto est momentanément indisponible. Réessaie dans un instant." : message }, { status: unavailable ? 503 : 400, headers });
 }
 async function access(request: Request) {
- if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+ if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
  const session = await getCurrentCustomerSessionByBackend("identity");
  if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers });
  const ip = getRequestIp(request), key = `kq_crypto:${session.customerId}`;

@@ -4,7 +4,7 @@ import { readRequestBody } from "@/lib/body-size-guard";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { KQ_GAME_DAY_MS } from "@/lib/kanab-quest-business";
 import type { KorriganState } from "@/lib/kanab-quest-korrigan";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { quoteKqKorriganShopValue } from "@/lib/supabase/kanab-quest-commerce-backend";
@@ -48,7 +48,7 @@ const refusals: Record<string, string> = {
 const fail = (error: string, status: number) => NextResponse.json({ error }, { status, headers });
 
 async function market(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return fail("Introuvable.", 404);
+  if (!await isKqGameRequestEnabled()) return fail("Introuvable.", 404);
   const account = await getCurrentCustomerSessionByBackend("identity");
   if (!account) return fail("Connecte-toi pour retrouver ta partie.", 401);
   try {

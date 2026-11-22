@@ -29,7 +29,7 @@ export async function auditKorriganPostgres(origin) {
     };
     const mocks = {
       "customer-backend": `export const getCurrentCustomerSessionByBackend = async () => ({ customerId: ${JSON.stringify(player.user)} });`,
-      "kanab-quest-player-request-access": "export const isKqPlayerRequestEnabled=async()=>true",
+      "kanab-quest-player-request-access": "export const isKqGameRequestEnabled=async()=>true",
       "security-rate-limit": "export const hitRateLimit=async()=>({allowed:true}); export const getRequestIp=()=>'127.0.0.1'",
       "supabase/admin": "export const createSupabaseServiceClient=()=>({rpc:globalThis.korriganTestRpc})",
       "kanab-quest-staff-backend": "export const settleKqStaffIfAvailable=async()=>null",

@@ -21,6 +21,7 @@ beforeEach(() => {
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
+  vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "true");
   vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
   mocks.session.mockResolvedValue(null);
   mocks.introduction.mockResolvedValue("new");
@@ -30,6 +31,7 @@ afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("Placard page entry", () => {
   it("sends a visitor without a customer session to login with a return to the Placard", async () => {
+    vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
     await expect(renderPage()).rejects.toMatchObject({
       digest: "NEXT_REDIRECT;replace;/compte/connexion?next=%2Farene%2Fplacard;307;",
     });
@@ -95,6 +97,15 @@ describe("Placard page entry", () => {
     });
     await expect(renderPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
     expect(mocks.introduction).not.toHaveBeenCalled();
+  });
+
+  it("opens an ordinary customer's own quarter during the public beta", async () => {
+    vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
+    mocks.session.mockResolvedValue({ customerId: "ordinary-id", customer: { email: "ordinary@example.test", contestBetaEnabled: false } });
+    const entry = await renderPage();
+    expect(entry.key).toBe("ordinary-id");
+    expect(entry.props).toEqual({ userId: "ordinary-id", betaConnectionKey: null });
+    expect(mocks.session).toHaveBeenCalledExactlyOnceWith("identity");
   });
 
   it("opens the verified player's quarter independently of the retired introduction", async () => {

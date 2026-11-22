@@ -3,7 +3,7 @@ const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), shop: vi.f
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext: mocks.admin }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({ findKqUserIdByEmail: mocks.adminOwner }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.log }));
 vi.mock("@/lib/supabase/kanab-quest-care-backend", () => ({ getKqCareShopSnapshot: mocks.shop, purchaseKqCareProduct: mocks.purchase, applyKqPlayerCare: mocks.apply }));
 import { GET, POST } from "./route";

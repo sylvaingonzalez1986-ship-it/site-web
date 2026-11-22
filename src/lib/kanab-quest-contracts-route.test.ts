@@ -4,7 +4,7 @@ import { KqContractError } from "@/lib/supabase/kanab-quest-contracts-backend";
 
 const mocks = vi.hoisted(() => ({ enabled: vi.fn(), session: vi.fn(), rate: vi.fn(), log: vi.fn(), get: vi.fn(), change: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.log }));
 vi.mock("@/lib/supabase/kanab-quest-contracts-backend", async importOriginal => {
   const original = await importOriginal<typeof import("@/lib/supabase/kanab-quest-contracts-backend")>();

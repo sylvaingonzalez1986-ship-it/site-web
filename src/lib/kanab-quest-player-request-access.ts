@@ -4,7 +4,7 @@ import { isArenaPrelaunch } from "@/lib/arena-opening";
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen, isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { loadContestBetaTesterEnabled } from "@/lib/supabase/customer-backend";
 
 /** The public scoreboards can be consulted from the lobby before a prize season opens. */
@@ -15,7 +15,7 @@ export async function isArenaRankingRequestEnabled(): Promise<boolean> {
 
 /** Same access rules, using a verified identity without creating a customer profile. */
 export async function isKqPlayerIdentityEnabled(session: { customerId: string; customer: { email: string } } | null): Promise<boolean> {
-  if (!isArenaPrelaunch() && isKqPlayerApiEnabled()) return true;
+  if (!isArenaPrelaunch() && isKqGameOpen()) return true;
   if (!isContestFeatureEnabledServer() || !session) return false;
   return isAllowedAdminEmail(session.customer.email) || await loadContestBetaTesterEnabled(session.customerId);
 }
@@ -32,4 +32,9 @@ export async function isKqPlayerRequestEnabled(): Promise<boolean> {
   if (!session) return false;
   return isAllowedAdminEmail(session.customer.email)
     || session.customer.contestBetaEnabled === true;
+}
+
+/** Personal game routes authenticate each request before reading or mutating a player's data. */
+export async function isKqGameRequestEnabled(): Promise<boolean> {
+  return isKqGameOpen() || await isKqPlayerRequestEnabled();
 }

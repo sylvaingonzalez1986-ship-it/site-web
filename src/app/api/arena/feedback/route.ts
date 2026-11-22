@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { ArenaFeedbackError, parseArenaFeedbackOffset, parseArenaFeedbackSubmission } from "@/lib/arena-feedback";
 import { assertArenaFeedbackOrigin, readArenaFeedbackBody } from "@/lib/arena-feedback-request";
 import { getPlayerArenaFeedback, submitArenaFeedback } from "@/lib/supabase/arena-feedback-backend";
@@ -16,7 +16,7 @@ function failure(error: unknown) {
   });
 }
 async function playerId() {
-  if (!await isKqPlayerRequestEnabled()) throw new ArenaFeedbackError("Introuvable.", 404);
+  if (!await isKqGameRequestEnabled()) throw new ArenaFeedbackError("Introuvable.", 404);
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) throw new ArenaFeedbackError("Connecte-toi pour consulter la boîte aux lettres.", 401);
   return session.customerId;

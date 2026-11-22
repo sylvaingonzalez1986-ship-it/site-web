@@ -2,7 +2,7 @@ import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqCommerceSnapshot, handleKqCommerceAction } from "@/lib/supabase/kanab-quest-commerce-backend";
 import { KqCommerceOfferChangedError } from "@/lib/kanab-quest-commerce-errors";
@@ -14,14 +14,14 @@ function failure(error: unknown) {
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Le comptoir est momentanément indisponible. Réessaie dans un instant." : message }, { status: message.startsWith("[supabase:") ? 503 : 400 });
 }
 export async function GET(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try { return NextResponse.json(await getKqCommerceSnapshot(session.customerId, new URL(request.url).searchParams.get("shop") === "1"), { headers: { "Cache-Control": "private, no-store" } }); }
   catch (error) { return failure(error); }
 }
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);

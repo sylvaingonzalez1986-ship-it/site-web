@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), replace: vi.fn(), expand: vi.fn(), shop: vi.fn(), storage: vi.fn(), purchase: vi.fn(), tier: vi.fn(), upgrade: vi.fn(), rate: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-storage-backend", () => ({ getKqStorageSnapshot: mocks.storage }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({
   expandKqProduction: mocks.expand, replaceKqCultureEquipment: mocks.replace, getKqEquipmentShopSnapshot: mocks.shop, equipKqDurableEquipment: vi.fn(),

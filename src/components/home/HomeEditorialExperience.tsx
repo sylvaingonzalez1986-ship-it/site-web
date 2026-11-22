@@ -29,6 +29,7 @@ type HomeEditorialExperienceProps = {
   initialStore: PublicStoreResponse;
   rotationDay: number;
   gameOpen: boolean;
+  seasonPrizesOpen: boolean;
 };
 
 const sellingPoints = [
@@ -61,7 +62,7 @@ function isSectionVisible(sections: HomeSection[], type: string) {
   return section?.visible !== false;
 }
 
-export function HomeEditorialExperience({ initialStore, rotationDay, gameOpen }: HomeEditorialExperienceProps) {
+export function HomeEditorialExperience({ initialStore, rotationDay, gameOpen, seasonPrizesOpen }: HomeEditorialExperienceProps) {
   const { content, products, sections } = initialStore;
   const home = content.home;
   const homeSections = sections.home;
@@ -287,7 +288,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay, gameOpen }:
 
 
 
-      <HomeRewardsSection gameOpen={gameOpen} />
+      <HomeRewardsSection gameOpen={gameOpen} seasonPrizesOpen={seasonPrizesOpen} />
 
       <HomeBadgePromoBand />
 

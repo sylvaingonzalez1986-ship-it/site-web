@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { readRequestBody } from "@/lib/body-size-guard";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqWarehouseInputCode, isKqWarehouseInputQuantities, isKqWarehousePreparationCode, KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER, type KqWarehousePreparationCommand } from "@/lib/kanab-quest-warehouse-preparations";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { commitKqWarehousePreparation, getKqWarehousePreparations } from "@/lib/supabase/kanab-quest-warehouse-preparations-backend";
@@ -47,7 +47,7 @@ function readCommand(value: unknown): KqWarehousePreparationCommand | null {
 }
 
 export async function GET() {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers });
   try {
@@ -58,7 +58,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers });
   const scopedHeaders = accountHeaders(session.customerId);

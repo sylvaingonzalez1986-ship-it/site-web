@@ -1,7 +1,7 @@
 ﻿import Link from "@/components/navigation/NavigationLink";
 import { AccountRegisterForm } from "@/components/account/AccountRegisterForm";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen } from "@/lib/kanab-quest-player-access";
 
 export default async function AccountRegisterPage({
   searchParams,
@@ -21,7 +21,7 @@ export default async function AccountRegisterPage({
           <h1 className="section-title">Créer un compte</h1>
           <p className="mt-3 text-charcoal">
             {enteringGame
-              ? isKqPlayerApiEnabled() ? "Ce compte gratuit te permet de sauvegarder ton personnage et ta progression dans le Quartier." : "Le Quartier est en test privé. Tu peux déjà consulter le Carnet et les classements dans l’Arène."
+              ? isKqGameOpen() ? "Ce compte gratuit te permet de sauvegarder ton personnage et ta progression dans le Quartier." : "Le Quartier est en test privé. Tu peux déjà consulter le Carnet et les classements dans l’Arène."
               : "Crée ton espace client pour suivre tes informations et tes commandes."}
           </p>
           <p className="mt-2 text-sm text-charcoal">

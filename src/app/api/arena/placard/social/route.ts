@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { parseKqSocialCommand } from "@/lib/kanab-quest-social";
@@ -12,7 +12,7 @@ const headers = { "Cache-Control": "private, no-store, max-age=0" };
 
 async function handle(request: Request, mutation = false) {
   try {
-    if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+    if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour retrouver tes réseaux." }, { status: 401, headers });
     if (mutation && !isKqSameOriginRequest(request)) {

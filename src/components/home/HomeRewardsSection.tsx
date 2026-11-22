@@ -2,7 +2,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { ArrowRight, CalendarDays, ShoppingBag } from "lucide-react";
 import styles from "./HomeRewardsSection.module.css";
 
-export function HomeRewardsSection({ gameOpen }: { gameOpen: boolean }) {
+export function HomeRewardsSection({ gameOpen, seasonPrizesOpen }: { gameOpen: boolean; seasonPrizesOpen: boolean }) {
   return (
     <section id="ticket-grattage-home" className={styles.section} aria-labelledby="bonus-title" data-tutorial="ticket-promo-band">
       <div className="retro-container">
@@ -43,7 +43,7 @@ export function HomeRewardsSection({ gameOpen }: { gameOpen: boolean }) {
           <article className={styles.card} aria-labelledby="home-game-title">
             <header><p className={styles.eyebrow}>02 · Kanab Quest, le jeu du Quartier</p><h3 id="home-game-title">Cultive. Entreprends.<br />Fais-toi un nom.</h3></header>
             <p>Cultive, récolte, vends et développe ton entreprise virtuelle. Tes dégustations, tes duels et ton activité font progresser ton classement.</p>
-            {gameOpen && <div className={styles.rewardLine}>
+            {seasonPrizesOpen && <div className={styles.rewardLine}>
               <strong>Le Pot de la Canopée</strong>
               <p>En fin de saison, des fleurs récompensent les joueurs éligibles du Top 10 et un joueur tiré au sort parmi les éligibles hors Top 10.</p>
             </div>}
@@ -51,7 +51,7 @@ export function HomeRewardsSection({ gameOpen }: { gameOpen: boolean }) {
               <Link href={gameOpen ? "/arene/placard" : "/arene"} className={styles.action}>{gameOpen ? "Entrer dans le Quartier" : "Découvrir l’Arène"} <ArrowRight size={19} aria-hidden="true" /></Link>
               <Link href="/arene?vue=classement" className={styles.textLink}>Voir le classement des joueurs</Link>
             </div>
-            {gameOpen && <details className={styles.rules}>
+            {seasonPrizesOpen && <details className={styles.rules}>
               <summary>Comment sont attribués les lots ?</summary>
               <p>Le montant des lots dépend du pot de la saison. Pour être éligible, il faut au moins une dégustation validée dans la saison ou trois duels humains. Le classement tient aussi compte du développement de ton entreprise.</p>
               <p>Les fleurs gagnées sont à réclamer lors d’une commande. Ce classement de saison et le tirage mensuel du Carnet sont deux récompenses distinctes.</p>

@@ -1,3 +1,5 @@
+import { isArenaPrelaunch } from "@/lib/arena-opening";
+import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature-config";
 import {
   areKqLaunchApprovalsComplete,
   getKqLaunchApprovals,
@@ -23,4 +25,9 @@ export function isKqPublicPlayerApiEnabled() {
 
 export function isKqPlayerApiEnabled() {
   return isKqLocalPlayerPreviewEnabled() || isKqPublicPlayerApiEnabled();
+}
+
+export function isKqGameOpen() {
+  if (isArenaPrelaunch()) return false;
+  return (isContestFeatureEnabledServer() && !isContestBetaAccessRestrictedServer()) || isKqPlayerApiEnabled();
 }

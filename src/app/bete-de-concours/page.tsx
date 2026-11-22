@@ -5,9 +5,9 @@ import type { ContestArenaPageProps } from "@/components/contest/ContestArenaPag
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "L'Arène - concours et dégustation CBD",
+  title: "L’Arène – Kanab Quest et carnet de dégustation",
   description:
-    "L'Arène réunit les lots CBD de saison, les carnets de dégustation, les avis vérifiés et le classement de la communauté.",
+    "Entre dans le Quartier de Kanab Quest, retrouve tes dégustations dans le Carnet et consulte les classements de la communauté.",
   alternates: {
     canonical: "/arene",
   },

@@ -10,7 +10,7 @@ import {
   purchaseKqSupportBoostersWithPoints,
 } from "@/lib/supabase/kanab-quest-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 
 export const runtime = "nodejs";
 
@@ -36,7 +36,7 @@ async function getContext() {
 }
 
 export async function GET() {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const context = await getContext();
   if (!context) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
@@ -51,7 +51,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const context = await getContext();
   if (!context) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const rate = await hitRateLimit({
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const context = await getContext();
   if (!context) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const ip = getRequestIp(request);
@@ -106,7 +106,7 @@ export async function PUT(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const context = await getContext();
   if (!context) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   const rate = await hitRateLimit({

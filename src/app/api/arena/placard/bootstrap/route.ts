@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import {
   getKqPlayerBuddieRotation,
   getKqPlayerCollectionBundle,
@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const startedAt = performance.now();
-  if (!await isKqPlayerRequestEnabled()) {
+  if (!await isKqGameRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   const session = await getCurrentCustomerSessionByBackend("identity");

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ARENA_OPENING_AT } from "@/lib/arena-opening";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), beta: vi.fn(), publicEnabled: vi.fn(), get: vi.fn(), action: vi.fn(), rate: vi.fn(), log: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-access", () => ({ isKqPlayerApiEnabled: mocks.publicEnabled }));
+vi.mock("@/lib/kanab-quest-player-access", () => ({ isKqGameOpen: mocks.publicEnabled }));
 vi.mock("@/lib/supabase/customer-backend", () => ({ loadContestBetaTesterEnabled: mocks.beta }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.log }));
 vi.mock("@/lib/supabase/kanab-quest-staff-backend", () => ({ getKqStaffSnapshot: mocks.get, handleKqStaffAction: mocks.action }));

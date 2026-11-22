@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), admin: vi.fn(), rpc: vi.fn(), from: vi.fn(), rate: vi.fn(),
   select: vi.fn(), eq: vi.fn(), order: vi.fn(), range: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/admin-guard", () => ({ getValidatedAdminContext: mocks.admin }));
 vi.mock("@/lib/security-rate-limit", () => ({ hitRateLimit: mocks.rate }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));

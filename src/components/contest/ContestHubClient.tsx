@@ -111,6 +111,7 @@ type ContestHubClientProps = {
   isAuthenticated: boolean;
   isAdminAuthorized: boolean;
   isPlacardPlayerEnabled: boolean;
+  seasonPrizesOpen: boolean;
   initialView: ContestArenaView;
   surface?: "arena" | "notebook" | "notebook-ranking";
 };
@@ -2185,6 +2186,7 @@ export function ContestHubClient({
   isAuthenticated,
   isAdminAuthorized,
   isPlacardPlayerEnabled,
+  seasonPrizesOpen,
   initialView,
   surface = "arena",
 }: ContestHubClientProps) {
@@ -2688,10 +2690,10 @@ export function ContestHubClient({
                 Cultive ta Fleur. Défie le jury.
               </p>
               <div className={arenaStyles.placardStatus}>
-                <span>{isPlacardPlayerEnabled ? "Saison ouverte" : "Accès en test"}</span>
+                <span>{isPlacardPlayerEnabled ? "Jeu ouvert" : "Accès en test"}</span>
                 <p>{isPlacardPlayerEnabled
                   ? "Crée ta Fleur, affronte un joueur ou un bot et gagne de l’EXP d’Arène."
-                  : "Kanab Quest est actuellement réservé à l’administration avant son ouverture aux joueurs."}</p>
+                  : "L’accès au Quartier est réservé aux comptes de test."}</p>
               </div>
               {isPlacardPlayerEnabled && isAuthenticated ? (
                 <Link href="/arene/placard" className={arenaStyles.placardPlayAction}>
@@ -2724,7 +2726,7 @@ export function ContestHubClient({
             <p><b>Classement testeurs :</b> tes dégustations.</p>
             <p><b>Classement Duels :</b> ton activité et ta cote de duel.</p>
             <p><b>Classement Entreprise :</b> tes ventes, ta production et la valeur nette de ton entreprise.</p>
-            <small>Plus les clients achètent de grammes, plus le Pot de la Canopée se remplit. Chaque semaine, le dé collectif fixe la part ajoutée.</small>
+            {seasonPrizesOpen && <small>Plus les clients achètent de grammes, plus le Pot de la Canopée se remplit. Chaque semaine, le dé collectif fixe la part ajoutée.</small>}
           </div>
         </section>
 
@@ -2733,7 +2735,7 @@ export function ContestHubClient({
           {activeArenaView === "classement" ? <>
 
             <ContestTesterLeaderboard
-              rewardsEnabled={isPlacardPlayerEnabled}
+              rewardsEnabled={seasonPrizesOpen}
               seasonItems={testerSeasonRankings}
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}
@@ -3221,7 +3223,7 @@ export function ContestHubClient({
           <div className="grid gap-4">
             <ContestLeaderboardHelpDropdown />
             <ContestTesterLeaderboard
-              rewardsEnabled={isPlacardPlayerEnabled}
+              rewardsEnabled={seasonPrizesOpen}
               seasonItems={testerSeasonRankings}
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}

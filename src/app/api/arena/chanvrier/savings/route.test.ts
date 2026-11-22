@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), savings: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/security-rate-limit", () => ({ hitRateLimit: mocks.rate }));
 vi.mock("@/lib/supabase/chanvrier-savings-backend", async importOriginal => ({ ...await importOriginal<object>(), getChanvrierSavings: mocks.savings }));
 import { ChanvrierSavingsError } from "@/lib/supabase/chanvrier-savings-backend";

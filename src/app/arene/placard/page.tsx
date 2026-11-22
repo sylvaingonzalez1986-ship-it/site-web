@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArenaGameEntry } from "@/components/contest/ArenaGameEntry";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
-import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
+import { isKqGameOpen } from "@/lib/kanab-quest-player-access";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { getArenaBetaConnectionKey } from "@/lib/supabase/arena-beta-connection";
@@ -19,7 +19,8 @@ export default async function PlacardPlayerPage({ searchParams }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   if (isArenaPrelaunch() && !await isKqPlayerRequestEnabled()) redirect("/arene?mode=jouer&ouverture=1");
-  if (!isKqPlayerApiEnabled() && !isContestFeatureEnabledServer()) notFound();
+  const gameOpen = isKqGameOpen();
+  if (!gameOpen && !isContestFeatureEnabledServer()) notFound();
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) {
     const query = new URLSearchParams();
@@ -31,7 +32,7 @@ export default async function PlacardPlayerPage({ searchParams }: {
     const nextPath = sanitizeNextPath(`/arene/placard${search}`, "/arene/placard");
     redirect(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   }
-  if (!await isKqPlayerRequestEnabled()) notFound();
-  const betaConnectionKey = isKqPlayerApiEnabled() ? null : await getArenaBetaConnectionKey(session.customerId);
+  if (!gameOpen && !await isKqPlayerRequestEnabled()) notFound();
+  const betaConnectionKey = gameOpen ? null : await getArenaBetaConnectionKey(session.customerId);
   return <ArenaGameEntry key={session.customerId} userId={session.customerId} betaConnectionKey={betaConnectionKey} />;
 }

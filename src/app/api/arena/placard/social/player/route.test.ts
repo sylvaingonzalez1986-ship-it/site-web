@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { enabled, session, profile } = vi.hoisted(() => ({ enabled: vi.fn(), session: vi.fn(), profile: vi.fn() }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: enabled }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: session }));
 vi.mock("@/lib/supabase/arena-chanvrier-backend", () => ({ getChanvrierProfile: profile }));
 

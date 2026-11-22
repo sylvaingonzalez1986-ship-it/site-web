@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const { session, enabled, check, rate, log } = vi.hoisted(() => ({ session: vi.fn(), enabled: vi.fn(), check: vi.fn(), rate: vi.fn(), log: vi.fn() }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: session }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqGameRequestEnabled: enabled }));
 vi.mock("@/lib/supabase/kanab-quest-school-feedback-backend", () => ({ checkKqSchoolQuestion: check }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: rate, logRateLimitRejection: log }));
 import { POST } from "./route";

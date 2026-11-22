@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqGameRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { KqSchoolError } from "@/lib/kanab-quest-school-server";
@@ -8,7 +8,7 @@ import { KqSchoolError } from "@/lib/kanab-quest-school-server";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 export async function schoolRequest(request: Request, operation: (userId: string) => Promise<unknown> | unknown) {
   try {
-    if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
+    if (!await isKqGameRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour retrouver ta progression à l’école." }, { status: 401, headers });
     if (request.method !== "GET" && !isKqSameOriginRequest(request)) return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
