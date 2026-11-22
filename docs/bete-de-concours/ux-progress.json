@@ -1,4 +1,9 @@
 {
+  "tutorielZonesApresRecolte20261122": {
+    "livraison": "Dans le guide de Loïc, le premier aménagement et les fiches Séchage et Stockage expliquent comment choisir le matériel, placer chaque zone sur le plan et vérifier le devis.",
+    "verification": "17 tests réussis sur le guide, ses conseils contextuels et le plan de départ.",
+    "pointDeReprise": "Relire ces consignes à 320 px lors de la prochaine recette mobile du carnet."
+  },
   "areneConsultationPublique20261122": {
     "livraison": "L’entrée de l’Arène, le Carnet et les classements sont accessibles aux visiteurs depuis la navigation du site.",
     "verification": "Les routes de classement servent la projection publique. Le rang personnel est calculé à partir de la session du lecteur.",

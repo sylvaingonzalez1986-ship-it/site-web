@@ -43,9 +43,9 @@ const LESSONS: Record<SylvainLessonId, Omit<SylvainLesson, "id" | "kind" | "targ
     action: "Repérer le Pilotage", targets: ["warehouse"], destination: WAREHOUSE,
   },
   install: {
-    title: "Installer ta première zone",
-    instruction: "Ouvre Aménager, puis propose un plan de départ.",
-    body: "Dans Aménager, « Proposer un plan de départ » dessine une zone avec support et lampe, un filet de séchage et des bocaux. Tu peux aussi placer le matériel à la main. Vérifie le devis et le solde avant d’enregistrer.",
+    title: "Aménager tes premières zones",
+    instruction: "Ouvre Aménager, puis « Ajouter du matériel ». Place un filet du rayon Séchage sur une case libre et des bocaux du rayon Stockage sur une autre.",
+    body: "Dans l’entrepôt vide, « Proposer un plan de départ » place une zone de culture avec support et lampe, une zone de séchage et une zone de stockage. Pour les aménager à la main, ouvre Aménager puis « Ajouter du matériel ». Au rayon Séchage, choisis un filet et place-le sur une case libre du plan. Rouvre « Ajouter du matériel », choisis des bocaux au rayon Stockage et place-les sur une autre case libre. Vérifie le devis et ton solde avant d’enregistrer le plan.",
     action: "Repérer l’aménagement", targets: ["install-confirm", "install-review", "install-placement", "install-lighting", "install-support", "install-first", "install-shop", "install-empty"], destination: WAREHOUSE,
   },
   prepare: {
@@ -134,12 +134,12 @@ const LESSONS: Record<SylvainLessonId, Omit<SylvainLesson, "id" | "kind" | "targ
   },
   drying: {
     title: "Comparer la capacité de séchage",
-    body: "Au Pilotage, compare la capacité de la salle et les quantités affichées. Une estimation sur le plan sert à préparer la place. Le bilan de récolte donne la quantité effectivement obtenue.",
+    body: "Au Pilotage, compare la capacité de séchage à la récolte estimée. Pour aménager une zone de séchage, choisis une gamme dans Séchage, puis « Tracer cette zone ». Sélectionne une case libre du plan pour 1 m² ou trace un rectangle pour une plus grande surface. Vérifie le devis avant de confirmer. Le bilan de récolte indique la quantité réellement obtenue.",
     action: "Repérer le séchage", targets: ["drying"], destination: WAREHOUSE,
   },
   storage: {
     title: "Suivre le stockage et l’affinage",
-    body: "Dans Mes récoltes, consulte le contenant, la capacité libre et la date de fin d’affinage du lot. L’affinage se poursuit pendant les autres tâches et pendant ton absence.",
+    body: "Dans Mes récoltes, consulte le contenant, la capacité libre et la date de fin d’affinage du lot. Pour aménager une zone de stockage, ouvre Stockage dans l’entrepôt, puis « Aménager le stockage et le climat ». Choisis tes contenants, sélectionne « Tracer cette zone » et place-les sur une case libre du plan. Vérifie le devis avant de confirmer. L’affinage se poursuit pendant ton absence.",
     action: "Repérer les lots et leurs contenants", targets: ["storage"], destination: HARVESTS,
   },
   trim: {

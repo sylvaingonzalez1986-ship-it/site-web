@@ -100,7 +100,7 @@ export function readSylvainObservations(root: ParentNode): SylvainObservations {
   } else if (controls("install-placement")) {
     hints.install = "Choisis une case libre pour tracer une zone, ou une zone existante pour y ajouter le matériel.";
   } else if (controls("install-first")) {
-    hints.install = "Prépare le premier aménagement, puis vérifie son devis. Tu peux modifier le plan avant de l’enregistrer.";
+    hints.install = "Le plan de départ place les trois zones. Pour choisir toi-même leurs emplacements, ouvre « Ajouter du matériel ». Place un filet du rayon Séchage sur une case libre, puis des bocaux du rayon Stockage sur une autre. Vérifie le devis avant de confirmer.";
   } else if (warehouse?.getAttribute("data-sylvain-warehouse-draft") === "true") {
     hints.install = "Tu as un brouillon. Vérifie les zones, leur éclairage et le montant dans le devis avant d’enregistrer.";
   } else if (Number(warehouse?.getAttribute("data-sylvain-draft-zone-count")) > 0 && !achieved.includes("install")) {
