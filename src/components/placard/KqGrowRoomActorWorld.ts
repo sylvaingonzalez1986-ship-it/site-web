@@ -10,7 +10,7 @@ type Gesture = KqGrowRoomEvent["gesture"];
 type ActorState = "idle" | "walking" | "turning" | "blocked" | Gesture;
 type ActorInput = {
   layout: WarehouseSpatialLayout; targetId: string | null; stage: number | null; event?: KqGrowRoomEvent | null;
-  profile?: ChanvrierAvatarProfile | null; motion: boolean; visible: boolean
+  profile?: ChanvrierAvatarProfile | null; motion: boolean; visible: boolean; inspectAtRest?: boolean;
 };
 const speeds = { walk: 1.48, turn: 4.6 };
 
@@ -25,6 +25,12 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
   let workReceipt: KqGrowRoomEvent | null = null, deposited: KqGrowRoomEvent | null = null;
   let state: ActorState = "idle", time: number | null = null, walk = 0, poseTime = 0;
   let name = "", blockedUnderFurniture = false, deviceCode: string | undefined;
+  let inspectionTimer: ReturnType<typeof setTimeout> | undefined;
+
+  function cancelInspectionTimer() {
+    clearTimeout(inspectionTimer);
+    inspectionTimer = undefined;
+  }
 
   function update(next: ActorInput) {
     const prev = input;
@@ -54,6 +60,7 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
     const eventToken = e ? JSON.stringify([e.zoneId, e.id, e.gesture]) : "";
     const newEvent = !!e && !seenEvents.has(eventToken);
     const targetChanged = prev?.targetId !== next.targetId;
+    if (rebuilt || targetChanged || newEvent || !next.visible || !next.motion || !next.inspectAtRest) cancelInspectionTimer();
     if (rebuilt || targetChanged || newEvent) {
       if (targetChanged || newEvent) {
         workReceipt = newEvent ? e : null;
@@ -75,7 +82,7 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
         seenEvents.add(eventToken);
         if (seenEvents.size > 32) seenEvents.delete(seenEvents.values().next().value!);
       } else if (targetChanged) {
-        acting = prev && station?.kind === "culture" && next.stage !== null && next.stage < 5 ? "inspect" : null;
+        acting = next.inspectAtRest || (prev && station?.kind === "culture" && next.stage !== null && next.stage < 5) ? "inspect" : null;
       }
       elapsed = 0;
       speed = 0;
@@ -135,7 +142,7 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
       activity = acting;
       elapsed += dt;
       phase = Math.min(1, elapsed / growRoomGestureDuration(acting));
-      if (workReceipt?.target && phase >= .55) deposited = workReceipt;
+      if (workReceipt?.gesture === activity && workReceipt.target && phase >= .55) deposited = workReceipt;
       if (phase === 1) {
         acting = null;
         state = "idle";
@@ -150,12 +157,24 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
     worker.object.position.set(pos.x, 0, pos.z);
     worker.object.rotation.y = yaw;
     worker.pose(distance, walk, activity, phase, input.stage, deviceCode, poseTime);
-    if (!more) time = null;
+    if (!more) {
+      time = null;
+      // Keep the renderer asleep between visual inspections.
+      if (input.inspectAtRest && inspectionTimer === undefined) {
+        inspectionTimer = setTimeout(() => {
+          inspectionTimer = undefined;
+          acting = "inspect";
+          elapsed = 0;
+          requestFrame();
+        }, 6000);
+      }
+    }
     return more;
   }
   return {
     update, tick, getPose: () => ({ x: pos.x, z: pos.z, yaw, state, deposited, targetId: input?.targetId ?? null, name, personalized: !!input?.profile, visible: !blockedUnderFurniture }),
     dispose: () => {
+      cancelInspectionTimer();
       worker?.dispose();
       worker = null;
       input = null;

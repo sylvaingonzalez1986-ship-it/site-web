@@ -1,4 +1,9 @@
 {
+  "personnageEntrepotEnCulture20261122": {
+    "livraison": "À l’ouverture de l’entrepôt, le personnage rejoint une culture en cours et examine les plants. Le joueur peut choisir un autre poste à tout moment.",
+    "verification": "45 tests ciblés réussis. Le parcours Chromium warehouse-actor vérifie la marche, l’inspection sans dépense ni sélection et le changement de poste à 320 et 1 440 px.",
+    "pointDeReprise": "Relancer node scripts/audit-culture-room.mjs --check=warehouse-actor après une modification du pilotage ou du personnage."
+  },
   "betaPubliqueQuartier20261122": {
     "livraison": "Tout compte peut jouer à Kanab Quest lorsque le module de production est actif et que les invitations sont désactivées. Le lien du Quartier conserve la destination après connexion.",
     "preuves": ["src/lib/kanab-quest-player-request-access.test.ts", "src/app/arene/placard/page.test.ts", "src/lib/arena-opening.test.ts"],

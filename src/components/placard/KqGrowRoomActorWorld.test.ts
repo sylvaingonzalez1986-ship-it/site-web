@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import { createGrowRoomActor } from "./KqGrowRoomActorWorld";
 import { createGrowWorker } from "./kq-grow-worker-model";
@@ -14,6 +14,45 @@ const layout: WarehouseSpatialLayout = {
 };
 const base = { layout, stage: 1, motion: true, visible: true, profile: { gender: "female" as const, skin: "brown" as const, clothing: "berry" as const } };
 describe("player in the shared grow room renderer", () => {
+  it("walks to a crop on arrival, inspects it again at rest and sleeps while hidden", () => {
+    vi.useFakeTimers();
+    const requestFrame = vi.fn();
+    const actor = createGrowRoomActor(new THREE.Group(), requestFrame);
+    const input = { ...base, targetId: "herbes", inspectAtRest: true };
+    let time = 0;
+    function playToRest() {
+      const states = new Set<string>();
+      for (let frame = 0; frame < 950; frame++) {
+        const more = actor.tick(time);
+        time += 33;
+        const pose = actor.getPose();
+        states.add(pose.state);
+        expect(pose.deposited).toBeNull();
+        if (!more) return [...states];
+      }
+      throw new Error("The worker never came to rest");
+    }
+    try {
+      actor.update(input);
+      const arrival = playToRest();
+      expect(arrival).toContain("walking");
+      expect(arrival.indexOf("inspect")).toBeGreaterThan(arrival.indexOf("walking"));
+      actor.update({ ...input, event: { zoneId: "herbes", id: 1, gesture: "water" } });
+      expect(playToRest()).toContain("water");
+      requestFrame.mockClear();
+      vi.advanceTimersByTime(6000);
+      expect(requestFrame).toHaveBeenCalledTimes(1);
+      expect(playToRest()).toEqual(["inspect", "idle"]);
+      actor.update({ ...input, visible: false });
+      requestFrame.mockClear();
+      vi.advanceTimersByTime(12000);
+      expect(requestFrame).not.toHaveBeenCalled();
+      expect(actor.tick(time)).toBe(false);
+    } finally {
+      actor.dispose();
+      vi.useRealTimers();
+    }
+  });
   it("rebuilds the route when the only layout change is a solid station", () => {
     const actor = createGrowRoomActor(new THREE.Group(), () => {});
     try {

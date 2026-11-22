@@ -10,6 +10,8 @@ export type WorldInput = {
   layout: WarehouseSpatialLayout;
   zones: readonly KqGrowRoomZone[];
   selected: string | null;
+  actorTargetId: string | null;
+  inspectAtRest: boolean;
   event?: KqGrowRoomEvent | null;
   profile?: ChanvrierAvatarProfile | null;
   motion: boolean;
@@ -236,8 +238,9 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
       const w = target.width + .025, d = target.depth + .025;
       marker.children.forEach((edge, i) => { const horizontal = i < 2; edge.scale.set(horizontal ? w : .042, .012, horizontal ? .042 : d); edge.position.set(horizontal ? 0 : (i === 2 ? -w : w) / 2, 0, horizontal ? (i === 0 ? -d : d) / 2 : 0); });
     }
-    const targetId = input.event?.zoneId ?? input.selected, activeZone = input.zones.find(z => z.id === targetId);
-    actor.update({ layout, targetId, stage: activeZone?.stageIndex ?? null, event: input.event, profile: input.profile, motion: input.motion, visible: input.visible });
+    const activeZone = input.zones.find(z => z.id === input.actorTargetId);
+    actor.update({ layout, targetId: input.actorTargetId, stage: activeZone?.stageIndex ?? null, inspectAtRest: input.inspectAtRest,
+      event: input.event, profile: input.profile, motion: input.motion, visible: input.visible });
     if (!input.visible || !input.motion) { clearTimeout(ventTimer); ventTimer=0; }
     else if (!previous?.visible || !previous.motion) ventPhase=performance.now();
     if (!input.visible && frame) {

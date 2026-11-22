@@ -15,7 +15,7 @@ if(previewOnly&&!serve)throw Error("--preview-only requires --serve.");
 const refreshVisuals=process.argv.includes("--refresh-visuals");
 const nativeGpu=process.argv.includes("--native-gpu");
 const group = process.argv.find(arg=>arg.startsWith("--check="))?.slice(8);
-if (group && !["warehouse","warehouse-services","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, warehouse-services, campaign, orientation, parity, pbi or pbi-smoke.");
+if (group && !["warehouse","warehouse-actor","warehouse-services","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, warehouse-actor, warehouse-services, campaign, orientation, parity, pbi or pbi-smoke.");
 if(refreshVisuals&&group)throw Error("--refresh-visuals runs the complete browser route with existing measured frame data.");
 const output = resolve(root, "output/culture-room", nativeGpu ? (group || "full")+"-native-gpu" : group || (serve ? "preview" : "."));
 const port = Number(process.env.CULTURE_ROOM_PORT ?? (serve ? 3693 : 3694));
@@ -515,6 +515,24 @@ async function audit(){
     return {samples:poses.samples,travelM:poses.travelM,maxStepM:poses.maxStepM,directions:poses.directions,states:poses.states};
   }
   try{
+    if (!group || group === "warehouse-actor") {
+      for (const width of [320, 1440]) {
+        await viewport(width);
+        await visit("warehouse");
+        await visibleRoom();
+        assert.equal(await page.$(selected), null);
+        const walking = await page.waitForSelector(actor("walking"), {timeout: 60000});
+        assert.equal(await walking.evaluate(node => node.dataset.actorTarget), "culture-1");
+        const inspecting = await page.waitForSelector(actor("inspect"), {timeout: 60000});
+        assert.equal(await inspecting.evaluate(node => node.dataset.actorTarget), "culture-1");
+        await shot("inspection-" + width);
+        assert.equal(await page.$(selected), null);
+        assert.equal((await state()).calls.filter(call => call.method === "POST").length, 0);
+        await selectOnFloor("culture-2");
+        await page.waitForSelector('[data-grow-actor][data-actor-target="culture-2"]');
+        pass("Le personnage inspecte une culture dès l’entrée et rejoint le poste choisi à " + width + " px");
+      }
+    }
     if(group==="parity"){
       const {checkWarehouseParity}=await import("./audit-culture-room-parity.mjs");
       await checkWarehouseParity({page,output,viewport,visit,state,geometry,reveal,tap,pass,screenshots});
@@ -554,6 +572,8 @@ async function audit(){
     await viewport(320);await visit("campaign");await visibleRoom();
     await page.waitForSelector('[data-grow-actor="player"][data-personalized="true"]');
     assert.equal(await page.$$(selected).then(n=>n.length),1);
+    assert.equal(await pose("inspect"), await page.$eval(selected, node => node.dataset.growPick));
+    pass("Le personnage examine la culture ouverte avant la première action du joueur");
     await geometry((await state()).plan);
     await shot("campaign-320");await selectOnFloor("culture-2");
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
@@ -566,7 +586,8 @@ async function audit(){
     assert.equal((await state()).inventory["BOTTE-005"],initial.inventory["BOTTE-005"]);
     await tap("[data-culture-confirm-card]");await page.waitForSelector("[data-card-play-result]");
     await tap("[data-culture-show-room]");
-    assert.equal(await page.evaluate(()=>document.activeElement?.dataset.growPick),"culture-2");
+    assert.equal(await page.evaluate(()=>document.activeElement?.matches("[data-grow-camera]")),true);
+    assert.equal(await page.$eval(selected, node => node.dataset.growPick),"culture-2");
     await pose("water","watering-320");
     const played=await state();assert.equal(played.inventory["BOTTE-005"],initial.inventory["BOTTE-005"]-1);
     await selectOnFloor("culture-1");

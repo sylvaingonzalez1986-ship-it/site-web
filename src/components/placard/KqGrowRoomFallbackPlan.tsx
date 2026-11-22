@@ -1,6 +1,7 @@
 import { useId, useMemo } from "react";
 import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
+import { createGrowRoomPaths, type GrowPoint } from "@/lib/kanab-quest-grow-room-path";
 import styles from "./KqGrowRoom.module.css";
 import type { KqWarehouseState } from "@/lib/kanab-quest-warehouse";
 import { getKqWarehousePartitionBounds } from "@/lib/kanab-quest-warehouse";
@@ -8,12 +9,13 @@ import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import type { WarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
 import { getKqZonePalette } from "@/lib/kanab-quest-zone-identity";
 import { KqWarehousePlanFixtures, SceneDefinitions } from "./KqWarehousePlanArt";
-import { plantStage, type KqGrowRoomZone } from "./KqGrowRoomModel";
+import { plantStage, type KqGrowRoomEvent, type KqGrowRoomZone } from "./KqGrowRoomModel";
 import { projectRoomPoint, type GrowCamera } from "./KqGrowRoomProjection";
 import { getGrowRoomShellRegistration } from "./KqGrowRoomShellRegistration";
 
-export default function KqGrowRoomFallbackPlan({ profile, position, plan, layout, zones, camera, scale, width, height }: {
-  profile?: ChanvrierAvatarProfile | null; position?: { x: number; z: number };
+export default function KqGrowRoomFallbackPlan({ profile, position, targetId, event, plan, layout, zones, camera, scale, width, height }: {
+  profile?: ChanvrierAvatarProfile | null; position?: (GrowPoint & { targetId: string | null }) | null;
+  targetId?: string | null; event?: KqGrowRoomEvent | null;
   plan: KqWarehouseState; layout: WarehouseSpatialLayout; zones: readonly KqGrowRoomZone[];
   camera: GrowCamera; scale: number; width: number; height: number;
 }) {
@@ -33,7 +35,14 @@ export default function KqGrowRoomFallbackPlan({ profile, position, plan, layout
       <KqWarehousePlanFixtures key={zone.id} id={id} grid={grid} zone={zone} tint={getKqZonePalette(index).tint} growing={occupied.has(zone.id)} showLighting={false} />
     ));
   }, [zones, plan, grid, id]);
-  const location = position ?? layout.entry;
+  const paths = useMemo(() => createGrowRoomPaths(layout), [layout]);
+  const location = useMemo(() => {
+    const origin = position && paths.canWalk(position, position) ? position : layout.entry;
+    if (!targetId || (origin === position && targetId === position?.targetId)) return origin;
+    const receipt = event?.zoneId === targetId ? event : null;
+    const route = receipt?.gesture === "sweep" ? paths.sweep(origin) : paths.route(origin, targetId, receipt?.target);
+    return route?.points.at(-1) ?? origin;
+  }, [event, layout.entry, paths, position, targetId]);
   const foot = projectRoomPoint(location.x, 0, location.z, camera, scale, width, height);
   const top = projectRoomPoint(location.x, 1.9, location.z, camera, scale, width, height);
   const spriteHeight = foot.y - top.y;
@@ -47,7 +56,8 @@ export default function KqGrowRoomFallbackPlan({ profile, position, plan, layout
         x={grid.x + (wall.x + grid.columns / 2 - wall.width / 2) * grid.cell} y={grid.y + (wall.z + grid.rows / 2 - wall.depth / 2) * grid.cell}
         width={wall.width * grid.cell} height={wall.depth * grid.cell} fill="#ebe9d3" stroke="#5f6254" strokeWidth=".8" />;
     })}
-  </g>{profile && <foreignObject pointerEvents="none" x={foot.x - spriteHeight / 2} y={top.y} width={spriteHeight} height={spriteHeight}>
-    <ChanvrierAvatar profile={profile} className={styles.fallbackFigure} />
-  </foreignObject>}</>;
+  </g><foreignObject data-grow-fallback-actor={profile ? "player" : "visitor"} pointerEvents="none"
+    x={foot.x - spriteHeight / 2} y={top.y} width={spriteHeight} height={spriteHeight}>
+    <ChanvrierAvatar profile={profile ?? { gender: "male", clothing: "sage", skin: "peach" }} className={styles.fallbackFigure} />
+  </foreignObject></>;
 }

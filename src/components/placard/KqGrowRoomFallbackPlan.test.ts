@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
 import { KQ_WAREHOUSE_UNLIT_CODE, type KqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
+import { createGrowRoomPaths, type GrowPoint } from "@/lib/kanab-quest-grow-room-path";
 import { getKqWarehouseSpatialLayout } from "@/lib/kanab-quest-warehouse-spatial";
 import KqGrowRoomFallbackPlan from "./KqGrowRoomFallbackPlan";
 import { KqGrowRoomCareOverlay } from "./KqGrowRoomCareOverlay";
@@ -66,6 +67,32 @@ it.each([true, false])("pins the same eligible cell, affected pots and delivered
   expect(applied(true)).not.toContain("data-input-applied");
   expect(applied(false)).toContain('data-input-deposit="bed:2:1"');
   expect(applied(false)).not.toContain("data-pbi-deposit");
+});
+
+it("places the fallback avatar along a reachable aisle and preserves its feet on context loss", () => {
+  const plan: KqWarehouseState = { version: 1, floor: { columns: 10, rows: 10 }, equipment: [], preparedAreaM2: 0,
+    zones: [{ id: "bed", name: "Semis", x: 2, y: 2, width: 2, height: 1, active: true, lightingCode: "MH-TS1000", airCode: "SIM-AIR-01" }] };
+  const layout = getKqWarehouseSpatialLayout(plan);
+  const camera = { x: 0, z: 0, zoom: 1 };
+  const profile = { gender: "female", skin: "brown", clothing: "berry" } as const;
+  const render = (targetId: string, position?: GrowPoint & { targetId: string }) => renderToStaticMarkup(createElement("svg", {},
+    createElement(KqGrowRoomFallbackPlan, { plan, layout, zones: [], camera, scale: 18, width: 320, height: 300,
+      position, targetId, profile: position ? profile : null })));
+  const atFeet = (p: GrowPoint) => {
+    const foot = projectRoomPoint(p.x, 0, p.z, camera, 18, 320, 300);
+    const top = projectRoomPoint(p.x, 1.9, p.z, camera, 18, 320, 300);
+    return `x="${foot.x - (foot.y - top.y) / 2}" y="${top.y}"`;
+  };
+  const spot = createGrowRoomPaths(layout).route(layout.entry, "bed")!.points.at(-1)!;
+  const cold = render("bed");
+  expect(spot).not.toEqual(layout.entry);
+  expect(cold).toContain('data-grow-fallback-actor="visitor"');
+  expect(cold).toContain(atFeet(spot));
+  expect(render("missing")).toContain(atFeet(layout.entry));
+  const interrupted = { x: 0, z: 2.75, targetId: "bed" };
+  const lost = render("bed", interrupted);
+  expect(lost).toContain('data-grow-fallback-actor="player"');
+  expect(lost).toContain(atFeet(interrupted));
 });
 
 it.each([false, true])("registers plan sprites and partitions to the camera with historical floor = %s", historical => {

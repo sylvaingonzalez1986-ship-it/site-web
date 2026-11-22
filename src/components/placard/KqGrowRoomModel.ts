@@ -34,6 +34,11 @@ export type KqGrowRoomEvent = {
   target?: KqCareSector;
 };
 
+export function isGrowRoomInspectionZone(zone: KqGrowRoomZone) {
+  if (zone.kind === "drying") return zone.contentState === "occupied";
+  return zone.status === "growing" && typeof zone.stageIndex === "number" && zone.stageIndex >= 0 && zone.stageIndex < 5;
+}
+
 export function growRoomGestureDuration(gesture: KqGrowRoomEvent["gesture"]) {
   switch (gesture) {
     case "sweep": return 3.2;

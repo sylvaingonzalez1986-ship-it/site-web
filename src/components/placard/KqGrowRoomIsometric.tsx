@@ -13,7 +13,7 @@ import { getKqWarehouseAirCoverage, getKqWarehouseAirMounts, getKqWarehouseAirRe
 import { getKqWarehouseStationCoverage, getKqWarehouseStationEntrance, getKqWarehouseStationReach, KQ_WAREHOUSE_STATIONS } from "@/lib/kanab-quest-warehouse-stations";
 import { KQ_ENTRANCE_AIRLOCK_PREVENTION_PERCENT } from "@/lib/kanab-quest-warehouse-preparations";
 import { getKqWarehouseSecurityCoverage, KQ_WAREHOUSE_CAMERA_BEARINGS } from "@/lib/kanab-quest-warehouse-security";
-import { roomSectorKey, type KqAffectedPlant, type KqGrowRoomEvent, type KqGrowRoomZone, type KqPbiTargeting } from "./KqGrowRoomModel";
+import { isGrowRoomInspectionZone, roomSectorKey, type KqAffectedPlant, type KqGrowRoomEvent, type KqGrowRoomZone, type KqPbiTargeting } from "./KqGrowRoomModel";
 import { KqGrowRoomCareOverlay } from "./KqGrowRoomCareOverlay";
 import type { WorldInput, WorldPose, createRoomRenderer } from "./KqGrowRoomRenderer";
 import { OVERVIEW, cameraScale, clampCamera, projectedFootprint, projectRoomPoint, unprojectFloor, type GrowCamera } from "./KqGrowRoomProjection";
@@ -53,6 +53,10 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
   const pointers = useRef(new Map<number, DragPoint>()), dragged = useRef(false);
   const inspectionReady = useRef<{ point: Point; endedAt: number } | null>(null);
   const activeItem = layout.items.find(x => x.id === selected);
+  const observing = !warehouseEditor?.managing && !pbiTargeting;
+  const actorTargetId = event?.zoneId ?? selected ?? (observing ? zones.find(isGrowRoomInspectionZone)?.id : null) ?? null;
+  const actorZone = zones.find(zone => zone.id === actorTargetId);
+  const inspectAtRest = observing && !!actorZone && isGrowRoomInspectionZone(actorZone);
   const scale = cameraScale(layout, size.width, size.height, camera.zoom);
   const shell = useMemo(() => getGrowRoomShellRegistration(layout), [layout]);
   const editor = useGrowRoomWarehouseEditor(warehouseEditor, plan, layout);
@@ -287,9 +291,9 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
     return () => { active = false; intersection?.disconnect(); picture.removeEventListener("webglcontextlost", lost); picture.removeEventListener("webglcontextrestored", restored); runtime.current?.dispose(); runtime.current = null; };
   }, [generation]);
   useEffect(() => {
-    const input = { layout, zones, selected, profile, event, motion, visible, camera, ...size };
+    const input = { layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, camera, ...size };
     current.current = input; runtime.current?.update(input);
-  }, [layout, zones, selected, profile, event, motion, visible, camera, size]);
+  }, [layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, camera, size]);
   function cameraGesture(from: Point, to: Point, factor: number) {
     setCamera(old => {
       const zoom = Math.max(1, Math.min(6, old.zoom * factor));
@@ -476,7 +480,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
           </pattern>
         </defs>
         <polygon className={styles.floorFallback} points={projectedFootprint(shell.slab, camera, scale, size.width, size.height)} />
-        {renderMode === "plan" && <Suspense fallback={null}><FallbackPlan profile={profile} position={fallbackPosition ?? layout.entry} plan={plan} layout={layout} zones={zones} camera={camera}
+        {renderMode === "plan" && <Suspense fallback={null}><FallbackPlan profile={profile} position={fallbackPosition} targetId={actorTargetId} event={event} plan={plan} layout={layout} zones={zones} camera={camera}
           scale={scale} width={size.width} height={size.height}/></Suspense>}
         {shell.landmarks.map(id => {
           const at = shell.landmark(id), screen = projectRoomPoint(at.x, 0, at.z, camera, scale, size.width, size.height);
