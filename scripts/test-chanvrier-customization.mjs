@@ -203,12 +203,17 @@ try {
   await db.query('INSERT INTO auth.users VALUES($1)',[oldWallet]);
   assert.deepEqual(await ensure(oldWallet),{ready:true});
   assert.equal(await cash(oldWallet),35000,'actual initializer uses the previous 350-euro default');
+  await db.exec(await migration('20261019000300_kq_starting_budget.sql'));
+  const previousBudgetWallet=randomUUID();
+  await db.query('INSERT INTO auth.users VALUES($1)',[previousBudgetWallet]);
+  await ensure(previousBudgetWallet);
+  assert.equal(await cash(previousBudgetWallet),100000,'wallet created under the preceding budget');
   const previousWallets=await wallets(),previousAccess=await access();
-  const budgetMigration=await migration('20261019000300_kq_starting_budget.sql');
+  const budgetMigration=await migration('20261122001600_kq_starting_budget_2000.sql');
   await db.exec(budgetMigration);
   assert.deepEqual(await wallets(),previousWallets,'migration preserves every existing wallet and timestamp');
   assert.deepEqual(await access(),previousAccess,'changing the default preserves table and RPC grants');
-  await ensure(oldWallet); await ensure(treasury);
+  await ensure(oldWallet); await ensure(treasury); await ensure(previousBudgetWallet);
   assert.deepEqual(await wallets(),previousWallets,'initialization retries never top up existing balances');
 
   const newGrower=randomUUID(),newTreasurer=randomUUID(),preinitialized=randomUUID();
@@ -216,18 +221,18 @@ try {
   const growerProfile={...profile,nickname:'BudgetGrower',strength:'green-thumb'};
   const treasurerProfile={...profile,nickname:'BudgetTreasurer'};
   assert.equal((await save(newGrower,growerProfile)).startingBonusCents,0);
-  assert.equal(await cash(newGrower),100000,'new ordinary profile receives exactly 1000 euros');
+  assert.equal(await cash(newGrower),200000,'new ordinary profile receives exactly 2000 euros');
   assert.equal((await save(newTreasurer,treasurerProfile)).startingBonusCents,65000);
-  assert.equal(await cash(newTreasurer),165000,'new Treasurer receives 1000 euros plus the existing 650-euro bonus');
+  assert.equal(await cash(newTreasurer),265000,'new Treasurer receives 2000 euros plus the existing 650-euro bonus');
   assert.equal((await save(newGrower,growerProfile)).startingBonusCents,0);
   assert.equal((await save(newTreasurer,treasurerProfile)).startingBonusCents,0);
   await ensure(newGrower); await ensure(newTreasurer);
-  assert.equal(await cash(newGrower),100000,'profile and wallet retries preserve the ordinary starting budget');
-  assert.equal(await cash(newTreasurer),165000,'profile and wallet retries cannot repeat the Treasurer bonus');
+  assert.equal(await cash(newGrower),200000,'profile and wallet retries preserve the ordinary starting budget');
+  assert.equal(await cash(newTreasurer),265000,'profile and wallet retries cannot repeat the Treasurer bonus');
   await ensure(preinitialized);
-  assert.equal(await cash(preinitialized),100000,'opening the game before choosing a specialty uses the same default');
+  assert.equal(await cash(preinitialized),200000,'opening the game before choosing a specialty uses the same default');
   assert.equal((await save(preinitialized,{...profile,nickname:'BudgetPrepared'})).startingBonusCents,65000);
-  assert.equal(await cash(preinitialized),165000,'choosing Treasurer after initialization adds only its existing bonus');
+  assert.equal(await cash(preinitialized),265000,'choosing Treasurer after initialization adds only its existing bonus');
   assert.deepEqual((await db.query('SELECT equipment_code,purchase_price_cents FROM kq_player_equipment WHERE user_id=$1 ORDER BY equipment_code',[newGrower])).rows,[
     {equipment_code:'AIR-STARTER',purchase_price_cents:0},
     {equipment_code:'LED-150-STARTER',purchase_price_cents:0},
@@ -242,5 +247,5 @@ try {
   await db.exec(budgetMigration);
   assert.deepEqual(await wallets(),afterBudgetWallets,'reapplying the budget migration changes no existing wallet');
   assert.deepEqual(await access(),previousAccess,'reapplying the migration preserves grants');
-  console.log('PASS: appearance catalog, legacy profiles, one-time capital, XP migration, savings timing, compounding, transfers, retries, permissions, merchant capacity, settled sale and new-only 1000/1650-euro budgets.');
+  console.log('PASS: appearance catalog, legacy profiles, one-time capital, XP migration, savings timing, compounding, transfers, retries, permissions, merchant capacity, settled sale and new-only 2000/2650-euro budgets.');
 } catch (error) { console.error(error.message, error.where ?? ""); process.exitCode=1; } finally { await vite.close(); await db.close(); }

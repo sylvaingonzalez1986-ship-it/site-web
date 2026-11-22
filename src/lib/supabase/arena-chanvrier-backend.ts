@@ -2,14 +2,14 @@ import "server-only";
 import { CHANVRIER_APPEARANCE_OPTIONS, parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { createSupabaseServiceClient } from "./admin";
 
-export async function getChanvrierProfile(userId: string): Promise<ChanvrierProfile | null> {
+export async function getChanvrierProfile(userId: string): Promise<(ChanvrierProfile & { createdAt: string }) | null> {
   const result = await createSupabaseServiceClient().from("arena_chanvrier_profiles")
-    .select("nickname,gender,clothing,skin,strength,appearance").eq("user_id", userId).maybeSingle();
+    .select("nickname,gender,clothing,skin,strength,appearance,created_at").eq("user_id", userId).maybeSingle();
   if (result.error) throw new Error(`[supabase:chanvrier] ${result.error.message}`);
   if (!result.data) return null;
   const profile = parseChanvrierProfile(result.data);
   if (!profile) throw new Error("[supabase:chanvrier] Apparence enregistrée illisible.");
-  return profile;
+  return { ...profile, createdAt: result.data.created_at };
 }
 export async function saveChanvrierProfile(userId: string, value: unknown) {
   const profile = parseChanvrierProfile(value);

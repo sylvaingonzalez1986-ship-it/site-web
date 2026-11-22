@@ -4,6 +4,7 @@ import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game"
 import { createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { createLocalKqRepository } from "./kanab-quest-repository";
+import { KQ_STARTING_CASH_CENTS } from "./kanab-quest-equipment";
 import supplies from "./kanab-quest-warehouse-retail-supplies.json";
 import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 
@@ -66,13 +67,13 @@ describe("local care transactions", () => {
     expect(quote.inventory.find(item => item.productCode === "CARE-SEAWEED")?.quantity).toBe(1);
     expect(quote.areaM2).toBeNull();
     applyKqLocalCare(storage, large);
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - passage - 3 * KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - passage - 3 * KQ_BASIC_CARE_PRICE_CENTS);
   });
   it("starts with empty stock, charges purchases, consumes once and persists the same state", async () => {
     const storage = memory();
-    expect(loadKqLocalCare(storage)).toEqual({ cashCents: 100000, inventory: {} });
+    expect(loadKqLocalCare(storage)).toEqual({ cashCents: 200_000, inventory: {} });
     buyKqLocalCare(storage, "CARE-SEAWEED");
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - supplies["CARE-SEAWEED"].unitPriceCents);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - supplies["CARE-SEAWEED"].unitPriceCents);
     const game = applyKqLocalCare(storage, startKqGame(101), "CARE-SEAWEED");
     expect(loadKqLocalCare(storage).areaInventory?.["CARE-SEAWEED"]).toBe(0);
     expect((await createLocalKqRepository(storage).loadSession()).game).toEqual(game);
@@ -97,7 +98,7 @@ describe("local care transactions", () => {
     expect(() => applyKqLocalCare(storage, game, "CARE-PHYTOSEIULUS")).toThrow();
     expect(loadKqLocalCare(storage).areaInventory?.["CARE-PHYTOSEIULUS"]).toBe(1);
     expect(applyKqLocalCare(storage, game).care?.lastBasicCareStage).toBe(0);
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - supplies["CARE-PHYTOSEIULUS"].unitPriceCents - KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - supplies["CARE-PHYTOSEIULUS"].unitPriceCents - KQ_BASIC_CARE_PRICE_CENTS);
   });
   it("charges the exact basic-care price once and retains all stock", () => {
     const storage = memory();
@@ -135,11 +136,11 @@ describe("local care transactions", () => {
     expect(result.phase).toBe("resolved");
     const prepared = applyKqLocalCare(storage, result);
     expect(prepared.care!.lastBasicCareStage).toBe(1);
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - 2 * KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - 2 * KQ_BASIC_CARE_PRICE_CENTS);
     const next = advanceKqStage(prepared);
     expect(next.stageIndex).toBe(1);
     expect(() => applyKqLocalCare(storage, next)).toThrow("déjà activé");
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - 2 * KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - 2 * KQ_BASIC_CARE_PRICE_CENTS);
   });
   it.each(["journal", "game", "wallet", "cleanup"])("recovers a paid basic-care transaction interrupted at %s, without charging a retry", failure => {
     const storage = memory();
@@ -166,10 +167,10 @@ describe("local care transactions", () => {
     const recovered = applyKqLocalCare(storage, game);
     expect(recovered.care!.lastBasicCareStage).toBe(0);
     expect(recovered.care!.history.filter(event => event.kind === "intervention")).toHaveLength(1);
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - KQ_BASIC_CARE_PRICE_CENTS);
     expect(applyKqLocalCare(storage, game)).toEqual(recovered);
     recoverKqLocalCare(storage);
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - KQ_BASIC_CARE_PRICE_CENTS);
     expect(storage.getItem("kanab-quest-care-journal-v1")).toBeNull();
   });
   it("refuses another action from stale care without discarding a paid product", () => {
@@ -188,7 +189,7 @@ describe("local care transactions", () => {
     applyKqLocalCare(storage, startKqGame(101, { startedAt: "2026-10-10T12:00:00.000Z" }));
     const next = applyKqLocalCare(storage, startKqGame(101, { startedAt: "2026-10-10T13:00:00.000Z" }));
     expect(next.startedAt).toBe("2026-10-10T13:00:00.000Z");
-    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - 2 * KQ_BASIC_CARE_PRICE_CENTS);
+    expect(loadKqLocalCare(storage).cashCents).toBe(KQ_STARTING_CASH_CENTS - 2 * KQ_BASIC_CARE_PRICE_CENTS);
   });
   it.each(KQ_CARE_PRODUCTS.filter(product => product.kind === "pbi"))("buys and consumes exactly one $name charge, even after a retry", async product => {
     const storage = memory();
@@ -197,7 +198,7 @@ describe("local care transactions", () => {
     const game = startKqGame(31);
     game.care!.problems = [problem(product.targets[0].toUpperCase())];
     const applied = applyKqLocalCare(storage, game, product.code);
-    expect(loadKqLocalCare(storage)).toEqual({ cashCents: 100000 - 2 * product.priceCents, inventory: {}, areaInventory: { [product.code]: 1 } });
+    expect(loadKqLocalCare(storage)).toEqual({ cashCents: KQ_STARTING_CASH_CENTS - 2 * product.priceCents, inventory: {}, areaInventory: { [product.code]: 1 } });
     expect((await createLocalKqRepository(storage).loadSession()).game).toEqual(applied);
     expect(() => applyKqLocalCare(storage, applied, product.code)).toThrow();
     expect(loadKqLocalCare(storage).areaInventory?.[product.code]).toBe(1);

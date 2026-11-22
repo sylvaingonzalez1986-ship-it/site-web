@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { synchronizeQuarterStorage } from "@/lib/quarter-adventure-storage";
 import { QuarterCharacterContext, QuarterAppearanceEditorContext } from "./QuarterCharacterContext";
 import { ARENA_RELEVE_SCENES } from "@/lib/arena-releve";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
@@ -42,6 +43,8 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
         const profile = parseChanvrierProfile(body.chanvrier);
         if (body.chanvrier !== null && !profile) throw new Error("Invalid profile");
         if (!cancelled) {
+          if (body.chanvrier === null) synchronizeQuarterStorage(ownerId, null);
+          else if (typeof body.chanvrier.createdAt === "string") synchronizeQuarterStorage(ownerId, body.chanvrier.createdAt);
           setCharacter(profile);
           setState(profile ? "ready" : "story");
         }

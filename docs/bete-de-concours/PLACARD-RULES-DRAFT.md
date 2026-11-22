@@ -13,9 +13,8 @@ L’ajustement du 19 octobre ramène la rotation à deux autres variétés.
 La migration `20261019000100_kq_buddie_rotation_two.sql` est appliquée et
 vérifiée sur Supabase le 19 octobre ; le code associé reste à déployer.
 
-Le budget initial de 1 000 € nécessite aussi la migration
-`20261019000300_kq_starting_budget.sql`, appliquée et vérifiée le 19 octobre. Le kit de trois
-espaces équipés est déjà offert ; cette migration ne crédite pas les parties existantes.
+La migration `20261122001600_kq_starting_budget_2000.sql` fixe à 2 000 €
+la dotation versée à la création de chaque nouveau portefeuille.
 
 Le pack Buddies de départ garanti nécessite la migration
 `20261019000400_kq_starter_buddies.sql`, également appliquée et vérifiée le
@@ -250,12 +249,10 @@ Toutes les nouvelles cultures utilisent le Sol vivant. Les quatre anciennes cart
 
 L'argent du Placard est une monnaie virtuelle propre au jeu. Il ne correspond
 pas aux points fidélité, ne peut pas être acheté, retiré, remboursé ou converti
-en argent réel. Chaque joueur commence avec `1 000 €` virtuels. Son entrepôt reçoit
-gratuitement `1 m²` de culture, `1 m²` de séchage et `1 m²` de stockage, matériel
-installé et aménagement compris, sans débit du budget initial. Le Trésorier conserve
-son bonus unique de `650 €` : il commence avec `1 650 €` et accède au livret.
-Ce nouveau budget s'applique aux nouveaux portefeuilles ; les soldes existants
-restent inchangés.
+en argent réel. Chaque nouveau portefeuille reçoit `2 000 €` virtuels.
+Le joueur choisit ensuite son installation et confirme son prix sur le devis.
+Le Trésorier bénéficie d’un bonus unique de `650 €`, ce qui porte son capital
+de départ à `2 650 €`, et accède au livret.
 
 Le matériel reste dans l'inventaire, mais le matériel de culture acheté s'use
 et doit être remplacé lorsqu'il arrive à 0 % d'état. Une seule pièce peut être

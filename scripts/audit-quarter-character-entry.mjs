@@ -13,7 +13,7 @@ import {ArenaGameEntry} from '/src/components/contest/ArenaGameEntry';
 import {ContestArenaHub} from '/src/components/contest/ContestArenaHub';
 import {AuditConsent} from 'audit-consent';
 const mode=new URLSearchParams(location.search).get('mode');
-const profile={nickname:'Testeur29',gender:'male',clothing:'ochre',skin:'ivory',strength:'green-thumb'};
+const profile={nickname:'Testeur29',gender:'male',clothing:'ochre',skin:'ivory',strength:'green-thumb',createdAt:'2026-11-18T08:00:00Z'};
 window.calls=[];let failed=false,savedProfile=null;
 if(mode==='entry-blocked')for(const storage of [localStorage,sessionStorage])for(const name of ['getItem','setItem','removeItem'])Object.defineProperty(storage,name,{value:()=>{throw new Error('Storage unavailable')}});
 const readProfile=()=>{try{return JSON.parse(localStorage.getItem('profile')||'null')}catch{return savedProfile}};
@@ -23,11 +23,11 @@ window.fetch=async(input,init={})=>{
   if(init.method==='POST')return Response.json({ok:true});
   if(mode==='signed-out')return Response.json({}, {status:401});
   if(mode==='error'&&!failed){failed=true;return Response.json({}, {status:503});}
-  return Response.json({userId:mode==='other-owner'?'other':'player',chanvrier:mode==='returning'||mode==='entry-free'?profile:mode==='invalid'?{}:readProfile()});
+  return Response.json({userId:mode==='other-owner'?'other':'player',chanvrier:mode==='returning-next'?{...profile,createdAt:'2026-11-22T08:00:00Z'}:mode==='returning'||mode==='entry-free'?profile:mode==='invalid'?{}:readProfile()});
  }
  if(path==='/api/arena/chanvrier'&&init.method==='POST'){
   if(mode==='entry-save-error'&&!failed){failed=true;return Response.json({error:'Enregistrement indisponible, réessaie.'},{status:503});}
-  const saved=JSON.parse(init.body);savedProfile=saved;try{localStorage.setItem('profile',JSON.stringify(saved))}catch{}return Response.json({profile:saved});
+  const saved={...JSON.parse(init.body),createdAt:profile.createdAt};savedProfile=saved;try{localStorage.setItem('profile',JSON.stringify(saved))}catch{}return Response.json({profile:saved});
  }
  throw new Error('Unexpected request '+path);
 };
@@ -86,7 +86,19 @@ source=source.slice(0,start)+`
  for(const mode of ['signed-out','other-owner','invalid']){await page.goto(origin+'/?mode='+mode,{waitUntil:'networkidle0'});assert.equal(await page.$('#game'),null);assert.equal(await page.$('[data-chanvrier-profile]'),null);results.push({mode,blocked:true});}
  await page.goto(origin+'/?mode=wait',{waitUntil:'networkidle0'});assert.equal((await page.evaluate(()=>window.calls)).length,0);await page.evaluate(()=>window.enable());await page.waitForSelector('#game');results.push({waitsForCookieConsent:true});
  await clean('entry-wait');assert.equal((await page.evaluate(()=>window.calls)).length,0);await page.evaluate(()=>window.enable());await page.waitForSelector('[data-quarter-arrival="story"]');results.push({entryWaitsForCookieConsent:true});
- await clean('entry-seen');await page.waitForSelector('[data-quarter-arrival="story"]');results.push({serverProfileOverridesSeenFlag:true});
+ await clean('entry-wait');
+ const oldKeys=['kq:sylvain-guide:v1:player','lcb:culture-preparation:v1:player','kq-history-pending:v1:player','kq:korrigan-updated:player:offer'];
+ const keptKeys=['kq:sylvain-guide:v1:player-2','lcb:warehouse-draft:v1:other','kq:village:building-labels-hidden','shop:cart:player'];
+ async function seed(keys){await page.evaluate(keys=>{for(const store of [localStorage,sessionStorage])for(const key of keys)store.setItem(key,'saved')},keys);}
+ async function check(keys,value){assert.equal(await page.evaluate(({keys,value})=>[localStorage,sessionStorage].every(store=>keys.every(key=>store.getItem(key)===value)),{keys,value}),true);}
+ await seed([...oldKeys,...keptKeys]);await page.evaluate(()=>window.enable());await page.waitForSelector('[data-quarter-arrival="story"]');
+ await check(oldKeys,null);await check(keptKeys,'saved');results.push({serverAbsenceClearsOnlyOwnersAdventure:true});
+ await page.waitForFunction(()=>document.activeElement===document.querySelector('[data-quarter-arrival] h1'));
+ await completeCharacter();await page.waitForSelector('#game');await seed(oldKeys);await page.goto(origin+'/?mode=entry',{waitUntil:'networkidle0'});await page.waitForSelector('#game');await check(oldKeys,'saved');
+ await page.goto(origin+'/?mode=returning-next',{waitUntil:'networkidle0'});await page.waitForSelector('#game');await check(oldKeys,null);await check(keptKeys,'saved');
+ await seed(oldKeys);await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('#game');await check(oldKeys,'saved');
+ for(const mode of ['signed-out','other-owner','invalid','error']){await page.goto(origin+'/?mode='+mode,{waitUntil:'networkidle0'});await check(oldKeys,'saved');}
+ results.push({recreatedElsewhereClearsStaleCommandsOnce:true,newAvatarAndLocalDraftsSurviveReload:true,failedLookupKeepsDrafts:true});
  await clean('entry&guide=1');await page.waitForSelector('[data-quarter-arrival="story"]');assert.equal((await page.evaluate(()=>window.calls)).filter(c=>c.method==='POST').length,0);results.push({guideLinkKeepsFirstArrival:true});
  await clean('entry-save-error');await completeCharacter();await page.waitForSelector('[data-chanvrier-profile] [role="alert"]');assert.equal(await page.$('[data-quarter-arrival="meeting"]'),null);assert.equal(await page.$('#game'),null);await enter('[data-profile-next]');await page.waitForSelector('#game');results.push({saveErrorKeepsCharacter:true});
  await clean('entry-free');await page.waitForSelector('#game');await page.waitForSelector('[data-beta-welcome]');await page.keyboard.press('Escape');await enter('[data-sylvain-control="off"]');await page.waitForSelector('[data-sylvain-guide][data-mode="off"]',{hidden:true});results.push({existingCharacterCanPlayFreely:true});

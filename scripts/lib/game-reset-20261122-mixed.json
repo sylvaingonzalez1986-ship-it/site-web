@@ -1,0 +1,19 @@
+{
+  "mixedTables": [
+    "contest_profile_badges",
+    "kq_heritage_draws",
+    "kq_support_booster_entitlements",
+    "lottery_audit_log",
+    "lottery_card_instances",
+    "lottery_collection_page_completions",
+    "lottery_ticket_counter",
+    "lottery_tickets",
+    "lottery_welcome_pack_claims"
+  ],
+  "extraResetTables": [
+    "kq_heritage_fragment_ledger",
+    "kq_heritage_fragment_wallets",
+    "kq_heritage_player_state"
+  ],
+  "extraRequestKeys": {}
+}

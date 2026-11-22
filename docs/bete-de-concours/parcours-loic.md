@@ -40,7 +40,7 @@ Les sujets contextuels se présentent selon les vues et l’état de la partie. 
 
 ## Vérification locale du départ
 
-- L’initialisation dans PostgreSQL donne un plan vide et 1 000 €. Le plan proposé coûte 786,74 € et ses charges estimées s’élèvent à 83,60 € par cycle. La marge après ces deux montants est de 129,66 €. La projection SQL retrouve 189,375 g estimés, 1 000 g de capacité de séchage et 1 200 g de stockage. `node scripts/test-warehouse-air-service.mjs`
+- L’initialisation dans PostgreSQL donne un plan vide et 2 000 €. Le plan proposé coûte 786,74 €. Après son paiement, il reste 1 213,26 € en caisse, dont 83,60 € de charges estimées pour le premier cycle. La projection SQL retrouve 189,375 g estimés, 1 000 g de capacité de séchage et 1 200 g de stockage. `node scripts/test-warehouse-air-service.mjs`
 - Le test de préparation lance ce plan avec un Buddie possédé et le stock d’intrants vide. PostgreSQL enregistre les réserves du cycle sans dose, mélange ou nettoyage préalable. Cette fixture simplifie l’insertion du premier run. La suite des campagnes contrôle séparément les RPC réels de lancement, de suivi et de récolte. `node scripts/test-placard-shared-campaigns.mjs`
 - Le pack de bienvenue donne trois Buddies communs jouables et distincts. La suite du temps de travail vérifie le plafond quotidien, les échéances, les gestes simultanés et les réservations d’heures. `node scripts/test-placard-starter-buddies.mjs` et `node scripts/test-placard-player-workday.mjs`
 

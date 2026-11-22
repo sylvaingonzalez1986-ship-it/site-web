@@ -28,8 +28,10 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
   .replace('createKqWarehouseStarter,getKqWarehouseQuote', 'createKqWarehouseStarter,createKqWarehouseEmpty,getKqWarehouseDimensions,getKqWarehouseQuote')
   .replace('if(query.has(\'compact\'))Object.assign(window.__snapshot,{activeRuns:[],completedRuns:[]});', `
     Object.assign(window.__snapshot, {
-      state: createKqWarehouseEmpty(), cashCents: ${lightingOnly && !fresh ? 500000 : 100000}, activeRuns: [], completedRuns: [], stockGrams: 0, storageReservedGrams: 0,
+      state: createKqWarehouseEmpty(), cashCents: KQ_STARTING_CASH_CENTS, activeRuns: [], completedRuns: [], stockGrams: 0, storageReservedGrams: 0,
     });
+    if (query.has('limitedBudget')) window.__snapshot.cashCents = 100_000;
+    if (${lightingOnly && !fresh}) window.__snapshot.cashCents = 500_000;
     if (${climateControlOnly}) {
       const zone = { active: false, lightingCode: 'UNLIT', airCode: 'SIM-AIR-01', optionCodes: ['SIM-SUBSTRATE-01'] };
       window.__snapshot.state = getKqWarehouseQuote({ ...createKqWarehouseEmpty(), zones: [
@@ -40,6 +42,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
     }`)
   .replace("import {KqWarehouse} from '/src/components/placard/KqWarehouse';", `
     import {KqWarehouse} from '/src/components/placard/KqWarehouse';
+    import {formatKqCash,KQ_STARTING_CASH_CENTS} from '/src/lib/kanab-quest-equipment';
     import {KQ_WAREHOUSE_PREPARATION_ACCOUNT_HEADER,KQ_WAREHOUSE_PREPARATION_CATALOG,getKqWarehouseInputPack,isKqWarehouseInputCode} from '/src/lib/kanab-quest-warehouse-preparations';
     import {getKqWarehouseStationEntrance} from '/src/lib/kanab-quest-warehouse-stations';
     import {getKqBusinessClock,KQ_GAME_DAY_MS} from '/src/lib/kanab-quest-business';
@@ -67,7 +70,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
       if (interruption) sessionStorage.removeItem('audit-preparation-interruption');
       if (post) (window.__preparationAttempts ??= []).push(JSON.parse(init.body).requestKey);
       if (interruption === 'before') throw new TypeError('Réponse perdue pendant la recette.');
-      const snapshot = account === 'warehouse-preview' ? current : { ...current, cashCents: 100000, previewInputInventory: {}, previewPackReceipts: {} };
+      const snapshot = account === 'warehouse-preview' ? current : { ...current, cashCents: KQ_STARTING_CASH_CENTS, previewInputInventory: {}, previewPackReceipts: {} };
       const response = (${previewPreparations})(snapshot, init, {
         catalog: KQ_WAREHOUSE_PREPARATION_CATALOG, packFor: code => {
           const pack = getKqWarehouseInputPack(code);
@@ -104,7 +107,7 @@ const fixture = (await readFile('scripts/audit-placard-warehouse-v4.mjs', 'utf8'
         }}/>;
     }
     function restart(){
-      if(!window.confirm('Recommencer cette partie locale avec 1 000 € et un entrepôt vide ?'))return;
+      if(!window.confirm('Recommencer cette partie locale avec ' + formatKqCash(KQ_STARTING_CASH_CENTS) + ' et un entrepôt vide ?'))return;
       if(persistenceKey)sessionStorage.removeItem(persistenceKey);
       sessionStorage.removeItem('kq:preparation:pending:warehouse-preview');
       writeWarehouseDraft(warehouseDraftStorage(),'warehouse-preview',null);
@@ -499,7 +502,8 @@ try {
         cashAfterCents: receipt.cashCents, requestCount: 1, zone, renderer, inspectedRow, mobileWebgl: Boolean(fallbackScript) };
     }
     try {
-      const url = origin + '/?compact&persist=' + (lightingOnly ? 'lighting-' : 'shop-first-') + Date.now();
+      const limitedBudget = !lightingOnly && !process.argv.includes('--handling-only') && !process.argv.includes('--climate-control-only');
+      const url = origin + '/?compact&persist=' + (lightingOnly ? 'lighting-' : 'shop-first-') + Date.now() + (limitedBudget ? '&limitedBudget' : '');
       await page.goto(url, { waitUntil: 'domcontentloaded' });
       await enter();
       const initial = await saved();
@@ -697,7 +701,8 @@ async function checkCleaning(browser, width) {
     };
     await page.goto(origin + '/?compact&newWorkshop&persist=cleaning-' + width, { waitUntil: 'domcontentloaded' });
     await openCleaning();
-    assert.equal((await read()).entranceAirlock, false);
+    const starting = await read();
+    assert.equal(starting.entranceAirlock, false);
     assert.equal(await page.$eval(vacuum, node => node.disabled), true);
     assert.equal(await page.$eval(mop, node => node.disabled), true);
     assert.ok(await page.$eval(panel, node => node.textContent.includes('Aménager')));
@@ -717,7 +722,7 @@ async function checkCleaning(browser, width) {
     assert.equal(await page.$eval(mop, node => node.disabled), true);
     const initial = await read();
     const toolPrice = initial.items.filter(item => item.kind === 'equipment').reduce((sum, item) => sum + item.priceCents, 0);
-    assert.equal(initial.cashCents, 100000 - toolPrice);
+    assert.equal(initial.cashCents, starting.cashCents - toolPrice);
     const choice = width === 320 ? 'auto' : 'player';
     await page.select(panel + ' select', choice);
     await press(vacuum);
@@ -783,7 +788,8 @@ try {
     sessionStorage.setItem('lcb:warehouse-draft:v1:warehouse-preview', 'draft fixture');
     return { initial, bought };
   });
-  assert.equal(purchase.bought.cashCents, 100000 - ${retail['SIM-LOGISTICS-02'].unitPriceCents});
+  assert.equal(purchase.initial.cashCents, 200_000);
+  assert.equal(purchase.bought.cashCents, purchase.initial.cashCents - ${retail['SIM-LOGISTICS-02'].unitPriceCents});
   assert.equal(purchase.bought.revision, 2);
   const reopen = () => page.goto(origin + ${JSON.stringify(freshUrl + '&rayon=nutrition')}, { waitUntil: 'domcontentloaded' });
   await reopen();

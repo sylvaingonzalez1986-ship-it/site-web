@@ -2,7 +2,7 @@ import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import { getKqWorkshopPriceList, KQ_RETAIL_PRICE_CHECKED_AT } from "./kanab-quest-warehouse-retail";
 import { getKqWorkshopLevelValue, getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
 
-export const KQ_STARTING_CASH_CENTS = 100_000;
+export const KQ_STARTING_CASH_CENTS = 200_000;
 
 export const KQ_EQUIPMENT_CATEGORIES = [
   "infrastructure",

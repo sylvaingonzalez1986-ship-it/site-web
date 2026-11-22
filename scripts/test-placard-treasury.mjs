@@ -345,12 +345,14 @@ async function checkFutureAccount() {
   await db.query('INSERT INTO auth.users VALUES($1)',[owner]);
   await state(owner);
   let view=await inspected(owner);
-  assert.equal(view.report.cash.availableCents,35000);
+  assert.equal(view.report.cash.availableCents,200000);
+  assert.equal(view.data.openingBalances.cash,200000);
+  assert.equal(view.data.journal.total,1);
   assert.equal(view.report.income.resultCents,0);
   const profile={nickname:'T'+owner.replaceAll('-','').slice(0,12),gender:'male',clothing:'teal',skin:'peach',strength:'treasurer'};
   await db.query('SELECT rpc_arena_save_chanvrier($1,$2::jsonb)',[owner,JSON.stringify(profile)]);
   view=await inspected(owner);
-  assert.equal(view.report.cash.availableCents,100000);
+  assert.equal(view.report.cash.availableCents,265000);
   assert.equal(view.report.income.resultCents,0,'starting capital increases equity without invented revenue');
   assert.equal(view.data.closingBalances.capital,-65000);
   const entries=await count(owner);
@@ -773,7 +775,6 @@ try {
   await checkSavings(owners.savings);
   await checkAssets(owners.assets);
   await checkEquipmentReceipts(owners.equipment);
-  await checkFutureAccount();
   await checkUnknownAndRollback(owners.unknown);
   await checkOffsettingUnknowns(owners.offsetting);
   await checkPeriods(owners.periods);
@@ -783,6 +784,8 @@ try {
   await checkLabSessionCorrection();
   await checkPermissions(owners.opening);
   await checkSupplierAccounting();
+  await db.exec(await migration('20261122001600_kq_starting_budget_2000.sql'));
+  await checkFutureAccount();
   console.log('PASS: isolated treasury accounting integration with real economy migrations.');
 } catch(error) {console.error(error.stack??error.message,error.where??'');process.exitCode=1;}
 finally {await vite.close();await db.close();}

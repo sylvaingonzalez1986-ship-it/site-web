@@ -120,7 +120,7 @@ Les limites scientifiques, corpus et preuves de vérification figurent dans `sch
 
 ## Économie et persistance
 
-Le catalogue SQL fixe un budget de **1 000 centimes de monnaie du jeu par quiz**, soit **100 € au maximum** pour les dix quiz. Un quiz vaut au plus un cinquième d’une première mission de 50 € ; le total représente 10 % du capital initial de 1 000 €.
+Le catalogue SQL fixe un budget de **1 000 centimes de monnaie du jeu par quiz**, soit **100 € au maximum** pour les dix quiz. Un quiz vaut au plus un cinquième d’une première mission de 50 €. Le total représente 5 % du capital initial de 2 000 €.
 
 La réussite commence à 7/10. Pour un score `s`, le droit est nul sous 7, sinon `floor(budget_cents × s / 10)`. Le versement est le maximum entre zéro et ce droit moins le montant déjà payé. L’arrondi se fait au centime inférieur. Exemple : 7/10 verse 7 €, puis 9/10 verse seulement 2 €. Rejouer un score identique ou inférieur ne verse rien.
 

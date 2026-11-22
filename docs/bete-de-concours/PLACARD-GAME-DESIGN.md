@@ -382,10 +382,10 @@ A → B → C → A est possible. Une campagne exige toujours que toutes les zon
 actives affectées participent : les zones dont le Buddie est encore bloqué
 doivent être désactivées ou réaffectées avant le lancement.
 
-Le budget de départ passe à 1 000 € pour les nouveaux portefeuilles, avec
-le bonus de 650 € du Trésorier conservé. La migration
-`20261019000300_kq_starting_budget.sql` est appliquée et vérifiée sur Supabase
-le 19 octobre. Les trois espaces équipés de 1 m² sont déjà offerts.
+Le budget fixé à 1 000 € le 19 octobre passe à 2 000 € avec la migration
+`20261122001600_kq_starting_budget_2000.sql`. Cette dotation est versée à
+l’ouverture du portefeuille. Le bonus unique de 650 € porte le capital de
+départ du Trésorier à 2 650 €.
 
 Premier lot d'améliorations après l'audit du 19 octobre, préparé localement :
 
@@ -930,10 +930,8 @@ Regles validees:
 - classement Elo, ligues Graine / Pousse / Canopee / Fleur / Grand Cru;
 - 1 booster La Botte toutes les 3 victoires consecutives;
 - la Fleur du joueur et celle de l'adversaire sont brulees au verdict;
-- nouveaux portefeuilles initialisés à 1 000 € de jeu (1 650 € pour le Trésorier) ;
-  1 m² de culture, 1 m² de séchage et 1 m² de stockage équipés offerts, sans débit ;
-  les soldes existants restent inchangés ; achats, usure, niveaux
-  et transformations suivent le catalogue d’équipements actuel;
+- nouveaux portefeuilles initialisés à 2 000 € de jeu (2 650 € pour le Trésorier).
+  Le premier aménagement est facturé au montant confirmé sur le devis.
 - marche post-recolte avec jury qualite, biomasse, lot brut, dry sift, static
   sift, ice water hash et quatre paliers de rosin selon l'equipement et la note;
 - curing de 6 heures réelles dès la récolte, avant le jury, indépendant du calendrier du jeu ;

@@ -21,7 +21,7 @@ Le mélange de base représente un engrais soluble compatible avec l’irrigatio
 
 ## Rejouer la bêta en local
 
-Pour manipuler le plan et acheter des intrants au conditionnement, lancer `node scripts/audit-warehouse-shop-first.mjs --fresh` et ouvrir l’adresse locale indiquée. Le rayon Nutrition utilise le même catalogue que la boutique. Le solde et le stock persistent au rechargement de l’onglet. « Recommencer la partie locale » remet l’atelier à 100 m² et 1 000 € avec une réserve vide.
+Pour manipuler le plan et acheter des intrants au conditionnement, lancer `node scripts/audit-warehouse-shop-first.mjs --fresh` et ouvrir l’adresse locale indiquée. Le rayon Nutrition utilise le même catalogue que la boutique. Le solde et le stock persistent au rechargement de l’onglet. « Recommencer la partie locale » remet l’atelier à 100 m² et 2 000 € avec une réserve vide.
 
 Pour rejouer le parcours des intrants sur une base PostgreSQL jetable, lancer `node scripts/audit-warehouse-provisions.mjs`. La recette parcourt la boutique, le semis et les soins à 1 440 et 320 px. Le rapport et les captures sont écrits dans `output/warehouse-provisions/`.
 
@@ -31,7 +31,7 @@ Les tableaux ci-dessous documentent le plan et les instantanés antérieurs à c
 
 Prix de jeu en euros, hors préparation et pose. Le devis déduit le matériel disponible en réserve avant de chiffrer l’achat. Il ajoute 120 €/m² de préparation nouvelle et 15 % de pose sur le matériel concerné. Les cultures déjà lancées gardent les règles et les coûts de leur instantané.
 
-Une nouvelle partie dispose de 1 000 € et de 100 m² libres. Le joueur ouvre Aménager, choisit une référence et la place sur une case, sur une surface tracée ou sur une zone compatible. Un support seul reste en pause et son agrandissement se chiffre au devis. La première lampe active la culture. Les extracteurs se placent séparément. La confirmation installe tous les changements du brouillon.
+Une nouvelle partie dispose de 2 000 € et de 100 m² libres. Le joueur ouvre Aménager, choisit une référence et la place sur une case, sur une surface tracée ou sur une zone compatible. Un support seul reste en pause et son agrandissement se chiffre au devis. La première lampe active la culture. Les extracteurs se placent séparément. La confirmation installe tous les changements du brouillon.
 
 Sur un sol neuf, le premier m² de bacs modulaires revient à 123,45 € (120 € de préparation, 3 € de support et 0,45 € de pose). Un exemple complet utilise trois cases de 1 m², pour la culture, le séchage et le stockage. Avec les bacs, la lampe, l’extracteur, le séchoir et les contenants de première gamme, le devis atteint 900,04 €. Il reste 99,96 € de trésorerie après installation.
 

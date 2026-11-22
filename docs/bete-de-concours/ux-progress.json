@@ -1,4 +1,17 @@
 {
+  "resetAventure20261122": {
+    "livraison": "Le 22 novembre à 16 h 56, les 3 personnages et les 31 cultures ont été remis à zéro. Les 42 portefeuilles repartent avec 2 000 € de base, dont 7 à 7 000 € avec leur bonus Pionnier.",
+    "verification": "Relecture en production après validation de la transaction. Les 16 dégustations et les 22 écritures totalisant 545 points sont intactes. Les 3 285 cartes conservées correspondent aux achats, aux échanges de points et aux avantages Pionnier. Les 74 packs de bienvenue sont prêts à ouvrir.",
+    "archive": "game_reset_20261122, accès réservé à l’administration. La transaction a archivé 16 998 lignes et vérifié le contenu des 120 tables protégées.",
+    "preuves": ["scripts/prepare-game-reset-20261122.mjs", "scripts/audit-quarter-character-entry.mjs", "output/game-reset-20261122/verified.json"],
+    "pointDeReprise": "La remise à zéro a été appliquée une fois. Les créations de personnage suivantes appartiennent à la nouvelle aventure."
+  },
+  "dotationDepart20261122": {
+    "livraison": "À l’ouverture, chaque portefeuille reçoit 2 000 € de jeu. Le bonus unique de 650 € porte celui du Trésorier à 2 650 €.",
+    "verification": "PostgreSQL vérifie l’ouverture, la reconnexion, le journal comptable et la conservation des anciens soldes. Dans Chromium à 1440 × 900, 320 × 710 et 320 × 540, le premier devis de 786,74 € laisse 1 213,26 € en caisse.",
+    "preuves": ["scripts/test-chanvrier-customization.mjs", "scripts/test-placard-treasury.mjs", "scripts/test-warehouse-air-service.mjs", "output/parcours-loic/loic-welcome/rapport.json"],
+    "migrationProduction": "La migration 20261122001600 a été appliquée en production le 22 novembre 2026."
+  },
   "cultureIntrantsDistincts20261122": {
     "livraison": "Plusieurs intrants distincts peuvent être appliqués au même tour et sur la même case. Le filet d’ombrage peut être posé pendant qu’une PBI du tour précédent est encore active.",
     "verification": "Parcours Chromium à 390 px avec PBI, filet puis extrait d’algues, doublon refusé. PostgreSQL isolé vérifie la consommation du stock, le rejeu et la reprise après les anciens plafonds.",

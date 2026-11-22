@@ -92,7 +92,10 @@ try {
   ]) await assert.rejects(scalar("kq_warehouse_air_service", altered), /warehouse_invalid_request/);
   const initialize = async owner => (await db.query("select public.rpc_kq_warehouse_initialize_onboarding($1,$2,$3) value", [owner, starter, empty])).rows[0].value;
   const newOwner = randomUUID(), previousOwner = randomUUID();
-  assert.deepEqual(await initialize(newOwner), { state: empty, cashCents: 100000, credit: 0 });
+  await db.query("select public.rpc_kq_ensure_equipment_profile($1)", [previousOwner]);
+  await db.exec(await migration("20261122001600_kq_starting_budget_2000"));
+  const opening = await initialize(newOwner);
+  assert.deepEqual(opening, { state: empty, cashCents: 200000, credit: 0 });
   const { proposeFirstWarehousePlan } = await vite.ssrLoadModule("/src/lib/kanab-quest-warehouse-first-plan.ts");
   const firstPlan = proposeFirstWarehousePlan(empty);
   assert(firstPlan, "the empty warehouse is eligible for the first plan");
@@ -111,7 +114,7 @@ try {
   assert.equal(Number(firstStorage.rows[0].value), firstSummary.storageCapacityGrams);
   assert(firstSummary.dryingCapacityGrams >= firstSummary.estimatedHarvestGrams);
   assert(firstSummary.storageCapacityGrams >= firstSummary.estimatedHarvestGrams);
-  assert(firstQuote.totalCostCents + firstSummary.operatingCostCents <= 100000);
+  assert(firstQuote.totalCostCents + firstSummary.operatingCostCents <= opening.cashCents);
   console.log("Premier plan validé par PostgreSQL", {
     installationCents: firstQuote.totalCostCents, operatingCents: firstSummary.operatingCostCents,
     estimatedHarvestGrams: firstSummary.estimatedHarvestGrams, dryingGrams: firstSummary.dryingCapacityGrams, storageGrams: firstSummary.storageCapacityGrams,

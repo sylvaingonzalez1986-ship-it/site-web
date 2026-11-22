@@ -154,6 +154,7 @@ async function journey(browser, origin, target, viewport, welcome) {
     await wait(`${guide}[data-mode=invited] ${closeGuide}`);
     await page.waitForFunction(() => typeof window.loicFixture?.read === 'function');
     const baseline = await fixtureState(page);
+    assert.equal(baseline.production.cashCents, 200_000, 'Le nouveau portefeuille démarre avec 2 000 €');
     assert.equal(baseline.production.warehouse.zones.length, 0);
     if (welcome) assert.deepEqual(baseline.production.ownedBuddies, []);
     await page.waitForFunction(() => document.querySelector('[data-village-unavailable=true]') ||
@@ -205,7 +206,8 @@ async function journey(browser, origin, target, viewport, welcome) {
     await wait('[data-warehouse-plan-payable-cents]');
     const price = Number(await page.$eval('[data-warehouse-plan-payable-cents]', node => node.dataset.warehousePlanPayableCents));
     assert.equal(price, 78_674, 'Le devis payable en euros correspond au plan de départ');
-    for (const [name, cents] of Object.entries({ 'cash-after': 21_326, 'operating-cost': 8_360, analysis: 4_500, 'cash-after-reserve': 8_466 })) {
+    const cashAfterInstallation = baseline.production.cashCents - price;
+    for (const [name, cents] of Object.entries({ 'cash-after': cashAfterInstallation, 'operating-cost': 8_360, analysis: 4_500, 'cash-after-reserve': cashAfterInstallation - 8_360 - 4_500 })) {
       const value = await wait(`[data-warehouse-plan-quote] [data-warehouse-plan-${name}-cents="${cents}"]`);
       await value.dispose();
     }
@@ -234,7 +236,7 @@ async function journey(browser, origin, target, viewport, welcome) {
     const installed = await fixtureState(page);
     assert(installed.production.warehouse.zones.length > 0);
     assert.equal(baseline.production.cashCents - installed.production.cashCents, price, 'Le débit ne correspond pas au devis');
-    assert.equal(installed.production.cashCents, 21_326);
+    assert.equal(installed.production.cashCents, cashAfterInstallation);
     const installationCalls = installed.calls.filter(call => call.method === 'PATCH' && call.path === '/api/arena/placard/warehouse');
     assert.equal(installationCalls.length, 2);
     assert.deepEqual(installationCalls.map(call => call.body.expectedCostCents), [price, price]);

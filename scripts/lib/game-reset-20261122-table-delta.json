@@ -1,0 +1,26 @@
+{
+  "baseline": "game-reset-20261115-scope.json",
+  "orderedResetTables": [
+    "kq_pending_market_orders",
+    "kq_warehouse_cleaning_work",
+    "kq_warehouse_injectors",
+    "kq_warehouse_input_stock",
+    "kq_warehouse_irrigation_programs",
+    "kq_warehouse_preparation_receipts",
+    "kq_warehouse_run_inputs",
+    "kq_warehouse_security_cameras",
+    "kq_warehouse_security_requests",
+    "kq_warehouse_security",
+    "kq_korrigan_draws",
+    "kq_korrigan_sessions"
+  ],
+  "preserveTables": ["swiss_bitcoin_payment_attempts"],
+  "optionalPreserveTables": ["arena_prize_flower_returns"],
+  "cardOriginsToReset": ["korrigan_draw_id"],
+  "retiredRequestKeys": {
+    "kq_warehouse_cleaning_work": "request_key",
+    "kq_warehouse_preparation_receipts": "request_key",
+    "kq_warehouse_security_requests": "request_key",
+    "kq_korrigan_sessions": "request_id"
+  }
+}
