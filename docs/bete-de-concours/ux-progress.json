@@ -1,4 +1,9 @@
 {
+  "positionJoueurDansMaCulture20261122": {
+    "livraison": "Dans Ma culture, le personnage apparaît sur une allée intérieure accessible et inspecte les plants depuis le côté intérieur du bac lorsque le passage est libre. Avec les animations réduites, il se place directement au poste. Le repère du poste laisse son visage visible.",
+    "verification": "Les parcours Chromium warehouse-actor, campaign et warehouse-player contrôlent le placement des pieds, les actions de culture et le retour au village à 320 et 1 440 px.",
+    "pointDeReprise": "Contrôler la position des pieds sur le plan sauvegardé de Ma culture après toute modification du rendu de la salle."
+  },
   "personnageEntrepotEnCulture20261122": {
     "livraison": "À l’ouverture de l’entrepôt, le personnage rejoint une culture en cours et examine les plants. Le joueur peut choisir un autre poste à tout moment.",
     "verification": "45 tests ciblés réussis. Le parcours Chromium warehouse-actor vérifie la marche, l’inspection sans dépense ni sélection et le changement de poste à 320 et 1 440 px.",

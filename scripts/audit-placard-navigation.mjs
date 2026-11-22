@@ -34,7 +34,8 @@ const buildingRoomsNight=process.argv.includes('--building-rooms-night');
 const exportNightPosters=buildingRoomsNight&&process.argv.includes('--export-night-posters');
 const exportDayPosters=buildingRoomsNight&&process.argv.includes('--export-day-posters');
 const buildingRooms=buildingRoomsNight||bankOfficeOnly||process.argv.includes('--building-rooms');
-const world3d=coast||quarterTeam||buildingRooms||process.argv.includes('--world-3d');
+const warehousePlayer=process.argv.includes('--warehouse-player');
+const world3d=coast||quarterTeam||buildingRooms||warehousePlayer||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
 const focusOnly=process.argv.includes('--focus-only');
 const cardsOnly=process.argv.includes('--cards-only');
@@ -147,6 +148,7 @@ const modules={
 };
 if(world3d){
  modules['entry']=`import {QuarterCharacterGate} from '/src/components/contest/QuarterCharacterGate';${modules['entry'].replace('<PlacardPlayerShell/>','{new URLSearchParams(location.search).has("entryGate")?<QuarterCharacterGate ownerId="world-audit-player"><PlacardPlayerShell draftOwnerId="world-audit-player"/></QuarterCharacterGate>:<PlacardPlayerShell draftOwnerId="world-audit-player"/>}')}`;
+ if(warehousePlayer) modules['entry']=`import { _roots } from '@react-three/fiber'; window.villagePlayerScene=()=>_roots.get(document.querySelector('canvas[data-village-ready]'))?.store.getState().scene;${modules['entry']}`;
 }
 // Consent itself is covered by the entry audit; this isolated shell fixture starts after it.
 modules['navigation-consent']='export const useCookieConsent=()=>({showBanner:false,consent:null,hasConsent:()=>false});';
@@ -393,7 +395,7 @@ else try {
    const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
    await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output,bankOfficeOnly});
  }else if(world3d){
-   await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin});
+   await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin,warehousePlayer});
  }else if(schoolChallenge){
   await auditSchoolChallenge({page,visit,click,screenshot,assertNoOverflow,results,fixture:schoolFixture,setWidth:value=>{width=value;}});
  }else if(schoolQuizFlow){
@@ -848,9 +850,9 @@ else try {
  results.push({scenario:'buddies-shop-album',initialSection:'buddies'});
  }
  assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'||schoolReal&&request.path.startsWith('/api/arena/placard/school')||quarterTeam&&request.path==='/api/arena/placard/staff'),'Only isolated fixtures receive mutations');
- await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
+ await writeFile(resolve(output,warehousePlayer?'warehouse-player-report.json':coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
  if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,buildingRooms?'building-rooms-failure.png':quarterTeam?'quarter-team-failure.png':world3d?'world-3d-failure.png':motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
- await writeFile(resolve(output,coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
+ await writeFile(resolve(output,warehousePlayer?'warehouse-player-report.json':coast?coastReport:quarterTeam?'quarter-team-report.json':reportName),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
 }finally{if(!preview){await browser?.close();await server.close();}}

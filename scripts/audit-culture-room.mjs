@@ -30,6 +30,21 @@ function mount() {
   function fixture() {
     let state = createKqReleveProduction();
     const act = action => { state = applyKqReleveProductionAction(state, action); };
+    if (scenario === "empty") {
+      state.warehouse = createKqWarehouseEmpty();
+      state.draftWarehouse = structuredClone(state.warehouse);
+      return state;
+    }
+    if (["warehouse-ready","warehouse-growing","culture-growing"].includes(scenario)) {
+      act({type:"draft", warehouse:suggestKqRelevePlan(state)});
+      act({type:"save-plan"});
+      if (scenario === "warehouse-ready") return state;
+      act({type:"reveal-buddie"});
+      act({type:"assign", zoneId:"culture-1", buddieCode:"HH2026-005"});
+      act({type:"save-plan"});
+      act({type:"launch"});
+      return state;
+    }
     state.cashCents=5_000_000;
     const plan=suggestKqRelevePlan(state,2);
     plan.zones=[
@@ -72,13 +87,14 @@ function mount() {
   let state = saved ? JSON.parse(saved) : fixture();
   const parity=/^parity-(0|90|180|270)$/.exec(scenario);
   const angle=parity?Number(parity[1]):null;
-  const warehouseMode=!!parity||["warehouse","warehouse-turned","empty"].includes(scenario);
+  const nativeWarehouse=["empty","warehouse-ready","warehouse-growing"].includes(scenario);
+  const warehouseMode=!!parity||nativeWarehouse||["warehouse","warehouse-turned"].includes(scenario);
   let stock=null;
   let building=null;
   if(warehouseMode){
     const base=getReleveNativeWarehouse(state);
-    if(scenario==="empty"){
-      building={...base,state:createKqReleveProduction().warehouse,activeRuns:[],activeRun:false};
+    if(nativeWarehouse){
+      building=base;
     }else{
       // The warehouse can contain independent runs; a campaign shares one stage.
       const first=base.state.zones[0];
@@ -132,7 +148,7 @@ function mount() {
       }
     }
     else if(method==="GET"&&stock&&path.endsWith("/storage"))response=Response.json(stock);
-    else if(method==="GET"&&path.endsWith("/work")){
+    else if(method==="GET"&&state.game&&path.endsWith("/work")){
       const game=state.game;
       response=Response.json({version:1,runId:game.campaign.leaderRunId,stageIndex:game.stageIndex,phase:game.phase,day:1,
         source:"player",paid:game.phase!=="prepare",stepHours:.5,playerRemainingHours:8-(game.history.length+Number(game.phase==="rolled"))*.5,
@@ -192,7 +208,7 @@ function mount() {
       return result;
     }finally{resources.dispose();}
   };
-  const legacyGame={...state.game,campaign:undefined,warehouse:undefined,equipment:{...state.game.equipment,
+  const legacyGame=scenario==="legacy"&&{...state.game,campaign:undefined,warehouse:undefined,equipment:{...state.game.equipment,
     tents:Array.from({length:7},(_,i)=>({tentNumber:i+1,codes:[]}))}};
   const content=scenario==="legacy" ? e(KqCultureRoom,{state:legacyGame})
     : warehouseMode ? e(KqWarehouse,{embedded:true,initialSection:"equipment",onClose:()=>{}}) : e(KanabQuestDicePrototype,{
@@ -212,7 +228,7 @@ const entry = [
   "import {createKqTutorialApi,KqTutorialApiProvider} from '/src/components/placard/KqTutorialApiContext';",
   "import {createReleveCultureTransport,getReleveProductionStorageSnapshot} from '/src/lib/kanab-quest-releve-culture';",
   "import {getReleveNativeWarehouse} from '/src/lib/kanab-quest-releve-warehouse';",
-  "import {getKqWarehouseQuote} from '/src/lib/kanab-quest-warehouse';",
+  "import {createKqWarehouseEmpty,getKqWarehouseQuote} from '/src/lib/kanab-quest-warehouse';",
   "import {validateKqWarehouseSpatialTransition} from '/src/lib/kanab-quest-warehouse-spatial';",
   "import {createKqReleveProduction,applyKqReleveProductionAction,suggestKqRelevePlan} from '/src/lib/kanab-quest-releve-production';",
   "("+mount.toString()+")();"
@@ -473,6 +489,67 @@ async function audit(){
     return changed;
   }
   const visibleRoomIfReduced=async()=>{await reveal(room);await page.waitForSelector('[data-grow-motion="reduced"]');};
+  async function checkLaunchedPlan(snapshot) {
+    await page.waitForSelector('[data-culture-room] [data-grow-has-plan="true"]');
+    const plan = snapshot.game.warehouse.sourceState;
+    assert.deepEqual(plan.floor,snapshot.plan.floor);
+    assert.equal(plan.zones[0].x,0,"The saved crop touches the west edge of the initial floor");
+    const first = plan.zones[0];
+    const rendered = await page.$eval(footprint(first.id),n=>[n.dataset.worldX,n.dataset.worldZ,n.dataset.width,n.dataset.depth].map(Number));
+    assert.deepEqual(rendered,[first.x+(first.width-plan.floor.columns)/2,first.y+(first.height-plan.floor.rows)/2,first.width,first.height]);
+  }
+  async function warehouseFeet(targetId = "", atStation = false) {
+    await page.waitForSelector('[data-grow-camera][data-renderer="webgl"]');
+    const node = await page.waitForSelector('[data-grow-actor="player"][data-personalized="true"][data-world-x][data-actor-target="'+targetId+'"]');
+    const pose = await node.evaluate(n => ({
+      x:Number(n.dataset.worldX), z:Number(n.dataset.worldZ), visible:n.dataset.actorVisible === "true", pose:n.dataset.actorState,
+    }));
+    const {floor} = (await state()).plan;
+    assert.ok(pose.visible, "The rendered player is visible");
+    assert.ok(Math.abs(pose.x) + .22 <= floor.columns / 2 && Math.abs(pose.z) + .22 <= floor.rows / 2,
+      "Player's feet and collision radius must be inside the saved floor: "+JSON.stringify({pose,floor}));
+    if (atStation) {
+      const station = await page.$eval(footprint(targetId), n => ({
+        x:Number(n.dataset.worldX), z:Number(n.dataset.worldZ), width:Number(n.dataset.width), depth:Number(n.dataset.depth),
+      }));
+      const dx = Math.max(0,Math.abs(pose.x - station.x) - station.width / 2);
+      const dz = Math.max(0,Math.abs(pose.z - station.z) - station.depth / 2);
+      pose.distanceToStation = Math.hypot(dx,dz);
+      assert.ok(pose.distanceToStation >= .22 && pose.distanceToStation <= .5,
+        "Player's feet must reach the aisle alongside "+targetId+": "+JSON.stringify({pose,station}));
+    }
+    return pose;
+  }
+  async function checkCultureBadge(feet, floor) {
+    const result = await page.evaluate(async ({feet,floor}) => {
+      const {projectRoomPoint,cameraScale} = await import("/src/components/placard/KqGrowRoomProjection");
+      const host = document.querySelector("[data-grow-camera]");
+      const svg = host.querySelector("svg");
+      const {width,height} = svg.viewBox.baseVal;
+      const camera = {zoom:Number(host.dataset.zoom), x:Number(host.dataset.panX), z:Number(host.dataset.panZ)};
+      const scale = cameraScale({width:floor.columns,depth:floor.rows},width,height,camera.zoom);
+      const screen = y => {
+        const p = projectRoomPoint(feet.x,y,feet.z,camera,scale,width,height);
+        return new DOMPoint(p.x,p.y).matrixTransform(svg.getScreenCTM());
+      };
+      const head = screen(1.6), waist = screen(.9), halfShoulders = .22 * scale * svg.getScreenCTM().a;
+      const upperBody = {left:head.x-halfShoulders,right:head.x+halfShoulders,top:head.y,bottom:waist.y};
+      const labels = [...host.querySelectorAll("[data-grow-zone-label]")];
+      const selected = labels.find(label=>label.dataset.growZoneLabel === "culture-1");
+      const box = selected?.getBoundingClientRect(), bounds = host.getBoundingClientRect();
+      const selectedReadable = selected?.textContent.trim() === "01" && selected.checkVisibility({opacityProperty:true,visibilityProperty:true})
+        && box.width >= 12 && box.height >= 12 && box.left >= bounds.left && box.right <= bounds.right && box.top >= bounds.top && box.bottom <= bounds.bottom;
+      const overlaps = labels.filter(label=>{
+        const style = getComputedStyle(label), box = label.getBoundingClientRect();
+        return style.visibility === "visible" && Number(style.opacity) > 0 && box.width > 0 && box.height > 0
+          && box.left < upperBody.right && box.right > upperBody.left && box.top < upperBody.bottom && box.bottom > upperBody.top;
+      }).map(label=>label.dataset.growZoneLabel);
+      return {upperBody,overlaps,selectedReadable};
+    },{feet,floor});
+    assert.deepEqual(result.overlaps,[],"Station labels must leave the player's head and shoulders visible: "+JSON.stringify(result));
+    assert.ok(result.selectedReadable,"The 01 badge remains legible inside the view");
+    return result;
+  }
   // The production actor caps each simulation step; software WebGL may deliver
   // fewer than three frames per second. Other selector deadlines stay unchanged.
   const walkTimeout=nativeGpu?30000:90000;
@@ -516,22 +593,73 @@ async function audit(){
   }
   try{
     if (!group || group === "warehouse-actor") {
-      for (const width of [320, 1440]) {
+      for (const [scene,width] of [["empty",320],["warehouse-ready",1440]]) {
         await viewport(width);
-        await visit("warehouse");
+        await visit(scene);
+        await page.waitForSelector(room);
         await visibleRoom();
-        assert.equal(await page.$(selected), null);
+        const snapshot = await state();
+        assert.equal(snapshot.activeRuns.length,0);
+        assert.equal(snapshot.plan.zones.length,scene === "empty" ? 0 : 1);
+        const feet = await warehouseFeet();
+        assert.equal(feet.pose,"idle");
+        assert.equal(await page.$(selected),null);
+        await shot(scene+"-"+width);
+        assert.ok((await state()).calls.every(call => call.method === "GET"));
+        pass("Personnage à l’intérieur sans culture en cours · "+scene+" · "+width+" px",{feet});
+      }
+      for (const [scene,width] of [["culture-growing",320],["warehouse",320],["warehouse",1440]]) {
+        await viewport(width);
+        const culture = scene === "culture-growing";
+        await visit(scene);
+        await visibleRoom();
+        if (culture) {
+          await checkLaunchedPlan(await state());
+          assert.equal(await page.$eval(selected,n=>n.dataset.growPick),"culture-1");
+        } else assert.equal(await page.$(selected), null);
         const walking = await page.waitForSelector(actor("walking"), {timeout: 60000});
         assert.equal(await walking.evaluate(node => node.dataset.actorTarget), "culture-1");
         const inspecting = await page.waitForSelector(actor("inspect"), {timeout: 60000});
         assert.equal(await inspecting.evaluate(node => node.dataset.actorTarget), "culture-1");
-        await shot("inspection-" + width);
-        assert.equal(await page.$(selected), null);
-        assert.equal((await state()).calls.filter(call => call.method === "POST").length, 0);
-        await selectOnFloor("culture-2");
-        await page.waitForSelector('[data-grow-actor][data-actor-target="culture-2"]');
-        pass("Le personnage inspecte une culture dès l’entrée et rejoint le poste choisi à " + width + " px");
+        const feet = await warehouseFeet("culture-1",true);
+        const badge = culture ? await checkCultureBadge(feet,(await state()).plan.floor) : undefined;
+        await shot((culture ? "ma-culture-inspection-" : "inspection-") + width);
+        if (!culture) assert.equal(await page.$(selected), null);
+        const next = culture ? "drying" : "culture-2";
+        await selectOnFloor(next);
+        await page.waitForSelector('[data-grow-actor][data-actor-target="'+next+'"]');
+        assert.ok((await state()).calls.every(call => call.method === "GET"));
+        pass("Inspection du poste de culture et redirection · "+(culture ? "Ma culture" : "Entrepôt")+" · "+width+" px",{feet,badge});
       }
+      await page.emulateMediaFeatures([{name:"prefers-reduced-motion",value:"reduce"}]);
+      for (const [scene,width] of [["warehouse-growing",320],["culture-growing",1440]]) {
+        await viewport(width);
+        await visit(scene);
+        await visibleRoomIfReduced();
+        const before = await state();
+        const warehouse = scene === "warehouse-growing";
+        if (warehouse) {
+          assert.equal(before.activeRuns.length,1);
+          assert.equal(await page.$(selected),null);
+        } else {
+          await checkLaunchedPlan(before);
+        }
+        const feet = await warehouseFeet("culture-1",true);
+        assert.equal(feet.pose,"idle");
+        const badge = warehouse ? undefined : await checkCultureBadge(feet,before.plan.floor);
+        await shot(scene+"-reduced-"+width);
+        const next = "drying";
+        await selectOnFloor(next);
+        const redirected = await warehouseFeet(next,true);
+        assert.equal(redirected.pose,"idle");
+        assert.deepEqual(await warehouseFeet(next,true),redirected);
+        const after = await state();
+        assert.equal(after.cash,before.cash);
+        assert.equal(after.revision,before.revision);
+        assert.ok(after.calls.every(call => call.method === "GET"),"Viewing or selecting a station writes no game data");
+        pass("Mouvement réduit, personnage auprès du poste à l’ouverture et après sélection · "+scene+" · "+width+" px",{feet,badge,redirected});
+      }
+      await page.emulateMediaFeatures([]);
     }
     if(group==="parity"){
       const {checkWarehouseParity}=await import("./audit-culture-room-parity.mjs");

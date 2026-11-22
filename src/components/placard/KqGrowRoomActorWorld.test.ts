@@ -14,6 +14,35 @@ const layout: WarehouseSpatialLayout = {
 };
 const base = { layout, stage: 1, motion: true, visible: true, profile: { gender: "female" as const, skin: "brown" as const, clothing: "berry" as const } };
 describe("player in the shared grow room renderer", () => {
+  it("starts inside before the first frame even without a selected station", () => {
+    const actor = createGrowRoomActor(new THREE.Group(), () => {});
+    try {
+      actor.update({ ...base, targetId: null });
+      const feet = actor.getPose();
+      expect(feet.visible).toBe(true);
+      expect(feet.z).toBeLessThan(layout.depth / 2 - 1);
+      expect(createGrowRoomPaths(layout).canWalk(feet, feet)).toBe(true);
+      expect(actor.tick(0)).toBe(false);
+    } finally { actor.dispose(); }
+  });
+  it("shows the worker at each reachable station with reduced motion, without replaying the trip on resume", () => {
+    const actor = createGrowRoomActor(new THREE.Group(), () => {});
+    const paths = createGrowRoomPaths(layout);
+    try {
+      let from = paths.indoorStart();
+      for (const targetId of ["herbes", "sechoir"]) {
+        const route = paths.route(from, targetId)!;
+        const { x, z } = route.points.at(-1)!;
+        actor.update({ ...base, targetId, reducedMotion: true, motion: false });
+        expect(actor.getPose()).toMatchObject({ x, z, yaw: route.yaw, visible: true });
+        expect(actor.tick(10)).toBe(false);
+        from = { x, z };
+      }
+      actor.update({ ...base, targetId: "sechoir" });
+      expect(actor.tick(1000)).toBe(false);
+      expect(actor.getPose()).toMatchObject(from);
+    } finally { actor.dispose(); }
+  });
   it("walks to a crop on arrival, inspects it again at rest and sleeps while hidden", () => {
     vi.useFakeTimers();
     const requestFrame = vi.fn();
@@ -251,7 +280,7 @@ describe("player in the shared grow room renderer", () => {
     expect(states.at(-1)).toBe("idle");
     actor.dispose();
   });
-  it("freezes offscreen and with motion reduced, without advancing the gesture clock", () => {
+  it("freezes offscreen and on manual pause without advancing the gesture clock", () => {
     const actor = createGrowRoomActor(new THREE.Group(), () => { });
     const next = { ...base, targetId: "herbes" };
     actor.update(next);

@@ -83,13 +83,15 @@ it("places the fallback avatar along a reachable aisle and preserves its feet on
     const top = projectRoomPoint(p.x, 1.9, p.z, camera, 18, 320, 300);
     return `x="${foot.x - (foot.y - top.y) / 2}" y="${top.y}"`;
   };
-  const spot = createGrowRoomPaths(layout).route(layout.entry, "bed")!.points.at(-1)!;
+  const paths = createGrowRoomPaths(layout);
+  const indoors = paths.indoorStart();
+  const spot = paths.route(indoors, "bed")!.points.at(-1)!;
   const cold = render("bed");
   expect(spot).not.toEqual(layout.entry);
   expect(cold).toContain('data-grow-fallback-actor="visitor"');
   expect(cold).toContain("Casquette de marin");
   expect(cold).toContain(atFeet(spot));
-  expect(render("missing")).toContain(atFeet(layout.entry));
+  expect(render("missing")).toContain(atFeet(indoors));
   const interrupted = { x: 0, z: 2.75, targetId: "bed" };
   const lost = render("bed", interrupted);
   expect(lost).toContain('data-grow-fallback-actor="player"');

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { OrthographicCamera, Vector3, type Group } from "three";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
@@ -40,19 +40,19 @@ function finishReducedWalk(resident: NonNullable<ReturnType<typeof createResiden
   model.pose(resident.distance, 0, null, 0, null);
 }
 
-export function useVillagePlayer(profile: ChanvrierAvatarProfile | null, terrain: Group, surface: VillageWalkSurface, frozen: boolean, reduced: boolean) {
-  const { scene, invalidate } = useThree();
+export function useVillagePlayer(profile: ChanvrierAvatarProfile | null, layer: RefObject<Group | null>, terrain: Group, surface: VillageWalkSurface, frozen: boolean, reduced: boolean) {
+  const { invalidate } = useThree();
   const actor = useRef<ReturnType<typeof createResident>>(null);
-  useEffect(() => () => { actor.current?.model.dispose(); actor.current = null; }, [scene, terrain, surface]);
+  useEffect(() => () => { actor.current?.model.dispose(); actor.current = null; }, [layer, terrain, surface]);
   useEffect(() => {
     if (!profile) { actor.current?.model.dispose(); actor.current = null; }
     else if (actor.current) actor.current.model.updateAppearance(profile);
-    else {
+    else if (layer.current) {
       actor.current = createResident(profile, terrain, surface);
-      if (actor.current) scene.add(actor.current.model.object);
+      if (actor.current) layer.current.add(actor.current.model.object);
     }
     invalidate();
-  }, [profile, scene, terrain, surface, invalidate]);
+  }, [profile, layer, terrain, surface, invalidate]);
   useFrame(({ camera, size }, delta) => {
     const resident = actor.current;
     if (!resident || frozen) return;

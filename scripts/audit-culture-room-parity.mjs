@@ -237,7 +237,7 @@ export async function checkWarehouseParity({page,output,viewport,visit,state,geo
             import("/src/components/placard/culture-room-state.ts")]);
           const fixture=window.inspectFixture(),engine=createRoomRenderer(document.createElement("canvas"),()=>{});
           try{engine.update({layout:getKqWarehouseSpatialLayout(fixture.plan),zones:getWarehouseRoomZones(fixture.plan,fixture.activeRuns,null,fixture.stockGrams),
-            selected:"culture-1",actorTargetId:"culture-1",inspectAtRest:false,camera:{x:0,z:0,zoom:1},width:390,height:310,visible:false,motion:false});}finally{engine.dispose();}
+            selected:"culture-1",actorTargetId:"culture-1",inspectAtRest:false,camera:{x:0,z:0,zoom:1},width:390,height:310,visible:false,motion:false,reducedMotion:false});}finally{engine.dispose();}
           return "Renderer fell back to the drawing";
         }catch(e){return String(e.stack??e);}
       });

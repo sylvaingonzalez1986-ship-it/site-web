@@ -15,6 +15,7 @@ export type WorldInput = {
   event?: KqGrowRoomEvent | null;
   profile?: ChanvrierAvatarProfile | null;
   motion: boolean;
+  reducedMotion: boolean;
   visible: boolean;
   camera: GrowCamera;
   width: number;
@@ -240,7 +241,7 @@ export function createRoomRenderer(canvas: HTMLCanvasElement, onPose: (pose: Wor
     }
     const activeZone = input.zones.find(z => z.id === input.actorTargetId);
     actor.update({ layout, targetId: input.actorTargetId, stage: activeZone?.stageIndex ?? null, inspectAtRest: input.inspectAtRest,
-      event: input.event, profile: input.profile, motion: input.motion, visible: input.visible });
+      event: input.event, profile: input.profile, motion: input.motion, visible: input.visible, reducedMotion: input.reducedMotion });
     if (!input.visible || !input.motion) { clearTimeout(ventTimer); ventTimer=0; }
     else if (!previous?.visible || !previous.motion) ventPhase=performance.now();
     if (!input.visible && frame) {

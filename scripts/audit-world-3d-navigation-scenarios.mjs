@@ -9,7 +9,7 @@ export function world3dFixturePayload(path) {
   return null;
 }
 
-export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin}) {
+export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin,warehousePlayer}) {
   page.setDefaultTimeout(20000);
   const menu='button[aria-label="Ouvrir le menu du quartier"]';
   const drawer='dialog[aria-label="Menu de Kanab Quest"][open]';
@@ -54,6 +54,37 @@ export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow
     await sameCanvas();
   };
 
+  if (warehousePlayer) {
+    const playerState = async visible => {
+      const state = await page.waitForFunction(expected => {
+        const scene = window.villagePlayerScene();
+        const player = scene?.getObjectByName('chanvrier');
+        if (!player) return false;
+        let rendered = false;
+        scene.traverseVisible(object => { if (object === player) rendered = true; });
+        return rendered === expected && { model: player.uuid, position: player.position.toArray() };
+      }, { timeout: 60000 }, visible);
+      return state.jsonValue();
+    };
+    for (const [width, view] of [[1440, 'workshop'], [320, 'game']]) {
+      await page.setViewport({ width, height: width === 320 ? 710 : 900 });
+      await visit('active', `view=${view}&entryGate=1`);
+      await waitView(view);
+      const atEntry = await playerState(false);
+      await rememberCanvas();
+      await close();
+      assert.deepEqual(await playerState(true), atEntry);
+      const next = view === 'game' ? 'workshop' : 'game';
+      await chooseActivity('warehouse', `/arene/placard?view=${next}`);
+      assert.deepEqual(await playerState(false), atEntry);
+      await close();
+      assert.deepEqual(await playerState(true), atEntry);
+      await nav('market');
+      assert.deepEqual(await playerState(true), atEntry);
+      results.push({ scenario: 'warehouse-village-player', width, direct: view, farmLink: next, sameModelAndPosition: true, visibleAtMarket: true });
+    }
+    return;
+  }
   await visit('starter');
   await page.waitForSelector('canvas[data-village-ready="true"]',{timeout:60000});
   await waitView('hub');

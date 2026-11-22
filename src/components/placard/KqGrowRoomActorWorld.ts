@@ -10,7 +10,7 @@ type Gesture = KqGrowRoomEvent["gesture"];
 type ActorState = "idle" | "walking" | "turning" | "blocked" | Gesture;
 type ActorInput = {
   layout: WarehouseSpatialLayout; targetId: string | null; stage: number | null; event?: KqGrowRoomEvent | null;
-  profile?: ChanvrierAvatarProfile | null; motion: boolean; visible: boolean; inspectAtRest?: boolean;
+  profile?: ChanvrierAvatarProfile | null; motion: boolean; visible: boolean; reducedMotion?: boolean; inspectAtRest?: boolean;
 };
 const speeds = { walk: 1.48, turn: 4.6 };
 
@@ -49,10 +49,13 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
     if (rebuilt) {
       paths = createGrowRoomPaths(next.layout);
       layoutKey = key;
-      if (!prev) pos = { ...next.layout.entry };
-      else {
+      if (!prev) {
+        pos = paths.indoorStart();
+        yaw = Math.PI;
+      } else {
         // A floor extension preserves cell addresses measured from its back-left corner.
         pos = { x: pos.x + (prev.layout.width - next.layout.width) / 2, z: pos.z + (prev.layout.depth - next.layout.depth) / 2 };
+        if (!paths.canWalk(pos, pos)) pos = paths.indoorStart();
       }
     }
     input = next;
@@ -90,13 +93,23 @@ export function createGrowRoomActor(world: THREE.Group, requestFrame: () => void
       if (!routeTo) { walk = 0; worker.pose(distance, 0, null, 0, next.stage); }
     }
     if (!prev || prev.motion !== next.motion || prev.visible !== next.visible) time = null;
+    const staticDestination = next.reducedMotion && route.at(-1);
+    if (staticDestination) {
+      pos = { x: staticDestination.x, z: staticDestination.z };
+      yaw = targetYaw;
+      waypoint = route.length;
+      acting = null;
+      state = "idle";
+      if (workReceipt?.target) deposited = workReceipt;
+    }
     worker.object.visible = !blockedUnderFurniture;
     worker.object.position.set(pos.x, 0, pos.z);
     worker.object.rotation.y = yaw;
     if (!next.motion) {
       speed = 0;
       walk = 0;
-      worker.pose(distance, 0, null, 0, next.stage);
+      const gesture = staticDestination ? e?.gesture ?? (next.inspectAtRest ? "inspect" : null) : null;
+      worker.pose(distance, 0, gesture, gesture ? .5 : 0, next.stage, deviceCode);
     }
     requestFrame();
   }

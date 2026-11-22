@@ -31,6 +31,7 @@ const RESIDENT_EYE_HEIGHT: Partial<Record<VillageLifeSubject, number>> = { playe
 type Props = VillageMotionProps & {
   calendar?: VillageCalendar | null;
   profile: ChanvrierAvatarProfile | null;
+  playerIndoors: boolean;
   npc: VillageNpcBridge;
   controlsBlocked: boolean;
   supportOpen?: boolean;
@@ -286,7 +287,7 @@ function CameraRig({ request, focus, onDrag, motion, night, controlsBlocked, sup
   return null;
 }
 
-function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, korriganReaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
+function VillageWorld({ calendar, profile, playerIndoors, selected, keyboardFocus, onSelect, onHover, onOpenMailbox, labelNodes, headerNode, bubbleNode, bubbleTail, onCloseActivities, cameraRequest, onReady, activity, motion, focusBuilding, reaction, korriganReaction, npc, controlsBlocked, supportOpen, restoreSupportView }: Omit<Props, "onUnavailable">) {
   const [dragging, setDragging] = useState(false);
   const terrain = useMemo(() => createVillageTerrain(), []);
   const mailbox = useMemo(() => createVillageMailbox(), []);
@@ -300,7 +301,8 @@ function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, on
     return { place, object, position, anchor: new THREE.Vector3(position[0], position[1] + roof + 0.25, position[2]) };
   }), []);
   const surface = useMemo(() => createVillageWalkSurface(terrain, buildings), [terrain, buildings]);
-  const walkTo = useVillagePlayer(profile, terrain, surface, controlsBlocked || motion.paused || motion.hidden, motion.reduced);
+  const playerLayer = useRef<THREE.Group>(null);
+  const walkTo = useVillagePlayer(profile, playerLayer, terrain, surface, controlsBlocked || motion.paused || motion.hidden, motion.reduced);
   const active = buildings.find(({ place }) => place.id === selected);
   const { camera, size, gl, invalidate, get } = useThree();
   const quality = Math.min(size.width, size.height) < 600 ? "low" : "high";
@@ -396,6 +398,7 @@ function VillageWorld({ calendar, profile, selected, keyboardFocus, onSelect, on
     event.stopPropagation(); onSelect(id);
   };
   return <>
+    <group ref={playerLayer} visible={!playerIndoors} />
     <CameraRig request={cameraRequest} focus={keyboardFocus === "mailbox" ? mailboxFocus : keyboardFocus === HEMP_FARM_ID ? hempFarmFocus : buildings.find(({ place }) => place.id === keyboardFocus)?.anchor ?? active?.anchor} onDrag={setDragging} motion={motion} night={night} controlsBlocked={controlsBlocked} supportOpen={supportOpen} restoreSupportView={restoreSupportView} />
     <VillageAtmosphere terrain={terrain} surface={surface} buildings={buildings} activity={activity} motion={motion} focusBuilding={focusBuilding} reaction={reaction} korriganReaction={korriganReaction} night={night} dragging={dragging} quality={quality} npc={npc} labelNodes={labelNodes} />
     <primitive object={terrain} onClick={(event: ThreeEvent<MouseEvent>) => { if (event.delta <= 5) { event.stopPropagation(); onCloseActivities(); walkTo(event.point); } }} />

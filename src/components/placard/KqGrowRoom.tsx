@@ -83,7 +83,7 @@ export function KqGrowRoom({ zones, selectedZoneId, onSelectZone, playerProfile,
   return <div ref={sceneRef} className={styles.room} style={{"--room-width":width,"--room-height":ROOM_HEIGHT,"--count":Math.max(1,visible.length)} as CSSProperties}
     data-grow-room="" data-grow-has-plan={!!plan} data-grow-motion={status} aria-label={warehouseEditor ? "Entrepôt" : "Salle de culture"}>
     {plan ? <div ref={viewport}><KqGrowRoomIsometric plan={plan} zones={zones} selected={zone?.id??null} onSelect={select}
-      profile={playerProfile} event={event} motion={motionEnabled} visible={sceneVisible} staticCare={paused || reducedMotion} onKey={onKey}
+      profile={playerProfile} event={event} motion={motionEnabled} visible={sceneVisible} reducedMotion={reducedMotion} onKey={onKey}
       affectedPlants={affectedPlants} pbiTargeting={pbiTargeting} warehouseEditor={warehouseEditor} paused={paused}
       onTogglePause={warehouseEditor && !reducedMotion ? () => setPaused(value => !value) : undefined}/></div> : <>
     <p className={styles.legacyNote}>Tente isolée · le plan de cette culture n’a pas été enregistré.</p>

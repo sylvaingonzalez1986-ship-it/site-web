@@ -252,7 +252,7 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
     <section className={styles.stage} data-village-unavailable={unavailable || undefined} data-clock-pending={awaitingCalendar || undefined} inert={activityOpen} aria-hidden={activityOpen || undefined} aria-label={unavailable ? "Activités du quartier" : "Vue 3D du quartier"}>
       {unavailable ? <p className={styles.notice} role="alert">La vue 3D est indisponible. Choisis un bâtiment pour accéder à ses activités.</p>
         : <SceneBoundary onError={onUnavailable}>
-          <Scene calendar={calendar} profile={profile} selected={selected} onSelect={select} onOpenMailbox={openMailbox} cameraRequest={camera} labelNodes={labels}
+          <Scene calendar={calendar} profile={profile} playerIndoors={activityOpen && (activeNav === "workshop" || activeNav === "game")} selected={selected} onSelect={select} onOpenMailbox={openMailbox} cameraRequest={camera} labelNodes={labels}
             headerNode={headerNode} bubbleNode={bubble} bubbleTail={bubbleTail} onCloseActivities={closeActivities} onReady={onReady} onUnavailable={onUnavailable}
             npc={npc.bridge} korriganReaction={korriganReaction} controlsBlocked={activityOpen || marketOpen} supportOpen={supportOpen} restoreSupportView={restoreSupportView}
             activity={activity} motion={motion} onHover={setHovered} focusBuilding={hovered === HEMP_FARM_ID || focused === HEMP_FARM_ID ? null : hovered ?? focused ?? selectedPlace?.id ?? null} keyboardFocus={mailboxFocused ? "mailbox" : focused} reaction={reaction} />

@@ -32,9 +32,9 @@ const dist = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
 const cellKey = (cell: Point) => `${cell.x},${cell.y}`;
 const markerOffsets = [0, -44, 44, -88, 88].flatMap(x => [0, -44, 44, -88, 88].map(y => [x, y]))
   .sort((a, b) => Math.hypot(...a) - Math.hypot(...b));
-export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, event, motion, visible, staticCare, onKey, affectedPlants, pbiTargeting, warehouseEditor, paused, onTogglePause }: {
+export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, event, motion, visible, reducedMotion, onKey, affectedPlants, pbiTargeting, warehouseEditor, paused, onTogglePause }: {
   plan: KqWarehouseState; zones: readonly KqGrowRoomZone[]; selected: string | null; onSelect: (index: number) => void;
-  profile?: ChanvrierAvatarProfile | null; event?: KqGrowRoomEvent | null; motion: boolean; visible: boolean; staticCare?: boolean;
+  profile?: ChanvrierAvatarProfile | null; event?: KqGrowRoomEvent | null; motion: boolean; visible: boolean; reducedMotion: boolean;
   onKey: (event: KeyboardEvent<HTMLButtonElement>, index: number) => void;
   affectedPlants?: readonly KqAffectedPlant[]; pbiTargeting?: KqPbiTargeting | null;
   warehouseEditor?: KqGrowRoomWarehouseEditor;
@@ -244,10 +244,16 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
     const placed: { x: number; y: number; halfWidth: number }[] = [];
     return layout.items.flatMap((item, index) => {
       if (item.kind === "partition") return [];
-      const point = projectRoomPoint(item.x - item.width / 2 + .17, .32, item.z - item.depth / 2 + .17, camera, scale, size.width, size.height);
+      // Hang the occupied station's sign above the worker, including at overview zoom.
+      const workingHere = item.id === actorTargetId;
+      const point = projectRoomPoint(item.x - item.width / 2 + .17, workingHere ? 2.1 : .32, item.z - item.depth / 2 + .17, camera, scale, size.width, size.height);
       const code = crops.get(item.id)?.buddieCode;
       const portrait = code && states.get(item.id)?.status !== "reserved" ? getBuddieArtwork(code) : "";
       const halfWidth = portrait ? 18 : 10;
+      if (workingHere && point.y < 19) {
+        const floor = projectRoomPoint(item.x, 0, item.z, camera, scale, size.width, size.height);
+        if (floor.y >= 0 && floor.y <= size.height) point.y = 19;
+      }
       if (point.x < halfWidth || point.x > size.width - halfWidth || point.y < 15 || point.y > size.height) return [];
       return [{ ...point, halfWidth, id: item.id, index, portrait, selected: item.id === selected }];
     }).sort((a, b) => Number(b.selected) - Number(a.selected)).filter(label => {
@@ -256,7 +262,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
       placed.push(label);
       return true;
     });
-  }, [plan.zones, zones, layout.items, camera, scale, size, selected]);
+  }, [plan.zones, zones, layout.items, camera, scale, size, selected, actorTargetId]);
   useEffect(() => {
     const el = host.current; if (!el) return;
     const resize = () => { const width = el.clientWidth, height = el.clientHeight; if (width && height) setSize(s => s.width === width && s.height === height ? s : { width, height }); };
@@ -291,9 +297,9 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
     return () => { active = false; intersection?.disconnect(); picture.removeEventListener("webglcontextlost", lost); picture.removeEventListener("webglcontextrestored", restored); runtime.current?.dispose(); runtime.current = null; };
   }, [generation]);
   useEffect(() => {
-    const input = { layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, camera, ...size };
+    const input = { layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, reducedMotion, camera, ...size };
     current.current = input; runtime.current?.update(input);
-  }, [layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, camera, size]);
+  }, [layout, zones, selected, actorTargetId, inspectAtRest, profile, event, motion, visible, reducedMotion, camera, size]);
   function cameraGesture(from: Point, to: Point, factor: number) {
     setCamera(old => {
       const zoom = Math.max(1, Math.min(6, old.zoom * factor));
@@ -440,7 +446,7 @@ export function KqGrowRoomIsometric({ plan, zones, selected, onSelect, profile, 
   }
   const receipt = event?.target && event.target.zoneId === event.zoneId ? event : null;
   const hasDelivery = receipt && delivered?.id === receipt.id && delivered.zoneId === receipt.zoneId;
-  const staticResult = renderMode === "plan" || staticCare;
+  const staticResult = renderMode === "plan" || paused || reducedMotion;
   const deposit = staticResult ? receipt?.target : hasDelivery ? delivered.target : undefined;
   const broom = event?.gesture === "sweep" && staticResult
     ? projectRoomPoint(layout.entry.x, 0, layout.entry.z, camera, scale, size.width, size.height) : null;

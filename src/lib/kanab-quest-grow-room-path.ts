@@ -57,6 +57,7 @@ export function createGrowRoomPaths(layout: WarehouseSpatialLayout) {
   }));
   const boxes = fixtures.map(b => ({ left: b.left - clearance, right: b.right + clearance, back: b.back - clearance, front: b.front + clearance }));
   const inside = (p: GrowPoint) => Math.abs(p.x) <= roomX && Math.abs(p.z) <= roomZ;
+  const onInteriorFloor = (p: GrowPoint) => Math.abs(p.x) + clearance <= layout.width / 2 && Math.abs(p.z) + clearance <= layout.depth / 2;
   const canWalk = (a: GrowPoint, b: GrowPoint) => inside(a) && inside(b) && !boxes.some(box => crosses(a, b, box));
   const columns = layout.width * 2 + 3, rows = layout.depth * 2 + 3;
   const nodes = Array.from({ length: columns * rows }, (_, i) => ({
@@ -67,25 +68,7 @@ export function createGrowRoomPaths(layout: WarehouseSpatialLayout) {
   const links = nodes.map((p, i) => free[i] ? [i - columns, i + columns, i - 1, i + 1].filter(j =>
     free[j] && distance(p, nodes[j]) <= .51 && canWalk(p, nodes[j])) : []);
 
-  function route(from: GrowPoint, targetId: string, sector?: KqCareSector) {
-    const item = layout.items.find(item => item.id === targetId && item.kind !== "partition");
-    if (!item || !canWalk(from, from)) return null;
-    const cell = sector && growRoomSectorCenter(item, sector);
-    if (sector && !cell) return null;
-    const goals = workPoints(item, cell).filter(p => {
-      if (!canWalk(p, p)) return false;
-      const edge = { x: p.x + .34 * Math.sin(p.yaw), z: p.z + .34 * Math.cos(p.yaw) };
-      return !fixtures.some(other => other.id !== targetId && crosses(p, edge, other));
-    });
-    if (!goals.length) return null;
-    // Pick the reachable aisle closest to the requested cell. Walking distance
-    // only breaks ties between equally suitable working positions.
-    const reach = (p: GrowPoint) => cell ? Math.round(distance(cell, p) * 1000) : 0;
-    goals.sort((a, b) => reach(a) - reach(b) || distance(from, a) - distance(from, b));
-    const facing = (p: typeof goals[number]) => cell ? Math.atan2(cell.x - p.x, cell.z - p.z) : p.yaw;
-    const direct = goals.find(p => canWalk(from, p));
-    if (direct && reach(direct) === reach(goals[0])) return { points: [direct], yaw: facing(direct) };
-
+  function reachableFrom(from: GrowPoint) {
     const parent = new Int32Array(nodes.length).fill(-2);
     const steps = new Float64Array(nodes.length).fill(Infinity);
     const queue: number[] = [];
@@ -106,12 +89,58 @@ export function createGrowRoomPaths(layout: WarehouseSpatialLayout) {
         queue.push(j);
       }
     }
+    return { queue, parent, steps };
+  }
+
+  /** Stand inside the room on an aisle connected to the south doorway. */
+  function indoorStart(): GrowPoint {
+    const preferred = { x: layout.entry.x, z: layout.depth / 2 - 2 };
+    if (canWalk(layout.entry, preferred)) return preferred;
+    const { queue } = reachableFrom(layout.entry);
+    let best = layout.entry, bestRank = Infinity, bestDistance = Infinity;
+    for (const i of queue) {
+      const p = nodes[i];
+      // A fully occupied plan still has a service aisle. Prefer the side or
+      // back aisle to the threshold and the camera-facing side on equal scores.
+      const rank = onInteriorFloor(p) ? 0 : p.z < layout.depth / 2 ? 1 : 2;
+      const d = distance(preferred, p);
+      if (rank < bestRank || (rank === bestRank && (d < bestDistance || (d === bestDistance && p.x > best.x)))) {
+        best = p;
+        bestRank = rank;
+        bestDistance = d;
+      }
+    }
+    return { ...best };
+  }
+
+  function route(from: GrowPoint, targetId: string, sector?: KqCareSector) {
+    const item = layout.items.find(item => item.id === targetId && item.kind !== "partition");
+    if (!item || !canWalk(from, from)) return null;
+    const cell = sector && growRoomSectorCenter(item, sector);
+    if (sector && !cell) return null;
+    const goals = workPoints(item, cell).filter(p => {
+      if (!canWalk(p, p)) return false;
+      const edge = { x: p.x + .34 * Math.sin(p.yaw), z: p.z + .34 * Math.cos(p.yaw) };
+      return !fixtures.some(other => other.id !== targetId && crosses(p, edge, other));
+    });
+    if (!goals.length) return null;
+    // Work close to the selected plant. Among equally suitable cultivation
+    // aisles, keep the worker on the interior floor wherever it is reachable.
+    const reach = (p: GrowPoint) => cell ? Math.round(distance(cell, p) * 1000) : 0;
+    const compareSpots = (a: GrowPoint, b: GrowPoint) => reach(a) - reach(b)
+      || (item.kind === "culture" ? Number(onInteriorFloor(b)) - Number(onInteriorFloor(a)) : 0);
+    goals.sort((a, b) => compareSpots(a, b) || distance(from, a) - distance(from, b));
+    const facing = (p: typeof goals[number]) => cell ? Math.atan2(cell.x - p.x, cell.z - p.z) : p.yaw;
+    const direct = goals.find(p => canWalk(from, p));
+    if (direct && compareSpots(direct, goals[0]) === 0) return { points: [direct], yaw: facing(direct) };
+
+    const { parent, steps, queue } = reachableFrom(from);
     let best = direct ? distance(from, direct) : Infinity, end = -1, goal = direct;
     for (const candidate of goals) {
-      if (goal && reach(candidate) > reach(goal)) break;
+      if (goal && compareSpots(candidate, goal) > 0) break;
       for (const i of queue) {
         const gap = distance(nodes[i], candidate);
-        if (gap <= .8 && (!goal || reach(candidate) < reach(goal) || steps[i] + gap < best) && canWalk(nodes[i], candidate)) {
+        if (gap <= .8 && (!goal || compareSpots(candidate, goal) < 0 || steps[i] + gap < best) && canWalk(nodes[i], candidate)) {
           best = steps[i] + gap;
           end = i;
           goal = candidate;
@@ -162,5 +191,5 @@ export function createGrowRoomPaths(layout: WarehouseSpatialLayout) {
     }
     return goal;
   }
-  return { canWalk, route, sweep };
+  return { canWalk, indoorStart, route, sweep };
 }

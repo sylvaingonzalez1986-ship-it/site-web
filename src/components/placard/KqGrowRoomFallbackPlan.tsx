@@ -38,12 +38,12 @@ export default function KqGrowRoomFallbackPlan({ profile, position, targetId, ev
   }, [zones, plan, grid, id]);
   const paths = useMemo(() => createGrowRoomPaths(layout), [layout]);
   const location = useMemo(() => {
-    const origin = position && paths.canWalk(position, position) ? position : layout.entry;
+    const origin = position && paths.canWalk(position, position) ? position : paths.indoorStart();
     if (!targetId || (origin === position && targetId === position?.targetId)) return origin;
     const receipt = event?.zoneId === targetId ? event : null;
     const route = receipt?.gesture === "sweep" ? paths.sweep(origin) : paths.route(origin, targetId, receipt?.target);
     return route?.points.at(-1) ?? origin;
-  }, [event, layout.entry, paths, position, targetId]);
+  }, [event, paths, position, targetId]);
   const foot = projectRoomPoint(location.x, 0, location.z, camera, scale, width, height);
   const top = projectRoomPoint(location.x, 1.9, location.z, camera, scale, width, height);
   const spriteHeight = foot.y - top.y;

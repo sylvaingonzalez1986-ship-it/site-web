@@ -8,6 +8,72 @@ const item = (id: string, kind: WarehouseSpatialItem["kind"], x: number, z: numb
 const layout = (items: WarehouseSpatialItem[]): WarehouseSpatialLayout => ({ version: 1, width: 10, depth: 10, entry: { x: 0, z: 5.7 }, items });
 
 describe("actual warehouse walking routes", () => {
+  it.each([[10, 10], [40, 25]])("starts on the clear interior floor of an empty %i × %i warehouse", (width, depth) => {
+    const entry = { x: 0, z: depth / 2 + .7 };
+    const paths = createGrowRoomPaths({ ...layout([]), width, depth, entry });
+    const spot = paths.indoorStart();
+    expect(spot).toEqual({ x: 0, z: depth / 2 - 2 });
+    expect(paths.canWalk(entry, spot)).toBe(true);
+  });
+  it("can arrive by a side aisle when a long fixture stands between the door and the waiting spot", () => {
+    const plan = { ...layout([]), obstacles: [{ id: "fitting", x: 0, z: 4.5, width: 6, depth: 1 }] };
+    const paths = createGrowRoomPaths(plan);
+    const spot = paths.indoorStart();
+    expect(spot).toEqual({ x: 0, z: 3 });
+    expect(paths.canWalk(plan.entry, spot)).toBe(false);
+    expect(paths.canWalk(spot, spot)).toBe(true);
+  });
+  it("chooses another aisle if the preferred patch of free floor is sealed off", () => {
+    const plan = layout([
+      item("west", "partition", -1.5, 3, .1, 3), item("east", "partition", 1.5, 3, .1, 3),
+      item("north", "partition", 0, 1.5, 3, .1), item("south", "partition", 0, 4.5, 3, .1),
+    ]);
+    const paths = createGrowRoomPaths(plan);
+    const spot = paths.indoorStart();
+    expect(paths.canWalk({ x: 0, z: 3 }, { x: 0, z: 3 })).toBe(true);
+    expect(Math.abs(spot.x) > 1.5 || Math.abs(spot.z - 3) > 1.5).toBe(true);
+    expect(Math.max(Math.abs(spot.x), Math.abs(spot.z))).toBeLessThan(5);
+    expect(paths.canWalk(spot, spot)).toBe(true);
+  });
+  it("stands in the visible side aisle of a completely fitted warehouse and can still work the bed", () => {
+    const plan = layout([item("filled", "culture", 0, 0, 10, 10)]);
+    const paths = createGrowRoomPaths(plan);
+    const spot = paths.indoorStart();
+    expect(spot.x).toBeGreaterThan(5);
+    expect(spot.z).toBeLessThan(5);
+    expect(paths.canWalk(spot, spot)).toBe(true);
+    const goal = paths.route(spot, "filled")!.points.at(-1)!;
+    expect(goal.x).toBeCloseTo(5.33);
+    expect(paths.canWalk(spot, goal)).toBe(true);
+  });
+  it("approaches a south-wall crop by its reachable interior side even when the doorway is closer", () => {
+    const plan = layout([item("bed", "culture", 0, 4.5, 10, 1)]);
+    const graph = createGrowRoomPaths(plan);
+    const route = graph.route(plan.entry, "bed")!;
+    let from = plan.entry;
+    for (const p of route.points) { expect(graph.canWalk(from, p)).toBe(true); from = p; }
+    expect(from.z).toBeCloseTo(3.67);
+    expect(Math.abs(from.x)).toBeLessThan(4.78);
+    expect(Math.cos(route.yaw)).toBeCloseTo(1);
+  });
+  it("uses the south service aisle when the otherwise clear interior side of a bed is walled off", () => {
+    const plan = layout([item("bed", "culture", 0, 4.5, 10, 1),
+      item("west", "partition", -4.5, 3, .1, 2), item("east", "partition", 4.5, 3, .1, 2),
+      item("north", "partition", 0, 2, 9, .1)]);
+    const graph = createGrowRoomPaths(plan);
+    const interior = { x: 0, z: 3.67 };
+    expect(graph.canWalk(interior, interior)).toBe(true);
+    const goal = graph.route(plan.entry, "bed")!.points.at(-1)!;
+    expect(goal.z).toBeCloseTo(5.33);
+    expect(graph.canWalk(plan.entry, goal)).toBe(true);
+  });
+  it.each([[1, 3.67], [3, 5.33]])("keeps the closest approach to the actual care cell in a %i-row border bed", (depth, expectedZ) => {
+    const plan = layout([item("bed", "culture", 0, 5 - depth / 2, 6, depth)]);
+    const sector = { zoneId: "bed", x: 2, y: depth - 1 };
+    const goal = createGrowRoomPaths(plan).route(plan.entry, "bed", sector)!.points.at(-1)!;
+    expect(goal.x).toBeCloseTo(-.5);
+    expect(goal.z).toBeCloseTo(expectedZ);
+  });
   it("uses the free perimeter to sweep even when the beds occupy the whole cultivation floor", () => {
     const full = layout([item("filled", "culture", 0, 0, 10, 10)]);
     const paths = createGrowRoomPaths(full);
