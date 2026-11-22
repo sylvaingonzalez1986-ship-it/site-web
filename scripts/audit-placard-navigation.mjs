@@ -32,6 +32,7 @@ const coastReport=`coast${coastCorner?'-corner':''}-${coastBaseline?'before':'af
 const bankOfficeOnly=process.argv.includes('--bank-office');
 const buildingRoomsNight=process.argv.includes('--building-rooms-night');
 const exportNightPosters=buildingRoomsNight&&process.argv.includes('--export-night-posters');
+const exportDayPosters=buildingRoomsNight&&process.argv.includes('--export-day-posters');
 const buildingRooms=buildingRoomsNight||bankOfficeOnly||process.argv.includes('--building-rooms');
 const world3d=coast||quarterTeam||buildingRooms||process.argv.includes('--world-3d');
 const motionOnly=process.argv.includes('--motion-only');
@@ -387,7 +388,7 @@ else try {
    await auditQuarterTeam({page,visit,screenshot,assertNoOverflow,results,fixture:teamFixture});
  }else if(buildingRoomsNight){
    const {auditNightBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
-   await auditNightBuildingRooms({page,visit,results,output,exportPosters:exportNightPosters});
+   await auditNightBuildingRooms({page,visit,results,output,exportPosters:exportNightPosters,exportDayPosters});
  }else if(buildingRooms){
    const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
    await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output,bankOfficeOnly});

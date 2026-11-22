@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-22",
+  "identites": {
+    "quartier": ["Loïc", "Sonneur", "Pêcheur"],
+    "comptoirs": ["Banquier", "Employé du bureau du personnel", "Comptable", "Juge", "Accueil de la Collection"],
+    "korrigans": ["Garance", "Canard", "Ocre"],
+    "equipe": ["Anna", "Maël", "Lucie", "Samira", "Yann", "Nora", "Jo", "Inès", "Hugo", "Léa", "Malik"],
+    "serre": ["Visiteur"],
+    "continuite": "Loïc utilise la même tête et la même casquette dans la rue, aux missions, au marché et à la boutique. Le recrutement, le plan de travail et le trim utilisent le portraitCode de chaque employé. Le visiteur de la serre utilise le même profil dans la scène 3D et sa projection 2D."
+  },
+  "references": {
+    "origine": "Trois planches ImageGen fondées sur les captures des modèles existants et sur la cible du créateur de personnage.",
+    "planches": ["cible-habitants.webp", "cible-comptoirs.webp", "cible-korrigans.webp"],
+    "direction": "Regard à dominante sombre et reflet unique. Nez et joues modelés dans le volume du visage. Casquettes, cheveux, vêtements, instruments et poses identifient chaque métier. Les trois korrigans se distinguent aussi par la mâchoire, les oreilles et la coupe du bonnet.",
+    "adaptation": "La géométrie et les couleurs de sommets restituent les volumes en temps réel. La laine et les irrégularités fines de surface sont plus simples que sur les références ImageGen."
+  },
+  "comparaisons": {
+    "synthese": "comparaison-visages.webp",
+    "angles": ["silhouette", "face", "trois quarts", "profil"],
+    "planchesMoteur": ["avant-habitants.webp", "apres-habitants.webp", "avant-comptoirs.webp", "apres-comptoirs.webp", "avant-korrigans.webp", "apres-korrigans.webp"],
+    "portraitsDuPersonnel": ["avant-recrues.webp", "apres-recrues.webp", "equipe-atelier.webp"],
+    "capturesEnJeu": ["sonneur-ordinateur.webp", "sonneur-mobile.webp", "../korrigans/ronde-detail.webp", "../korrigans/ronde-mobile.webp"],
+    "affichesDesSalles": "Les six affiches de jour dans public/placard/building-rooms sont exportées depuis les salles Three.js."
+  },
+  "verification": {
+    "moteur": "scripts/audit-quartier-residents.mjs capture les fabriques de production avec une caméra orthographique et un éclairage fixe. Il vérifie la présence de pixels du personnage dans chaque vue. Les portraits de recrutement passent par le moteur de vignettes et le visiteur de la serre exécute un geste d’arrosage dans la vue 2D.",
+    "quartier": "Clic sur les modèles, dialogue et chant du sonneur, six phases de pêche, interruption et reprise, ouverture du carnet de Loïc, retour du focus. Formats tactiles vérifiés à 320 × 568, 568 × 320 et 844 × 390.",
+    "clairiere": "Trois flûtistes en mouvement la nuit, réactions à l’offrande, retour des habitants à l’aube, clavier, mouvement réduit et toucher à 320 px. Réponses de marché simulées localement.",
+    "interieurs": "Six salles vérifiées de nuit, de jour et de nouveau de nuit, avec comparaison des pixels et des ombres. Les six services restent accessibles sans WebGL à 320 px. Un test vérifie les dimensions et l’intersection du rayon de sélection avec le visage de l’accueil.",
+    "equipe": "L’onglet Journée du personnel a été contrôlé à 320, 390 et 1440 px. L’audit valide les identités aux postes, le chargement des portraits, le fonctionnement de la pause et les changements de visibilité. Les onze profils sont également photographiés par groupes dans le moteur de la salle de trim avec des affectations de démonstration.",
+    "tests": "83 tests réussis dans neuf suites couvrant les résidents, les locaux, le recrutement, le modèle partagé et la serre. Vérification TypeScript et compilation de production réussies.",
+    "rendu": {
+      "source": ["avant-mesures.json", "apres-mesures.json"],
+      "conditions": "Personnage isolé, accessoires visibles à la pose choisie, une ombre de contact incluse lorsqu’elle existe. Les appels et triangles rapportés sont ceux de renderer.info.render.",
+      "exterieur": "Les trois habitants gardent le même nombre d’appels de rendu avec environ 6 % de triangles en moins. La ronde conserve neuf appels par korrigan en comptant son ombre.",
+      "interieurs": "Les portraits et les vêtements supplémentaires portent les personnages des comptoirs à environ 10 000 à 15 000 triangles chacun. Les poses de travail des salles sont rendues à la demande."
+    },
+    "environnement": "Chromium sur ordinateur avec émulation tactile et rendu logiciel SwiftShader. La fréquence d’images sur téléphone physique reste à mesurer."
+  }
+}

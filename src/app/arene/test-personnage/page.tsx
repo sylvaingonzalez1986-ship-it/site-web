@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
+import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { ArenaCharacterPreview } from "@/components/contest/ArenaCharacterPreview";
 
 export const dynamic = "force-dynamic";
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function CharacterPreviewPage() {
   if (process.env.NODE_ENV !== "development") notFound();
-  if (!await isCurrentRequestAdminAuthorized()) redirect("/admin");
-  return <ArenaCharacterPreview />;
+  const admin = await getValidatedAdminContext();
+  if (!admin) redirect("/admin");
+  return <ArenaCharacterPreview ownerId={admin.customerId} />;
 }

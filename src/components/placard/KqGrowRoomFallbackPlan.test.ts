@@ -87,6 +87,7 @@ it("places the fallback avatar along a reachable aisle and preserves its feet on
   const cold = render("bed");
   expect(spot).not.toEqual(layout.entry);
   expect(cold).toContain('data-grow-fallback-actor="visitor"');
+  expect(cold).toContain("Casquette de marin");
   expect(cold).toContain(atFeet(spot));
   expect(render("missing")).toContain(atFeet(layout.entry));
   const interrupted = { x: 0, z: 2.75, targetId: "bed" };

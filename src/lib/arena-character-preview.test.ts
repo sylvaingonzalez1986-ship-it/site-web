@@ -49,6 +49,14 @@ describe("local character creation preview", () => {
     expect((await save(request, { ...character, strength: "green-thumb" })).status).toBe(400);
   });
 
+  it("resumes a saved demo with the same locked specialty after reloading", async () => {
+    const reopened = createArenaCharacterPreviewRequest(character);
+    expect((await save(reopened, { ...character, strength: "merchant" })).status).toBe(400);
+    expect(await (await save(reopened, { ...character, nickname: "Reprise" })).json()).toMatchObject({
+      created: false, profile: { ...character, nickname: "Reprise" },
+    });
+  });
+
   it("supports Request inputs and does not save aborted requests", async () => {
     const request = createArenaCharacterPreviewRequest();
     const controller = new AbortController();

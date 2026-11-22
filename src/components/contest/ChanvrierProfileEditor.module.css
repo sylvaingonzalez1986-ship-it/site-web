@@ -4,6 +4,7 @@
   --ink: var(--arcade-ink, #172923);
   --muted: #455748;
   --rule: #17292340;
+  --workshop-rule: #087b7085;
   width: min(1120px, calc(100vw - 28px));
   max-width: calc(100vw - 28px);
   max-height: 94dvh;
@@ -17,13 +18,13 @@
   scrollbar-color: #087b70 #fff1d6;
   scroll-padding-block: 16px 82px;
 }
-.dialog::backdrop { background: #172923c4; }
+.dialog::backdrop { background: #163c36c9; }
 .dialog, .dialog *, .dialog *::before, .dialog *::after { box-sizing: border-box; }
 .dialog :where(button, input, select) { font-family: inherit; }
 .dialog button { touch-action: manipulation; }
 .dialog button:disabled { opacity: .55; cursor: not-allowed; }
-.dialog :is(button, input, select, [tabindex="0"]):focus-visible { outline: 3px solid #087b70; outline-offset: 2px; }
-.dialog :where(button, input, select, [tabindex]) { scroll-margin-block: 8px 14px; }
+.dialog :is(button, input, summary, [tabindex="0"]):focus-visible { outline: 3px solid #087b70; outline-offset: 2px; box-shadow: none; }
+.dialog :where(button, input, summary, [tabindex]) { scroll-margin-block: 8px 14px; }
 
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 5px 13px 8px; border-bottom: 1px solid var(--rule); }
 .close { display: grid; flex: 0 0 44px; place-items: center; width: 44px; height: 44px; cursor: pointer; }
@@ -51,10 +52,33 @@
 .letter .signature { color: #087b70; font: italic 600 20px/1.6 Georgia, "Times New Roman", serif; }
 .note { color: var(--muted); font-size: 12px; line-height: 1.55; }
 
-.dialog[data-profile-step="look"][open] { display: flex; flex-direction: column; height: min(810px, 94dvh); overflow: hidden; }
-.layout[data-workshop="true"] { grid-template: "heading heading" auto "preview controls" minmax(0, 1fr) / minmax(0, .43fr) minmax(0, .57fr); flex: 1 1 auto; align-items: stretch; min-height: 0; }
-.layout[data-workshop="true"] .stepHeading { grid-area: heading; padding-inline: 13px; }
-.layout[data-workshop="true"] .stepHeading [data-kq-chapter] { margin: 0; padding-block: 5px; border: 0; }
+.dialog[data-profile-step="look"][open] { display: flex; flex-direction: column; height: min(830px, 94dvh); overflow: hidden; }
+.dialog[data-profile-step="look"] .topbar {
+  position: absolute;
+  top: 17px;
+  right: 20px;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+}
+.dialog[data-profile-step="look"] .progress { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.layout[data-workshop="true"] {
+  grid-template: "heading heading" auto "preview controls" minmax(0, 1fr) / minmax(0, .43fr) minmax(0, .57fr);
+  flex: 1 1 auto;
+  align-items: stretch;
+  min-height: 0;
+  padding-inline: 12px;
+}
+.layout[data-workshop="true"] .stepHeading {
+  grid-area: heading;
+  display: flex;
+  align-items: center;
+  min-height: 62px;
+  margin-bottom: 13px;
+  padding: 5px 54px 9px 1px;
+  border-bottom: 2px solid var(--workshop-rule);
+}
+.layout[data-workshop="true"] .stepHeading [data-kq-chapter] { margin: 0; padding: 0; border: 0; }
 .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(29px, 4vw, 46px); }
 .layout[data-workshop="true"] .controls {
   grid-area: controls;
@@ -62,11 +86,10 @@
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: #087b70 #fff1d6;
-  padding-top: 6px;
-  padding-bottom: 12px;
+  padding: 2px 6px 12px 18px;
   scroll-padding-block: 12px;
 }
-.layout[data-workshop="true"] .workshopPreview { grid-area: preview; position: static; height: auto; min-height: 0; padding-top: 4px; }
+.layout[data-workshop="true"] .workshopPreview { grid-area: preview; position: static; height: auto; min-height: 0; padding: 0 13px 9px 0; }
 
 .workshopPreview {
   position: sticky;
@@ -89,51 +112,80 @@
 }
 .stage[data-preview-state="ready"] { cursor: grab; }
 .stage[data-preview-state="ready"]:active { cursor: grabbing; }
-.stageCanvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.previewStatus { max-width: 18ch; margin: 7px; font-size: 12px; line-height: 1.4; text-align: center; }
-.previewTools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
-.viewControls { display: grid; grid-area: 1 / 1 / 2 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
-.rotationControls { display: flex; gap: 5px; }
-.previewTools button { min-width: 0; min-height: 44px; padding: 5px 8px; font-size: 12px; line-height: 1.2; cursor: pointer; }
-.rotationControls button { display: grid; place-items: center; width: 44px; }
+.stage:not([data-preview-view="village"])::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 6px;
+  background: #98d6d8 url("/contest/releve/atelier-cote-v1.webp") center bottom / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.stageCanvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 6px; object-fit: contain; }
+.previewStatus { position: relative; max-width: 18ch; margin: 7px; font-size: 12px; line-height: 1.4; text-align: center; }
+.previewTools { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 7px; }
+.viewControls, .rotationControls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
+.rotationControls { padding-left: 5px; border-left: 1px solid var(--workshop-rule); }
+.previewTools button { min-width: 0; min-height: 42px; padding: 3px; font-size: 12px; line-height: 1.1; cursor: pointer; }
+.rotationControls button, .walkButton { width: clamp(33px, 4.6vw, 40px); }
+.rotationControls button { display: grid; place-items: center; }
 .walkButton { display: flex; align-items: center; justify-content: center; gap: 5px; }
 .walkButton svg { flex-shrink: 0; }
+.walkButton span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .stageHint { min-height: 14px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.35; text-align: center; }
 
-.nickname { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 10px; align-items: center; margin: 0 0 8px; font-size: 13px; font-weight: 800; }
-.nickname input { width: 100%; min-width: 0; min-height: 45px; padding: 7px 11px; font-size: 16px; font-weight: 750; }
+.nickname { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 10px; align-items: center; margin: 0 0 12px; font: 800 19px/1.2 var(--font-display), Impact, sans-serif; }
+.nickname input { width: 100%; min-width: 0; min-height: 45px; padding: 7px 11px; font: 650 16px/1.3 var(--font-body), Arial, sans-serif; }
 .nickname input::placeholder { color: #657468; font-weight: 500; opacity: 1; }
 .nickname input[aria-invalid="true"] { outline: 2px solid #8a3027; outline-offset: 2px; }
 .nickname small, .nickname .fieldError { grid-column: 2; }
-.nickname small { font-size: 11px; font-weight: 500; line-height: 1.4; color: var(--muted); }
-.wardrobe { min-width: 0; padding-top: 8px; border-top: 1px solid var(--rule); }
-.lookTabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.35fr); gap: 5px; }
-.lookTabs button { min-width: 0; min-height: 44px; padding: 5px 4px; font-size: 12px; line-height: 1.2; cursor: pointer; }
-.wardrobeControls { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px 12px; margin: 9px 0; }
-.fieldSelect { display: grid; gap: 3px; min-width: 0; color: var(--muted); font-size: 11px; font-weight: 750; }
-.fieldSelect select { width: 100%; min-width: 0; min-height: 44px; padding: 6px 8px; font-size: 14px; font-weight: 750; cursor: pointer; }
-.lookTools { display: flex; gap: 5px; }
-.lookTools button { display: inline-flex; flex: 1 1 auto; align-items: center; justify-content: center; gap: 5px; min-width: 0; min-height: 44px; padding: 5px 8px; font-size: 11px; line-height: 1.2; cursor: pointer; }
+.nickname small { font: 500 11px/1.4 var(--font-body), Arial, sans-serif; color: var(--muted); }
+.wardrobe { display: grid; min-width: 0; gap: 12px; }
+.lookTabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) minmax(0, 1.17fr); gap: 5px; }
+.lookTabs button { display: grid; min-width: 0; min-height: 62px; place-content: center; justify-items: center; gap: 3px; padding: 5px 2px; font-size: 16px; line-height: 1; cursor: pointer; }
+.fieldTabs { display: flex; flex-wrap: wrap; gap: 4px; }
+.fieldTabs button { flex: 1 1 auto; min-height: 38px; padding: 4px 8px; font-size: 13px; }
+.lookTools { display: flex; justify-content: flex-end; gap: 5px; padding-top: 8px; border-top: 1px solid var(--workshop-rule); }
+.lookTools button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; min-height: 43px; padding: 5px 10px; font-size: 13px; line-height: 1.2; cursor: pointer; }
 .lookTools svg { flex-shrink: 0; }
 .optionGroup, .palette { min-width: 0; margin: 0; padding: 0; border: 0; }
-.choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
-.option { position: relative; display: grid; align-content: start; justify-items: center; gap: 3px; min-width: 0; min-height: 70px; padding: 7px; font-size: 12px; line-height: 1.2; overflow-wrap: anywhere; cursor: pointer; }
-.choicePortrait { display: block; width: 100%; height: clamp(65px, 14vh, 108px); }
+.fieldHeading { width: 100%; margin: 0 0 7px; padding: 0 0 4px; border-bottom: 1px solid var(--workshop-rule); font: 800 22px/1.08 var(--font-display), Impact, sans-serif; }
+.traitNote { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.choices[data-feature-choices="hair"] {
+  grid-auto-columns: calc((100% - 24px) / 4.25);
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  overflow-x: auto;
+  padding: 5px;
+  margin: -5px;
+  scroll-padding-inline: 7px;
+  scrollbar-width: thin;
+  scrollbar-color: #087b70 #fff1d6;
+}
+.option { position: relative; display: grid; grid-template-rows: auto 1fr; align-items: center; justify-items: center; gap: 4px; min-width: 0; min-height: 70px; padding: 4px 4px 6px; font-size: 14px; line-height: 1.15; overflow-wrap: anywhere; cursor: pointer; }
+.choicePortrait { position: relative; display: block; width: 100%; height: clamp(68px, 12dvh, 105px); overflow: hidden; border-radius: 5px; }
 .choicePortrait canvas { display: block; width: 100%; height: 100%; object-fit: contain; }
-.optionCheck { position: absolute; top: 8px; right: 8px; }
-.outfitGroup h3 { margin: 0 0 6px; font: 800 20px/1.15 var(--font-display), "Arial Narrow", sans-serif; }
-.outfitGroup + .outfitGroup { margin-top: 13px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.choicePortrait[data-detail] { height: auto; aspect-ratio: 1.5; background: var(--game-surface-warm, #eda45e); }
+.choicePortrait[data-detail] canvas { position: absolute; inset: 0; object-fit: cover; }
+.choicePortrait[data-frame="full"] { height: clamp(96px, 19dvh, 160px); }
+.optionCheck, .swatchCheck { position: absolute; display: grid; place-items: center; border: 2px solid #fff1d6; border-radius: 50%; background: #087b70; color: #fff1d6; }
+.optionCheck { top: 3px; right: 3px; width: 24px; height: 24px; }
 
-.swatches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-.swatches button { display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 44px; padding: 6px; font-size: 11px; line-height: 1.2; text-align: left; overflow-wrap: anywhere; cursor: pointer; }
-.inkSample { display: grid; place-items: center; flex: 0 0 23px; width: 23px; height: 23px; border: 1px solid #172923b3; border-radius: 50%; color: #fff; }
-.inkSample svg { filter: drop-shadow(0 1px 1px #000) drop-shadow(0 0 1px #000); }
-.customColor { display: flex; gap: 8px; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.swatches { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+.palette[data-palette="hair"] .swatches { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.swatches button { display: grid; justify-items: center; align-content: start; gap: 6px; min-width: 0; min-height: 44px; padding: 5px 1px 4px; border: 0; background: transparent; color: var(--ink); font-size: 13px; line-height: 1.1; overflow-wrap: anywhere; cursor: pointer; }
+.inkSample { position: relative; display: block; width: clamp(28px, 4vw, 55px); aspect-ratio: 1; border: 1px solid #172923b3; border-radius: 50%; }
+.swatches button[aria-pressed="true"] .inkSample, .recentColors button[aria-pressed="true"] .inkSample { outline: 2px solid #087b70; outline-offset: 2px; }
+.swatchCheck { top: -5px; right: -5px; width: 19px; height: 19px; }
+.customColorMenu { margin-top: 3px; color: var(--muted); }
+.customColorMenu summary { min-height: 34px; align-content: center; padding: 3px; font-size: 12px; }
+.customColor { display: flex; gap: 8px; align-items: center; }
 .customColor label { font-size: 12px; font-weight: 750; }
 .customColor label span { display: block; font-size: 11px; font-weight: 550; color: var(--muted); }
 .customColor input { width: 52px; height: 44px; margin: 0; padding: 5px; cursor: pointer; }
 .recentColors { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 7px; font-size: 11px; font-weight: 750; }
 .recentColors button { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 4px; cursor: pointer; }
+.recentColors .inkSample { width: 25px; }
 
 .strengths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .strengths button { position: relative; display: block; min-width: 0; min-height: 122px; padding: 14px; text-align: left; cursor: pointer; }
@@ -182,9 +234,11 @@
 .actions > button:first-child:not(.primary) { margin-right: auto; }
 .actions .primary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .actions svg { flex-shrink: 0; }
-.dialog[data-profile-step="look"] .actions { position: static; }
+.dialog[data-profile-step="look"] .actions { position: static; padding: 10px 12px 3px; margin: 0; border: 0; border-top: 1px solid var(--workshop-rule); border-image: none; }
+.dialog[data-profile-step="look"] .actions button { min-height: 47px; font-size: 17px; }
+.dialog[data-profile-step="look"] :is(button, summary, button span) { text-transform: none !important; }
 
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldSelect select, .lookTools button, .option, .swatches button,
+.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option,
 .customColor input, .recentColors button, .actions button, .strengths button, .editLink {
   --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
   color: var(--ink);
@@ -194,12 +248,13 @@
   box-shadow: none;
   border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldSelect select, .lookTools button, .option, .swatches button, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
+.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
 .stepNumber { --game-control-edge: 7px; }
-.previewTools button[aria-pressed="true"], .walkButton[data-playing="true"], .lookTabs button[aria-pressed="true"], .option[aria-pressed="true"], .swatches button[aria-pressed="true"], .recentColors button[aria-pressed="true"] {
+.previewTools button[aria-pressed="true"], .lookTabs button[aria-pressed="true"], .fieldTabs button[aria-pressed="true"], .recentColors button[aria-pressed="true"] {
   --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
   color: #fff1d6;
 }
+.option[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
 .strengths button[aria-pressed="true"] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .dialog, .stage, .bonus, .starterKit, .actions {
   border: 2px solid transparent;
@@ -208,20 +263,18 @@
   box-shadow: none;
   border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
-.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-
 @media (hover: hover) {
-  :is(.close, .previewTools button, .lookTabs button, .lookTools button, .fieldSelect select, .option, .swatches button, .recentColors button, .actions button, .editLink):hover:not(:disabled) {
+  :is(.close, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .recentColors button, .actions button, .editLink):hover:not(:disabled, [aria-pressed="true"]) {
     --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
     color: var(--ink);
   }
+  .swatches button:hover:not([aria-pressed="true"]) .inkSample { outline: 2px solid #a46525; outline-offset: 2px; }
   .strengths button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 }
 
 @media (max-width: 960px) {
   .controls { padding-inline: 18px; }
-  .wardrobeControls { grid-template-columns: minmax(0, 1fr); margin-block: 7px 9px; }
-  .lookTools button { flex: 1 1 0; }
+  .lookTabs button { font-size: 14px; }
   .workshopPreview { padding-inline: 12px; }
 }
 
@@ -242,40 +295,54 @@
   .stepHeading [data-kq-chapter] h2 { font-size: clamp(25px, 6vw, 32px); }
   .letter p { margin-bottom: 12px; font-size: 14px; line-height: 1.7; }
   .workshopPreview { position: static; height: 184px; padding: 6px 8px; }
-  .layout[data-workshop="true"] .stepHeading { padding-inline: 9px; }
-  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { padding-block: 4px; }
-  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(24px, 6vw, 31px); }
-  .layout[data-workshop="true"] .controls { padding-top: 5px; }
-  .lookTabs button { padding-inline: 2px; font-size: 11px; }
+  .dialog[data-profile-step="look"] .topbar { top: 9px; right: 11px; }
+  .layout[data-workshop="true"] { padding-inline: 6px; }
+  .layout[data-workshop="true"] .stepHeading { min-height: 50px; margin-bottom: 6px; padding-block: 2px 4px; }
+  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(24px, 6.5vw, 33px); }
+  .layout[data-workshop="true"] .controls { padding: 6px 5px 12px; }
+  .lookTabs { gap: 3px; }
+  .lookTabs button { min-height: 51px; font-size: 13px; }
+  .lookTabs button svg { width: 18px; height: 18px; }
+  .nickname { margin-bottom: 6px; font-size: 16px; }
+  .nickname input { min-height: 37px; }
+  .nickname small, .nickname .fieldError { grid-column: 1 / -1; }
+  .wardrobe + .nickname { margin-top: 9px; }
+  .wardrobe { gap: 9px; }
+  .fieldHeading { font-size: 19px; }
+  .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .choices[data-feature-choices="hair"] { grid-auto-columns: calc((100% - 16px) / 2.5); }
+  .choices[data-feature-choices="eyes"] .choicePortrait { height: clamp(62px, 20vw, 82px); }
+  .palette[data-palette="hair"] .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lookTools { justify-content: space-between; }
+  .lookTools button { flex: 1 1 auto; padding-inline: 4px; }
   .actions { bottom: -5px; padding: 6px 7px; }
   .actions button { gap: 5px; padding-inline: 9px; font-size: 12px; }
   .actions .primary { flex: 1 1 auto; }
+  .dialog[data-profile-step="look"] .actions { padding: 5px 6px 0; }
+  .dialog[data-profile-step="look"] .actions button { font-size: 15px; }
 }
 
 @media (max-width: 680px) and (orientation: portrait) {
   .layout[data-workshop="true"] { grid-template: "heading" auto "preview" auto "controls" minmax(0, 1fr) / minmax(0, 1fr); }
-  .workshopPreview, .layout[data-workshop="true"] .workshopPreview {
-    grid-template-columns: minmax(0, 1fr) minmax(139px, .8fr);
-    grid-template-rows: 138px auto;
-    gap: 2px 5px;
-    height: auto;
-    padding: 3px 8px 2px;
+  .layout[data-workshop="true"] .workshopPreview {
+    grid-template-rows: clamp(118px, 26dvh, 248px) auto;
+    gap: 4px;
+    padding: 0 3px 6px;
   }
-  .previewTools { grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(3, 44px); gap: 3px; }
-  .viewControls { gap: 2px; }
-  .rotationControls { justify-content: space-between; gap: 2px; }
-  .previewTools button { padding-inline: 2px; font-size: 11px; }
-  .rotationControls button { flex: 1; }
-  .stageHint { grid-column: 1 / -1; font-size: 10px; }
-  .layout[data-workshop="true"] .controls { border-top: 1px solid var(--rule); }
+  .previewTools, .viewControls, .rotationControls { gap: 3px; }
+  .rotationControls button, .walkButton { width: clamp(33px, 10vw, 43px); }
+  .previewTools button { min-height: 37px; padding-inline: 1px; font-size: 12px; }
+  .layout[data-workshop="true"] .stageHint:not([data-notice="true"]) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .layout[data-workshop="true"] .controls { border-top: 1px solid var(--workshop-rule); }
 }
 
 @media (max-width: 400px) {
   .progress li { font-size: 9px; }
   .progress { gap: 4px 6px; }
-  .lookTabs button { font-size: 10px; }
-  .choices, .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .option { font-size: 11px; }
+  .lookTabs button { font-size: 11px; }
+  .fieldTabs button { font-size: 12px; }
+  .option, .lookTools button { font-size: 12px; }
+  .swatches button { font-size: 11px; }
   .strengths strong { font-size: 20px; }
   .starterAreas dd { font-size: 23px; }
   .actions button { font-size: 11px; }
@@ -285,7 +352,8 @@
   .dialog { max-height: 98dvh; padding-block: 4px; }
   .dialog[data-profile-step="look"][open] { height: 98dvh; }
   .topbar { padding-block: 0 2px; }
-  .layout[data-workshop="true"] .stepHeading [data-kq-chapter] { padding-block: 1px; }
+  .layout[data-workshop="true"] .stepHeading { min-height: 52px; margin-bottom: 6px; }
+  .dialog[data-profile-step="look"] .topbar { top: 7px; }
   .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: 27px; }
   .workshopPreview, .layout[data-workshop="true"] .workshopPreview { gap: 4px; padding-block: 3px 4px; }
   .stageHint { min-height: 0; }

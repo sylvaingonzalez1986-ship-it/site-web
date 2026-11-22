@@ -1,0 +1,54 @@
+{
+  "Loïc": {
+    "calls": 18,
+    "triangles": 19452
+  },
+  "Sonneur": {
+    "calls": 24,
+    "triangles": 20678
+  },
+  "Pêcheur": {
+    "calls": 21,
+    "triangles": 19316
+  },
+  "Banquier": {
+    "calls": 18,
+    "triangles": 12290
+  },
+  "Bureau du personnel": {
+    "calls": 13,
+    "triangles": 11936
+  },
+  "Comptabilité": {
+    "calls": 5,
+    "triangles": 9960
+  },
+  "Juge": {
+    "calls": 12,
+    "triangles": 10684
+  },
+  "Loïc au marché": {
+    "calls": 16,
+    "triangles": 14760
+  },
+  "Loïc à la boutique": {
+    "calls": 18,
+    "triangles": 14993
+  },
+  "Accueil Collection": {
+    "calls": 8,
+    "triangles": 10064
+  },
+  "Garance": {
+    "calls": 9,
+    "triangles": 15944
+  },
+  "Canard": {
+    "calls": 9,
+    "triangles": 14622
+  },
+  "Ocre": {
+    "calls": 9,
+    "triangles": 14706
+  }
+}

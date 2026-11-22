@@ -1,5 +1,8 @@
-import { ExtrudeGeometry, Shape, ShapeGeometry, SphereGeometry } from "three";
+import { ExtrudeGeometry, Group, Mesh, Shape, ShapeGeometry, SphereGeometry } from "three";
 import type { Art } from "./interior-art";
+import { Assembly, CHARACTER_COLORS, characterMaterial } from "./village-character-art";
+import { createVillageLoicHead } from "./village-loic";
+import { garmentPanel, garmentVolume, type ClothSection } from "./village-npc-tailoring";
 
 type Pigment = Parameters<Art["box"]>[6];
 
@@ -13,37 +16,65 @@ function silhouette(a: Art, points: readonly [number, number][], x: number, y: n
 
 function loic(room: Art, x: number, z: number, pose: "parcel" | "cards") {
   const a = room.pivot("daytime-resident", [0, 0, 0]);
+  const material = characterMaterial();
   for (const side of [-1, 1]) {
     const leg = x + .18 * side;
-    a.sphere(.23, leg, .43, z, "darkTeal", [.9, 1.75, .9]);
-    a.sphere(.25, leg, .14, z + .13, "earth", [.9, .48, 1.27]);
-    a.box(.095, .42, .045, x + .22 * side, 1.13, z + .22, "teal", [0, 0, side * .17]);
+    a.sphere(.218, leg, .435, z, "guideTeal", [.89, 1.72, .87]);
+    a.sphere(.22, leg, .125, z + .112, "earth", [.88, .52, 1.29]);
+    a.sphere(.182, leg, .09, z + .126, "knitRib", [1.09, .26, 1.54]);
   }
-  a.sphere(.38, x, .95, z, "apricot", [1.28, 1.4, .8]);
-  a.box(.58, .56, .16, x, .83, z + .225, "darkTeal");
+  const knit: readonly ClothSection[] = [
+    [.632, .228, .169], [.675, .282, .201], [.73, .337, .228], [.82, .357, .236],
+    [.976, .37, .239], [1.128, .371, .232], [1.203, .326, .203], [1.256, .24, .157],
+    [1.292, .134, .11], [1.31, .106, .096],
+  ];
+  const folds = (y: number, direction: number) => Math.sin(14 * y + direction * 6) * .008;
+  const clothing = new Group();
+  clothing.position.set(x, 0, z);
+  const knitArt = new Assembly();
+  knitArt.add(garmentVolume(knit, 24, undefined, folds), CHARACTER_COLORS.tan);
+  knitArt.add(garmentVolume([[1.278, .149, .119], [1.29, .134, .11], [1.311, .107, .096]], 18), "#a87350");
+  a.sphere(.121, x, 1.286, z, "skin", [1, .78, .97]);
+  const apronRows = knit.slice(1, 6);
+  knitArt.add(garmentPanel(apronRows, 12, y => {
+    const width = y > 1 ? .76 : y > .85 ? .87 : 1.05;
+    return [-width, width];
+  }, (y, direction) => .017 + folds(y, direction)), "#08635f");
+  knitArt.finish("loic-knit-and-apron", clothing, material).raycast = Mesh.prototype.raycast;
+  a.attach(clothing);
   for (const side of [-1, 1]) {
-    a.box(.09, .44, .045, x + .22 * side, 1.12, z + .26, "teal", [0, 0, side * .17]);
-    a.sphere(.052, x + .18 * side, 1.01, z + .304, "gold", [1, 1, .37]);
+    a.rod([x + .207 * side, 1.234, z + .129], [x + .238 * side, 1.083, z + .229], .082, "guideTeal");
+    a.sphere(.038, x + .212 * side, 1.073, z + .221, "gold", [1, 1, .57]);
   }
+  a.sphere(.055, x + .124, 1.177, z + .225, "guideTeal", [1, 1, .25]);
+  a.rod([x + .105, 1.195, z + .24], [x + .134, 1.195, z + .24], .009, "cream");
+  a.rod([x + .134, 1.195, z + .24], [x + .122, 1.176, z + .24], .009, "cream");
+  a.sphere(.0068, x + .12, 1.155, z + .24, "gold");
+
   const key = pose === "parcel" ? "market-loic" : "shop-loic";
-  const head = a.pivot(`${key}-head`, [x, 1.3, z]);
-  head.sphere(.34, 0, .26, 0, "skin", [1.04, 1.1, .89]);
-  head.sphere(.125, -.32, .23, 0, "skin", [1, 1, .7]);
-  head.sphere(.337, 0, .44, -.025, "teal", [1.11, .72, 1]);
-  head.sphere(.24, -.16, .455, -.05, "honey", [.89, .86, 1.16]);
-  head.sphere(.337, .085, .42, .16, "ink", [1.03, .22, .92]);
-  for (const eye of [-.09, .11]) head.sphere(.034, eye, .285, .286, "ink", [1, 1.33, .65]);
-  head.sphere(.055, .034, .215, .296, "skin", [1, .74, .95]);
-  head.sphere(.066, .041, .14, .287, "ink", [1.2, .58, .32]);
-  head.sphere(.033, .055, .126, .308, "red", [1.08, .56, .44]);
-  a.rod([x - .31, 1.16, z], [x - .44, .99, z + .24], .24, "apricot");
-  a.rod([x - .44, .99, z + .24], [x - .28, 1.05, z + .49], .21, "apricot");
-  a.sphere(.125, x - .24, 1.06, z + .54, "skin", [1.1, .8, 1.17]);
+  const portrait = new Group();
+  const face = createVillageLoicHead(portrait, material);
+  face.head.scale.setScalar(1.16);
+  face.head.rotation.set(-.19, .48, 0, "YXZ");
+  face.setExpression(0, true, 0, 0, .36);
+  face.head.traverse(part => {
+    if (part instanceof Mesh) part.raycast = Mesh.prototype.raycast;
+  });
+  a.pivot(`${key}-head`, [x, 1.31, z]).attach(portrait);
+
+  a.rod([x - .31, 1.16, z], [x - .44, .99, z + .24], .24, "sandKnit");
+  a.sphere(.113, x - .435, .993, z + .241, "sandKnit");
+  a.rod([x - .44, .99, z + .24], [x - .30, 1.04, z + .467], .21, "sandKnit");
+  a.rod([x - .30, 1.04, z + .467], [x - .273, 1.047, z + .507], .164, "knitRib");
+  a.sphere(.116, x - .24, 1.06, z + .54, "skin", [.94, .76, 1.13]);
   const palm: [number, number, number] = pose === "cards" ? [.06, .4, .11] : [-.2, .01, .32];
-  a.rod([x + .31, 1.16, z], [x + .47, 1.03, z + .18], .24, "apricot");
+  a.rod([x + .31, 1.16, z], [x + .47, 1.03, z + .18], .24, "sandKnit");
+  a.sphere(.109, x + .47, 1.03, z + .18, "sandKnit");
   const hand = a.pivot(`${key}-hand`, [x + .47, 1.03, z + .18]);
-  hand.rod([0, 0, 0], palm, .2, "apricot");
-  hand.sphere(.125, ...palm, "skin", [1, 1, .8]);
+  const cuff = palm.map(value => value * .83) as [number, number, number];
+  hand.rod([0, 0, 0], cuff, .21, "sandKnit");
+  hand.rod(cuff, palm, .158, "knitRib");
+  hand.sphere(.111, ...palm, "skin", [.91, 1.01, .82]);
   if (pose === "cards") {
     card(hand, .01, .59, .11, "teal", "star", .85);
     card(hand, .17, .57, .14, "gold", "sail", .85);

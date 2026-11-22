@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { CHANVRIER_OWNER_HEADER } from "@/lib/arena-chanvrier";
 import { isArenaCharacterRequestEnabled } from "@/lib/arena-character-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
 import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
@@ -7,21 +8,25 @@ import { getChanvrierProfile, saveChanvrierProfile } from "@/lib/supabase/arena-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store" };
-async function identity() {
+async function identity(request?: Request) {
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Connecte-toi pour créer ton chanvrier." }, { status: 401, headers });
   if (!await isArenaCharacterRequestEnabled()) return NextResponse.json({ error: "Arène indisponible." }, { status: 404, headers });
+  const expectedOwner = request?.headers.get(CHANVRIER_OWNER_HEADER);
+  if (expectedOwner != null && expectedOwner !== session.customerId) {
+    return NextResponse.json({ error: "Le compte connecté a changé. Rouvre ton profil pour continuer." }, { status: 409, headers });
+  }
   return session;
 }
-export async function GET() {
+export async function GET(request?: Request) {
   try {
-    const session = await identity(); if (session instanceof Response) return session;
+    const session = await identity(request); if (session instanceof Response) return session;
     return NextResponse.json({ profile: await getChanvrierProfile(session.customerId) }, { headers });
   } catch { return NextResponse.json({ error: "Ton profil est momentanément indisponible." }, { status: 503, headers }); }
 }
 export async function POST(request: Request) {
   try {
-    const session = await identity(); if (session instanceof Response) return session;
+    const session = await identity(request); if (session instanceof Response) return session;
     const oversized = rejectOversizedBody(request, 2048); if (oversized) return oversized;
     const rate = await hitRateLimit({ key: `arena_chanvrier:${session.customerId}`, windowSeconds: 60, maxHits: 10 });
     if (!rate.allowed) return NextResponse.json({ error: "Un peu de patience avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });

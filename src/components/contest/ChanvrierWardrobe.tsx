@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
-import { Check, RotateCcw, Shuffle, Undo2 } from "lucide-react";
+import { Check, Dices, Eye, Glasses, RotateCcw, Scissors, Shirt, Smile, Undo2, UserRound } from "lucide-react";
 import {
   CHANVRIER_APPEARANCE_OPTIONS as OPTIONS, CHANVRIER_CLOTHES, CHANVRIER_DYE_ZONES, CHANVRIER_FABRICS, CHANVRIER_SKINS,
   getChanvrierAppearance, getChanvrierColors, type ChanvrierAppearance, type ChanvrierAvatarProfile, type ChanvrierChoiceKey, type ChanvrierDyeZone,
 } from "@/lib/arena-chanvrier";
 import { CHANVRIER_BRETON_OUTFITS } from "@/lib/chanvrier-wardrobe-catalog";
 import { ChanvrierAvatar } from "./ChanvrierAvatar";
+import type { ChanvrierDetail } from "./chanvrier-snapshot";
 import type { ChanvrierWorkshopView } from "./chanvrier-workshop-renderer";
 import styles from "./ChanvrierProfileEditor.module.css";
 
 const CATEGORIES = [
-  { id: "body", label: "Corps", view: "full", fields: ["body", "gender", "skin"] },
-  { id: "face", label: "Visage", view: "portrait", fields: ["face", "eyes", "eyeColor", "eyebrows", "nose", "mouth"] },
-  { id: "hair", label: "Cheveux", view: "portrait", fields: ["hair", "hairColor", "facialHair"] },
-  { id: "outfit", label: "Tenue", view: "full", fields: ["outfits", "top", "clothing", "bottom", "bottomColor", "shoes", "shoeColor", "jacket", "jacketColor"] },
-  { id: "details", label: "Accessoires", view: "full", fields: ["accessory", "headwear", "headwearColor", "accentColor"] },
+  { id: "body", label: "Corps", Icon: UserRound, view: "full", fields: ["body", "gender", "skin"] },
+  { id: "face", label: "Visage", Icon: Smile, view: "portrait", fields: ["face", "eyebrows", "nose", "mouth"] },
+  { id: "eyes", label: "Yeux", Icon: Eye, view: "portrait", fields: ["eyes", "eyeColor"] },
+  { id: "hair", label: "Cheveux", Icon: Scissors, view: "portrait", fields: ["hair", "facialHair", "hairColor"] },
+  { id: "outfit", label: "Tenue", Icon: Shirt, view: "full", fields: ["outfits", "top", "clothing", "bottom", "bottomColor", "shoes", "shoeColor", "jacket", "jacketColor"] },
+  { id: "details", label: "Accessoires", Icon: Glasses, view: "full", fields: ["accessory", "headwear", "headwearColor", "accentColor"] },
 ] as const;
 type Category = typeof CATEGORIES[number];
 type WardrobeField = Category["fields"][number];
@@ -32,6 +34,10 @@ const LABELS: Record<WardrobeField, string> = {
 const ZONES = {
   skin: "skin", eyeColor: "eyes", hairColor: "hair", clothing: "top", bottomColor: "bottom", shoeColor: "shoes", jacketColor: "jacket", headwearColor: "headwear", accentColor: "accent",
 } as const satisfies Partial<Record<WardrobeField, ChanvrierDyeZone>>;
+const PAIRED_PALETTES: Partial<Record<WardrobeField, keyof typeof ZONES>> = {
+  eyes: "eyeColor", hair: "hairColor", facialHair: "hairColor", top: "clothing", bottom: "bottomColor", shoes: "shoeColor", jacket: "jacketColor", headwear: "headwearColor",
+};
+const PAIRED_COLORS = new Set<WardrobeField>(Object.values(PAIRED_PALETTES));
 const OUTFIT_ZONES = ["top", "bottom", "shoes", "jacket", "headwear", "accent"] as const;
 const GENDERS = [{ code: "male", name: "Masculine" }, { code: "female", name: "Féminine" }] as const;
 const OUTFIT_FAMILIES = ["Maritime", "Tradition"] as const;
@@ -130,13 +136,14 @@ export function useChanvrierWardrobe(profile: ChanvrierAvatarProfile, initial: C
   };
 }
 
-function WardrobeChoice({ profile, label, caption, selected, view, onClick }: {
-  profile: ChanvrierAvatarProfile; label: string; caption?: string; selected: boolean; view: "portrait" | "full"; onClick: () => void;
+function WardrobeChoice({ profile, label, caption, selected, view, feature, onClick }: {
+  profile: ChanvrierAvatarProfile; label: string; caption?: string; selected: boolean; view: "portrait" | "full"; feature?: WardrobeField; onClick: () => void;
 }) {
+  const detail: ChanvrierDetail | undefined = feature === "eyes" || feature === "eyebrows" || feature === "nose" || feature === "mouth" || feature === "facialHair" ? feature : undefined;
   return <button type="button" className={styles.option} aria-label={caption ? `${caption} : ${label}` : label} aria-pressed={selected} onClick={onClick}>
-    <span className={styles.choicePortrait} aria-hidden="true"><ChanvrierAvatar profile={profile} view={view} /></span>
+    <span className={styles.choicePortrait} data-detail={detail} data-frame={view} aria-hidden="true"><ChanvrierAvatar profile={profile} view={view} detail={detail} /></span>
     <span>{label}</span>
-    {selected && <Check className={styles.optionCheck} size={15} aria-hidden="true" />}
+    {selected && <span className={styles.optionCheck} aria-hidden="true"><Check size={14} strokeWidth={3} /></span>}
   </button>;
 }
 
@@ -198,74 +205,80 @@ function Palette({ field, profile, wardrobe }: {
     };
   }, []);
 
-  return <fieldset className={styles.palette}>
-    <legend className={styles.srOnly}>{label}</legend>
+  return <fieldset className={styles.palette} data-palette={zone}>
+    <legend className={styles.fieldHeading}>{label}</legend>
     <div className={styles.swatches}>
       {colors.map(item => <button key={item.code} type="button" aria-label={`${label} : ${item.name}`} aria-pressed={selected?.code === item.code} onClick={() => chooseColor(item.color)}>
-        <span className={styles.inkSample} style={{ backgroundColor: item.color }} aria-hidden="true">{selected?.code === item.code && <Check size={14} />}</span>
+        <span className={styles.inkSample} style={{ backgroundColor: item.color }} aria-hidden="true">{selected?.code === item.code && <span className={styles.swatchCheck}><Check size={11} strokeWidth={3} /></span>}</span>
         <span>{item.name}</span>
       </button>)}
     </div>
-    <div className={styles.customColor}>
-      <label htmlFor={picker}>Teinte personnalisée<span>{value.toUpperCase()}</span></label>
-      <input id={picker} ref={input} type="color" value={value} onInput={event => previewColor(event.currentTarget.value)} onChange={event => previewColor(event.currentTarget.value)} />
-    </div>
-    {recent.length > 0 && <div className={styles.recentColors} role="group" aria-label="Couleurs récentes">
-      <span>Récentes</span>
-      {recent.map(hex => <button key={hex} type="button" title={hex.toUpperCase()} aria-label={`Reprendre la couleur ${hex.toUpperCase()}`} aria-pressed={value === hex} onClick={() => chooseColor(hex)}>
-        <span className={styles.inkSample} style={{ backgroundColor: hex }} aria-hidden="true">{value === hex && <Check size={14} />}</span>
-      </button>)}
-    </div>}
+    <details className={styles.customColorMenu}>
+      <summary>Teinte personnalisée{!selected && <span> · {value.toUpperCase()}</span>}</summary>
+      <div className={styles.customColor}>
+        <label htmlFor={picker}>Choisir une teinte<span>{value.toUpperCase()}</span></label>
+        <input id={picker} ref={input} type="color" value={value} onInput={event => previewColor(event.currentTarget.value)} onChange={event => previewColor(event.currentTarget.value)} />
+      </div>
+      {recent.length > 0 && <div className={styles.recentColors} role="group" aria-label="Couleurs récentes">
+        <span>Récentes</span>
+        {recent.map(hex => <button key={hex} type="button" title={hex.toUpperCase()} aria-label={`Reprendre la couleur ${hex.toUpperCase()}`} aria-pressed={value === hex} onClick={() => chooseColor(hex)}>
+          <span className={styles.inkSample} style={{ backgroundColor: hex }} aria-hidden="true">{value === hex && <span className={styles.swatchCheck}><Check size={11} strokeWidth={3} /></span>}</span>
+        </button>)}
+      </div>}
+    </details>
   </fieldset>;
 }
 
 export function ChanvrierWardrobe({ wardrobe, profile, onViewChange }: {
   wardrobe: ReturnType<typeof useChanvrierWardrobe>; profile: ChanvrierAvatarProfile; onViewChange: (view: ChanvrierWorkshopView) => void;
 }) {
-  const fieldSelectId = useId();
   const { category, field, apply } = wardrobe;
   const view = category.view;
   const appearance = getChanvrierAppearance(profile);
+  const fields = category.fields.filter(item => !PAIRED_COLORS.has(item));
+  const palette = PAIRED_PALETTES[field];
+  const accessoryNote = field === "hair" && appearance.headwear !== "none" ? "Les vignettes montrent les coiffures sans couvre-chef."
+    : (field === "eyes" || field === "eyebrows") && (appearance.accessory === "glasses" || appearance.accessory === "round-glasses") ? "Les vignettes montrent le regard sans lunettes." : null;
 
   return <div className={styles.wardrobe}>
     <nav className={styles.lookTabs} aria-label="Personnaliser l’apparence">
       {CATEGORIES.map(item => <button key={item.id} type="button" aria-pressed={category.id === item.id} onClick={() => {
         wardrobe.chooseCategory(item);
         onViewChange(item.view);
-      }}>{item.label}</button>)}
+      }}><item.Icon size={22} aria-hidden="true" /><span>{item.label}</span></button>)}
     </nav>
-    <div className={styles.wardrobeControls}>
-      <div className={styles.fieldSelect}>
-        <label htmlFor={fieldSelectId}>Élément à modifier</label>
-        <select id={fieldSelectId} value={field} onChange={event => {
-          const next = event.target.value as WardrobeField;
-          wardrobe.chooseField(next);
-          onViewChange(next === "headwear" || next === "headwearColor" ? "portrait" : view);
-        }}>{category.fields.map(item => <option key={item} value={item}>{LABELS[item]}</option>)}</select>
-      </div>
-      <div className={styles.lookTools} role="group" aria-label="Modifications de l’apparence">
-        <button type="button" disabled={!wardrobe.canUndo} onClick={wardrobe.undo}><Undo2 size={15} aria-hidden="true" />Annuler</button>
-        <button type="button" aria-label={`Modifier au hasard la catégorie ${category.label}`} onClick={wardrobe.randomize}><Shuffle size={15} aria-hidden="true" />Au hasard</button>
-        <button type="button" aria-label={`Réinitialiser la catégorie ${category.label}`} disabled={!wardrobe.canReset} onClick={wardrobe.reset}><RotateCcw size={15} aria-hidden="true" />Réinitialiser</button>
-      </div>
-    </div>
+    {fields.length > 1 && <div className={styles.fieldTabs} role="group" aria-label="Élément à modifier">
+      {fields.map(item => <button key={item} type="button" aria-pressed={field === item} onClick={() => {
+        wardrobe.chooseField(item);
+        onViewChange(item === "headwear" ? "portrait" : view);
+      }}>{LABELS[item]}</button>)}
+    </div>}
     {isDyeField(field) ? <Palette key={field} field={field} profile={profile} wardrobe={wardrobe} /> : field === "outfits" ?
       OUTFIT_FAMILIES.map(family => <section key={family} className={styles.outfitGroup} aria-label={`Tenues · ${family}`}>
-        <h3>{family}</h3>
+        <h3 className={styles.fieldHeading}>{family}</h3>
         <div className={styles.choices}>{CHANVRIER_BRETON_OUTFITS.filter(outfit => outfit.family === family).map(outfit => {
           const next = withOutfit(profile, outfit);
           return <WardrobeChoice key={outfit.code} label={outfit.name} profile={next} selected={sameAppearance(profile, next)} view="full" onClick={() => apply(next)} />;
         })}</div>
       </section>) : <fieldset className={styles.optionGroup} key={field}>
-        <legend className={styles.srOnly}>{LABELS[field]}</legend>
-        <div className={styles.choices}>{field === "gender" ? GENDERS.map(item => {
+        <legend className={styles.fieldHeading}>{LABELS[field]}</legend>
+        <div className={styles.choices} data-feature-choices={field}>{field === "gender" ? GENDERS.map(item => {
           const next = { ...profile, gender: item.code, appearance };
           return <WardrobeChoice key={item.code} label={item.name} profile={next} selected={profile.gender === item.code} view="full" onClick={() => apply(next)} />;
         }) : OPTIONS[field].map(item => {
           const next = withOption(profile, field, item.code);
           const thumbnailView = field === "headwear" || (field === "accessory" && HEAD_ACCESSORIES.has(item.code)) ? "portrait" : view;
-          return <WardrobeChoice key={item.code} label={item.name} caption={LABELS[field]} profile={next} selected={appearance[field] === item.code} view={thumbnailView} onClick={() => apply(next)} />;
+          const visibleTrait = field === "hair" ? withOption(next, "headwear", "none")
+            : field === "eyes" || field === "eyebrows" ? withOption(next, "accessory", "none") : next;
+          return <WardrobeChoice key={item.code} label={item.name} caption={LABELS[field]} profile={visibleTrait} selected={appearance[field] === item.code} view={thumbnailView} feature={field} onClick={() => apply(next)} />;
         })}</div>
       </fieldset>}
+    {accessoryNote && <p className={styles.traitNote}>{accessoryNote}</p>}
+    {palette && <Palette key={palette} field={palette} profile={profile} wardrobe={wardrobe} />}
+    <div className={styles.lookTools} role="group" aria-label="Modifications de l’apparence">
+      <button type="button" disabled={!wardrobe.canUndo} onClick={wardrobe.undo}><Undo2 size={16} aria-hidden="true" />Annuler</button>
+      <button type="button" aria-label={`Modifier au hasard la catégorie ${category.label}`} onClick={wardrobe.randomize}><Dices size={16} aria-hidden="true" />Au hasard</button>
+      <button type="button" aria-label={`Réinitialiser la catégorie ${category.label}`} disabled={!wardrobe.canReset} onClick={wardrobe.reset}><RotateCcw size={16} aria-hidden="true" />Réinitialiser</button>
+    </div>
   </div>;
 }

@@ -6,7 +6,8 @@ import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { UserRound, Pencil, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
-import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { CHANVRIER_OWNER_HEADER, parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { observeChanvrierAdventure, type ChanvrierDraftScope } from "@/lib/chanvrier-profile-draft";
 import type { ArenaProfileAvailability, ArenaProfileLauncherProps } from "@/lib/arena-profile-launcher";
 import styles from "./ArenaPrelaunch.module.css";
 const Editor = dynamic(() => import("./ChanvrierProfileEditor").then(module => module.ChanvrierProfileEditor), { ssr: false });
@@ -23,6 +24,7 @@ export function ArenaPrelaunchCharacter({ launcherRef, onProfileAvailabilityChan
   const { user, authLoading } = useCart();
   const { showBanner } = useCookieConsent();
   const [profile, setProfile] = useState<ChanvrierProfile | null>(null);
+  const [draftAccess, setDraftAccess] = useState<{ ownerId: string; scope?: ChanvrierDraftScope }>();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,23 +34,30 @@ export function ArenaPrelaunchCharacter({ launcherRef, onProfileAvailabilityChan
   useEffect(() => { onProfileAvailabilityChange?.(profileAvailability); }, [onProfileAvailabilityChange, profileAvailability]);
   useEffect(() => {
     const updateProfile = (event: Event) => {
-      const saved = parseChanvrierProfile((event as CustomEvent).detail);
+      const detail = (event as CustomEvent).detail;
+      if (detail?.ownerId && detail.ownerId !== user?.id) return;
+      const saved = parseChanvrierProfile(detail);
       if (saved) setProfile(saved);
     };
     window.addEventListener("arena:profile-updated", updateProfile);
     return () => window.removeEventListener("arena:profile-updated", updateProfile);
-  }, []);
+  }, [user?.id]);
   useEffect(() => {
     if (authLoading) return;
     const controller = new AbortController();
     async function load() {
-      setProfile(null); setOpen(false); setError(""); setLoading(true);
+      setProfile(null); setDraftAccess(undefined); setOpen(false); setError(""); setLoading(true);
       if (!user?.id) { setLoading(false); return; }
       try {
-        const response = await fetch("/api/arena/chanvrier", { cache: "no-store", signal: controller.signal });
+        const response = await fetch("/api/arena/chanvrier", { headers: { [CHANVRIER_OWNER_HEADER]: user.id }, cache: "no-store", signal: controller.signal });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Ton personnage est momentanément indisponible.");
-        if (!controller.signal.aborted) setProfile(parseChanvrierProfile(data.profile));
+        if (!controller.signal.aborted) {
+          const createdAt = data.profile === null ? null : data.profile?.createdAt;
+          const scope = createdAt === null || typeof createdAt === "string" ? observeChanvrierAdventure(user.id, createdAt) : undefined;
+          setDraftAccess({ ownerId: user.id, scope });
+          setProfile(parseChanvrierProfile(data.profile));
+        }
       } catch (cause) { if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : "Ton personnage est momentanément indisponible."); }
       finally { if (!controller.signal.aborted) setLoading(false); }
     }
@@ -83,6 +92,10 @@ export function ArenaPrelaunchCharacter({ launcherRef, onProfileAvailabilityChan
         {profile && <span className={styles.saved}><Check size={15} aria-hidden="true" />{profile.nickname}, ton personnage est prêt.</span>}
         <button type="button" className={styles.characterButton} onClick={event => { profileOrigin.current = event.currentTarget; setOpen(true); }}>{profile ? <Pencil size={18} aria-hidden="true" /> : <UserRound size={18} aria-hidden="true" />}{profile ? "Modifier mon personnage" : "Créer mon personnage"}</button>
       </>}
-    {open && user && <Editor key={user.id} profile={profile} onClose={closeProfile} onSaved={value => { setProfile(value); closeProfile(); }} />}
+    {open && user && draftAccess?.ownerId === user.id && <Editor key={user.id} ownerId={user.id} profile={profile} draftScope={draftAccess.scope} onClose={closeProfile} onSaved={(value, createdAt) => {
+      if (!profile) setDraftAccess({ ownerId: user.id, scope: createdAt ? observeChanvrierAdventure(user.id, createdAt) : undefined });
+      setProfile(value);
+      closeProfile();
+    }} />}
   </div>;
 }

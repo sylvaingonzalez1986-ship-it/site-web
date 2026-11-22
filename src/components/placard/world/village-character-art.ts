@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { createPortraitEar, createVillagePortraitShape, portraitIrisTint, portraitMoustache, portraitPatch } from "./village-portrait-sculpt";
+import { createPortraitEar, createVillagePortraitShape, fishermanMoustache, portraitPatch, type VillagePortrait } from "./village-portrait-sculpt";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 
 export type CharacterPoint = [number, number, number];
@@ -102,18 +102,20 @@ function paintPortraitHair(art: Assembly, sculpt: ReturnType<typeof createVillag
   for (let j = 0; j <= rows; j++) for (let i = 0; i < sides; i++) {
     const angle = (i / sides - .5) * Math.PI * 2, turn = Math.abs(angle), t = j / rows;
     const brow = 1 - THREE.MathUtils.smoothstep(turn, .64, 1.33);
-    const part = Math.sin(angle * 2.4 + (guide ? .54 : 1.17)) * brow * (fisherman ? .009 : .025);
+    const part = Math.sin(angle * 2.4 + (guide ? .54 : 1.17)) * brow * (fisherman ? .009 : .021);
     const arch = (fisherman ? .056 : .066) * Math.exp(-((turn - 1.57) ** 2) / .052);
     const sideburn = (fisherman ? .051 : .042) * Math.exp(-((turn - 1.22) ** 2) / .034);
-    const hem = (fisherman ? .125 : .102) + brow * (fisherman ? .228 : .221) + part + arch - sideburn + .005 * Math.sin(9 * angle + .7);
+    const hem = (fisherman ? .106 : .084) + brow * (fisherman ? .246 : .252) + part + arch - sideburn + .005 * Math.sin(9 * angle + .7);
     const y = THREE.MathUtils.lerp(hem, .436, t);
     const flow = angle + Math.sin(angle * .78 + t * 3.2) * .34 + t * (guide ? .49 : .67);
-    const groove = .5 + .5 * Math.cos(flow * (fisherman ? 17 : 12) + .64 * Math.sin(flow * 3));
-    const radius = sculpt.radius(y) + .0018 + (groove * (fisherman ? .006 : guide ? .007 : .0048) + .0015) * Math.sin(Math.PI * t * .93);
+    const lock = .5 + .5 * Math.cos(flow * (fisherman ? 7 : 6) + .62 * Math.sin(flow * 3));
+    const grain = .5 + .5 * Math.cos(flow * 23 + .74 * Math.sin(flow * 4));
+    const volume = (.0057 + lock * (fisherman ? .0094 : .0107) + grain * .0016) * Math.sin(Math.PI * (.17 + .83 * t));
+    const radius = sculpt.radius(y) + .0017 + volume;
     vertices.push(Math.sin(angle) * radius, y, Math.cos(angle) * radius * sculpt.depth);
     const silver = fisherman ? .18 * Math.sin(angle * 13.0 + t * 2.3) ** 8 : 0;
-    color.copy(pigment).multiplyScalar(.86 + .22 * groove).lerp(glint, .07 + .16 * groove ** 2 + silver)
-      .lerp(skin, (1 - THREE.MathUtils.smoothstep(t, 0, .12)) * (fisherman ? .26 : .17));
+    color.copy(pigment).multiplyScalar(.88 + .23 * lock).lerp(glint, .08 + .15 * lock ** 2 + silver)
+      .lerp(skin, (1 - THREE.MathUtils.smoothstep(t, 0, .12)) * (fisherman ? .11 : .052));
     colors.push(color.r, color.g, color.b);
     if (j < rows) { const a = j * sides + i, b = j * sides + (i + 1) % sides; indices.push(a, b, a + sides, b, b + sides, a + sides); }
   }
@@ -125,7 +127,7 @@ function paintPortraitHair(art: Assembly, sculpt: ReturnType<typeof createVillag
 }
 
 /** Each NPC keeps a fixed lip socket for held objects. The gaze moves inside the eyelids. */
-export function createCharacterFace(parent: THREE.Object3D, material: THREE.Material, name: string, hair = CHARACTER_COLORS.hair) {
+export function createCharacterFace(parent: THREE.Object3D, material: THREE.Material, name: VillagePortrait, hair = CHARACTER_COLORS.hair) {
   const head = new THREE.Group(); head.name = name + "-head"; parent.add(head);
   const art = new Assembly(), sculpt = createVillagePortraitShape(name);
   const fisherman = name === "fisherman", guide = name === "loic";
@@ -136,57 +138,50 @@ export function createCharacterFace(parent: THREE.Object3D, material: THREE.Mate
     const ear = createPortraitEar(sculpt.skin, sculpt.tone.flush, fisherman ? .048 : .043, fisherman ? .063 : .055, .063, side);
     ear.rotateY(side * .18);
     art.add(ear, null, [earX, earY, .006]);
-    const nostrilX = side * (sculpt.wingX - .008), nostrilY = sculpt.tipY - .021;
-    art.add(portraitPatch(nostrilX, nostrilY, fisherman ? .010 : .0075, fisherman ? .0038 : .0026,
-      (x, y) => sculpt.front(x, y) + .0023, side * .003, 1.28, 0, 14, 2), fisherman ? "#916054" : "#a46f5a");
     if (fisherman) {
-      art.add(portraitMoustache(side, .059, .102, 1, "#aba08d", sculpt.front), null);
+      art.add(fishermanMoustache(side, sculpt.front), null);
     } else if (guide) {
-      for (let point = 0; point < 6; point++) {
-        const x = side * (.088 + point * .011), y = .128 + .011 * Math.sin(point * 3.1 + side);
-        art.add(portraitPatch(x, y, .0019 + (point % 3) * .0004, .0017, (px, py) => sculpt.front(px, py) + .0019, 0, 1, 0, 7, 1), "#ba805f");
+      for (let point = 0; point < 5; point++) {
+        const x = side * (.076 + point * .014), y = .132 + .012 * Math.sin(point * 3.1 + side);
+        art.add(portraitPatch(x, y, .0016 + (point % 3) * .00035, .00165, (px, py) => sculpt.front(px, py) + .0014, 0, 1, 0, 7, 1), "#c5936f");
       }
     }
   }
   art.finish(name + "-face", head, material);
-  const eyeY = fisherman ? .226 : .230;
+  const [eyeX, eyeY, w, top, bottom, slant, almond] = sculpt.tone.eye;
   const eyes = new THREE.Group(); eyes.name = name + "-eyes"; eyes.position.y = eyeY; head.add(eyes);
   const whites = new Assembly(), pupils = new Assembly();
-  const iris = portraitIrisTint(fisherman ? "#69897c" : guide ? "#827341" : "#8a5938");
-  const eyelid = new THREE.Color(sculpt.skin).lerp(new THREE.Color(sculpt.tone.shade), .55);
-  const lowerLid = "#" + eyelid.getHexString(), lidCrease = "#" + eyelid.multiplyScalar(.68).getHexString();
-  const scleraTone = new THREE.Color("#f1e6cf"), scleraShade = new THREE.Color("#c7b8a6"), scleraTint = new THREE.Color();
+  const irisColor = new THREE.Color(fisherman ? "#665242" : guide ? "#6b432b" : "#835132");
+  const irisTint = new THREE.Color(), pupil = new THREE.Color("#2c1d18"), reflectedLight = new THREE.Color("#b77c4e");
+  const iris = (radius: number, angle: number) => {
+    const reflected = 1 - THREE.MathUtils.smoothstep(Math.sin(angle), -.87, .40);
+    const ring = THREE.MathUtils.smoothstep(radius, .44, .82) * (1 - .69 * THREE.MathUtils.smoothstep(radius, .84, 1));
+    return irisTint.copy(pupil).lerp(irisColor, ring * (.34 + .43 * reflected)).lerp(reflectedLight, ring * reflected * .10);
+  };
+  const scleraTone = new THREE.Color("#fff0d9"), scleraShade = new THREE.Color("#e4c6ac"), scleraTint = new THREE.Color();
   const drawEye = (side: number, distant: boolean) => {
-    const x = side * (guide ? .097 : .103);
-    const w = fisherman ? .047 : guide ? .047 : .049, h = fisherman ? .024 : guide ? .033 : .030;
-    const tilt = side * (fisherman ? -.0032 : guide ? .0055 : .0038), almond = fisherman ? 1.42 : 1.28;
-    const eyeField = (px: number, py: number) => sculpt.front(px, py) + .0047
-      + .0085 * Math.max(0, 1 - ((px - x) / w) ** 2 - ((py - eyeY) / h) ** 2);
-    const irisField = (px: number, py: number) => eyeField(px, py) + .0029;
-    whites.add(portraitPatch(x, eyeY, w, h, eyeField, tilt, almond, eyeY, distant ? 14 : 20, distant ? 2 : 4,
-      (r, a) => scleraTint.copy(scleraTone).lerp(scleraShade, .4 * r * (.35 + .65 * Math.max(0, Math.sin(a))))), null);
+    const x = side * eyeX, tilt = side * slant;
+    const eyeField = (px: number, py: number) => {
+      const horizontal = (px - x) / w, vertical = py - eyeY - tilt * horizontal;
+      const height = vertical < 0 ? bottom : top;
+      return sculpt.front(px, py) + .0027 + .0064 * Math.max(0, 1 - horizontal ** 2 - (vertical / height) ** 2);
+    };
+    const irisField = (px: number, py: number) => eyeField(px, py) + .0025;
+    whites.add(portraitPatch(x, eyeY, w, [top, bottom], eyeField, tilt, almond, eyeY, distant ? 16 : 24, distant ? 2 : 4,
+      (r, a) => scleraTint.copy(scleraTone).lerp(scleraShade, .29 * r * (.38 + .62 * Math.max(0, Math.sin(a))))), null);
     const gazeArt = distant ? whites : pupils;
-    gazeArt.add(portraitPatch(x, eyeY - .0015, w * .52, h * .84, irisField, tilt * .24, 1, eyeY, distant ? 16 : 22, distant ? 5 : 7, iris), null);
-    gazeArt.add(portraitPatch(x - .007, eyeY + h * .24, .0041, .0045,
-      (px, py) => irisField(px, py) + .0019, 0, 1, eyeY, 10, 1), "#fff4de");
-    if (distant) return;
-    for (const upper of [true, false]) {
-      const sign = upper ? 1 : -1;
-      const points = Array.from({ length: 7 }, (_, k): CharacterPoint => {
-        const a = k * Math.PI / 6;
-        const px = x + w * Math.cos(a), py = eyeY + sign * h * Math.sin(a) ** almond + tilt * Math.cos(a);
-        return [px, py - eyeY, eyeField(px, py) + (upper ? .0025 : .0009)];
-      });
-      whites.sweep(points, upper ? [.0006, .0028, .0043, .0049, .0040, .0025, .0006]
-        : [.0005, .0016, .0025, .0027, .0020, .0016, .0005], upper ? "#4b332e" : lowerLid, 6);
-      // Fold away from the eyeball and fade into the brow/cheek.
-      const fold = points.slice(1, -1).map(([px, y], k): CharacterPoint => {
-        const lift = Math.sin((k + 1) * Math.PI / 6) * (upper ? .014 : fisherman ? .013 : .009);
-        const py = eyeY + y + sign * lift;
-        return [px, py - eyeY, sculpt.front(px, py) + .0031];
-      });
-      whites.sweep(fold, upper ? [.0005, .0025, .0032, .0024, .0005] : [.0005, .0014, .0021, .0011, .0005], upper ? lowerLid : lidCrease, 6);
-    }
+    const irisX = x - side * w * .07, irisY = eyeY - .0008;
+    gazeArt.add(portraitPatch(irisX, irisY, w * (fisherman ? .71 : .78), [top * .89, bottom * .94], irisField, tilt * .71,
+      almond, eyeY, distant ? 18 : 24, distant ? 4 : 6, iris), null);
+    gazeArt.add(portraitPatch(irisX - .009, irisY + top * .40, .0060, fisherman ? .0034 : .0067,
+      (px, py) => irisField(px, py) + .0021, 0, 1, eyeY, 12, 1), "#fff8e7");
+    const lid = Array.from({ length: 7 }, (_, k): CharacterPoint => {
+      const a = k * Math.PI / 6;
+      const px = x + w * Math.cos(a), py = eyeY + top * Math.sin(a) ** almond + tilt * Math.cos(a);
+      return [px, py - eyeY, eyeField(px, py) + .0010];
+    });
+    whites.sweep(lid, fisherman ? [.0001, .0018, .0034, .0037, .0034, .0018, .0001]
+      : [.0001, .0017, .0030, .0036, .0031, .0017, .0001], "#4b3225", distant ? 5 : 6);
   };
   for (const side of [-1, 1]) drawEye(side, false);
   const nearCount = whites.indexCount;
@@ -199,31 +194,26 @@ export function createCharacterFace(parent: THREE.Object3D, material: THREE.Mate
   const mouthArt = new Assembly();
   // Densely sample only the curve. The mouth opens about the upper lip;
   // its contact socket is also the end of the blowpipe and bottle.
-  const mouthWidth = fisherman ? .054 : guide ? .065 : .070;
-  const upper = (u: number) => (fisherman ? -.002 : guide ? .013 : .011) * u * u + (guide ? .0045 : .0018) * u;
-  const center = (u: number) => Math.max(0, 1 - u * u);
-  const lower = (u: number) => upper(u) - (fisherman ? .020 : guide ? .030 : .028) * center(u);
-  function lipStrip(range: number, top: (u: number) => number, bottom: (u: number) => number, color: string, offset: number, relief = 0) {
-    const vertices: number[] = [], indices: number[] = [];
-    for (let col = 0; col <= 20; col++) {
-      const u = range * (2 * col / 20 - 1), x = u * mouthWidth;
-      for (let row = 0; row <= 2; row++) {
-        const y = THREE.MathUtils.lerp(bottom(u), top(u), row / 2);
-        vertices.push(x, y, sculpt.front(x, .078 + y) - .218 + offset + relief * (row === 1 ? center(u) : 0));
-      }
-      if (col < 20) for (let j = 0; j < 2; j++) { const a = col * 3 + j; indices.push(a, a + 3, a + 1, a + 3, a + 4, a + 1); }
+  const mouthWidth = fisherman ? .051 : guide ? .074 : .069;
+  const upper = (u: number) => (fisherman ? .016 : guide ? .035 : .029) * (1 - Math.sqrt(1 - .96 * u * u)) + .0029 * u;
+  const lower = (u: number) => upper(u) - (fisherman ? .016 : guide ? .017 : .022) * Math.sqrt(1 - u * u);
+  const mouthVertices: number[] = [], mouthIndices: number[] = [];
+  for (let col = 0; col <= 24; col++) {
+    const u = 2 * col / 24 - 1, x = u * mouthWidth;
+    for (let row = 0; row <= 2; row++) {
+      const y = THREE.MathUtils.lerp(lower(u), upper(u), row / 2);
+      mouthVertices.push(x, y, sculpt.front(x, .078 + y) - .218 + .0045);
     }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3)); g.setIndex(indices); g.computeVertexNormals();
-    mouthArt.add(g, color);
+    if (col < 24) for (let row = 0; row < 2; row++) {
+      const a = col * 3 + row;
+      mouthIndices.push(a, a + 3, a + 1, a + 3, a + 4, a + 1);
+    }
   }
-  lipStrip(1, upper, lower, "#52322e", .0030);
-  lipStrip(1, u => upper(u) + center(u) * (.0042 + .005 * Math.exp(-((Math.abs(u) - .24) ** 2) / .04)),
-    upper, fisherman ? "#ba826f" : "#bc7a66", .0026, .0038);
-  lipStrip(.97, lower, u => lower(u) - .008 * center(u / .97), fisherman ? "#cd957e" : "#d7907a", .0022, .0045);
-  const teeth = fisherman ? .54 : .73;
-  lipStrip(teeth, u => upper(u) - .0014, u => upper(u) - .0017 - .007 * center(u / teeth), "#f2e2c5", .0047);
-  lipStrip(.53, u => lower(u) + .0068 * center(u / .53), u => lower(u) + .0011, "#a86158", .0045);
+  const mouthGeometry = new THREE.BufferGeometry();
+  mouthGeometry.setAttribute("position", new THREE.Float32BufferAttribute(mouthVertices, 3));
+  mouthGeometry.setIndex(mouthIndices);
+  mouthGeometry.computeVertexNormals();
+  mouthArt.add(mouthGeometry, "#4d2d21");
   const mouth = mouthArt.finish(name + "-mouth", head, material); mouth.position.set(0, .078, .218);
   const positions = mouth.geometry.getAttribute("position");
   // Correct both opening and width on the GPU: the outer mesh can stretch around
@@ -237,25 +227,25 @@ export function createCharacterFace(parent: THREE.Object3D, material: THREE.Mate
   mouth.geometry.morphTargetsRelative = true;
   mouth.geometry.morphAttributes.position = [new THREE.BufferAttribute(contourX, 3), new THREE.BufferAttribute(contourY, 3)];
   mouth.updateMorphTargets();
-  const browY = fisherman ? .287 : guide ? .299 : .295, browX = guide ? .096 : .101;
-  const browDepth = sculpt.front(browX, browY) + .002;
+  const browY = fisherman ? .278 : guide ? .311 : .304, browX = eyeX + .001;
+  const browDepth = sculpt.front(browX, browY) + .003;
   const browSlope = (sculpt.front(browX, browY + .001) - sculpt.front(browX, browY - .001)) / .002;
   const brows = [-1, 1].map(side => {
     const brow = new Assembly();
-    const shape = [[-.051, -.003], [-.032, fisherman ? .000 : .006], [-.004, guide ? .011 : .007],
-      [.022, (guide ? .009 : .006) + (side === -1 ? .0025 : 0)], [.043, -.004], [.055, -.011]];
+    const shape = [[-.047, -.004], [-.035, fisherman ? .005 : .008], [-.006, guide ? .013 : .011],
+      [.019, (guide ? .009 : .007) + (side === -1 ? .0025 : 0)], [.033, -.002], [.045, -.015]];
     const points = shape.map(([dx, dy]): CharacterPoint => {
       const px = side * (browX + dx), py = browY + dy;
-      return [side * dx, dy, sculpt.front(px, py) - browDepth + .0038];
+      return [side * dx, dy, sculpt.front(px, py) - browDepth + .0034];
     });
-    brow.sweep(points, fisherman ? [.003, .007, .008, .005, .003, .001] : [.0024, .0075, .0081, .006, .004, .001],
-      fisherman ? "#8a7967" : guide ? "#49312d" : "#5b392c", 7);
+    brow.sweep(points, fisherman ? [.001, .009, .011, .009, .006, .001] : [.001, .0093, .0116, .0084, .0044, .001],
+      fisherman ? "#a49787" : guide ? "#493020" : "#663f29", 8);
     const mesh = brow.finish(`${name}-brow-${side}`, head, material);
     mesh.position.set(side * browX, browY, browDepth);
     return mesh;
   });
   const blinkOffset = (name.charCodeAt(0) % 11) * 0.25;
-  function setExpression(time: number, reduced: boolean, attention: number, lookYaw: number, opening: number, accent = 0, detail = 1) {
+  function setExpression(time: number, reduced: boolean, attention: number, lookYaw: number, opening: number, accent = 0, detail = 1, mouthWidthScale = 1) {
     const distant = detail < .16;
     sclera.geometry.setDrawRange(distant ? nearCount : 0, distant ? distantCount : nearCount);
     gaze.visible = !distant;
@@ -263,17 +253,16 @@ export function createCharacterFace(parent: THREE.Object3D, material: THREE.Mate
     const blink = reduced ? 0 : Math.max(0, 1 - Math.abs(phase - 2.58) / 0.115);
     eyes.scale.y = (1 - blink * 0.94) * (1 - accent * 0.09);
     const gazeYaw = THREE.MathUtils.clamp(lookYaw, -.9, .9);
-    eyes.rotation.y = gazeYaw * .009;
-    gaze.rotation.y = .037 * gazeYaw;
-    gaze.position.y = attention * .0017;
-    const liftA = attention * 0.019 + accent * 0.007, liftB = attention * 0.009;
+    eyes.rotation.y = gazeYaw * .004;
+    gaze.rotation.y = .017 * gazeYaw;
+    const liftA = attention * .008 + accent * .003, liftB = attention * .003;
     brows[0].position.y = browY + liftA;
     brows[1].position.y = browY + liftB;
     brows[0].position.z = browDepth + liftA * browSlope;
     brows[1].position.z = browDepth + liftB * browSlope;
     brows[0].rotation.z = -attention * 0.12 - accent * 0.08;
     brows[1].rotation.z = accent * 0.16;
-    mouth.scale.set(0.9 + opening * 0.16, 0.52 + opening * 1.28, 1);
+    mouth.scale.set((.92 + opening * .14) * mouthWidthScale, .38 + opening * 1.40, 1);
     mouth.morphTargetInfluences![0] = mouth.scale.x - 1;
     mouth.morphTargetInfluences![1] = mouth.scale.y - 1;
   }

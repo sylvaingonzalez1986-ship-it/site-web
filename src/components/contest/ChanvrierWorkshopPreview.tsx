@@ -103,6 +103,7 @@ export function ChanvrierWorkshopPreview({ profile, view, onViewChange, disabled
         turn((event.clientX - drag.current.x) * .014);
         drag.current.x = event.clientX;
       }}
+      onPointerCancel={() => { drag.current = null; }}
       onLostPointerCapture={() => { drag.current = null; }}>
       <canvas ref={canvas} className={styles.stageCanvas} aria-hidden="true" hidden={!ready} />
       {status === "loading" && <p className={styles.previewStatus} role="status">Chargement de l’aperçu…</p>}
@@ -115,8 +116,8 @@ export function ChanvrierWorkshopPreview({ profile, view, onViewChange, disabled
       <div className={styles.rotationControls} role="group" aria-label="Orientation du personnage">
         {frameControls.map(({ Icon, label, action }) => <button key={label} type="button" title={label} aria-label={label} disabled={disabled || !ready} onClick={action}><Icon size={18} aria-hidden="true" /></button>)}
       </div>
-      <button type="button" className={styles.walkButton} disabled={disabled || !ready} data-playing={walking || undefined} onClick={toggleWalking}><Footprints size={16} aria-hidden="true" />{walking ? "Au repos" : "Faire marcher"}</button>
+      <button type="button" className={styles.walkButton} disabled={disabled || !ready} aria-label={walking ? "Au repos" : "Faire marcher"} aria-pressed={walking} title={walking ? "Au repos" : "Faire marcher"} onClick={toggleWalking}><Footprints size={17} aria-hidden="true" /><span>{walking ? "Au repos" : "Faire marcher"}</span></button>
     </div>
-    <p id={instructions} className={styles.stageHint} role="status">{status === "fallback" ? "3D indisponible · aperçu fixe" : view === "village" ? "Angle, éclairage et échelle du Quartier." : "Glisse ou utilise les flèches pour tourner."}</p>
+    <p id={instructions} className={styles.stageHint} data-notice={status === "fallback" || undefined} role="status">{status === "fallback" ? "3D indisponible · aperçu fixe" : view === "village" ? "Angle, éclairage et échelle du Quartier." : "Glisse ou utilise les flèches pour tourner."}</p>
   </aside>;
 }

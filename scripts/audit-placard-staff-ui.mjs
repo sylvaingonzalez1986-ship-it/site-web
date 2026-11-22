@@ -310,7 +310,7 @@ const modules = {
 };
 const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;font:16px Body,Arial,sans-serif;background:#fff1d6}*{box-sizing:border-box}`;
 const server = await createServer({ root, configFile: false, envDir: false, cacheDir: resolve(output, 'vite-cache'), publicDir: resolve(root, 'public'),
-  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'lucide-react'] },
+  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'lucide-react', 'three', 'three/addons/utils/BufferGeometryUtils.js'] },
   resolve: { alias: { ...(reauthOnly ? { '@/context/CartContext': '\0reauth-cart', '@/components/navigation/NavigationFeedback': '\0reauth-navigation' } : {}), '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [] } },
   plugins: [{ name: 'staff-audit', enforce: 'pre', resolveId(id) { if (id in modules) return '\0' + id; if (id.startsWith('\0') && id.slice(1) in modules) return id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
@@ -2322,8 +2322,15 @@ try {
     const show = async kind => { await page.$eval(scene(kind), node => node.scrollIntoView({ block: 'center', behavior: 'instant' })); await motion(kind, 'running'); };
     const frozen = async (kind, label) => { await painted(kind); await pause(200); const before = await painted(kind); assert(before.every(part => part.animation === 'none' || part.playState === 'paused'), label + ' stops CSS timelines'); await pause(280); assert.deepEqual(await painted(kind), before, label + ' stops painted motion'); };
     const readyArt = async () => {
+      const position = await page.evaluate(() => window.scrollY);
+      for (const canvas of await page.$$('[data-staff-station-scene] canvas[data-avatar-state]')) {
+        await canvas.evaluate(node => node.scrollIntoView({block:'center', behavior:'instant'}));
+        await page.waitForFunction(node => node.dataset.avatarState !== 'loading', {}, canvas);
+        assert.equal(await canvas.evaluate(node => node.dataset.avatarState), 'ready', await canvas.evaluate(node => node.getAttribute('aria-label')));
+        await canvas.dispose();
+      }
       await page.waitForFunction(() => [...document.querySelectorAll('[data-staff-station-scene] img')].every(node => node.complete && node.naturalWidth > 0));
-      await page.waitForFunction(() => [...document.querySelectorAll('[data-staff-station-scene] canvas')].every(node => node.dataset.avatarState === 'ready'));
+      await page.evaluate(top => window.scrollTo({top, behavior:'instant'}), position);
     };
     const actors = () => page.$$eval('[data-staff-station-scene][data-station-actor]', nodes => nodes.map(node => ({ station: node.dataset.staffStationScene, actor: node.dataset.stationActor, activity: node.dataset.stationActivity })).sort((a, b) => a.station.localeCompare(b.station)));
     const open = async (width, query = 'live') => {
@@ -2331,7 +2338,9 @@ try {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
       await page.goto(origin + (query ? '?scene=' + query : ''), { waitUntil: 'networkidle0' });
       await page.evaluate(() => document.fonts.ready); await page.waitForSelector('[data-guide-staff-ready="true"]');
-      await page.waitForSelector(scene('culture')); await readyArt();
+      await keyActivate('[data-staff-tab="team"]');
+      await page.waitForSelector('[data-staff-panel="team"]:not([hidden])');
+      await page.waitForSelector(scene('culture'), { visible: true }); await readyArt();
     };
     const refresh = async () => { const before = await page.evaluate(() => window.__staff.reads()); await button('Actualiser'); await page.waitForFunction(before => window.__staff.reads() > before, {}, before); await page.waitForSelector('[data-guide-staff-ready="true"]'); };
     const expectedActors = [

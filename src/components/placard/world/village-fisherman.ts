@@ -94,7 +94,7 @@ export function createVillageFisherman(): VillageNpcRig {
   }
   addVillageNeck(shirt, .49, .184, .083);
   shirt.finish("fisherman-striped-knit-and-braces", torso, material);
-  const face = createCharacterFace(torso, material, "fisherman", "#b6ad91"); face.head.position.set(0, 0.63, 0);
+  const face = createCharacterFace(torso, material, "fisherman", "#bbb1a3"); face.head.position.set(0, 0.63, 0);
   const hat = new Assembly();
   const crown: readonly ClothSection[] = [[.388, .242, .217, -.015], [.405, .275, .236, -.018], [.430, .288, .243, -.018],
     [.463, .283, .241, -.026], [.482, .260, .225, -.034], [.497, .208, .180, -.041], [.505, .119, .114, -.046], [.511, 0, 0, -.046]];
@@ -191,7 +191,7 @@ export function createVillageFisherman(): VillageNpcRig {
     face.head.rotation.z = Math.sin(t * 0.8) * 0.018 + attention * (pose?.emphasis ?? 0) * 0.025;
     face.setExpression(t, reduced, attention, yaw, (0.08 + attention * (0.16 + (pose?.emphasis ?? 0) * 0.3)) * (1 - lift * 0.95), attention * 0.45, detail);
     rest.set(0.53, 0.085, 0.02).applyQuaternion(inverseBust);
-    lip.set(0, 0.078, 0.218).applyEuler(face.head.rotation).add(face.head.position);
+    lip.copy(face.mouth.position).applyEuler(face.head.rotation).add(face.head.position);
     bottle.position.copy(rest).lerp(lip, lift);
     // Carry the bottle around the chest; the lip and crate endpoints stay exact.
     bottle.position.x += Math.sin(lift * Math.PI) * 0.13;

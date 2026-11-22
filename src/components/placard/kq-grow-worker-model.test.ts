@@ -103,6 +103,50 @@ describe("3D Chanvrier", () => {
     second.dispose();
   });
 
+  it("fits each oversized iris inside its blinkable eye opening", () => {
+    const worker = createGrowWorker(profile, { tools: false });
+    const rightEyeBounds = (name: string) => {
+      const bounds = new THREE.Box3();
+      const positions = mesh(worker, name).geometry.getAttribute("position");
+      const point = new THREE.Vector3();
+      for (let i = 0; i < positions.count; i++) {
+        point.fromBufferAttribute(positions, i);
+        if (point.x > 0) bounds.expandByPoint(point);
+      }
+      return bounds;
+    };
+    for (const { code: eyes } of CHANVRIER_APPEARANCE_OPTIONS.eyes) {
+      worker.updateAppearance({ ...profile, appearance: { ...DEFAULT_CHANVRIER_APPEARANCE, eyes } });
+      const opening = rightEyeBounds("chanvrier-eyelids"), iris = rightEyeBounds("chanvrier-eyes");
+      const openingSize = opening.getSize(new THREE.Vector3()), irisSize = iris.getSize(new THREE.Vector3());
+      expect(iris.min.x).toBeGreaterThan(opening.min.x);
+      expect(iris.max.x).toBeLessThan(opening.max.x);
+      expect(iris.min.y).toBeGreaterThan(opening.min.y);
+      expect(iris.max.y).toBeLessThan(opening.max.y);
+      expect(irisSize.x / openingSize.x).toBeGreaterThan(.73);
+      expect(irisSize.y / openingSize.y).toBeGreaterThan(.83);
+    }
+    worker.dispose();
+  });
+
+  it("sculpts the selectable noses into the same continuous skin mesh", () => {
+    const worker = createGrowWorker(profile, { tools: false });
+    const tips = new Set<number>(), profiles = new Set<number>();
+    for (const { code: nose } of CHANVRIER_APPEARANCE_OPTIONS.nose) {
+      worker.updateAppearance({ ...profile, appearance: { ...DEFAULT_CHANVRIER_APPEARANCE, nose } });
+      const skin = mesh(worker, "chanvrier-skin");
+      const probe = new THREE.Mesh(skin.geometry, skin.material);
+      const cast = (x: number) => new THREE.Raycaster(new THREE.Vector3(x, .092, 1), new THREE.Vector3(0, 0, -1)).intersectObject(probe)[0].point.z;
+      const tip = cast(0), cheek = cast(.11);
+      expect(tip - cheek).toBeGreaterThan(.034);
+      tips.add(tip);
+      profiles.add(cast(.035));
+    }
+    expect(tips.size).toBe(3);
+    expect(profiles.size).toBe(3);
+    worker.dispose();
+  });
+
   it("blinks and shifts weight at rest from elapsed time while keeping the feet planted", () => {
     const worker = createGrowWorker(profile, { tools: false });
     const eye = mesh(worker, "chanvrier-eyes"), head = worker.object.getObjectByName("chanvrier-head")!;

@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Leaf, Coins, Handshake, Wrench, Check, ArrowLeft, ArrowRight, X } from "lucide-react";
-import { getChanvrierAppearance, parseChanvrierProfile, CHANVRIER_STRENGTHS, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { getChanvrierAppearance, parseChanvrierProfile, CHANVRIER_OWNER_HEADER, CHANVRIER_STRENGTHS, type ChanvrierProfile } from "@/lib/arena-chanvrier";
 import { ARENA_RELEVE_LETTER, ARENA_RELEVE_SCENES } from "@/lib/arena-releve";
+import { NEW_CHANVRIER_PROFILE, clearChanvrierDraft, readChanvrierDraft, writeChanvrierDraft, type ChanvrierDraft, type ChanvrierDraftScope, type ChanvrierProfileStep as Step } from "@/lib/chanvrier-profile-draft";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ChanvrierWorkshopPreview } from "./ChanvrierWorkshopPreview";
 import { ChanvrierWardrobe, useChanvrierWardrobe } from "./ChanvrierWardrobe";
@@ -14,25 +15,40 @@ import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 import styles from "./ChanvrierProfileEditor.module.css";
 
 const ICONS = [Leaf, Coins, Handshake, Wrench];
-const NEW_PROFILE: ChanvrierProfile = {
-  nickname: "", gender: "male", clothing: "ochre", skin: "ivory", strength: "green-thumb",
-  appearance: { ...getChanvrierAppearance({ gender: "male" }), hairColor: "black", mouth: "grin", top: "tee", bottomColor: "teal", shoes: "work" },
-};
-type Step = "inheritance" | "look" | "strength" | "review";
 const STEP_LABELS: Record<Step, string> = { inheritance: "Héritage", look: "Personnage", strength: "Spécialité", review: "Départ" };
+const subscribeHydration = () => () => undefined;
+const narrowPortrait = "(max-width: 680px) and (orientation: portrait)";
 
-export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, open = true, skipInheritance = false }: {
-  profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile) => void; onClose: () => void;
-  onDiscard?: () => void; open?: boolean; skipInheritance?: boolean;
-}) {
+function subscribeNarrowPortrait(update: () => void) {
+  const media = window.matchMedia(narrowPortrait);
+  media.addEventListener("change", update);
+  return () => media.removeEventListener("change", update);
+}
+
+type EditorProps = {
+  profile: ChanvrierProfile | null; onSaved: (profile: ChanvrierProfile, createdAt?: string) => void; onClose: () => void;
+  onDiscard?: () => void; open?: boolean; skipInheritance?: boolean; draftScope?: ChanvrierDraftScope; ownerId?: string;
+};
+
+export function ChanvrierProfileEditor({ open = true, ...props }: EditorProps) {
+  const hydrated = useSyncExternalStore(subscribeHydration, () => true, () => false);
+  return hydrated && open ? <ProfileDialog key={props.draftScope?.key ?? `${props.ownerId ?? "local"}:${props.profile ? "edit" : "create"}`} {...props} /> : null;
+}
+
+function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, ownerId, skipInheritance = false }: EditorProps) {
   const api = useKqTutorialApi();
+  const mobilePortrait = useSyncExternalStore(subscribeNarrowPortrait, () => window.matchMedia(narrowPortrait).matches);
   const isArrival = !profile && !api.isTutorial;
   const showInheritance = isArrival && !skipInheritance;
   const steps: Step[] = profile ? ["look", "review"] : showInheritance ? ["inheritance", "look", "strength", "review"] : ["look", "strength", "review"];
-  const initial = useRef(profile ?? NEW_PROFILE).current;
-  const [draft, setDraft] = useState(initial);
-  const [view, setView] = useState<ChanvrierWorkshopView>("portrait");
-  const [step, setStep] = useState<Step>(showInheritance ? "inheritance" : "look");
+  const initial = profile ?? NEW_CHANVRIER_PROFILE;
+  const [editor, setEditor] = useState<ChanvrierDraft & { hasDraft: boolean }>(() => {
+    const saved = draftScope && readChanvrierDraft(draftScope, profile);
+    return { profile: saved ? saved.profile : initial, step: saved && steps.includes(saved.step) ? saved.step : steps[0], hasDraft: Boolean(saved) };
+  });
+  const latest = useRef(editor);
+  const { profile: draft, step } = editor;
+  const [view, setView] = useState<ChanvrierWorkshopView>(step === "look" || step === "inheritance" ? "portrait" : "full");
   const [confirmedStrength, setConfirmedStrength] = useState(false);
   const [nicknameTouched, setNicknameTouched] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -42,63 +58,90 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, o
   const controls = useRef<HTMLElement>(null);
   const errorMessage = useRef<HTMLParagraphElement>(null);
   const inFlight = useRef(false);
+  const saveController = useRef<AbortController | null>(null);
   const titleId = useId();
   const nicknameHintId = useId();
   const nicknameErrorId = useId();
-  const strength = CHANVRIER_STRENGTHS.find(choice => choice.code === draft.strength)!;
+  const strength = CHANVRIER_STRENGTHS.find(choice => choice.code === (profile?.strength ?? draft.strength))!;
   const { gender, clothing, skin, appearance } = draft;
   const look = useMemo(() => ({ gender, clothing, skin, appearance }), [gender, clothing, skin, appearance]);
-  const wardrobe = useChanvrierWardrobe(look, initial, next => setDraft(current => ({ ...current, ...next })));
+  const updateEditor = (changes: Partial<ChanvrierProfile>, nextStep?: Step) => {
+    const next = { profile: { ...latest.current.profile, ...changes }, step: nextStep ?? latest.current.step };
+    if (draftScope) writeChanvrierDraft(draftScope, next);
+    latest.current = { ...next, hasDraft: true };
+    setEditor(latest.current);
+  };
+  const wardrobe = useChanvrierWardrobe(look, initial, updateEditor);
   const stepIndex = steps.indexOf(step);
   const validNickname = /^[A-Za-z0-9._-]{3,24}$/.test(draft.nickname.trim());
   const nicknameError = nicknameTouched && !validNickname;
   const changeStep = (next: Step) => {
     if (inFlight.current) return;
-    setStep(next);
+    updateEditor({}, next);
     setError("");
     setView(next === "look" ? wardrobe.category.view : "full");
   };
 
-  useBodyScrollLock(open);
+  useBodyScrollLock(true);
   useEffect(() => {
-    if (!open) return;
     const modal = dialog.current;
     const previous = document.activeElement as HTMLElement | null;
     modal?.showModal();
     return () => { modal?.close(); if (previous?.isConnected) previous.focus(); };
-  }, [open]);
+  }, []);
   useEffect(() => {
-    if (!open) return;
     const frame = requestAnimationFrame(() => {
       heading.current?.focus({ preventScroll: true });
       dialog.current?.scrollTo({ top: 0, behavior: "instant" });
       controls.current?.scrollTo({ top: 0, behavior: "instant" });
     });
     return () => cancelAnimationFrame(frame);
-  }, [open, step]);
+  }, [step]);
   useEffect(() => {
     if (!error) return;
     errorMessage.current?.focus({ preventScroll: true });
     errorMessage.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
   }, [error]);
+  useEffect(() => () => saveController.current?.abort(), []);
 
   const save = async () => {
     if (inFlight.current || step !== "review" || !validNickname || (!profile && !confirmedStrength)) return;
     inFlight.current = true;
+    const controller = new AbortController();
+    saveController.current = controller;
     setBusy(true);
     setError("");
+    const identityHeaders: Record<string, string> = ownerId ? { [CHANVRIER_OWNER_HEADER]: ownerId } : {};
     try {
-      const response = await api.request("/api/arena/chanvrier", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, nickname: draft.nickname.trim(), appearance: getChanvrierAppearance(draft) }), signal: AbortSignal.timeout(15000) });
+      const response = await api.request("/api/arena/chanvrier", { method: "POST", headers: { ...identityHeaders, "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, nickname: draft.nickname.trim(), strength: strength.code, appearance: getChanvrierAppearance(draft) }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) });
       const body = await response.json();
+      if (controller.signal.aborted) return;
       if (!response.ok) throw new Error(body.error || "Enregistrement impossible.");
       const saved = parseChanvrierProfile(body.profile);
       if (!saved) throw new Error("Le personnage enregistré n’a pas pu être chargé. Réessaie.");
+      if (draftScope) clearChanvrierDraft(draftScope);
+      let createdAt = typeof body.profile.createdAt === "string" ? body.profile.createdAt : undefined;
+      if (!profile && draftScope?.storage === "localStorage" && !createdAt) {
+        // The save RPC omits the creation date. A failed reread never undoes a successful save.
+        try {
+          const current = await api.request("/api/arena/chanvrier", { headers: identityHeaders, cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(3000)]) });
+          const data = current.ok ? await current.json() : null;
+          if (data?.profile?.nickname === saved.nickname && typeof data.profile.createdAt === "string") createdAt = data.profile.createdAt;
+        } catch { /* The next profile load will recover the creation date. */ }
+      }
+      if (controller.signal.aborted) return;
       api.notify("kq:equipment-updated");
-      api.notify("arena:profile-updated", saved);
-      onSaved(saved);
+      api.notify("arena:profile-updated", ownerId ? { ...saved, ownerId } : saved);
+      onSaved(saved, createdAt);
     } catch (reason) {
+      if (controller.signal.aborted) return;
       setError(reason instanceof Error && reason.name === "TimeoutError" ? "La connexion prend trop de temps. Tes choix sont conservés, réessaie." : reason instanceof Error ? reason.message : "Enregistrement impossible. Réessaie.");
     } finally { inFlight.current = false; setBusy(false); }
+  };
+  const discard = () => {
+    if (inFlight.current) return;
+    if (draftScope) clearChanvrierDraft(draftScope);
+    (onDiscard ?? onClose)();
   };
 
   const title = step === "inheritance" ? "La maison de Grand-père" : step === "look" ? "Atelier du personnage" : step === "strength" ? "Ton coup de pouce" : profile ? "Tes changements" : "Prêt à écrire la suite ?";
@@ -109,7 +152,12 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, o
     </KqChapterHeading>
   </div>;
 
-  if (!open) return null;
+  const nicknameField = <label className={styles.nickname} key="nickname">Ton surnom
+    <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Loic29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => updateEditor({ nickname: event.target.value })} />
+    <small id={nicknameHintId}>3 à 24 caractères : lettres sans accent, chiffres, . _ -</small>
+    {nicknameError ? <span id={nicknameErrorId} className={styles.fieldError}>Choisis un surnom de 3 à 24 caractères autorisés pour continuer.</span> : null}
+  </label>;
+  const lookEditor = <ChanvrierWardrobe key="wardrobe" wardrobe={wardrobe} profile={look} onViewChange={next => setView(current => current === "village" ? current : next)} />;
 
   return <dialog ref={dialog} className={styles.dialog} data-chanvrier-profile data-profile-step={step} aria-labelledby={titleId} aria-busy={busy} onCancel={event => { event.preventDefault(); if (!inFlight.current) onClose(); }}>
     <div data-farm-guide-host />
@@ -136,15 +184,10 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, o
           </div>
           <p className={styles.note}>Au début de l’aventure, Loïc te guide pas à pas dans les écrans de ta ferme et du quartier.</p>
         </> : step === "look" ? <>
-          <label className={styles.nickname}>Ton surnom
-            <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Loic29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => setDraft({ ...draft, nickname: event.target.value })} />
-            <small id={nicknameHintId}>3 à 24 caractères : lettres sans accent, chiffres, . _ -</small>
-            {nicknameError ? <span id={nicknameErrorId} className={styles.fieldError}>Choisis un surnom de 3 à 24 caractères autorisés pour continuer.</span> : null}
-          </label>
-          <ChanvrierWardrobe wardrobe={wardrobe} profile={look} onViewChange={next => setView(current => current === "village" ? current : next)} />
+          {profile && mobilePortrait ? [lookEditor, nicknameField] : [nicknameField, lookEditor]}
           <p className={styles.note}>Ton apparence ne change pas tes chances. Tu pourras la modifier, ainsi que ton surnom, plus tard.</p>
         </> : step === "strength" ? <>
-          <div className={styles.strengths} aria-label="Choisir une spécialité">{CHANVRIER_STRENGTHS.map((choice, index) => { const Icon = ICONS[index]; return <button type="button" key={choice.code} aria-pressed={draft.strength === choice.code} onClick={() => { setDraft({ ...draft, strength: choice.code }); setConfirmedStrength(false); }}><Icon aria-hidden="true" /><span><small>{choice.stage}</small><strong>{choice.name}</strong><b>{choice.badge}</b></span>{draft.strength === choice.code ? <Check size={18} aria-hidden="true" /> : null}</button>; })}</div>
+          <div className={styles.strengths} aria-label="Choisir une spécialité">{CHANVRIER_STRENGTHS.map((choice, index) => { const Icon = ICONS[index]; return <button type="button" key={choice.code} aria-pressed={draft.strength === choice.code} onClick={() => { updateEditor({ strength: choice.code }); setConfirmedStrength(false); }}><Icon aria-hidden="true" /><span><small>{choice.stage}</small><strong>{choice.name}</strong><b>{choice.badge}</b></span>{draft.strength === choice.code ? <Check size={18} aria-hidden="true" /> : null}</button>; })}</div>
           <div className={styles.bonus} aria-live="polite"><strong>{strength.name}</strong><p>{strength.description}</p></div>
           <p className={styles.note}><strong>Ce choix est définitif.</strong> Tu pourras le vérifier à l’étape suivante avant de créer ton personnage. Un seul bonus par compte{api.isTutorial ? " d’essai" : ""}.</p>
         </> : <>
@@ -165,7 +208,8 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose, onDiscard, o
             <p className={styles.note}>{api.isTutorial ? "Ce personnage appartient à ta partie d’essai." : "Ton surnom et ton apparence pourront toujours changer."}</p>
           </div>}
         </>}
-        {onDiscard && <button type="button" className={styles.editLink} data-profile-discard disabled={busy} onClick={onDiscard}>Abandonner les modifications</button>}
+        {(draftScope || onDiscard) && <button type="button" className={styles.editLink} data-profile-discard disabled={busy} onClick={discard}>Abandonner les modifications</button>}
+        {draftScope && editor.hasDraft ? <p className={styles.note} data-profile-draft>Brouillon local · à valider</p> : null}
         {error ? <p ref={errorMessage} role="alert" tabIndex={-1} className={styles.error}>{error}</p> : null}
       </section>
     </div>

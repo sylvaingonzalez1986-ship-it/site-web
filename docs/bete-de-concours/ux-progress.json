@@ -14,6 +14,16 @@
     "verification": "17 tests réussis sur le guide, ses conseils contextuels et le plan de départ.",
     "pointDeReprise": "Relire ces consignes à 320 px lors de la prochaine recette mobile du carnet."
   },
+  "pnjDuQuartier20261122": {
+    "livraison": "23 identités de PNJ harmonisées avec le créateur, dont les trois korrigans et les onze profils de recrutement. Loïc conserve sa tête dans ses quatre lieux. Les six affiches de jour utilisent les nouvelles scènes.",
+    "preuves": ["docs/bete-de-concours/pnj-quartier/comparaison-visages.webp", "docs/bete-de-concours/pnj-quartier/apres-recrues.webp", "docs/bete-de-concours/pnj-quartier/recette.json"],
+    "pointDeReprise": "Mesurer sur un téléphone physique le rendu du marché et de la boutique pendant les gestes de Loïc."
+  },
+  "atelierPersonnage20261122": {
+    "livraison": "Créateur Three.js refondu. Le même modèle habillé alimente les gros plans des traits, l’aperçu, le Quartier et la salle de culture. Les formes et leurs couleurs sont présentées ensemble. Le brouillon reprend après rechargement et la validation reste explicite.",
+    "preuves": ["docs/bete-de-concours/atelier-personnage/atelier.json", "docs/bete-de-concours/atelier-personnage/comparaison-personnage.webp", "docs/bete-de-concours/atelier-personnage/comparaison-maquette-atelier.webp", "docs/bete-de-concours/atelier-personnage/recette-chromium.json"],
+    "pointDeReprise": "Vérifier la rotation, la lisibilité du nuancier et la sauvegarde sur un téléphone physique avec un compte de préproduction."
+  },
   "areneConsultationPublique20261122": {
     "livraison": "L’entrée de l’Arène, le Carnet et les classements sont accessibles aux visiteurs depuis la navigation du site.",
     "verification": "Les routes de classement servent la projection publique. Le rang personnel est calculé à partir de la session du lecteur.",

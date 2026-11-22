@@ -3,22 +3,25 @@ import * as THREE from "three";
 const levels = [-.064, -.054, -.024, .018, .072, .122, .167, .218, .267, .315, .357, .394, .42, .437];
 const portraits = {
   breton: {
-    outline: [0, .081, .134, .177, .216, .233, .25, .25, .242, .232, .202, .155, .103, 0],
-    skin: "#edba90", flush: "#d07960", shade: "#996757", depth: .956,
-    cheek: [.151, .147, .090, .073, .033], jaw: [.118, .026, .081, .070, -.009],
-    nose: [.155, .055, .054, .054, .032, .025],
+    outline: [0, .099, .157, .201, .234, .252, .260, .253, .238, .223, .198, .155, .103, 0],
+    skin: "#efbc90", flush: "#d98762", shade: "#ae7961", depth: .94,
+    cheek: [.132, .124, .123, .117, .043], jaw: [.124, .021, .099, .081, .010],
+    eye: [.099, .233, .041, .050, .039, .0041, 1.04],
+    nose: [.157, .058, .052, .043, .031, .018],
   },
   fisherman: {
-    outline: [0, .111, .177, .210, .230, .248, .257, .254, .247, .235, .202, .149, .098, 0],
-    skin: "#e9b993", flush: "#bd705a", shade: "#98736b", depth: .934,
-    cheek: [.159, .137, .101, .088, .028], jaw: [.131, .036, .112, .089, .012],
-    nose: [.147, .067, .062, .072, .037, .034],
+    outline: [0, .102, .168, .216, .242, .255, .261, .258, .249, .235, .202, .149, .098, 0],
+    skin: "#e9b68d", flush: "#ce805e", shade: "#ad7863", depth: .921,
+    cheek: [.162, .132, .116, .110, .029], jaw: [.132, .041, .128, .093, .017],
+    eye: [.107, .225, .046, .015, .034, -.003, 1.17],
+    nose: [.147, .079, .070, .056, .037, .022],
   },
   loic: {
-    outline: [0, .076, .135, .174, .214, .244, .254, .249, .244, .234, .205, .158, .106, 0],
-    skin: "#efc09d", flush: "#da866e", shade: "#af7966", depth: .954,
-    cheek: [.135, .122, .113, .099, .043], jaw: [.116, .015, .091, .071, -.011],
-    nose: [.158, .060, .046, .050, .030, .022],
+    outline: [0, .080, .139, .178, .212, .229, .241, .240, .240, .234, .205, .158, .106, 0],
+    skin: "#efbc91", flush: "#d98462", shade: "#b67d63", depth: .959,
+    cheek: [.133, .123, .126, .105, .037], jaw: [.111, .02, .103, .081, -.004],
+    eye: [.087, .234, .039, .050, .046, .0037, 1.04],
+    nose: [.157, .055, .054, .046, .027, .018],
   },
 } as const;
 
@@ -26,10 +29,12 @@ function bump(x: number, y: number, cx: number, cy: number, rx: number, ry: numb
   return Math.max(0, 1 - ((x - cx) / rx) ** 2 - ((y - cy) / ry) ** 2) ** 2;
 }
 
+export type VillagePortrait = keyof typeof portraits;
+
 /** Face landmarks and the skin derive from the same actor-specific cross sections. */
-export function createVillagePortraitShape(name: string) {
+export function createVillagePortraitShape(name: VillagePortrait) {
   const older = name === "fisherman", young = name === "loic";
-  const shape = older ? portraits.fisherman : young ? portraits.loic : portraits.breton;
+  const shape = portraits[name];
   const curve = new THREE.SplineCurve(levels.map((y, i) => new THREE.Vector2(shape.outline[i], y)));
   const outline = curve.getPoints(50);
   function radius(y: number) {
@@ -41,18 +46,20 @@ export function createVillagePortraitShape(name: string) {
   const [cheekX, cheekY, cheekW, cheekH, cheekRelief] = shape.cheek;
   const [jawX, jawY, jawW, jawH, jawRelief] = shape.jaw;
   const [tipY, tipW, tipH, tipRelief, wingX, bridgeRelief] = shape.nose;
+  const [eyeX, eyeY] = shape.eye;
   function relief(x: number, y: number) {
     const side = Math.abs(x);
     const cheek = cheekRelief * bump(side, y, cheekX, cheekY, cheekW, cheekH);
     const jaw = jawRelief * bump(side, y, jawX, jawY, jawW, jawH);
-    const socket = (young ? .014 : older ? .029 : .022) * bump(side, y, .103, .231, .075, .064);
-    const brow = (older ? .016 : .012) * bump(side, y, .097, .284, .086, .043);
-    const bridge = bridgeRelief * bump(x, y, older ? -.005 : 0, .207, .050, .105);
-    const tip = tipRelief * bump(x, y, older ? .004 : 0, tipY, tipW, tipH);
-    const wings = (older ? .027 : .017) * bump(side, y, wingX, tipY - .009, .029, .032);
-    const philtrum = .0065 * bump(x, y, 0, .106, .022, .034);
-    const muzzle = .011 * bump(x, y, 0, .087, .102, .060);
-    const chin = (young ? .016 : older ? .018 : .025) * bump(x, y, 0, .012, .111, .055);
+    const socket = (older ? .012 : .006) * bump(side, y, eyeX, eyeY, .078, .067);
+    const brow = (older ? .014 : .009) * bump(side, y, eyeX, .294, .087, .044);
+    const bridge = bridgeRelief * bump(x, y, older ? -.003 : 0, .197, .058, .111);
+    const tipRadius = ((x - (older ? .004 : 0)) / tipW) ** 2 + ((y - tipY) / tipH) ** 2;
+    const tip = tipRelief * Math.max(0, 1 - tipRadius * (.62 + .38 * tipRadius)) ** 1.7;
+    const wings = (older ? .018 : .009) * bump(side, y, wingX, tipY - .012, .032, .036);
+    const philtrum = (older ? .004 : .002) * bump(x, y, 0, .106, .023, .032);
+    const muzzle = .015 * bump(x, y, 0, .088, .113, .069);
+    const chin = (older ? .031 : .019) * bump(x, y, 0, .016, .121, .061);
     return cheek + jaw - socket + brow + bridge + tip + wings - philtrum + muzzle + chin;
   }
   // The bottle and blowpipe meet this seat in the head's unchanged coordinates.
@@ -65,27 +72,28 @@ export function createVillagePortraitShape(name: string) {
   }
   const geom = new THREE.LatheGeometry(outline.map(p => new THREE.Vector2(radius(p.y), p.y)), 56).scale(1, 1, shape.depth);
   const pos = geom.getAttribute("position"), colors = new Float32Array(pos.count * 3);
-  const skin = new THREE.Color(shape.skin), blush = new THREE.Color(shape.flush), lidShadow = new THREE.Color(shape.shade);
-  const tone = new THREE.Color(), stubble = new THREE.Color("#776f65");
-  const rim = new THREE.Color("#f5c9aa");
+  const skin = new THREE.Color(shape.skin), blush = new THREE.Color(shape.flush), shadow = new THREE.Color(shape.shade);
+  const tone = new THREE.Color(), stubble = new THREE.Color("#9a8677");
+  const rim = new THREE.Color("#f7cca4"), noseLight = new THREE.Color("#f6c397"), noseShade = new THREE.Color("#bd8064");
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
     pos.setZ(i, modelFront(x, y, z));
     const side = Math.abs(x), face = THREE.MathUtils.smoothstep(z, .045, .16);
-    const warm = (older ? .62 : young ? .53 : .46) * bump(side, y, cheekX, cheekY, .107, .071)
-      + (older ? .62 : .29) * bump(x, y, 0, tipY, .060, .047);
-    const socket = bump(side, y, .103, .229, .083, .073);
-    const jawShade = .22 * bump(side, y, .153, .029, .15, .069);
-    const temple = .15 * bump(side, y, .188, .264, .098, .09);
+    const warm = (older ? .42 : young ? .35 : .43) * bump(side, y, cheekX, cheekY, .114, .091);
+    const socket = (older ? .19 : .09) * bump(side, y, eyeX, eyeY, .083, .076);
+    const jawShade = .13 * bump(side, y, .15, .011, .146, .073);
+    const temple = .15 * bump(side, y, .195, .264, .098, .09);
     const underHat = .21 * bump(x, y, 0, .338, .226, .048);
-    const highlight = .19 * bump(side, y, .137, .177, .107, .071) + .18 * bump(x, y, 0, .271, .112, .093);
-    tone.copy(skin).lerp(blush, warm * face).lerp(lidShadow, ((older ? .47 : .33) * socket + jawShade + temple + underHat) * face)
-      .lerp(rim, highlight * face);
+    const highlight = .24 * bump(side, y, .135, .173, .120, .084) + .22 * bump(x, y, 0, .272, .136, .102);
+    const litTip = (older ? .21 : .38) * bump(x, y, 0, tipY + .010, tipW * 1.13, .044);
+    const shadedTip = (older ? .29 : .5) * bump(x, y, 0, tipY - .031, tipW, .030);
+    tone.copy(skin).lerp(blush, warm * face).lerp(shadow, (socket + jawShade + temple + underHat) * face)
+      .lerp(rim, highlight * face).lerp(noseLight, litTip * face).lerp(noseShade, shadedTip * face);
     if (older) {
       const sideburn = bump(side, y, .214, .146, .092, .136) * THREE.MathUtils.smoothstep(z, -.15, .09);
       const jaw = (1 - THREE.MathUtils.smoothstep(y, .032 + side * .23, .078 + side * .38)) * THREE.MathUtils.smoothstep(z, -.14, .15);
       const grain = .96 + .04 * Math.sin(x * 58 + z * 31) * Math.cos(y * 74 + z * 57);
-      tone.lerp(stubble, Math.min(.84, jaw * .81 + sideburn * .62) * grain);
+      tone.lerp(stubble, Math.min(.48, jaw * .34 + sideburn * .51) * grain);
     }
     tone.toArray(colors, 3 * i);
   }
@@ -98,7 +106,7 @@ export function createVillagePortraitShape(name: string) {
     a.fromBufferAttribute(normals, i).add(b.fromBufferAttribute(normals, last)).normalize();
     normals.setXYZ(i, a.x, a.y, a.z); normals.setXYZ(last, a.x, a.y, a.z);
   }
-  return { geometry: geom, radius, front, tone: shape, skin: shape.skin, depth: shape.depth, tipY, wingX };
+  return { geometry: geom, radius, front, tone: shape, skin: shape.skin, depth: shape.depth };
 }
 
 /** A closed ear with a raised outer rim, central concha and the small fold at its root. */
@@ -132,17 +140,35 @@ export function createPortraitEar(skin: string, warmth: string, width: number, h
 
 /** One tapered wing of a moustache, moulded to the skin above the mouth. */
 export function portraitMoustache(side: number, width: number, y: number, scaleY: number, hair: string, front: (x: number, y: number) => number) {
+  return moustacheWing(side, hair, front, (u, t) => {
+    const swell = Math.sin(Math.PI * u) ** .76 * (1 - .46 * u);
+    const roll = Math.sin(Math.PI * t) * swell;
+    return [(.003 + u * width), y + ((.51 - u) * .018 + (2 * t - 1) * .016 * swell) * scaleY,
+      .0017 + .0068 * roll, .16 + .80 * roll + .08 * Math.sin(u * 34 + t * 3) ** 2];
+  }, .61);
+}
+
+export function fishermanMoustache(side: number, front: (x: number, y: number) => number) {
+  return moustacheWing(side, "#c9beb0", front, (u, t) => {
+    const swell = .52 * (1 - u) ** 4 + .91 * Math.sin(Math.PI * u ** .68) ** .62 * (1 - .21 * u);
+    const y = .113 - .031 * Math.sin(Math.PI * u ** .72) + .013 * u ** 3;
+    const roll = Math.sin(Math.PI * t) * swell;
+    const groove = Math.cos(t * 29 + 2.8 * u + .4 * Math.sin(u * 7));
+    return [u * .112, y + (2 * t - 1) * .028 * swell,
+      .0014 + (.054 + .0017 * groove) * roll, .25 + .69 * roll + .065 * groove];
+  }, .72);
+}
+
+function moustacheWing(side: number, hair: string, front: (x: number, y: number) => number,
+  profile: (u: number, t: number) => [x: number, y: number, relief: number, highlight: number], shade: number) {
   const vertices: number[] = [], indices: number[] = [], colors: number[] = [];
-  const root = new THREE.Color(hair).multiplyScalar(.61), ridge = new THREE.Color(hair), tone = new THREE.Color();
+  const root = new THREE.Color(hair).multiplyScalar(shade), ridge = new THREE.Color(hair), tone = new THREE.Color();
   const steps = 16, rows = 4, stride = rows + 1;
   for (let col = 0; col <= steps; col++) for (let row = 0; row <= rows; row++) {
-    const u = col / steps, t = row / rows;
-    const swell = Math.sin(Math.PI * u) ** .76 * (1 - .46 * u);
-    const x = side * (.003 + u * width);
-    const py = y + ((.51 - u) * .018 + (2 * t - 1) * .016 * swell) * scaleY;
-    const roll = Math.sin(Math.PI * t) * swell;
-    vertices.push(x, py, front(x, py) + .0017 + .0068 * roll);
-    tone.copy(root).lerp(ridge, .16 + (roll * .80) + .08 * Math.sin(u * 34 + t * 3) ** 2);
+    const [width, y, relief, highlight] = profile(col / steps, row / rows);
+    const x = side * width;
+    vertices.push(x, y, front(x, y) + relief);
+    tone.copy(root).lerp(ridge, highlight);
     colors.push(tone.r, tone.g, tone.b);
     if (col === steps || row === rows) continue;
     const a = col * stride + row, b = a + stride;
@@ -159,14 +185,15 @@ export function portraitMoustache(side: number, width: number, y: number, scaleY
 
 /** Closed contour sampled on facial relief. The coloured surface stays seated
  * against the cheek when seen from the side, even for the wide fisherman. */
-export function portraitPatch(centerX: number, centerY: number, width: number, height: number,
+export function portraitPatch(centerX: number, centerY: number, width: number, height: number | readonly [number, number],
   zAt: (x: number, y: number) => number, slope: number, almond: number, originY: number, steps = 22, rings = 4,
   tint?: (radius: number, angle: number) => THREE.Color) {
   const vertices: number[] = [], indices: number[] = [], colors: number[] = [];
   for (let row = 0; row <= rings; row++) for (let col = 0; col < steps; col++) {
     const a = col / steps * 2 * Math.PI, r = row / rings, c = Math.cos(a), s = Math.sin(a);
     const x = centerX + width * r * c;
-    const y = centerY + height * r * Math.sign(s) * Math.abs(s) ** almond + slope * r * c;
+    const halfHeight = typeof height === "number" ? height : height[s < 0 ? 1 : 0];
+    const y = centerY + halfHeight * r * Math.sign(s) * Math.abs(s) ** almond + slope * r * c;
     vertices.push(x, y - originY, zAt(x, y));
     if (tint) {
       const color = tint(r, a);

@@ -3,7 +3,7 @@ import { villageApproachSpeed, villageWalkBlend } from "../placard/world/village
 import { createGrowWorker } from "../placard/kq-grow-worker-model";
 import { VILLAGE_LIGHT } from "../placard/world/village-lighting";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { CHANVRIER_STUDIO_CAMERA_POSITION, CHANVRIER_STUDIO_LIGHT } from "./chanvrier-studio-light";
+import { CHANVRIER_STUDIO_LIGHT, frameChanvrierStudio } from "./chanvrier-studio-light";
 
 export type ChanvrierWorkshopView = "portrait" | "full" | "village";
 export type ChanvrierWorkshopFrame = { view: ChanvrierWorkshopView; rotation: number; walking: boolean };
@@ -41,7 +41,6 @@ export function createChanvrierWorkshopRenderer(canvas: HTMLCanvasElement, profi
   scene.add(character.object);
   const head = character.object.getObjectByName("chanvrier-head")!;
   const headBounds = new THREE.Box3();
-  const headSize = new THREE.Vector3();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 180);
   const target = new THREE.Vector3();
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -80,28 +79,23 @@ export function createChanvrierWorkshopRenderer(canvas: HTMLCanvasElement, profi
 
   function alignCamera() {
     if (!width || !height) return;
-    camera.left = -width / 2;
-    camera.right = width / 2;
-    camera.top = height / 2;
-    camera.bottom = -height / 2;
     if (frame.view === "village") {
+      camera.left = -width / 2;
+      camera.right = width / 2;
+      camera.top = height / 2;
+      camera.bottom = -height / 2;
       target.set(0, .8, 0);
       camera.position.set(34, 33, 36).add(target);
       camera.zoom = THREE.MathUtils.clamp(Math.min(window.innerWidth / 38, window.innerHeight / 30), 4, 110);
+      camera.lookAt(target);
+      camera.updateProjectionMatrix();
     } else {
-      const portrait = frame.view === "portrait";
       character.object.rotation.y = 0;
       character.object.updateMatrixWorld(true);
-      headBounds.setFromObject(head).getSize(headSize);
+      headBounds.setFromObject(head);
       character.object.rotation.y = frame.rotation;
-      const span = portrait ? Math.max(headSize.y * 1.35, .68) : headBounds.max.y + .25;
-      const horizontal = Math.hypot(headSize.x, headSize.z) * 1.24;
-      target.set(0, portrait ? (headBounds.min.y + headBounds.max.y) / 2 - span * .055 : span * .47, 0);
-      camera.position.set(...CHANVRIER_STUDIO_CAMERA_POSITION).add(target);
-      camera.zoom = Math.min(width / (portrait ? horizontal : 1.08), height / span);
+      frameChanvrierStudio(camera, headBounds, frame.view, width, height);
     }
-    camera.lookAt(target);
-    camera.updateProjectionMatrix();
   }
 
   const lost = (event: Event) => {

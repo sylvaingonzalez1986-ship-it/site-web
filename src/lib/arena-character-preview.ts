@@ -1,8 +1,8 @@
 import { parseChanvrierProfile, type ChanvrierProfile } from "./arena-chanvrier";
 
 /** One browser-only character rehearsal. No account, wallet or global event is written. */
-export function createArenaCharacterPreviewRequest(): typeof fetch {
-  let profile: ChanvrierProfile | null = null;
+export function createArenaCharacterPreviewRequest(initialProfile: ChanvrierProfile | null = null): typeof fetch {
+  let profile = initialProfile;
 
   return async (input, init) => {
     const request = input instanceof Request ? input : null;

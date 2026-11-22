@@ -1,0 +1,113 @@
+{
+    "scope":  "Chromium local, API de profil simulée, émulation tactile. Les intervalles portent sur les images WebGL de l’aperçu et le tas sur la page entière.",
+    "frames":  [
+                   {
+                       "label":  "1360 × 900 · marche",
+                       "count":  145,
+                       "meanFps":  60,
+                       "medianMs":  16.6,
+                       "p95Ms":  17.3,
+                       "slowestMs":  18.2,
+                       "heapMiB":  40.8
+                   },
+                   {
+                       "label":  "390 × 844 · marche",
+                       "count":  145,
+                       "meanFps":  60,
+                       "medianMs":  16.7,
+                       "p95Ms":  17.2,
+                       "slowestMs":  19.3,
+                       "heapMiB":  34.8
+                   }
+               ],
+    "captures":  [
+                     "output/creator-refit/recette/atelier-breton-ordinateur.png",
+                     "output/creator-refit/recette/atelier-echelle-quartier.png",
+                     "output/creator-refit/recette/atelier-telephone.png",
+                     "output/creator-refit/recette/atelier-paysage.png",
+                     "output/creator-refit/recette/atelier-320.png",
+                     "output/creator-refit/recette/salle-culture.png",
+                     "output/creator-refit/recette/boutique-qualite-reduite.png",
+                     "output/creator-refit/recette/personnage-au-quartier.png"
+                 ],
+    "errors":  [
+
+               ],
+    "graphics":  "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "renderedDetails":  [
+                            "nose",
+                            "mouth",
+                            "eyebrows",
+                            "facialHair",
+                            "eyes"
+                        ],
+    "draft":  {
+                  "closeAndReload":  true,
+                  "keyboardRotation":  true,
+                  "noPrematureSave":  true,
+                  "explicitDiscard":  true
+              },
+    "rapidChanges":  {
+                         "count":  18,
+                         "heapBeforeMiB":  35.5,
+                         "heapAfterMiB":  45,
+                         "hair":  12,
+                         "colors":  6
+                     },
+    "smallScreen":  {
+                        "viewport":  [
+                                         320,
+                                         640
+                                     ],
+                        "dialog":  [
+                                       304,
+                                       304
+                                   ],
+                        "preview":  [
+                                        276,
+                                        166
+                                    ],
+                        "overflows":  false
+                    },
+    "saved":  {
+                  "nickname":  "Mael29",
+                  "gender":  "male",
+                  "clothing":  "berry",
+                  "skin":  "honey",
+                  "strength":  "green-thumb",
+                  "appearance":  {
+                                     "version":  2,
+                                     "body":  "regular",
+                                     "hair":  "braids",
+                                     "hairColor":  "chestnut",
+                                     "face":  "round",
+                                     "eyes":  "almond",
+                                     "eyeColor":  "blue",
+                                     "eyebrows":  "natural",
+                                     "nose":  "round",
+                                     "mouth":  "smile",
+                                     "facialHair":  "none",
+                                     "top":  "embroidered-vest",
+                                     "bottom":  "pleated-skirt",
+                                     "bottomColor":  "blue",
+                                     "shoes":  "work",
+                                     "shoeColor":  "ochre",
+                                     "accessory":  "brooch",
+                                     "headwear":  "bigouden-coif",
+                                     "jacket":  "none",
+                                     "accentColor":  "cream",
+                                     "jacketColor":  "navy",
+                                     "headwearColor":  "cream",
+                                     "dyes":  {
+                                                  "top":  "#427a91",
+                                                  "bottom":  "#383342",
+                                                  "shoes":  "#443736",
+                                                  "headwear":  "#f9ebd2",
+                                                  "accent":  "#d98050"
+                                              }
+                                 },
+                  "createdAt":  "2026-11-22T10:00:00Z"
+              },
+    "softwarePortraitPixels":  84430,
+    "passed":  true
+}

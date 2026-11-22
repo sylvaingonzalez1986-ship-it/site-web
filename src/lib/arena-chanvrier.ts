@@ -1,5 +1,7 @@
 import { CHANVRIER_WARDROBE_OPTIONS } from "./chanvrier-wardrobe-catalog";
 
+export const CHANVRIER_OWNER_HEADER = "x-arena-chanvrier-owner";
+
 export const CHANVRIER_STRENGTHS = [
   { code: "green-thumb", name: "Main Verte", stage: "Culture", badge: "+2 XP / culture", description: "Commence chaque culture avec 2 XP supplémentaires. Le bonus de rareté de ton Buddie s’ajoute toujours." },
   { code: "treasurer", name: "Trésorier", stage: "Installation", badge: "+650 € + livret à 5 %", description: "Reçois un bonus unique de 650 € de monnaie de jeu à la création de ton personnage. Accède au livret d’épargne et place ton argent à 5 % par tranche complète de 24 h." },

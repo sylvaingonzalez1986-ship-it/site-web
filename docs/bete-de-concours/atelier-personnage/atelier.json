@@ -1,0 +1,75 @@
+{
+  "titre": "Atelier du personnage de Kanab Quest",
+  "date": "2026-11-22",
+  "versionDeDepart": "e662dbda",
+  "comparatifs": {
+    "sculpture": "comparaison-personnage.webp",
+    "interfaceAvantApres": "comparaison-atelier.webp",
+    "interfaceMaquetteProduit": "comparaison-maquette-atelier.webp",
+    "variantes": ["avant-vues.webp", "apres-vues.webp"],
+    "quartier": ["avant-quartier.webp", "apres-quartier.webp"],
+    "salleDeCulture": ["avant-entrepot.webp", "apres-entrepot.webp"],
+    "profilValideEnJeu": "partie-enregistree.webp",
+    "cadragesDeLaMaquette": ["apres-maquette-ordinateur.webp", "apres-maquette-mobile.webp"],
+    "interfacesNatives": ["apres-ordinateur.webp", "apres-mobile.webp", "apres-yeux-ordinateur.webp", "apres-yeux-mobile.webp", "apres-320.webp"]
+  },
+  "referenceExterieure": {
+    "fichier": "animalvcrossing.mp4",
+    "dureeSecondes": 54.04,
+    "observations": [
+      "À 9 s, le teint se juge en pied. À 15 s, la coiffure et ses teintes disposent de deux rangées distinctes.",
+      "De 21 à 33 s, le gros plan reste en place pendant les essais de formes et de couleurs des yeux. Le contour et la coche désignent le choix actif.",
+      "À 39 et 45 s, le même cadrage permet de comparer le nez, la bouche et les joues."
+    ]
+  },
+  "diagnostic": {
+    "modele": "Les captures initiales montrent beaucoup de blanc autour des iris, un sourcil haut et fin, plusieurs filets superposés pour le sourire et une coupe courte uniforme. Le nez, rapporté à la tête, se lit différemment en rotation.",
+    "materiauEtCadre": "L’éclairage latéral et la vue initiale légèrement oblique accentuaient l’ombre du nez. La commande de recentrage ramenait à cette vue oblique.",
+    "interface": "Les vignettes de visage montraient tout le buste. Le choix de la forme et celui de la couleur occupaient deux pages du sélecteur. Sur téléphone, les commandes prenaient près de la moitié de la largeur dévolue à l’aperçu.",
+    "persistance": "Fermer la boîte conservait les choix tant que certains parents gardaient le composant monté. Le rechargement perdait le brouillon."
+  },
+  "direction": [
+    {
+      "outil": "ImageGen",
+      "fichier": "cible-personnage.webp",
+      "sources": ["public/contest/releve/arrival-sylvain-portrait-v1.webp", "output/chanvrier-model-check/portraits-final.jpg"],
+      "brief": "Habitant adulte du village breton, peau miel, courte mèche châtain de côté, grands iris encrés, un reflet, nez bouton, sourcils pleins et sourire fermé. Marinière écrue et bandes bleu-vert, jean et chaussures de travail. Planche orthographique en pied, face, trois quarts, profil et trois variantes, matière mate sur papier clair."
+    },
+    {
+      "outil": "ImageGen",
+      "fichier": "cible-atelier.webp",
+      "sources": ["cible-personnage.webp", "output/chanvrier-studio/atelier-breton-ordinateur-inspect.jpg", "public/contest/releve/arrival-sylvain-portrait-v1.webp"],
+      "brief": "Atelier complet sur ordinateur et mobile. Aperçu côtier à gauche ou au-dessus des options. Papier imprimé, enseignes encrées, onglets illustrés, gros plans des formes, nuancier nommé, coche et validation fixe. Reprendre les typographies et les matières du Quartier."
+    },
+    {
+      "outil": "ImageGen",
+      "fichier": "public/contest/releve/atelier-cote-v1.webp",
+      "sources": ["cible-atelier.webp", "public/contest/releve/arrival-sylvain-portrait-v1.webp"],
+      "brief": "Décor seul, cour bretonne en gouache imprimée, ciel calme au centre, phare à gauche, grange à droite et fleurs dans les angles. Le personnage est rendu en direct par-dessus."
+    }
+  ],
+  "gabarit": {
+    "silhouetteDeReference": "3,79 hauteurs de tête de face et de profil. Largeur des épaules égale à 1,48 fois la largeur de tête, oreilles incluses.",
+    "reperesVisageRond": "Du menton au sommet du crâne, milieu du sourire à 26 %, pose des oreilles à 39 %, nez rond à 43 %, ligne des yeux à 56 %, sourcils à 71 %. Écartement des yeux égal à 36 % de la largeur du visage.",
+    "surface": "Le nez fait partie du maillage de peau. Les yeux, sourcils et sourires épousent le relief. Le filet écru, le grand iris et son reflet sont assez distincts pour être lus en vignette. La coupe courte suit le crâne et porte trois mèches en volume.",
+    "chaussures": "La coupe transversale du dessus de pied repose sur une base aplatie. La trépointe rejoint la semelle sur la largeur de l’avant-pied, y compris en gros plan.",
+    "palette": "Profil initial miel et châtain, iris noisette, marinière #eee3c8 et rayures #305d63, jean #30525a, chaussures de travail. Le comparatif de l’interface avant/après utilise les yeux olive. Le comparatif avec la maquette reprend les yeux noisette et ses deux cadrages.",
+    "camera": "Projection orthographique frontale, hauteur ajustée à la tête et au couvre-chef. Key chaude en haut à gauche, lumière hémisphérique de remplissage et contre-jour doux. La scène du Quartier utilise l’heure et l’éclairage du jeu.",
+    "declinaisons": "La planche de seize vues montre quatre combinaisons. La tenue de fête à coiffe bigoudène, les tresses et une teinte de haut personnalisée sont également exercées dans le parcours navigateur."
+  },
+  "implementation": {
+    "modeleCommun": "createGrowWorker assemble la tête, les cheveux, le cou, le corps, les vêtements et les accessoires pour l’atelier, les miniatures, le joueur du Quartier et l’entrepôt. Le repli logiciel projette les mêmes maillages.",
+    "miniatures": "Une caméra détail cadre le trait sur la géométrie posée. Les images visibles passent par une file annulable et un cache partagé plafonné à 2,1 millions de pixels.",
+    "brouillon": "Le brouillon réel dépend du compte et de l’aventure. Fermer le garde, Abandonner le supprime, valider écrit le profil. La démonstration possède son propre stockage d’onglet. Un échec de sauvegarde permet de réessayer.",
+    "adaptations": "Les matières du modèle utilisent les couleurs de sommets du jeu. Le grain et les fibres peints sur la maquette restent propres à l’illustration. Les sept commandes du cadrage, la vérification et la confirmation de spécialité sont conservées. Les joues sont modelées par la forme du visage et la carnation du catalogue."
+  },
+  "verification": {
+    "recetteAtelier": "recette-chromium.json",
+    "recetteEntree": "output/quarter-character-entry/report.json",
+    "baseLocale": "scripts/test-chanvrier-customization.mjs",
+    "tests": "23 tests ciblés sur le profil, le brouillon et les routes, 14 sur le modèle, le vestiaire et la projection logicielle. La recette d’entrée exerce 14 cas à 320 et 1440 px. Le parcours Chromium du studio couvre le refus puis le réessai, l’abandon explicite, la rotation, les changements rapides, cinq cadrages de traits et la désactivation de WebGL.",
+    "comptageTete": "Au repos, 6 maillages visibles contre 7. Respectivement 19 384 → 19 880 triangles pour la coupe courte, 34 648 → 32 256 pour l’afro et 27 160 → 25 152 pour le carré.",
+    "limites": "API simulée pour les captures, contrat de persistance vérifié en PostgreSQL en mémoire. Mobile émulé avec Chromium sur le GPU du PC. Quand le navigateur bloque le stockage, le brouillon tient en mémoire jusqu’au rechargement. Une remise à zéro distante jamais observée entre deux lectures de profil absent reste indiscernable côté client.",
+    "reprise": "Examiner la rotation et le nuancier sur un téléphone physique et rejouer la sauvegarde sur un compte de préproduction."
+  }
+}

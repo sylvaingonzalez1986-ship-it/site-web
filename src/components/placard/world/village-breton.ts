@@ -71,7 +71,7 @@ export function createVillageBreton(groundAt?: VillageGroundHeight): VillageNpcR
 
   // Rotate around the lips so that every playing pose seals the blowpipe.
   const head = new THREE.Group(); head.name = "breton-head"; head.position.set(0, 0.685, 0.23); rig.add(head);
-  const face = createCharacterFace(head, material, "breton");
+  const face = createCharacterFace(head, material, "breton", "#6b3c25");
   face.head.name = "breton-face-pivot";
   face.head.position.copy(face.mouth.position).multiplyScalar(-1);
   const hat = new Assembly();
@@ -249,8 +249,8 @@ export function createVillageBreton(groundAt?: VillageGroundHeight): VillageNpcR
     head.rotation.x += ((pose ? THREE.MathUtils.clamp(pose.lookPitch, -0.27, 0.25) * (1 - playingBlend) : (1 - playing) * 0.055) + Math.sin(t * 1.3) * 0.018 * (singingBlend * emphasis + playingBlend) - head.rotation.x) * ease;
     head.rotation.z = reduced ? 0 : THREE.MathUtils.lerp(Math.sin(t * 0.73) * 0.012, Math.sin(t * 2.3) * 0.03 * emphasis, singingBlend);
     const opening = 0.28 - 0.16 * playingBlend + singingBlend * (0.46 + Math.sin(t * 5.1) * 0.21 * emphasis);
-    face.setExpression(t, reduced, pose?.attention ?? 0, yaw, opening, THREE.MathUtils.lerp(0.18, emphasis, singingBlend), detail);
-    face.mouth.scale.x *= 1 - playingBlend * 0.59;
+    face.setExpression(t, reduced, pose?.attention ?? 0, yaw, opening,
+      THREE.MathUtils.lerp(0.18, emphasis, singingBlend), detail, 1 - playingBlend * 0.59);
     // The hinged blowpipe rests away from the mouth during speech and singing.
     blowpipe.rotation.x += ((pose ? (1 - playingBlend) * 1.05 : 0) - blowpipe.rotation.x) * ease;
     tails.rotation.x = reduced ? 0 : Math.sin(t * 1.9 + Math.sin(t * 0.43)) * 0.16 * villageBreezeStrength(t);

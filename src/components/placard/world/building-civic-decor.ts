@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { Art } from "./interior-art";
+import { createInteriorPortrait } from "./interior-residents";
 
 // The jury kiosk, mission noticeboard, harvest crate and reward chest are the
 // ones depicted on the village map and on the activity's printed sheets.
@@ -125,29 +126,25 @@ function addJudge(a: Art) {
   const x = -.65, z = -2.65;
   a.sphere(.36, x, 1.13, z, "paper", [1.04, 1.18, .71]);
   a.box(.48, .42, .09, x, 1.08, z+.19, "darkTeal");
-  a.cylinder(.13, .21, x, 1.48, z, "skin");
-  const head = a.pivot("arena-judge-head", [x, 1.48, z]);
+  a.sphere(.137, x, 1.46, z, "judgeSkin", [1, .82, .85]);
+  a.sphere(.187, x, 1.378, z + .012, "paper", [1.15, .52, 1.10]);
+  a.cylinder(.137, .064, x, 1.428, z + .016, "paper", .117);
+  const head = a.pivot("arena-judge-head", [x, 1.475, z]);
+  head.attach(createInteriorPortrait("judge"));
+  a.bevelBox(.09, .096, .072, .024, x, 1.403, z + .201, "darkTeal");
   for (const side of [-1, 1]) {
-    a.sphere(.13, x + side*.105, 1.44, z+.21, "teal", [1.05,.67,.55]);
-    head.sphere(.105, side*.28, .3, .025, "skin", [.65,1,.65]);
+    a.bevelBox(.151, .109, .074, .027, x + side * .092, 1.412, z + .183, "teal", [0, side * .26, side * .22]);
+    a.sphere(.026, x, 1.21 + side * .046, z + .236, "brass", [1, 1, .59]);
     const elbow = [x + side*.38, 1.04, z+.16] as const;
     a.rod([x + side*.27, 1.29, z], elbow, .15, "paper");
     if (side < 0) {
-      a.rod(elbow, [x - .32, 1.23, z+.31], .12, "skin");
-      a.sphere(.09, x - .32, 1.25, z+.31, "skin");
+      a.rod(elbow, [x - .32, 1.164, z+.26], .126, "paper");
+      a.sphere(.089, x - .32, 1.25, z+.31, "judgeSkin", [.87, 1.13, .88]);
     }
   }
-  head.sphere(.31,0,.32,0,"skin",[.97,1.1,.87]);
-  head.sphere(.295,0,.46,-.035,"hair",[1,.73,.92]);
-  head.sphere(.34,0,.565,-.015,"teal",[1.02,.64,.88]);
-  head.sphere(.275,.025,.535,.165,"darkTeal",[1,.16,.75]);
-  head.sphere(.047,0,.77,-.015,"gold");
-  for (const side of [-1,1]) head.sphere(.042,side*.094,.368,.24,"ink",[.78,1.15,.51]);
-  head.sphere(.058,0,.29,.267,"skin",[.91,.84,.86]);
-  head.rod([-.065,.213,.241],[.053,.208,.246],.022,"wood");
   const hand = a.pivot("arena-judge-hand", [x+.38, 1.04, z+.16]);
-  hand.rod([0,0,0], [-.06,.19,.15], .12, "skin");
-  hand.sphere(.09, -.06,.21,.15, "skin");
+  hand.rod([0, 0, 0], [-.06, .153, .11], .125, "paper");
+  hand.sphere(.09, -.06,.21,.15, "judgeSkin", [.88, 1.04, .84]);
   hand.bevelBox(.33,.46,.046,.016,-.13,.28,.16,"honey",[-.17,0,-.09]);
   hand.box(.275,.354,.03,-.13,.28,.191,"paper",[-.17,0,-.09]);
   hand.box(.1,.044,.025,-.13,.47,.218,"brass");

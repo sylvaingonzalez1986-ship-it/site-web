@@ -3,7 +3,8 @@ import { createKqWarehouseStarter } from "@/lib/kanab-quest-warehouse";
 import type { KqWarehouseViewSnapshot } from "../KqWarehouse";
 import { createInteriorRoom } from "./interior-rooms";
 import { createInteriorObjectArt, createInteriorRoomArt, disposeInteriorArt } from "./interior-art";
-import { Mesh } from "three";
+import { createInteriorPortrait } from "./interior-residents";
+import { Box3, Mesh, Raycaster, Vector3 } from "three";
 import { interiorPositionIsFree } from "./interior-movement";
 import { VILLAGE_PLACES } from "./village-layout";
 
@@ -57,6 +58,36 @@ describe("public cutaway rooms", () => {
     } finally {
       disposeInteriorArt(art);
       disposeInteriorArt(enclosed);
+    }
+  });
+
+  it.each(["banker", "clerk", "accountant", "judge", "host"] as const)(
+    "%s keeps the entire portrait within reach of its collar",
+    role => {
+      const portrait = createInteriorPortrait(role);
+      try {
+        const bounds = new Box3().setFromObject(portrait, true);
+        expect(bounds.min.y).toBeGreaterThan(-.15);
+        expect(bounds.max.y).toBeLessThan(.8);
+        expect(bounds.max.y - bounds.min.y).toBeGreaterThan(.45);
+      } finally {
+        disposeInteriorArt(portrait);
+      }
+    },
+  );
+
+  it("keeps the Collection host at floor level and clickable on the face", () => {
+    const room = createInteriorRoom("collection");
+    const host = room.objects.find(object => object.id === "host")!;
+    const model = createInteriorObjectArt(host, room.id);
+    try {
+      const bounds = new Box3().setFromObject(model);
+      expect(bounds.min.y).toBeGreaterThanOrEqual(0);
+      expect(bounds.max.y).toBeLessThan(2);
+      const ray = new Raycaster(new Vector3(0, 1.49, 2), new Vector3(0, 0, -1));
+      expect(ray.intersectObject(model)[0]?.object.name).toBe("host-interior-portrait");
+    } finally {
+      disposeInteriorArt(model);
     }
   });
 });

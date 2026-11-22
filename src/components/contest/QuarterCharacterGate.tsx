@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { observeChanvrierAdventure, readChanvrierDraft, type ChanvrierDraftScope } from "@/lib/chanvrier-profile-draft";
 import { synchronizeQuarterStorage } from "@/lib/quarter-adventure-storage";
 import { QuarterCharacterContext, QuarterAppearanceEditorContext } from "./QuarterCharacterContext";
 import { ARENA_RELEVE_SCENES } from "@/lib/arena-releve";
@@ -23,8 +24,8 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
   const [state, setState] = useState<"loading" | "story" | "create" | "paused" | "ready" | "error" | "signed-out">("loading");
   const [retry, setRetry] = useState(0);
   const [character, setCharacter] = useState<ChanvrierProfile | null>(null);
-  const [editing, setEditing] = useState<boolean | null>(null);
-  const [arrivalDraftVersion, setArrivalDraftVersion] = useState(0);
+  const [editing, setEditing] = useState(false);
+  const [draftScope, setDraftScope] = useState<ChanvrierDraftScope>();
   const heading = useRef<HTMLHeadingElement>(null);
   const createButton = useRef<HTMLButtonElement>(null);
   const enteringVillage = useRef(false);
@@ -43,10 +44,15 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
         const profile = parseChanvrierProfile(body.chanvrier);
         if (body.chanvrier !== null && !profile) throw new Error("Invalid profile");
         if (!cancelled) {
-          if (body.chanvrier === null) synchronizeQuarterStorage(ownerId, null);
-          else if (typeof body.chanvrier.createdAt === "string") synchronizeQuarterStorage(ownerId, body.chanvrier.createdAt);
+          const createdAt = body.chanvrier === null ? null : body.chanvrier.createdAt;
+          let scope: ChanvrierDraftScope | undefined;
+          if (createdAt === null || typeof createdAt === "string") {
+            synchronizeQuarterStorage(ownerId, createdAt);
+            scope = observeChanvrierAdventure(ownerId, createdAt);
+          }
+          setDraftScope(scope);
           setCharacter(profile);
-          setState(profile ? "ready" : "story");
+          setState(profile ? "ready" : scope && readChanvrierDraft(scope, null) ? "paused" : "story");
         }
       } catch { if (!cancelled) setState("error"); }
       finally { clearTimeout(timeout); }
@@ -84,18 +90,20 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
 
   useEffect(() => {
     const refreshAppearance = (event: Event) => {
-      const profile = parseChanvrierProfile((event as CustomEvent).detail);
+      const detail = (event as CustomEvent).detail;
+      if (detail?.ownerId && detail.ownerId !== ownerId) return;
+      const profile = parseChanvrierProfile(detail);
       if (profile) setCharacter(profile);
     };
     window.addEventListener("arena:profile-updated", refreshAppearance);
     return () => window.removeEventListener("arena:profile-updated", refreshAppearance);
-  }, []);
+  }, [ownerId]);
 
   if (enabled && state === "ready") return <QuarterCharacterContext.Provider value={character}>
-    <QuarterAppearanceEditorContext.Provider value={{ open: () => setEditing(true), editing: editing === true }}>
+    <QuarterAppearanceEditorContext.Provider value={{ open: () => setEditing(true), editing }}>
       {children}
-      {character && editing !== null && <ChanvrierProfileEditor profile={character} open={editing} onClose={() => setEditing(false)}
-        onDiscard={() => setEditing(null)} onSaved={saved => { setCharacter(saved); setEditing(null); }} />}
+      {character && editing && <ChanvrierProfileEditor profile={character} ownerId={ownerId} draftScope={draftScope} onClose={() => setEditing(false)}
+        onDiscard={() => setEditing(false)} onSaved={saved => { setCharacter(saved); setEditing(false); }} />}
     </QuarterAppearanceEditorContext.Provider>
   </QuarterCharacterContext.Provider>;
   if (enabled && ["story", "create", "paused"].includes(state)) return <main className={`${styles.entry} ${styles.arrival}`} data-quarter-character-gate data-quarter-arrival="story">
@@ -107,13 +115,14 @@ export function QuarterCharacterGate({ ownerId, enabled = true, children }: { ow
       <h1 ref={heading} tabIndex={-1}>Les clés de la grange</h1>
       <p>Ton grand-père t’a laissé sa grange. De l’autre côté de la cour, Loïc te fait signe. Ta première récolte commence ici.</p>
         <div className={styles.actions}><button ref={createButton} type="button" className={styles.primary} data-arrival-create onClick={() => setState("create")}>
-          Créer mon personnage<ArrowRight size={18} aria-hidden="true" />
+          {state === "paused" && draftScope && readChanvrierDraft(draftScope, null) ? "Reprendre mon personnage" : "Créer mon personnage"}<ArrowRight size={18} aria-hidden="true" />
         </button></div>
       <Link className={styles.returnLink} href="/arene">Retour à l’Arène</Link>
     </div>
-    {(state === "create" || state === "paused") && <ChanvrierProfileEditor key={arrivalDraftVersion} profile={null} open={state === "create"} skipInheritance
-      onClose={() => setState("paused")} onDiscard={() => { setArrivalDraftVersion(version => version + 1); setState("paused"); }}
-      onSaved={profile => {
+    {state === "create" && <ChanvrierProfileEditor profile={null} ownerId={ownerId} draftScope={draftScope} skipInheritance
+      onClose={() => setState("paused")} onDiscard={() => setState("paused")}
+      onSaved={(profile, createdAt) => {
+        setDraftScope(createdAt ? observeChanvrierAdventure(ownerId, createdAt) : undefined);
         enteringVillage.current = true;
         setCharacter(profile);
         setState("ready");

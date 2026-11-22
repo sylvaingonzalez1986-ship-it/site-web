@@ -1,5 +1,6 @@
 import { useId, useMemo } from "react";
 import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
+import { GROW_ROOM_VISITOR } from "./kq-grow-worker-profile";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { createGrowRoomPaths, type GrowPoint } from "@/lib/kanab-quest-grow-room-path";
 import styles from "./KqGrowRoom.module.css";
@@ -58,6 +59,6 @@ export default function KqGrowRoomFallbackPlan({ profile, position, targetId, ev
     })}
   </g><foreignObject data-grow-fallback-actor={profile ? "player" : "visitor"} pointerEvents="none"
     x={foot.x - spriteHeight / 2} y={top.y} width={spriteHeight} height={spriteHeight}>
-    <ChanvrierAvatar profile={profile ?? { gender: "male", clothing: "sage", skin: "peach" }} className={styles.fallbackFigure} />
+    <ChanvrierAvatar profile={profile ?? GROW_ROOM_VISITOR} label={profile ? undefined : "Visiteur de la serre"} className={styles.fallbackFigure} />
   </foreignObject></>;
 }

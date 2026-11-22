@@ -4,12 +4,12 @@ import { createChanvrierHand } from "./chanvrier-hand";
 import { createCharacterContactShadow } from "./world/village-contact-shadow";
 import { createChanvrierHead } from "./chanvrier-head";
 import { createChanvrierWardrobe } from "./chanvrier-wardrobe";
+import { GROW_ROOM_VISITOR } from "./kq-grow-worker-profile";
 import { Assembly, characterDisposer, characterMaterial } from "./world/village-character-art";
 import { createVillageCharacterGait, VILLAGE_CHARACTER_STRIDE_PER_METER, type VillageGroundHeight } from "./world/village-character-gait";
 import type { KqGrowRoomEvent } from "./KqGrowRoomModel";
 
 type Gesture = KqGrowRoomEvent["gesture"];
-const visitor: ChanvrierAvatarProfile = { gender: "male", clothing: "sage", skin: "peach" };
 const ink = "#2b3736";
 const turned = (points: number[][], depth = 1, segments = 18) =>
   new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), segments).scale(1, 1, depth);
@@ -109,7 +109,7 @@ function createGrowWorkerTools(root: THREE.Group, hand: THREE.Group, material: T
   return { props, broom, shaft, grains, particle, outlet };
 }
 
-export function createGrowWorker(profile = visitor, options?: { tools?: boolean; groundAt?: VillageGroundHeight }) {
+export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?: boolean; groundAt?: VillageGroundHeight }) {
   const object = new THREE.Group(), torso = new THREE.Group(), chest = new THREE.Group(), head = new THREE.Group();
   const neckAnchor = new THREE.Group();
   object.name = "chanvrier";
@@ -117,7 +117,6 @@ export function createGrowWorker(profile = visitor, options?: { tools?: boolean;
   chest.name = "chanvrier-chest";
   head.name = "chanvrier-head";
   torso.position.y = .79;
-  head.position.z = .019;
   object.add(torso);
   torso.add(chest, head, neckAnchor);
 
@@ -160,7 +159,7 @@ export function createGrowWorker(profile = visitor, options?: { tools?: boolean;
   let lastSkin: string | undefined;
   let shape = bodyShapes.regular;
   let silhouette = silhouettes.male;
-  function updateAppearance(next: ChanvrierAvatarProfile = visitor) {
+  function updateAppearance(next: ChanvrierAvatarProfile = GROW_ROOM_VISITOR) {
     if (resources.disposed) return;
     const look = getChanvrierAppearance(next), colors = getChanvrierColors(next);
     shape = bodyShapes[look.body];
@@ -168,8 +167,10 @@ export function createGrowWorker(profile = visitor, options?: { tools?: boolean;
     chest.scale.set(shape.chest * silhouette.waist, shape.height, shape.depth);
     neckAnchor.position.set(0, shape.height * .528, .016);
     neckAnchor.scale.x = silhouette.neck;
-    head.position.y = neckAnchor.position.y + .141;
-    head.scale.set(1.22 * shape.head * silhouette.headWidth, 1.21 * shape.head, 1.12 * shape.head);
+    const headSize = .72 * shape.head;
+    // Keep the base of the skull joined to the neck as the head is scaled.
+    head.position.set(0, neckAnchor.position.y - .005 + .1283 * headSize, .018);
+    head.scale.set(1.15 * headSize * silhouette.headWidth, 1.27 * headSize, 1.12 * headSize);
     for (let i = 0; i < legs.length; i++) {
       const side = i ? 1 : -1;
       legs[i].hip.position.x = side * .114 * shape.stance * silhouette.hip;
@@ -183,7 +184,7 @@ export function createGrowWorker(profile = visitor, options?: { tools?: boolean;
       neckMesh?.removeFromParent();
       neckMesh?.geometry.dispose();
       const neck = new Assembly();
-      neck.add(turned([[0, -.065], [.102, -.059], [.096, -.016], [.094, .035], [.106, .068], [.111, .084], [0, .090]], .91), colors.skin);
+      neck.add(turned([[0, -.065], [.104, -.059], [.106, -.016], [.101, .031], [.098, .056], [.100, .072], [0, .078]], .91), colors.skin);
       neckMesh = neck.finish("chanvrier-neck", neckAnchor, material);
       neckMesh.castShadow = false;
       for (const palm of palms) palm.update(colors.skin);

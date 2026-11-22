@@ -17,17 +17,18 @@ import {KqGrowRoom} from '/src/components/placard/KqGrowRoom';
 import {createKqWarehouseStarter} from '/src/lib/kanab-quest-warehouse';
 import {getWarehouseRoomZones} from '/src/components/placard/culture-room-state';
 import {parseChanvrierProfile} from '/src/lib/arena-chanvrier';
+import {observeChanvrierAdventure} from '/src/lib/chanvrier-profile-draft';
 import InteriorCanvas from '/src/components/placard/world/InteriorCanvas';
 import {createInteriorRoom} from '/src/components/placard/world/interior-rooms';
 const plan=createKqWarehouseStarter(), zones=getWarehouseRoomZones(plan, []);
 const noop=()=>{}, room=createInteriorRoom('shop',null);
 function Fixture(){
-  const [record,update]=useState(),[editing,edit]=useState(true),[quality,setQuality]=useState('high');
-  useEffect(()=>{fetch('/api/arena/chanvrier').then(r=>r.json()).then(v=>update(parseChanvrierProfile(v.profile)))},[]);
+  const [record,update]=useState(),[editing,edit]=useState(true),[quality,setQuality]=useState('high'),[scope,setScope]=useState();
+  useEffect(()=>{fetch('/api/arena/chanvrier').then(r=>r.json()).then(v=>{setScope(observeChanvrierAdventure('studio-player',v.profile?.createdAt??null));update(parseChanvrierProfile(v.profile))})},[]);
   if(record===undefined)return null;
   const mode=location.search;
   if(mode==='?village')return <QuarterCharacterGate ownerId="studio-player"><VillagePrototype/></QuarterCharacterGate>;
-  return <QuarterCharacterContext.Provider value={record}>{mode==='?village'?<VillagePrototype/>:mode==='?culture'?<KqGrowRoom zones={zones} plan={plan} playerProfile={record}/>:mode==='?shop'?<><button id="quality" onClick={()=>setQuality('low')}>Qualité réduite</button><div style={{position:'relative',height:'90vh'}}><InteriorCanvas room={room} profile={record} followPlayer suspended={false} editing={false} overhead={false} grid={false} quality={quality} sensitivity={1} selectedId={null} preview={null} previewValid onSelect={noop} onInteract={noop} onPlace={noop} onExit={noop} onReady={noop} onUnavailable={noop}/></div></>:editing?<ChanvrierProfileEditor profile={record} skipInheritance onSaved={p=>{update(p);edit(false)}} onClose={()=>edit(false)} />:<><button id="edit" onClick={()=>edit(true)}>Modifier</button>{record&&<div style={{width:200}}><ChanvrierAvatar profile={record}/></div>}</>}</QuarterCharacterContext.Provider>
+  return <QuarterCharacterContext.Provider value={record}>{mode==='?village'?<VillagePrototype/>:mode==='?culture'?<KqGrowRoom zones={zones} plan={plan} playerProfile={record}/>:mode==='?shop'?<><button id="quality" onClick={()=>setQuality('low')}>Qualité réduite</button><div style={{position:'relative',height:'90vh'}}><InteriorCanvas room={room} profile={record} followPlayer suspended={false} editing={false} overhead={false} grid={false} quality={quality} sensitivity={1} selectedId={null} preview={null} previewValid onSelect={noop} onInteract={noop} onPlace={noop} onExit={noop} onReady={noop} onUnavailable={noop}/></div></>:editing?<ChanvrierProfileEditor profile={record} draftScope={scope} skipInheritance onSaved={(p,createdAt)=>{setScope(observeChanvrierAdventure('studio-player',createdAt));update(p);edit(false)}} onClose={()=>edit(false)} />:<><button id="edit" onClick={()=>edit(true)}>Modifier</button>{record&&<div style={{width:200}}><ChanvrierAvatar profile={record}/></div>}</>}</QuarterCharacterContext.Provider>
 }createRoot(document.querySelector('#main-content')).render(<Fixture/>);
 `;
 
@@ -48,6 +49,7 @@ export async function run({origin,output}) {
     await element.click(); await found.dispose();
   };
   const category=(name)=>byText(name,'nav[aria-label="Personnaliser l’apparence"] button');
+  const field=(name)=>byText(name,'[aria-label="Élément à modifier"] button');
   const shot=async(name)=>{
     await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     const {cssVisualViewport:v}=await cdp.send('Page.getLayoutMetrics');
@@ -77,7 +79,7 @@ export async function run({origin,output}) {
       const u=new URL(r.url());
       if(u.pathname==='/api/arena/tutorial')return void r.respond({status:200,contentType:'application/json',body:JSON.stringify({userId:'studio-player',chanvrier:profile})});
       if(u.pathname==='/api/arena/chanvrier') {
-        if(r.method()==='POST'){requests++;if(rejectOnce){rejectOnce=false;return void r.respond({status:503,contentType:'application/json',body:JSON.stringify({error:'Interruption de test'})});}profile=JSON.parse(r.postData());}
+        if(r.method()==='POST'){requests++;if(rejectOnce){rejectOnce=false;return void r.respond({status:503,contentType:'application/json',body:JSON.stringify({error:'Interruption de test'})});}profile={...JSON.parse(r.postData()),createdAt:'2026-11-22T10:00:00Z'};}
         return void r.respond({status:200,contentType:'application/json',body:JSON.stringify({profile,created:requests===2})});
       }
       if(u.pathname.startsWith('/api/'))return void r.respond({status:200,contentType:'application/json',body:'{"items":[],"cashCents":100,"activeRun":false,"readyLotCount":0,"availableFlowerCount":0}'});
@@ -98,6 +100,36 @@ export async function run({origin,output}) {
       return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : 'indisponible';
     });
     await page.type('input[autocomplete="nickname"]','Mael29');
+    const checkedDetails = [];
+    const checkDetails = async (name) => {
+      const group = '[data-feature-choices="' + name + '"]';
+      await page.waitForFunction(selector => {
+        const images = [...document.querySelectorAll(selector + ' canvas')];
+        return images.length >= 3 && images.every(image => image.dataset.avatarState === 'ready');
+      }, {}, group);
+      const images = await page.$$eval(group + ' canvas', nodes => nodes.map(canvas => {
+        const pixels = canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data;
+        return pixels.some((value, index) => index % 4 === 3 && value !== 0) ? canvas.toDataURL() : '';
+      }));
+      assert(!images.includes('') && new Set(images).size === images.length, 'Distinct rendered thumbnails for ' + name);
+      checkedDetails.push(name);
+    };
+    await field('Nez');await checkDetails('nose');
+    await field('Expression');await checkDetails('mouth');
+    await field('Sourcils');await checkDetails('eyebrows');
+    await category('Cheveux');await field('Barbe et moustache');await checkDetails('facialHair');
+    await category('Yeux');
+    await checkDetails('eyes');report.renderedDetails = checkedDetails;
+    await page.click(button('Couleur des yeux : Bleu'));
+    await page.focus(stage);await page.keyboard.press('ArrowRight');
+    assert.notEqual(await page.$eval(stage,n=>n.dataset.previewRotation),'0.000');
+    await page.keyboard.press('Home');assert.equal(await page.$eval(stage,n=>n.dataset.previewRotation),'0.000');
+    await page.keyboard.press('Escape');await page.click('#edit');await page.waitForSelector(stage);
+    assert.equal(await page.$eval('input[autocomplete="nickname"]',n=>n.value),'Mael29');
+    await page.reload();await page.waitForSelector(stage);await category('Yeux');
+    assert.equal(await page.$eval(button('Couleur des yeux : Bleu'),n=>n.getAttribute('aria-pressed')),'true');
+    assert.equal(requests,0);
+    report.draft={closeAndReload:true,keyboardRotation:true,noPrematureSave:true};
     await category('Cheveux');await page.click(button('Coupe de cheveux : Tresses'));
     await category('Tenue');await byText('Fête en pays bigouden');
     await page.waitForSelector('[data-avatar-state="ready"]');
@@ -131,7 +163,7 @@ export async function run({origin,output}) {
     await category('Cheveux');
     for(let i=0;i<12;i++)await page.click(button('Coupe de cheveux : '+(i%2?'Tresses':'Ondulations')));
     await category('Tenue');
-    await page.select('dialog select','clothing');
+    await field('Haut');
     for(const color of ['#417891','#437993','#497d96','#417995','#49829c','#427a91']){
       await page.$eval('input[type=color]',(n,hex)=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(n,hex);n.dispatchEvent(new Event('input',{bubbles:true}));n.dispatchEvent(new Event('change',{bubbles:true}));},color);
     }
@@ -140,7 +172,7 @@ export async function run({origin,output}) {
     if(apply.asElement())await apply.asElement().click();
     await apply.dispose();
     await resizePhone(844,390);
-    assert.equal(await page.$eval('dialog select',s=>s.value),'clothing');
+    assert.equal(await page.$eval('[data-feature-choices]',node=>node.dataset.featureChoices),'top');
     assert.equal((await layout()).overflows,false);
     await shot('atelier-paysage');
     await resizePhone(320,640);
@@ -151,9 +183,14 @@ export async function run({origin,output}) {
     assert.equal(profile.appearance.hair,'braids');assert.equal(profile.appearance.headwear,'bigouden-coif');assert.equal(profile.appearance.dyes.top,'#427a91');
     report.saved=profile;
     await page.reload();await page.waitForSelector(stage);await category('Cheveux');assert.equal(await page.$eval(button('Coupe de cheveux : Tresses'),b=>b.getAttribute('aria-pressed')),'true');
-    await category('Tenue');await page.select('dialog select','clothing');assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
-    await page.select('dialog select','outfits');await byText('Grain au large');await byText('Annuler');
+    await category('Tenue');await field('Haut');assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
+    await field('Tenues bretonnes');await byText('Grain au large');await byText('Annuler');
     await byText('Grain au large');await page.keyboard.press('Escape');await page.waitForSelector('#edit');assert.equal(requests,2);
+    await page.click('#edit');await page.waitForSelector(stage);await category('Tenue');
+    assert.equal(await page.$eval('[aria-pressed="true"][aria-label="Grain au large"]',b=>b.getAttribute('aria-pressed')),'true');
+    await page.click('[data-profile-discard]');await page.waitForSelector('#edit');await page.click('#edit');await page.waitForSelector(stage);
+    await category('Tenue');await field('Haut');assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
+    report.draft.explicitDiscard=true;
     await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:false});
     await cdp.send('Emulation.setDeviceMetricsOverride',{width:desktop.width,height:desktop.height,deviceScaleFactor:1,mobile:false});
     await page.goto(origin+'/?culture');await page.waitForSelector('[data-personalized="true"]');await shot('salle-culture');
@@ -168,7 +205,7 @@ export async function run({origin,output}) {
     assert.equal(await page.$eval(observer, node => node.open), false);
     assert.ok(await page.$('[data-village-settings][open] [data-village-toggle-labels]'));
     await page.click('[data-village-settings][open] [aria-label="Modifier mon personnage"]');
-    await page.waitForSelector(stage);await category('Tenue');await page.select('dialog select','clothing');
+    await page.waitForSelector(stage);await category('Tenue');await field('Haut');
     assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
     await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});assert.equal(requests,2);
     await page.evaluateOnNewDocument(()=>{

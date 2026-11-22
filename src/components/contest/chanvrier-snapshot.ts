@@ -4,11 +4,12 @@ import { createGrowWorker } from "../placard/kq-grow-worker-model";
 import type { KqGrowRoomEvent } from "../placard/KqGrowRoomModel";
 import { paintChanvrierMesh } from "./chanvrier-paper-render";
 import { VILLAGE_LIGHT } from "../placard/world/village-lighting";
-import { CHANVRIER_STUDIO_CAMERA_POSITION, CHANVRIER_STUDIO_LIGHT } from "./chanvrier-studio-light";
+import { CHANVRIER_STUDIO_CAMERA_POSITION, CHANVRIER_STUDIO_LIGHT, frameChanvrierStudio } from "./chanvrier-studio-light";
 
 type View = "full" | "portrait";
+export type ChanvrierDetail = "eyes" | "eyebrows" | "nose" | "mouth" | "facialHair";
 export type ChanvrierStampPose = { distance: number; walking: number; gesture: KqGrowRoomEvent["gesture"] | null; phase: number; stage: number | null };
-type Snapshot = { profile: ChanvrierAvatarProfile; view: View; width: number; pose?: ChanvrierStampPose };
+type Snapshot = { profile: ChanvrierAvatarProfile; view: View; width: number; pose?: ChanvrierStampPose; detail?: ChanvrierDetail };
 
 function createStudio(profile: ChanvrierAvatarProfile, tools: boolean) {
   const light = tools ? VILLAGE_LIGHT : CHANVRIER_STUDIO_LIGHT;
@@ -43,7 +44,32 @@ function releaseStudio() {
   software = false;
 }
 
-function render({ profile, view, width, pose }: Snapshot) {
+function frameDetail(head: THREE.Object3D, detail: ChanvrierDetail, aspect: number) {
+  const eye = detail === "eyes" || detail === "eyebrows";
+  const feature = eye ? "eyes" : "mouth";
+  const skin = new THREE.Box3().setFromObject(head.getObjectByName("chanvrier-skin")!);
+  const headWidth = skin.max.x - skin.min.x;
+  bounds.setFromObject(head.getObjectByName("chanvrier-" + feature)!);
+  if (eye) bounds.expandByObject(head.getObjectByName("chanvrier-brows")!);
+  bounds.getCenter(centre);
+  if (detail === "nose") {
+    // The tip is sculpted into the skin between the eye line and the mouth.
+    bounds.setFromObject(head.getObjectByName("chanvrier-eyes")!);
+    centre.y += ((bounds.min.y + bounds.max.y) * .5 - centre.y) * .49;
+  }
+  if (eye) centre.x -= (bounds.max.x - bounds.min.x) * .31;
+  if (detail === "facialHair") centre.y -= headWidth * .04;
+  const visibleWidth = headWidth * (eye ? .46 : detail === "facialHair" ? .92 : .64);
+  camera.left = -visibleWidth / 2;
+  camera.right = -camera.left;
+  camera.top = camera.right / aspect;
+  camera.bottom = -camera.top;
+  camera.position.set(...CHANVRIER_STUDIO_CAMERA_POSITION).add(centre);
+  camera.lookAt(centre);
+  camera.updateProjectionMatrix();
+}
+
+function render({ profile, view, width, pose, detail }: Snapshot) {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(releaseStudio, 20_000);
   if (!renderer && !software) {
@@ -60,23 +86,19 @@ function render({ profile, view, width, pose }: Snapshot) {
   } else studio.model.updateAppearance(profile);
   const { model, scene } = studio;
   model.pose(pose?.distance ?? 0, pose?.walking ?? 0, pose?.gesture ?? null, pose?.phase ?? 0, pose?.stage ?? null);
-  const height = view === "full" ? Math.round(width * 1.48) : width;
+  const height = detail ? Math.round(width / 1.48) : view === "full" ? Math.round(width * 1.48) : width;
   const head = model.object.getObjectByName("chanvrier-head")!;
   model.object.updateMatrixWorld(true);
   bounds.setFromObject(head);
-  bounds.getCenter(centre);
-  const headSize = bounds.getSize(new THREE.Vector3());
-  const span = view === "portrait" ? Math.max(headSize.x * 1.28, headSize.y * 1.35, .68) : bounds.max.y + .16;
-  if (view === "full") centre.set(0, span * .48, 0);
-  else centre.y -= span * .055;
-  camera.top = span / 2;
-  camera.bottom = -camera.top;
-  camera.right = camera.top * width / height;
-  camera.left = -camera.right;
-  const offset = pose ? new THREE.Vector3(-3.1, .32, 4.6) : new THREE.Vector3(...CHANVRIER_STUDIO_CAMERA_POSITION);
-  camera.position.copy(centre).add(offset);
-  camera.lookAt(centre);
-  camera.updateProjectionMatrix();
+  frameChanvrierStudio(camera, bounds, view, width, height);
+  if (detail) frameDetail(head, detail, width / height);
+  else if (pose) {
+    // Work animations are seen from the aisle in the isometric room.
+    bounds.getCenter(centre);
+    if (view === "full") centre.set(0, camera.top * .96, 0);
+    camera.position.set(-3.1, .32, 4.6).add(centre);
+    camera.lookAt(centre);
+  }
   const copy = document.createElement("canvas");
   copy.width = width;
   copy.height = height;
@@ -101,8 +123,8 @@ function advance() {
     const job = jobs.shift()!;
     if (job.signal.aborted) { job.reject(job.signal.reason); continue; }
     try {
-      const { profile, view, width, pose } = job.snapshot;
-      const key = JSON.stringify([profile.gender, profile.clothing, profile.skin, getChanvrierAppearance(profile), view, width, pose]);
+      const { profile, view, width, pose, detail } = job.snapshot;
+      const key = JSON.stringify([profile.gender, profile.clothing, profile.skin, getChanvrierAppearance(profile), view, width, pose, detail]);
       let stamp = cache.get(key);
       if (stamp) cache.delete(key);
       else {

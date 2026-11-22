@@ -25,7 +25,7 @@ const fromRoom = (id, query) => `${query}&fromRoom=${id}`;
 const liveCanvas = 'canvas[data-live="true"]';
 export const bankReturnLink = `${activityPanel} ${link(roomQuery('bank'))}`;
 
-export async function auditNightBuildingRooms({page, visit, results, output, exportPosters}) {
+export async function auditNightBuildingRooms({page, visit, results, output, exportPosters, exportDayPosters}) {
   const {default: sharp} = await import('sharp');
   const screenshotDir = resolve(output, 'building-rooms-night');
   await mkdir(screenshotDir, {recursive: true});
@@ -93,6 +93,7 @@ export async function auditNightBuildingRooms({page, visit, results, output, exp
     const webp = await sharp(night).resize({width: 920}).webp({quality: 88}).toBuffer();
     await writeFile(resolve(screenshotDir, `${id}-night.webp`), webp);
     if (exportPosters) await writeFile(resolve('public/placard/building-rooms', `${id}-night.webp`), webp);
+    if (exportDayPosters) await sharp(day).resize({width: 920}).webp({quality: 88}).toFile(resolve('public/placard/building-rooms', `${id}.webp`));
     console.log(`${id}: stable nocturnal render`);
     await enterService(id, destinations);
     results.push({scenario: 'isometric-building-room-night', room: id, existingCanvas: true, shadowMatchesFirstNight: true, service: Object.keys(destinations)[0]});

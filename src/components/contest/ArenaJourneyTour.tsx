@@ -5,6 +5,7 @@ import { UserRound } from "lucide-react";
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { observeChanvrierAdventure, type ChanvrierDraftScope } from "@/lib/chanvrier-profile-draft";
 import type { ArenaProfileAvailability, ArenaProfileLauncherHandle, ArenaProfileLauncherProps } from "@/lib/arena-profile-launcher";
 import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
 import { ChanvrierPlayerCard } from "./ChanvrierPlayerCard";
@@ -23,6 +24,7 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
   const [profileOpen, setProfileOpen] = useState(false);
   const { showBanner } = useCookieConsent();
   const [userId, setUserId] = useState<string | null>(null);
+  const [draftScope, setDraftScope] = useState<ChanvrierDraftScope>();
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -36,12 +38,14 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
   useEffect(() => { onProfileAvailabilityChange?.(profileAvailability); }, [onProfileAvailabilityChange, profileAvailability]);
   useEffect(() => {
     const updateProfile = (event: Event) => {
-      const profile = parseChanvrierProfile((event as CustomEvent).detail);
+      const detail = (event as CustomEvent).detail;
+      if (detail?.ownerId && detail.ownerId !== userId) return;
+      const profile = parseChanvrierProfile(detail);
       if (profile) setChanvrier(profile);
     };
     window.addEventListener("arena:profile-updated", updateProfile);
     return () => window.removeEventListener("arena:profile-updated", updateProfile);
-  }, []);
+  }, [userId]);
   useEffect(() => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
@@ -52,7 +56,7 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
         // one-time introduction preference; playable saves remain isolated.
         const response = await fetch("/api/arena/tutorial", { cache: "no-store", signal: controller.signal });
         if (response.status === 401) {
-          if (!cancelled) { setUserId(null); setChanvrier(null); }
+          if (!cancelled) { setUserId(null); setChanvrier(null); setDraftScope(undefined); }
           return;
         }
         if (!response.ok) throw new Error("Le personnage est momentanément indisponible.");
@@ -61,6 +65,8 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
         if (!cancelled) {
           setUserId(body.userId);
           setError("");
+          const createdAt = body.chanvrier === null ? null : body.chanvrier?.createdAt;
+          setDraftScope(createdAt === null || typeof createdAt === "string" ? observeChanvrierAdventure(body.userId, createdAt) : undefined);
           setChanvrier(parseChanvrierProfile(body.chanvrier));
         }
       } catch {
@@ -121,7 +127,8 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
       <p>{error}</p>
       <button type="button" disabled={loading} onClick={() => { setError(""); setLoading(true); setRetry(value => value + 1); }}>Réessayer le profil</button>
     </div> : null}
-    {profileOpen && userId ? <ChanvrierProfileEditor profile={chanvrier} onClose={closeProfile} onSaved={profile => {
+    {profileOpen && userId ? <ChanvrierProfileEditor key={userId} ownerId={userId} profile={chanvrier} draftScope={draftScope} onClose={closeProfile} onSaved={(profile, createdAt) => {
+      if (!chanvrier) setDraftScope(createdAt ? observeChanvrierAdventure(userId, createdAt) : undefined);
       setChanvrier(profile);
       setProfileOpen(false);
       requestAnimationFrame(focusProfile);

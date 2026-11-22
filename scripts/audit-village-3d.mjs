@@ -64,7 +64,7 @@ const playerSnapshotPrefix = `${resolve(characterSnapshot, '../player-before').r
 await mkdir(output, { recursive: true });
 const server = await createServer({ root, configFile: false, envDir: false, publicDir: resolve(root, 'public'), cacheDir: resolve(output, 'vite-cache'),
   resolve: { alias: { ...(korrigans && { '@/context/CartContext': 'audit-korrigan-account' }), '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom', 'three'] },
-  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'lucide-react', 'three', '@react-three/fiber', 'three/addons/controls/OrbitControls.js', 'three/addons/utils/BufferGeometryUtils.js'] },
+  optimizeDeps: { ...(studio && { entries: ['src/components/contest/ChanvrierProfileEditor.tsx'] }), include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react', 'three', '@react-three/fiber', 'three/addons/controls/OrbitControls.js', 'three/addons/utils/BufferGeometryUtils.js'] },
   css: { postcss: { plugins: [] } },
   plugins: [{ name: 'isolated-village', enforce: 'pre',
     resolveId(id, importer) {

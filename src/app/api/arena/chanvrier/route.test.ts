@@ -5,6 +5,7 @@ vi.mock("@/lib/arena-character-access", () => ({ isArenaCharacterRequestEnabled:
 vi.mock("@/lib/security-rate-limit", () => ({ hitRateLimit: mocks.rate }));
 vi.mock("@/lib/supabase/arena-chanvrier-backend", () => ({ getChanvrierProfile: mocks.read, saveChanvrierProfile: mocks.save }));
 import { GET, POST } from "./route";
+import { CHANVRIER_OWNER_HEADER } from "@/lib/arena-chanvrier";
 beforeEach(() => { vi.resetAllMocks(); mocks.session.mockResolvedValue({ customerId: "player" }); mocks.enabled.mockResolvedValue(true); mocks.rate.mockResolvedValue({ allowed: true }); mocks.read.mockResolvedValue(null); mocks.save.mockResolvedValue({ created: true }); });
 const request = (value: unknown) => new Request("http://localhost/api/arena/chanvrier", { method: "POST", body: JSON.stringify(value) });
 describe("chanvrier API", () => {
@@ -17,6 +18,13 @@ describe("chanvrier API", () => {
     const response = await POST(request({ userId: "victim", strength: "merchant" }));
     expect(response.status).toBe(200); expect(response.headers.get("Cache-Control")).toBe("private, no-store");
     expect(mocks.save).toHaveBeenCalledWith("player", { userId: "victim", strength: "merchant" });
+  });
+  it("rejects a draft submitted after the connected account changes", async () => {
+    const headers = { [CHANVRIER_OWNER_HEADER]: "previous-player" };
+    expect((await GET(new Request("http://localhost/api/arena/chanvrier", { headers }))).status).toBe(409);
+    expect((await POST(new Request("http://localhost/api/arena/chanvrier", { method: "POST", headers, body: "{}" }))).status).toBe(409);
+    expect(mocks.read).not.toHaveBeenCalled();
+    expect(mocks.save).not.toHaveBeenCalled();
   });
   it("limits writes before entering the backend", async () => {
     mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 30 });

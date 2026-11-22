@@ -661,9 +661,13 @@ function shoeLast(stations: readonly ShoeStation[], side: -1 | 1, base: number, 
     const shift = -side * .009 * THREE.MathUtils.smoothstep(depth, .063, .18);
     const height = top - base;
     for (let k = 0; k < sides; k++) {
-      const angle = k / sides * TAU, vertical = Math.cos(angle);
-      const contour = sole ? Math.sign(vertical) * Math.sqrt(Math.abs(vertical)) : vertical;
-      positions.push(shift + radius * Math.sin(angle), base + height * (.5 + .5 * contour), depth);
+      const angle = k / sides * TAU, vertical = Math.cos(angle), horizontal = Math.sin(angle);
+      // A broad footbed seats the leather on the welt across the width of the toe.
+      // Stacked elliptical sections touch at the centre and show daylight at the edges.
+      const sectionWidth = sole ? Math.sign(horizontal) * Math.abs(horizontal) ** .38 : horizontal;
+      const sectionHeight = sole ? .5 + .5 * Math.sign(vertical) * Math.abs(vertical) ** .25
+        : vertical >= 0 ? .14 + .86 * vertical : .14 * (1 - Math.abs(vertical) ** .18);
+      positions.push(shift + radius * sectionWidth, base + height * sectionHeight, depth);
       if (row === 0) continue;
       const a = (row - 1) * sides + k, b = (row - 1) * sides + (k + 1) % sides;
       indices.push(a, a + sides, b, b, a + sides, b + sides);

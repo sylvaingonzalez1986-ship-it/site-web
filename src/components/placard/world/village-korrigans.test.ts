@@ -1,14 +1,39 @@
 import { expect, test } from "vitest";
+import * as THREE from "three";
 import { createVillageBuilding } from "./village-buildings";
 import { VILLAGE_KORRIGAN_GLADE, VILLAGE_PLACES, villagePlacePosition } from "./village-layout";
 import { createVillageTerrain, disposeVillageObject } from "./village-terrain";
 import { createVillageWalkSurface } from "./village-walk-surface";
-import { KORRIGAN_SOLE } from "./village-korrigan-art";
+import { characterDisposer, characterMaterial } from "./village-character-art";
+import { createKorriganModel, KORRIGAN_PALETTES, KORRIGAN_SOLE } from "./village-korrigan-art";
 import { createVillageKorrigans } from "./village-korrigans";
 import type { VillageLifeFrame } from "./village-life-types";
 
 const glade = VILLAGE_KORRIGAN_GLADE;
 const frame = (time: number, reduced = false): VillageLifeFrame => ({ time, delta: 1 / 30, reduced, quality: "low", visible: () => true });
+
+test("the musicians keep distinct bonnet silhouettes and stay within the previous triangle budget", () => {
+  const bonnets = KORRIGAN_PALETTES.map(palette => {
+    const model = createKorriganModel(palette, characterMaterial());
+    let meshes = 0, triangles = 0;
+    model.object.traverse(child => {
+      if (!(child instanceof THREE.Mesh)) return;
+      meshes++;
+      triangles += child.geometry.index!.count / 3;
+      expect(child.castShadow).toBe(false);
+      expect(child.geometry.getAttribute("color").count).toBe(child.geometry.getAttribute("position").count);
+    });
+    expect(meshes).toBe(8);
+    expect(triangles).toBeLessThanOrEqual(15572);
+    const bounds = new THREE.Box3().setFromObject(model.cap);
+    characterDisposer(model.object).dispose();
+    return bounds;
+  });
+  const [garance, canard, ocre] = bonnets;
+  expect(canard.max.y - garance.max.y).toBeGreaterThan(.08);
+  expect(garance.min.x - canard.min.x).toBeLessThan(-.13);
+  expect(garance.max.y - ocre.max.y).toBeGreaterThan(.025);
+});
 
 test("the permanent oak is solid and the entire round clears the paths and doors", () => {
   const terrain = createVillageTerrain();

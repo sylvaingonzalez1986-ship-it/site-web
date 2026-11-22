@@ -1,4 +1,5 @@
 import type { Art } from "./interior-art";
+import { createInteriorPortrait } from "./interior-residents";
 
 type Finish = Parameters<Art["box"]>[6];
 
@@ -74,41 +75,35 @@ function chair(a: Art, x: number, z: number, leather: Finish, facingFront = true
   }
 }
 
-function clerk(room: Art, x: number, z: number, shirt: Finish, hair: Finish, animated = false) {
+function clerk(room: Art, x: number, z: number, job: "clerk" | "accountant") {
   const a = room.pivot("daytime-resident", [0, 0, 0]);
-  a.sphere(0.26, x, 0.91, z, shirt, [1.2, 1.28, 0.72]);
-  a.box(0.35, 0.31, 0.055, x, 0.87, z + 0.18, "teal");
+  const animated = job === "clerk";
+  const shirt = animated ? "cream" : "apricot", apron = animated ? "darkTeal" : "teal";
+  const skin = animated ? "clerkSkin" : "accountantSkin";
+  a.sphere(.106, x, 1.237, z, skin, [1.15, 1.16, .95]);
+  a.sphere(.26, x, .91, z, shirt, [1.2, 1.28, .72]);
+  a.sphere(.18, x, 1.132, z, shirt, [1.39, .63, .81]);
+  a.bevelBox(.355, .335, .082, .03, x, .872, z + .168, apron, [-.04, 0, 0]);
   for (const dx of [-0.135, 0.135]) {
-    a.rod([x + dx, 1.16, z + 0.04], [x + dx, 0.95, z + 0.205], 0.073, "teal");
-    a.sphere(0.037, x + dx, 0.98, z + 0.217, "gold");
+    a.rod([x + dx, 1.16, z + .068], [x + dx, .95, z + .205], .064, apron);
+    a.sphere(.028, x + dx, .98, z + .221, "gold", [1, 1, .55]);
   }
-  const head = animated ? a.pivot("office-clerk-head", [x, 1.28, z]) : a;
-  const hx = animated ? 0 : x, hy = animated ? -1.28 : 0, hz = animated ? 0 : z;
-  head.sphere(0.245, hx, hy + 1.37, hz + 0.018, "skin", [1, 0.99, 0.91]);
+  a.cylinder(.129, .046, x, 1.214, z, animated ? "paper" : "sandKnit", .108);
+  const head = a.pivot(animated ? "office-clerk-head" : "office-accountant-head", [x, 1.238, z + .016]);
+  head.attach(createInteriorPortrait(job));
   for (const side of [-1, 1]) {
-    head.sphere(0.06, hx + side * 0.233, hy + 1.365, hz, "skin");
-    head.sphere(0.025, hx + side * 0.086, hy + 1.391, hz + 0.224, "ink", [0.72, 1.35, 0.37]);
+    if (animated) {
+      a.bevelBox(.105, .061, .038, .016, x + side * .049, 1.181, z + .098, "paper", [-.24, 0, -side * .28]);
+    }
     a.rod([x + side * 0.23, 1.09, z], [x + side * 0.33, 0.98, z + 0.22], 0.13, shirt);
     if (animated && side > 0) {
       const hand = a.pivot("office-clerk-hand", [x + 0.33, 0.98, z + 0.22]);
       hand.rod([0, 0, 0], [-0.12, 0.085, 0.22], 0.11, shirt);
-      hand.sphere(0.072, -0.125, 0.086, 0.25, "skin");
+      hand.sphere(.074, -.125, .086, .25, skin, [.86, .88, 1.13]);
       hand.rod([-0.1, 0.21, 0.187], [-0.14, 0.04, 0.308], 0.022, "brass");
     } else {
       a.rod([x + side * 0.33, 0.98, z + 0.22], [x + side * 0.21, 1.02, z + 0.38], 0.11, shirt);
-      a.sphere(0.072, x + side * 0.205, 1.04, z + 0.4, "skin");
-    }
-  }
-  head.sphere(0.043, hx, hy + 1.345, hz + 0.25, "skin");
-  head.sphere(0.07, hx, hy + 1.282, hz + 0.218, "red", [1.15, 0.43, 0.36]);
-  head.sphere(0.247, hx, hy + 1.515, hz - 0.054, hair, [0.99, 0.67, 0.87]);
-  if (hair === "hair") {
-    head.sphere(0.244, hx, hy + 1.555, hz - 0.035, "teal", [1.04, 0.62, 1]);
-    head.box(0.375, 0.032, 0.195, hx + 0.018, hy + 1.519, hz + 0.14, "ink", [0.025, 0.06, -0.07]);
-  } else {
-    for (let n = 0; n < 7; n++) {
-      const t = n * Math.PI / 3.3;
-      head.sphere(0.108, hx + Math.sin(t) * 0.17, hy + 1.48 + (n % 2) * 0.05, hz + Math.cos(t) * 0.125, hair);
+      a.sphere(.074, x + side * .205, 1.04, z + .4, skin, [.91, .79, 1.16]);
     }
   }
 }
@@ -116,10 +111,14 @@ function clerk(room: Art, x: number, z: number, shirt: Finish, hair: Finish, ani
 function banker(room: Art, x: number, z: number) {
   const a = room.pivot("daytime-resident", [0, 0, 0]);
   a.sphere(0.37, x, 1.05, z, "suit", [1.08, 1.2, 0.74]);
-  a.box(0.19, 0.41, 0.055, x, 1.21, z + 0.24, "cream", [-0.28, 0, 0]);
-  a.box(0.071, 0.29, 0.054, x, 1.19, z + 0.29, "leather", [-0.25, 0, -0.1]);
+  a.sphere(.166, x, 1.352, z + .048, "suit", [1.38, .63, .90]);
+  a.cylinder(.135, .085, x, 1.415, z + .035, "cream", .12);
+  a.bevelBox(.193, .369, .050, .014, x, 1.23, z + .229, "cream", [-.42, 0, 0]);
+  a.bevelBox(.066, .246, .029, .014, x, 1.218, z + .258, "leather", [-.38, 0, -.05]);
+  a.sphere(.029, x, 1.334, z + .212, "leather", [1.13, 1.16, .71]);
   for (const side of [-1, 1]) {
-    a.rod([x + side * 0.25, 1.36, z + 0.152], [x + side * 0.09, 1, z + 0.29], 0.066, "darkTeal");
+    a.bevelBox(.081, .066, .045, .011, x + side * .045, 1.373, z + .177, "paper", [-.35, 0, -.31 * side]);
+    a.rod([x + side * .19, 1.346, z + .157], [x + side * .071, 1.09, z + .276], .073, "darkTeal");
     a.sphere(0.03, x + side * 0.09, 0.98, z + 0.294, "brass");
     a.rod([x + side * 0.135, 0.89, z + 0.12], [x + side * 0.25, 1.15, z + 0.72], 0.24, "suit");
     a.rod([x + side * 0.25, 1.15, z + 0.72], [x + side * 0.25, 1.18, z + 1.02], 0.19, "suit");
@@ -130,29 +129,17 @@ function banker(room: Art, x: number, z: number) {
   const hand = a.pivot("bank-banker-hand", [x - 0.43, 1.32, z + 0.22]);
   hand.rod([0, 0, 0], [-0.01, 0.16, 0.19], 0.16, "suit");
   hand.rod([-0.01, 0.16, 0.19], [-0.01, 0.184, 0.224], 0.13, "cream");
-  hand.sphere(0.093, -0.01, 0.195, 0.26, "skin", [0.78, 0.83, 1]);
+  hand.sphere(0.093, -0.01, 0.195, 0.26, "bankerSkin", [0.78, 0.83, 1]);
   hand.box(0.44, 0.31, 0.018, -0.18, 0.11, 0.28, "paper", [-0.37, 0, -0.23]);
   for (let n = 0; n < 3; n++) {
     hand.box(0.22, 0.01, 0.01, -0.177, 0.146 - n * 0.046, 0.314 - n * 0.017, "limestone", [0, 0, -0.23]);
   }
   a.rod([x + 0.31, 1.25, z], [x + 0.44, 1.06, z + 0.22], 0.19, "suit");
   a.rod([x + 0.44, 1.06, z + 0.22], [x + 0.59, 1.11, z + 0.37], 0.15, "suit");
-  a.sphere(0.085, x + 0.645, 1.12, z + 0.42, "skin");
+  a.sphere(.085, x + .645, 1.12, z + .42, "bankerSkin", [.87, .84, 1.14]);
+  a.sphere(.127, x, 1.45, z + .02, "bankerSkin", [1, .9, .91]);
   const head = a.pivot("bank-banker-head", [x, 1.45, z + 0.02]);
-  head.sphere(0.146, 0, 0, 0, "skin");
-  head.sphere(0.287, 0, 0.22, 0.024, "skin", [1, 0.98, 0.9]);
-  head.sphere(0.287, -0.032, 0.383, -0.042, "silverHair", [1.03, 0.63, 0.93]);
-  for (const side of [-1, 1]) {
-    head.sphere(0.061, side * 0.265, 0.198, 0.038, "skin");
-    head.sphere(0.095, side * 0.217, 0.265, 0.042, "silverHair", [0.63, 1.3, 1.1]);
-    head.sphere(0.025, side * 0.093, 0.26, 0.263, "ink", [0.75, 1.15, 0.35]);
-    head.torus(0.069, 0.012, side * 0.092, 0.245, 0.287, "brass");
-    head.sphere(0.085, side * 0.06, 0.15, 0.252, "forgedIron", [1, 0.37, 0.39]);
-    head.rod([side * 0.051, 0.312, 0.27], [side * 0.15, 0.337, 0.234], 0.028, "silverHair");
-  }
-  head.rod([-0.026, 0.247, 0.292], [0.026, 0.247, 0.292], 0.018, "brass");
-  head.sphere(0.058, 0, 0.197, 0.298, "skin", [0.85, 0.77, 1]);
-  head.sphere(0.069, 0.005, 0.104, 0.25, "leather", [1, 0.44, 0.24]);
+  head.attach(createInteriorPortrait("banker"));
 }
 
 function shelves(a: Art, x: number, z: number, w: number, files = false) {
@@ -339,7 +326,7 @@ export function furnishOfficeStation(a: Art, id: string, w: number, d: number): 
   if (id === "accounts") {
     bankDesk(a, 0, .27, w, 1.15);
     chair(a, -.1, -.56, "teal");
-    clerk(a, -.1, -.46, "apricot", "hair");
+    clerk(a, -.1, -.46, "accountant");
     lamp(a, -w * 0.34, 0.99, -.06, "brass");
     ledger(a, -0.09, 1.037, .27, w * .36);
     const x = w * 0.29;
@@ -388,7 +375,7 @@ export function furnishOffice(a: Art, room: "bank" | "office") {
   } else {
     windowScene(a, 2.0, 2.42);
     chair(a, 1.65, -2.54, "teal");
-    clerk(a, 1.65, -2.46, "cream", "wood", true);
+    clerk(a, 1.65, -2.46, "clerk");
     chair(a, 0.9, 0.14, "teal", false);
     chair(a, 2.48, 0.14, "red", false);
 

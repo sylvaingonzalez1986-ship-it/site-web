@@ -46,7 +46,7 @@ function surfaceMesh(rows: number, columns: number, vertex: (u: number, t: numbe
   return geo;
 }
 
-function strand(art: Assembly, path: V[], widths: number[], depths: number[], pigment: Pigment, outward?: V, fine = false) {
+function strand(art: Assembly, path: V[], widths: number[], depths: number[], pigment: Pigment, outward?: V, fine = false, rounded = false) {
   const curve = new THREE.CatmullRomCurve3(path);
   const frames = (path.length - 1) * (fine ? 2 : 5);
   const rows = Array.from({ length: frames + 1 }, (_, i) => {
@@ -56,7 +56,10 @@ function strand(art: Assembly, path: V[], widths: number[], depths: number[], pi
     if (normal.lengthSq() < .000001) normal.copy(Math.abs(axis.z) < .8 ? vec(0, 0, 1) : vec(1, 0, 0)).addScaledVector(axis, -(Math.abs(axis.z) < .8 ? axis.z : axis.x));
     normal.normalize();
     const across = axis.clone().cross(normal).normalize();
-    const k = t * (path.length - 1), idx = Math.min(path.length - 2, Math.floor(k)), fraction = k - idx;
+    const k = t * (path.length - 1), idx = Math.min(path.length - 2, Math.floor(k));
+    let fraction = k - idx;
+    if (rounded && idx === 0) fraction = Math.sqrt(fraction);
+    if (rounded && idx === path.length - 2) fraction = 1 - Math.sqrt(1 - fraction);
     return { p, across, normal, w: lerp(widths[idx], widths[idx + 1], fraction), d: lerp(depths[idx], depths[idx + 1], fraction) };
   });
   art.add(surfaceMesh(frames, fine ? 8 : 22, (u, t) => {
@@ -70,7 +73,7 @@ function strand(art: Assembly, path: V[], widths: number[], depths: number[], pi
 }
 
 const frontHairline: Record<Hair, number> = {
-  bald: .275, buzz: .268, crop: .249, quiff: .261, pixie: .241, mohawk: .278,
+  bald: .275, buzz: .268, crop: .263, quiff: .261, pixie: .241, mohawk: .278,
   bob: .270, long: .264, waves: .254, curls: .247, afro: .227, braids: .281, bun: .280, ponytail: .276,
 };
 
@@ -79,13 +82,13 @@ function hairline(style: Hair, angle: number) {
   const front = frontHairline[style];
   // A short temple point, an arch above the ear, then a lower line at the nape.
   const angles = [0, .42, .78, 1.08, 1.23, 1.52, 1.78, 2.12, Math.PI];
-  const y = [front, front + .006, front - .024, .183, .119, .147, .141, .078, .047];
+  const y = [front, front + .006, front - .024, .183, style === "crop" ? .132 : .119, .147, .141, .078, .044];
   let i = 0;
   while (i < angles.length - 2 && a > angles[i + 1]) i++;
   const profile = lerp(y[i], y[i + 1], smoothstep(a, angles[i], angles[i + 1]));
   if (style === "buzz" || style === "mohawk") return profile;
   const temple = Math.exp(-((a - .80) ** 2) / .047) * .014;
-  const grain = Math.cos(angle * 22 + 1.1 * Math.sin(angle * 6)) * .0029;
+  const grain = Math.cos(angle * 22 + 1.1 * Math.sin(angle * 6)) * (style === "crop" ? .0007 : .0029);
   return profile + temple + grain * (1 - smoothstep(a, 1.7, Math.PI));
 }
 
@@ -126,15 +129,15 @@ function hairSurface(scalp: ChanvrierScalp, style: Hair, hat: Hat) {
   const tied = style === "braids" || style === "bun" || style === "ponytail";
   const shorn = style === "buzz" || style === "mohawk";
   const coiled = style === "curls" || style === "afro";
-  const swept = style === "crop" || style === "quiff", quiff = style === "quiff";
+  const crop = style === "crop", quiff = style === "quiff", swept = quiff;
   const ringlets = coiled ? curlyRelief(style === "afro") : undefined;
   const parted = draped || tied;
-  const loft = shorn ? .002 : style === "afro" ? .088 : coiled ? .032 : style === "quiff" ? .048 : draped ? .028 : .022;
-  const bulk = shorn ? .0024 : style === "afro" ? .070 : coiled ? .035 : draped ? .025 : .014;
+  const loft = shorn ? .002 : style === "afro" ? .088 : coiled ? .032 : quiff ? .048 : draped || crop ? .028 : .022;
+  const bulk = shorn ? .0024 : style === "afro" ? .070 : coiled ? .035 : draped ? .025 : crop ? .020 : .014;
   return (angle: number, t: number) => {
     const a = Math.atan2(Math.sin(angle), Math.cos(angle)), abs = Math.abs(a), front = Math.cos(a);
     const fringe = swept ? .012 * Math.sin(a * 2.1 + .4) - .011 * Math.exp(-((a + .70) ** 2) / .085) : 0;
-    const asym = (parted ? .006 : .009) * Math.sin(3 * a + .4) * Math.max(front, 0);
+    const asym = crop ? -.012 * Math.sin(a * 2) * Math.max(front, 0) : (parted ? .006 : .009) * Math.sin(3 * a + .4) * Math.max(front, 0);
     const roots = hairline(style, a) + fringe + asym;
     const behindEar = smoothstep(abs + .047 * Math.sin(a * 2.4), .92, 1.70);
     const length = style === "bob" ? .108 : style === "waves" ? .19 : .223;
@@ -169,11 +172,11 @@ function hairSurface(scalp: ChanvrierScalp, style: Hair, hat: Hat) {
     // Lines travel across the dome from the displaced part, with the lift
     // folded into the same mesh where the forelock meets the temple.
     const channel = swept ? Math.cos(lerp(trail * 18 - .8 * across, templeSweep * 28 - 8.7, bend) + .29 * Math.sin(trail * 8))
-      : Math.cos(flow * (draped ? 14 : 12) + .55 * Math.sin(flow * 3) + .37 * Math.sin(t * 5.7 - 3 * a));
+      : Math.cos(flow * (crop ? 7 : draped ? 14 : 12) + .55 * Math.sin(flow * 3) + .37 * Math.sin(t * 5.7 - 3 * a));
     const curl = ringlets?.(a, t) ?? 0;
     const ridge = coiled ? curl : (channel + 1) / 2;
     const fullness = Math.sin(t * Math.PI * .70) * (coiled ? 1 - .48 * smoothstep(t, .91, 1) : 1);
-    radius += .0018 + room * fullness * (bulk + (shorn ? 0 : coiled ? (style === "afro" ? .046 : .040) * curl : .0065 * (ridge - .4)));
+    radius += .0018 + room * fullness * (bulk + (shorn ? 0 : coiled ? (style === "afro" ? .046 : .040) * curl : (crop ? .0035 : .0065) * (ridge - .4)));
     const frontLock = swept ? smoothstep(a, -1.32, -.44) * (1 - smoothstep(a, .76, 1.51))
       * Math.exp(-((t - (.87 - .26 * smoothstep(a, -.89, .92))) ** 2) / .023) * (.90 + .10 * ridge) * (1 - trough * .63) : 0;
     radius += room * ((quiff ? .038 : .025) * frontLock - .0038 * trough);
@@ -193,14 +196,14 @@ function sculpture(art: Assembly, surface: Surface, style: Hair, pigment: Pigmen
   const skinColor = new THREE.Color(skin);
   const colorAt = (a: number, t: number, ridge: number, trough = 0) => {
     const depth = smoothstep(t, .91, 1);
-    const color = pigment.base.clone().lerp(pigment.shadow, .18 + (1 - ridge) * .32 + depth * .18);
+    const color = pigment.base.clone().lerp(pigment.shadow, .18 + (1 - ridge) * (style === "crop" ? .20 : .32) + depth * .18);
     if (shorn) {
       const stubble = .5 + .5 * Math.sin(231 * a + 122 * t) * Math.sin(177 * t - 87 * a);
       return color.lerp(skinColor, .17 + .44 * depth + .10 * stubble);
     }
     const crest = Math.pow(ridge, 2.5) * (.76 - .20 * depth) * (.38 + .62 * Math.sin(Math.PI * t) ** .65);
     const root = .16 * depth * (1 - ridge) * (style === "curls" || style === "afro" ? .3 : 1);
-    return color.lerp(pigment.light, crest * (1 - trough * .55)).lerp(skinColor, root + .21 * trough);
+    return color.lerp(pigment.light, crest * (style === "crop" ? .48 : 1 - trough * .55)).lerp(skinColor, root + .21 * trough);
   };
   const coiled = style === "curls" || style === "afro";
   art.add(surfaceMesh(coiled ? 54 : 33, coiled ? 144 : 96, (u, t) => {
@@ -222,6 +225,29 @@ function sculpture(art: Assembly, surface: Surface, style: Hair, pigment: Pigmen
       p.x *= inset; p.z *= inset; p.y += .011 * t;
       return { p, color: colorAt(a, t, ridge).lerp(pigment.shadow, .44) };
     }), null);
+  }
+}
+
+function sweptCrop(art: Assembly, surface: Surface, pigment: Pigment) {
+  const locks = [
+    {
+      knots: [[1.02, .58], [.66, .60], [.22, .66], [-.24, .78], [-.68, .91], [-.99, .92]],
+      widths: [0, .035, .048, .047, .026, 0], depth: [0, .022, .025, .022, .015, 0],
+    },
+    {
+      knots: [[1.02, .51], [.65, .44], [.06, .44], [-.46, .57], [-.92, .72], [-1.12, .80]],
+      widths: [0, .037, .044, .040, .022, 0], depth: [0, .025, .024, .022, .013, 0],
+    },
+    {
+      knots: [[.88, .54], [1.07, .56], [1.19, .68], [1.34, .81], [1.47, .89]],
+      widths: [0, .029, .032, .021, 0], depth: [0, .017, .016, .010, 0],
+    },
+  ];
+  for (const { knots, widths, depth } of locks) {
+    const path = knots.map(([a, t]) => surface(a, t).p);
+    path[0].multiply(new THREE.Vector3(.96, 1, .96));
+    path[path.length - 1].multiply(new THREE.Vector3(.96, 1, .96));
+    strand(art, path, widths, depth, pigment, undefined, false, true);
   }
 }
 
@@ -356,6 +382,7 @@ export function createChanvrierHair(art: Assembly, scalp: ChanvrierScalp, style:
   const pigment = hairPigment(color), surface = hairSurface(scalp, style, hat);
   sculpture(art, surface, style, pigment, skin);
   switch (style) {
+    case "crop": if (hat === "none") sweptCrop(art, surface, pigment); break;
     case "pixie": if (hat === "none") bangs(art, surface, pigment); break;
     case "mohawk": if (hat === "none") crest(art, surface, pigment); break;
     case "curls": case "afro": curlAccents(art, surface, pigment, style === "afro"); break;

@@ -4,6 +4,7 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 import { furnishCivic, furnishCivicStation } from "./building-civic-decor";
 import { furnishOffice, furnishOfficeStation } from "./building-office-decor";
 import { furnishMarket, furnishMarketStation } from "./building-market-decor";
+import { createInteriorPortrait, INTERIOR_SKIN } from "./interior-residents";
 import type { InteriorObject, InteriorRoom } from "./interior-types";
 
 /** The same pigments as the painted Quartier; all detail below is generated geometry. */
@@ -12,11 +13,13 @@ const PAINT = {
   stone: "#b6b4a0", slate: "#40545a", teal: "#078d87", darkTeal: "#08635f",
   wood: "#af7849", honey: "#d6a15f", gold: "#efb63d", steel: "#acb9af",
   green: "#497a4e", leaf: "#6f9952", earth: "#514537", red: "#ba604b",
-  skin: "#edbd89", hair: "#483c33", blue: "#386899", glass: "#a4d3c3",
+  skin: "#edbd89", blue: "#386899", glass: "#a4d3c3",
   apricot: "#e7ab72", roseGlaze: "#f1939c",
   brass: "#d29b3e", bronze: "#8c5a27", iron: "#4e6267", forgedIron: "#293e43",
   velvet: "#185851", leather: "#93614a", walnut: "#835634", limestone: "#d4c1a0",
-  windowGlass: "#b8ddcf", suit: "#20594a", silverHair: "#c4c3b3",
+  windowGlass: "#b8ddcf", suit: "#20594a",
+  sandKnit: "#cfa173", knitRib: "#a87350", guideTeal: "#087f7c",
+  ...INTERIOR_SKIN,
 } as const;
 type Pigment = keyof typeof PAINT;
 type V3 = readonly [number, number, number];
@@ -112,6 +115,7 @@ function mergeParts(parts: THREE.BufferGeometry[], name: string) {
 export class Art {
   private paints = new Map<Pigment, THREE.BufferGeometry[]>();
   private pivots: { name: string; at: V3; art: Art }[] = [];
+  private models: THREE.Object3D[] = [];
   private sourceCount = 0;
 
   constructor(private readonly detailed = false) {}
@@ -120,6 +124,10 @@ export class Art {
     const art = new Art(this.detailed);
     this.pivots.push({ name, at, art });
     return art;
+  }
+
+  attach(model: THREE.Object3D) {
+    this.models.push(model);
   }
 
   add(geometry: THREE.BufferGeometry, paint: Pigment, at: V3, rotation: V3 = ZERO, tone = 1) {
@@ -210,7 +218,8 @@ export class Art {
       batch.parts.push(geometry);
       meshes.set(key, batch);
       // Structural ink strokes, as in the 2D drawing; foliage and skin keep their soft silhouette.
-      if (!["leaf", "green", "skin", "hair", "glass", "windowGlass", "silverHair", "velvet", "leather", "suit"].includes(paint)) {
+      if (!["leaf", "green", "skin", "glass", "windowGlass", "velvet", "leather", "suit",
+        "sandKnit", "knitRib", "guideTeal", "clerkSkin", "accountantSkin", "judgeSkin", "bankerSkin"].includes(paint)) {
         const edges = new THREE.EdgesGeometry(geometry, this.detailed ? 43 : 35);
         const opacity = this.detailed ? (surface === "plaster" || surface === "granite" ? 0.1 : 0.22) : 0.37;
         const batch = strokes.get(opacity) ?? [];
@@ -236,6 +245,8 @@ export class Art {
       group.add(child);
       group.userData.sourcePieces += child.userData.sourcePieces;
     }
+    for (const model of this.models) group.add(model);
+    this.models.length = 0;
     this.pivots.length = 0;
     this.paints.clear();
     return group;
@@ -445,32 +456,21 @@ function machine(a: Art, object: InteriorObject, w: number, d: number) {
   }
 }
 
-function character(a: Art, object: InteriorObject) {
-  const seed = hash(object.id), skin: Pigment = "skin", shirt: Pigment = seed % 2 ? "teal" : "blue";
+function collectionHost(a: Art) {
   for (const x of [-0.13, 0.13]) {
     a.sphere(0.14, x, 0.1, 0.07, "ink", [0.83, 0.7, 1.55]);
     a.cylinder(0.096, 0.51, x, 0.41, 0, "slate", 0.11);
   }
-  a.sphere(0.29, 0, 0.93, 0, shirt, [0.95, 1.25, 0.67]);
-  a.box(0.35, 0.42, 0.04, 0, 0.85, 0.2, "honey");
-  a.box(0.23, 0.12, 0.015, 0, 0.87, 0.226, "wood");
+  a.sphere(.29, 0, .93, 0, "guideTeal", [.95, 1.25, .67]);
+  a.bevelBox(.35, .42, .059, .025, 0, .85, .199, "honey");
+  a.bevelBox(.23, .119, .023, .012, 0, .847, .234, "apricot");
   for (const side of [-1, 1]) {
-    a.rod([side * 0.22, 1.08, 0], [side * 0.34, 0.81, 0.04], 0.17, shirt);
-    a.sphere(0.095, side * 0.33, 0.74, 0.07, skin);
-    a.sphere(0.06, side * 0.25, 1.49, 0.015, skin);
+    a.rod([side * .22, 1.08, 0], [side * .34, .81, .04], .17, "guideTeal");
+    a.rod([side * .127, 1.181, .081], [side * .143, 1.011, .201], .066, "honey");
+    a.sphere(.089, side * .33, .74, .07, "skin", [.86, 1.13, .81]);
   }
-  a.cylinder(0.09, 0.13, 0, 1.23, 0, skin);
-  a.sphere(0.26, 0, 1.49, 0, skin, [0.9, 1.04, 0.86]);
-  a.sphere(0.26, 0, 1.59, -0.045, "hair", [0.91, 0.72, 0.8]);
-  a.sphere(0.24, 0, 1.68, -0.02, shirt, [1.03, 0.5, 1]);
-  a.box(0.34, 0.025, 0.19, 0.025, 1.65, 0.17, shirt, [0, 0, -0.05]);
-  for (const x of [-0.075, 0.075]) {
-    a.sphere(0.027, x, 1.5, 0.208, "ink", [0.65, 1.4, 0.4]);
-    a.sphere(0.009, x - 0.005, 1.513, 0.22, "paper");
-  }
-  a.sphere(0.036, 0, 1.43, 0.228, skin, [1, 0.65, 0.7]);
-  a.rod([-0.055, 1.38, 0.21], [0, 1.364, 0.222], 0.015, "ink");
-  a.rod([0, 1.364, 0.222], [0.065, 1.39, 0.205], 0.015, "ink");
+  a.sphere(.11, 0, 1.23, 0, "skin", [1, 1.23, .91]);
+  a.pivot("collection-host-head", [0, 1.27, .015]).attach(createInteriorPortrait("host"));
 }
 
 /** Local origin at the footprint centre, feet at y=0; final dimensions already include yaw. */
@@ -522,7 +522,7 @@ export function createInteriorObjectArt(object: InteriorObject, room?: InteriorR
       }
       break;
     }
-    case "character": character(a, object); break;
+    case "character": collectionHost(a); break;
     case "desk":
       table(a, w, d);
       a.box(w * 0.3, 0.025, d * 0.45, -w * 0.16, 0.987, d * 0.12, "paper", [0, 0.12, 0]);

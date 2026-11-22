@@ -11,6 +11,39 @@ import {
 const [x, z] = paintingToGround(620, 580);
 export const VILLAGE_LOIC_POSITION: [number, number, number] = [x, 0.04, z];
 
+export function createVillageLoicHead(parent: THREE.Object3D, material: THREE.Material) {
+  const face = createCharacterFace(parent, material, "loic", "#202b2a");
+  const cap = new Assembly();
+  const crown: readonly ClothSection[] = [[.369, .242, .218, -.007], [.391, .255, .230, -.009],
+    [.439, .252, .230, -.010], [.491, .231, .213, -.014], [.538, .188, .181, -.019],
+    [.576, .125, .127, -.022], [.596, .065, .065, -.021], [.604, 0, 0, -.021]];
+  const panelStart = -.12, panelWidth = Math.PI / 3;
+  const canvas = (y: number, a: number) => .006 * (1 - Math.cos((a - panelStart) * 6)) * Math.sin(Math.PI * (y - .369) / .235);
+  const leanCrown = (point: THREE.Vector3) => {
+    const height = THREE.MathUtils.smoothstep(point.y, .38, .602);
+    point.x -= .019 * height;
+    point.y += point.z * .046 * (1 - height) - .013 * height * Math.cos(point.x * 5);
+  };
+  const colors = ["#12716c", "#087b75", "#196863", "#bd8e60", "#c99e6f", "#d2aa79"];
+  for (const [i, color] of colors.entries()) {
+    const edge = panelStart + i * panelWidth;
+    const panel = garmentPanel(crown, 6, () => [edge, edge + panelWidth], canvas);
+    cap.add(reshapeGarment(panel, leanCrown), color);
+    const seam = crown.slice(1, -1).map(row => {
+      const point = new THREE.Vector3(...clothPoint(row, edge + .015, (y, a) => canvas(y, a) + .002));
+      leanCrown(point);
+      return point.toArray();
+    });
+    cap.sweep(seam, [.001, .0028, .003, .003, .0028, .001], i < 3 ? "#548c7e" : "#a57853", 5);
+  }
+  cap.add(reshapeGarment(garmentVolume([[.361, .235, .215, -.006], [.366, .245, .223, -.006],
+    [.381, .248, .224, -.007], [.389, .245, .219, -.008]], 30), leanCrown), "#315753");
+  addCapVisor(cap, .394, .241, .228, .082, "#315253", "#253938");
+  cap.ball([-.019, .595, -.021], .019, "#166760", [1, .54, 1]);
+  cap.finish("loic-teal-tan-baseball-cap", face.head, material);
+  return face;
+}
+
 /** Loïc's existing illustrated guide: two-tone cap, black brim, tan knit and teal trousers. */
 export function createVillageLoic(groundAt?: VillageGroundHeight): VillageNpcRig {
   const object = new THREE.Group(); object.name = "village-loic"; object.position.set(...VILLAGE_LOIC_POSITION);
@@ -54,36 +87,8 @@ export function createVillageLoic(groundAt?: VillageGroundHeight): VillageNpcRig
   body.ball([0.137, 1.017, 0.21], 0.0065, C.gold);
   body.finish("loic-sweater-and-guide-pin", torso, material);
 
-  const face = createCharacterFace(torso, material, "loic", "#202b2a");
+  const face = createVillageLoicHead(torso, material);
   face.head.position.y = 1.275;
-  const cap = new Assembly();
-  const crown: readonly ClothSection[] = [[.369, .242, .218, -.007], [.391, .255, .230, -.009],
-    [.439, .252, .230, -.010], [.491, .231, .213, -.014], [.538, .188, .181, -.019],
-    [.576, .125, .127, -.022], [.596, .065, .065, -.021], [.604, 0, 0, -.021]];
-  const panelStart = -.12, panelWidth = Math.PI / 3;
-  const canvas = (y: number, a: number) => .006 * (1 - Math.cos((a - panelStart) * 6)) * Math.sin(Math.PI * (y - .369) / .235);
-  const leanCrown = (point: THREE.Vector3) => {
-    const height = THREE.MathUtils.smoothstep(point.y, .38, .602);
-    point.x -= .019 * height;
-    point.y += point.z * .046 * (1 - height) - .013 * height * Math.cos(point.x * 5);
-  };
-  const colors = ["#12716c", "#087b75", "#196863", "#bd8e60", "#c99e6f", "#d2aa79"];
-  for (const [i, color] of colors.entries()) {
-    const edge = panelStart + i * panelWidth;
-    const panel = garmentPanel(crown, 6, () => [edge, edge + panelWidth], canvas);
-    cap.add(reshapeGarment(panel, leanCrown), color);
-    const seam = crown.slice(1, -1).map(row => {
-      const point = new THREE.Vector3(...clothPoint(row, edge + .015, (y, a) => canvas(y, a) + .002));
-      leanCrown(point);
-      return point.toArray();
-    });
-    cap.sweep(seam, [.001, .0028, .003, .003, .0028, .001], i < 3 ? "#548c7e" : "#a57853", 5);
-  }
-  cap.add(reshapeGarment(garmentVolume([[.361, .235, .215, -.006], [.366, .245, .223, -.006],
-    [.381, .248, .224, -.007], [.389, .245, .219, -.008]], 30), leanCrown), "#315753");
-  addCapVisor(cap, .394, .241, .228, .082, "#315253", "#253938");
-  cap.ball([-.019, .595, -.021], .019, "#166760", [1, .54, 1]);
-  cap.finish("loic-teal-tan-baseball-cap", face.head, material);
 
   const updateGait = createVillageTrousers(object, material, "loic", groundAt);
   const sleeves = [-1, 1].map(side => createVillageSleeve(torso, material, "loic-sleeve-" + side, "loic", C.tan, "#a87350"));

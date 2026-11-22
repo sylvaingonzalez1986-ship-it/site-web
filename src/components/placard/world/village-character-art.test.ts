@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
+import { DEFAULT_CHANVRIER_APPEARANCE, getChanvrierColors } from "@/lib/arena-chanvrier";
+import { createChanvrierHead } from "../chanvrier-head";
 import { characterDisposer, characterMaterial, createCharacterFace } from "./village-character-art";
 import { createVillageFisherman } from "./village-fisherman";
 import { createVillageLoic } from "./village-loic";
@@ -7,6 +9,16 @@ import type { VillageLifeFrame } from "./village-life-types";
 import type { VillageNpcPose } from "./village-npc-types";
 
 describe("shared illustrated village face", () => {
+  it.each(["moustache", "beard"] as const)("builds a player head with %s using shared facial-hair geometry", facialHair => {
+    const rig = new THREE.Group(), material = characterMaterial();
+    const appearance = { ...DEFAULT_CHANVRIER_APPEARANCE, facialHair };
+    const colors = getChanvrierColors({ gender: "male", clothing: "sage", skin: "peach", appearance });
+    createChanvrierHead(rig, material).update(appearance, colors);
+    const hair = rig.getObjectByName("chanvrier-facial-hair") as THREE.Mesh;
+    expect(hair.geometry.getAttribute("position").array.every(Number.isFinite)).toBe(true);
+    characterDisposer(rig).dispose();
+  });
+
   it.each(["loic", "breton", "fisherman"] as const)("keeps the eyes of %s readable when approaching from the map", name => {
     const rig = new THREE.Group(), material = characterMaterial();
     const face = createCharacterFace(rig, material, name);
