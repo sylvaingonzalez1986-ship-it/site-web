@@ -6,7 +6,7 @@ vi.mock("@/lib/supabase/customer-backend", () => ({ loadContestBetaTesterEnabled
 vi.mock("@/lib/supabase/kanab-quest-backend", async (importOriginal) => ({ getKqPlayerRunsSnapshot: mocks.activeRun, startKqPlayerRun: mocks.startRun, readKqRunSelection: (await importOriginal<typeof import("@/lib/supabase/kanab-quest-backend")>()).readKqRunSelection }));
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.limit, logRateLimitRejection: vi.fn() }));
 
-import { isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
+import { isArenaRankingRequestEnabled, isKqPlayerRequestEnabled, isKqPlayerIdentityEnabled } from "./kanab-quest-player-request-access";
 import { isKqPublicPlayerApiEnabled } from "./kanab-quest-player-access";
 import { ADMIN_ALLOWED_EMAIL } from "./admin-allowlist";
 import { GET, POST } from "@/app/api/arena/placard/runs/route";
@@ -32,6 +32,13 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("private production Placard access", () => {
+  it("opens public scoreboards with the lobby even when the prize season is pending", async () => {
+    vi.mocked(Date.now).mockReturnValue(Date.parse("2026-11-22T16:00:00Z"));
+    expect(await isArenaRankingRequestEnabled()).toBe(true);
+    expect(mocks.session).not.toHaveBeenCalled();
+    vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "true");
+    expect(await isArenaRankingRequestEnabled()).toBe(false);
+  });
   it("checks a read-only summary from verified identity without hydrating a profile", async () => {
     const identity = player("beta@example.test");
     mocks.beta.mockResolvedValueOnce(true).mockResolvedValueOnce(false);

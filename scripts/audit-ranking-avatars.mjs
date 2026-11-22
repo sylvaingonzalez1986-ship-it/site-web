@@ -14,7 +14,7 @@ const modules = {
   'ranking-preview.tsx': `
     import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css';
     import {ContestTesterLeaderboard} from '/src/components/contest/ContestHubClient';
-    createRoot(document.getElementById('root')).render(<main style={{padding:12,maxWidth:900,margin:'auto'}}><ContestTesterLeaderboard seasonItems={[]} globalItems={[]} profileTrack="regular" viewerPseudo="Camille"/></main>);
+    createRoot(document.getElementById('root')).render(<main style={{padding:12,maxWidth:900,margin:'auto'}}><ContestTesterLeaderboard rewardsEnabled={!new URLSearchParams(location.search).has('public-only')} seasonItems={[]} globalItems={[]} profileTrack="regular" viewerPseudo="Camille"/></main>);
   `,
   'preview-cart': `import {buildEmptyLoyaltySummary} from '/src/lib/loyalty';const loyalty=buildEmptyLoyaltySummary();loyalty.currentBadge={...loyalty.badges[2],unlocked:true};export const useCart=()=>({user:location.search.includes('guest')?null:{id:'preview-user',firstName:'Camille',email:'player@example.test',contestBetaEnabled:true},loyalty,totalItems:Number(new URLSearchParams(location.search).get('count')??3),hasWelcomePack:true,sessionLoading:false,authLoading:false});`,
   'preview-pages': `export const useCmsPages=()=>({pages:location.search.includes('long')?Array.from({length:5},(_,i)=>({slug:'page-'+i,title:'Une histoire de chanvre et de producteurs '+i,navLabel:'',showInNav:true,position:i})):[]});`,
@@ -81,6 +81,10 @@ try {
     }
     else void(url.protocol==='data:'||(url.hostname==='127.0.0.1'&&url.port==='3224')?request.continue():request.abort());
   });
+  await page.goto('http://127.0.0.1:3224/?public-only',{waitUntil:'networkidle0'});
+  await ready(page,'general');
+  assert(requests.some(request=>request.path==='/api/arena/rankings'));
+  assert(!requests.some(request=>request.path.startsWith('/api/arena/rewards')));
   for(const width of [320,390,768,1440]) {
     await page.setViewport({width,height:1000});await page.goto('http://127.0.0.1:3224/',{waitUntil:'networkidle0'});
     await recordPot(page);

@@ -1,6 +1,7 @@
 ﻿import Link from "@/components/navigation/NavigationLink";
 import { AccountLoginForm } from "@/components/account/AccountLoginForm";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
+import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 
 export default async function AccountLoginPage({
   searchParams,
@@ -9,6 +10,7 @@ export default async function AccountLoginPage({
 }) {
   const params = await searchParams;
   const nextUrl = sanitizeNextPath(params.next, "/profil");
+  const enteringGame = nextUrl.split(/[?#]/)[0] === "/arene/placard";
   const referralCode = params.ref || "";
   const isVerified = params.verified === "true";
   const passwordReset = params.passwordReset === "true";
@@ -21,7 +23,9 @@ export default async function AccountLoginPage({
         <div className="cartoon-border bg-cream p-8">
           <h1 className="section-title">CONNEXION</h1>
           <p className="mt-3 text-charcoal">
-            Connecte-toi pour acceder a ton profil, ton historique et tes futures commandes.
+            {enteringGame
+              ? isKqPlayerApiEnabled() ? "Connecte-toi pour retrouver ton personnage et ta progression dans le Quartier." : "Connecte-toi avec ton compte de test pour entrer dans le Quartier."
+              : "Connecte-toi pour accéder à ton profil, ton historique et tes commandes."}
           </p>
           {isVerified && (
             <p className="mt-3 rounded-md border border-[#1a1a1a] bg-mint/30 px-3 py-2 text-sm font-semibold text-charcoal">
@@ -45,7 +49,7 @@ export default async function AccountLoginPage({
           <p className="mt-4 text-sm text-charcoal">
             Pas de compte ?{" "}
             <Link href={registerHref} className="font-semibold text-ink underline">
-              Creer un compte
+              Créer un compte gratuit
             </Link>
           </p>
         </div>

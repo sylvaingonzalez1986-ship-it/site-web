@@ -80,6 +80,28 @@ afterEach(() => {
 });
 
 describe("Arena discovery page access", () => {
+  it.each([false, true])("opens public rankings without unlocking an unapproved prize season, signed in=%s", async signedIn => {
+    vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
+    vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
+    if (signedIn) connectOrdinaryCustomer();
+    const hub = await visit();
+    expect(hub.props).toMatchObject({ guest: !signedIn, gameOpen: false, notebookOpen: true });
+    const ranking = await visit({ vue: "classement" });
+    expect(ranking.type).toBe(ContestHubClient);
+    expect(ranking.props).toMatchObject({ initialView: "classement", isAuthenticated: signedIn, isPlacardPlayerEnabled: false });
+  });
+
+  it.each([false, true])("opens public rankings without unlocking an unapproved prize season, signed in=%s", async signedIn => {
+    vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
+    vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
+    if (signedIn) connectOrdinaryCustomer();
+    const hub = await visit();
+    expect(hub.props).toMatchObject({ guest: !signedIn, gameOpen: false, notebookOpen: true });
+    const ranking = await visit({ vue: "classement" });
+    expect(ranking.type).toBe(ContestHubClient);
+    expect(ranking.props).toMatchObject({ initialView: "classement", isAuthenticated: signedIn, isPlacardPlayerEnabled: false });
+  });
+
   it("opens the public hub for a guest while official activities remain beta restricted", async () => {
     const result = await visit();
     expect(result.type).toBe(ContestArenaHub);

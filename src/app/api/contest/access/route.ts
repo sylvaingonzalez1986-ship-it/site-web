@@ -8,6 +8,7 @@ import {
 } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
+import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import type { PublicCustomer } from "@/types/customer";
 
 export const runtime = "nodejs";
@@ -29,18 +30,21 @@ async function getOptionalCustomerSession(): Promise<{
 }
 
 export async function GET() {
+  const notebookOpen = isContestNotebookEnabledServer();
+  const betaRestricted = isContestBetaAccessRestrictedServer();
+  const moduleEnabled = isContestFeatureEnabledServer();
   const [adminAuthorized, session] = await Promise.all([
     isCurrentRequestAdminAuthorized(),
     getOptionalCustomerSession(),
   ]);
 
-  const notebookOpen = isContestNotebookEnabledServer();
-  if (isArenaPrelaunch()) return NextResponse.json({ enabled: true, betaRestricted: false, canAccess: true, notebookOpen, activitiesOpen: isContestFeatureEnabledServer() && hasArenaBetaAccess(session?.customer, adminAuthorized), opensAt: ARENA_OPENING_AT }, { headers: { "Cache-Control": "private, no-store" } });
+  if (isArenaPrelaunch()) return NextResponse.json({ enabled: true, betaRestricted: false, canAccess: true, notebookOpen, activitiesOpen: moduleEnabled && hasArenaBetaAccess(session?.customer, adminAuthorized), opensAt: ARENA_OPENING_AT }, { headers: { "Cache-Control": "private, no-store" } });
 
   return NextResponse.json({
-    enabled: notebookOpen || isContestFeatureEnabledServer(),
+    enabled: notebookOpen || moduleEnabled,
     notebookOpen,
-    betaRestricted: isContestBetaAccessRestrictedServer(),
+    betaRestricted,
+    activitiesOpen: isKqPlayerApiEnabled() || (moduleEnabled && hasArenaBetaAccess(session?.customer)),
     canAccess: notebookOpen || canCustomerAccessContestFeatureServer(session?.customer ?? null, {
       adminAuthorized,
     }),

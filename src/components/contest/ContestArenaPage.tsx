@@ -24,6 +24,7 @@ import {
 } from "@/lib/contest-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { getContestBundleRewards } from "@/lib/supabase/contest-bundle-rewards-backend";
 import { isSupabaseAuthCookieName } from "@/lib/supabase-auth-cookies";
 import {
@@ -141,7 +142,8 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     // The public discovery hub is local. Real activities and their APIs keep
     // their account/beta checks below and in their own routes.
     if (surface === "arena" && !params.vue && isContestFeatureEnabledServer()) {
-      return <ContestArenaHub key={session?.customerId ?? "guest"} notebookOpen={notebookOpen} />;
+      const gameOpen = session ? await isKqPlayerRequestEnabled() : isKqPlayerApiEnabled();
+      return <ContestArenaHub key={session?.customerId ?? "guest"} notebookOpen={notebookOpen} gameOpen={gameOpen} guest={!session} />;
     }
     if (notebookRequested ? !notebookOpen : !canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (notebookRequested) notFound();

@@ -26,7 +26,7 @@ function ReadyEntry({ userId, betaConnectionKey }: EntryProps) {
   const { showBanner } = useCookieConsent();
   if (showBanner) return <IntroductionLoading />;
   return <QuarterCharacterGate key={userId} ownerId={userId}>
-    <KqBetaWelcome ownerId={userId} connectionKey={betaConnectionKey} />
+    {betaConnectionKey && <KqBetaWelcome ownerId={userId} connectionKey={betaConnectionKey} />}
     <Game draftOwnerId={userId} />
   </QuarterCharacterGate>;
 }

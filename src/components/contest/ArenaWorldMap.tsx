@@ -18,9 +18,10 @@ const coordinates = (place: ReturnType<typeof getArenaMapPlaceGeometry>) => ({
   "--label-x": place.labelLeft, "--label-y": place.labelTop, "--silhouette": place.clipPath,
 } as CSSProperties);
 
-export function ArenaWorldMap({ activitiesLocked, notebookOpen, initialMode }: {
+export function ArenaWorldMap({ activitiesLocked, notebookOpen, gameOpen = true, initialMode }: {
   activitiesLocked: boolean;
   notebookOpen: boolean;
+  gameOpen?: boolean;
   initialMode: ArenaLobbyMode;
 }) {
   const [zoomed, setZoomed] = useState(false);
@@ -28,6 +29,8 @@ export function ArenaWorldMap({ activitiesLocked, notebookOpen, initialMode }: {
   const [focusedPlace, setFocusedPlace] = useState<ArenaMapPlaceId | null>(null);
   const maskId = `arena-${useId().replace(/:/g, "")}`;
   const viewport = useRef<HTMLDivElement>(null);
+  const isAvailable = (id: ArenaMapPlaceId) =>
+    id === "carnet" ? notebookOpen : !activitiesLocked && (id !== "jouer" || gameOpen);
   const toggleZoom = () => {
     setZoomed(value => !value);
     requestAnimationFrame(() => {
@@ -62,8 +65,7 @@ export function ArenaWorldMap({ activitiesLocked, notebookOpen, initialMode }: {
         <svg className={styles.lightingLayer} viewBox={`0 0 ${ARENA_MAP_SCENE.width} ${ARENA_MAP_SCENE.height}`} aria-hidden="true" focusable="false">
           <defs>{ARENA_MAP_PLACE_IDS.filter(id => id !== "profil").map(id => <clipPath id={`${maskId}-${id}`} key={id}><polygon points={getArenaMapPlaceGeometry(id).points} /></clipPath>)}</defs>
           {ARENA_MAP_PLACE_IDS.filter(id => id !== "profil").map(id => {
-            const available = id === "carnet" ? notebookOpen : !activitiesLocked;
-            const active = available && (hoveredPlace === id || focusedPlace === id);
+            const active = isAvailable(id) && (hoveredPlace === id || focusedPlace === id);
             return <g key={id} className={styles.placeLight} data-active={active || undefined}>
               <image href={ARENA_MAP_SCENE.image} width={ARENA_MAP_SCENE.width} height={ARENA_MAP_SCENE.height} clipPath={`url(#${maskId}-${id})`} className={styles.litImage} />
               <polygon points={getArenaMapPlaceGeometry(id).points} className={styles.silhouette} data-arena-silhouette={id} data-active={active || undefined} vectorEffect="non-scaling-stroke" />
@@ -73,13 +75,13 @@ export function ArenaWorldMap({ activitiesLocked, notebookOpen, initialMode }: {
         <nav aria-label="Choisir une activité">
           {ARENA_LOBBY_MODE_ORDER.map(id => {
             const { Icon } = PLACES[id];
-            const locked = id === "carnet" ? !notebookOpen : activitiesLocked;
+            const locked = !isAvailable(id);
             const content = <>
               <span className={styles.hitArea} data-arena-hit-area={id} aria-hidden="true" />
               <span className={styles.label} data-arena-label={id}>
                 <span className={styles.placeIcon}><Icon size={22} aria-hidden="true" /></span>
                 <strong>{id === "jouer" ? "JOUER" : ARENA_LOBBY_MODES[id].name}</strong>
-                {locked ? <span className={styles.soon}><LockKeyhole size={13} aria-hidden="true" />{id === "carnet" ? "Indisponible" : "Bientôt"}</span> : <ArrowUpRight className={styles.arrow} size={18} aria-hidden="true" />}
+                {locked ? <span className={styles.soon}><LockKeyhole size={13} aria-hidden="true" />{activitiesLocked && id !== "carnet" ? "Bientôt" : "Indisponible"}</span> : <ArrowUpRight className={styles.arrow} size={18} aria-hidden="true" />}
               </span>
             </>;
             return locked

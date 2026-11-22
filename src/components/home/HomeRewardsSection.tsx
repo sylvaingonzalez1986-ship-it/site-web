@@ -1,9 +1,8 @@
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowRight, CalendarDays, ShoppingBag } from "lucide-react";
-import { ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import styles from "./HomeRewardsSection.module.css";
 
-export function HomeRewardsSection({ arenaPrelaunch }: { arenaPrelaunch: boolean }) {
+export function HomeRewardsSection({ gameOpen }: { gameOpen: boolean }) {
   return (
     <section id="ticket-grattage-home" className={styles.section} aria-labelledby="bonus-title" data-tutorial="ticket-promo-band">
       <div className="retro-container">
@@ -44,20 +43,19 @@ export function HomeRewardsSection({ arenaPrelaunch }: { arenaPrelaunch: boolean
           <article className={styles.card} aria-labelledby="home-game-title">
             <header><p className={styles.eyebrow}>02 · Kanab Quest, le jeu du Quartier</p><h3 id="home-game-title">Cultive. Entreprends.<br />Fais-toi un nom.</h3></header>
             <p>Cultive, récolte, vends et développe ton entreprise virtuelle. Tes dégustations, tes duels et ton activité font progresser ton classement.</p>
-            <div className={styles.rewardLine}>
+            {gameOpen && <div className={styles.rewardLine}>
               <strong>Le Pot de la Canopée</strong>
               <p>En fin de saison, des fleurs récompensent les joueurs éligibles du Top 10 et un joueur tiré au sort parmi les éligibles hors Top 10.</p>
-            </div>
-            {arenaPrelaunch && <p className={styles.opening}>{ARENA_OPENING_MESSAGE} pour le jeu.</p>}
+            </div>}
             <div className={styles.cardActions}>
-              <Link href={arenaPrelaunch ? "/arene" : "/arene/placard"} className={styles.action}>{arenaPrelaunch ? "Découvrir le jeu" : "Entrer dans le Quartier"} <ArrowRight size={19} aria-hidden="true" /></Link>
-              <Link href="/arene?vue=classement" className={styles.textLink}>Voir le classement et ses récompenses</Link>
+              <Link href={gameOpen ? "/arene/placard" : "/arene"} className={styles.action}>{gameOpen ? "Entrer dans le Quartier" : "Découvrir l’Arène"} <ArrowRight size={19} aria-hidden="true" /></Link>
+              <Link href="/arene?vue=classement" className={styles.textLink}>Voir le classement des joueurs</Link>
             </div>
-            <details className={styles.rules}>
+            {gameOpen && <details className={styles.rules}>
               <summary>Comment sont attribués les lots ?</summary>
               <p>Le montant des lots dépend du pot de la saison. Pour être éligible, il faut au moins une dégustation validée dans la saison ou trois duels humains. Le classement tient aussi compte du développement de ton entreprise.</p>
               <p>Les fleurs gagnées sont à réclamer lors d’une commande. Ce classement de saison et le tirage mensuel du Carnet sont deux récompenses distinctes.</p>
-            </details>
+            </details>}
           </article>
 
           <article className={styles.card} aria-labelledby="home-album-title">

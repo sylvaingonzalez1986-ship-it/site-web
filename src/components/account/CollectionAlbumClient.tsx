@@ -36,12 +36,13 @@ import retroStyles from "@/components/contest/ArenaRetro.module.css";
 import { KqChapterHeading } from "@/components/placard/KqChapterHeading";
 import { KqPrintedArt } from "@/components/placard/KqPrintedArt";
 
-export function CollectionAlbumClient() {
-  return <CollectionAlbumContent embedded={false} />;
+export function CollectionAlbumClient({ gameOpen }: { gameOpen: boolean }) {
+  return <CollectionAlbumContent embedded={false} gameOpen={gameOpen} />;
 }
 
 type CollectionAlbumContentProps = {
   embedded?: boolean;
+  gameOpen: boolean;
 };
 
 type BurnableAlbumGroup = {
@@ -119,7 +120,7 @@ function DuplicateManagerModal({
   );
 }
 
-export function CollectionAlbumContent({ embedded = false }: CollectionAlbumContentProps) {
+export function CollectionAlbumContent({ embedded = false, gameOpen }: CollectionAlbumContentProps) {
   const screenRef = useRef<HTMLDivElement>(null);
   const pendingScroll = useRef<AlbumScroll | null>(null);
   const subscribeToAlbumUrl = useCallback((notify: () => void) => {
@@ -440,7 +441,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
             <button data-ui-account="collection-tab" data-ui-shape="control" type="button" aria-pressed={collection === "buddies"} onClick={() => setCollection("buddies")}>Les Buddies</button>
             <button data-ui-account="collection-tab" data-ui-shape="control" type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>Botte du Chanvrier & Héritages</button>
           </nav>}
-          {screen === "cards" && collection === "placard" && <BotteAlbumCollection isAuthenticated={isAuthenticated} />}
+          {screen === "cards" && collection === "placard" && <BotteAlbumCollection isAuthenticated={isAuthenticated} gameOpen={gameOpen} />}
           {screen === "cards" && collection === "buddies" &&
       <div className={albumStyles.collectionAnchor} aria-label="Mes cartes">
         <AlbumShell
@@ -540,7 +541,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
         </div>
       </div>}
 
-      {(screen === "lobby" || screen === "cards" || screen === "rewards") && <PioneerPackReward onClaimed={refreshAll} />}
+      {(screen === "lobby" || screen === "cards" || screen === "rewards") && <PioneerPackReward gameOpen={gameOpen} onClaimed={refreshAll} />}
 
       {selectedSlot && <CardDetailModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />}
 

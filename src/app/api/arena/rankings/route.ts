@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isArenaRankingRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getKqPublicArenaCategoryLeaderboard, getKqPublicArenaLeaderboard } from "@/lib/supabase/kanab-quest-backend";
 import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+  if (!await isArenaRankingRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   const params = new URL(request.url).searchParams;
   const category = params.get("category") ?? "general";
   if (category !== "general" && category !== "tasting" && category !== "duels" && category !== "business") {

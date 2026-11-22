@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
   session: vi.fn(),
 }));
 
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isArenaRankingRequestEnabled: mocks.enabled }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/supabase/kanab-quest-backend", () => ({
   getKqPublicArenaLeaderboard: mocks.leaderboard,
@@ -20,7 +20,7 @@ const request = (query = "") => new Request(`https://example.com/api/arena/ranki
 describe("GET /api/arena/rankings", () => {
   beforeEach(() => { vi.clearAllMocks(); mocks.session.mockResolvedValue(null); });
 
-  it("stays unavailable while the player API is disabled", async () => {
+  it("stays unavailable while the ranking is closed", async () => {
     mocks.enabled.mockReturnValue(false);
     const response = await GET(request("?category=business"));
     expect(response.status).toBe(404);

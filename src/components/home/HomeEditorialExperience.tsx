@@ -20,7 +20,6 @@ import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
 import { HomeRewardsSection } from "@/components/home/HomeRewardsSection";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
-import { isArenaPrelaunch } from "@/lib/arena-opening";
 import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
 import { getHomeFeaturedProducts } from "@/lib/home-featured-products";
 import type { HomeSection, PublicStoreResponse } from "@/types/store";
@@ -29,6 +28,7 @@ import styles from "./HomeEditorialExperience.module.css";
 type HomeEditorialExperienceProps = {
   initialStore: PublicStoreResponse;
   rotationDay: number;
+  gameOpen: boolean;
 };
 
 const sellingPoints = [
@@ -61,7 +61,7 @@ function isSectionVisible(sections: HomeSection[], type: string) {
   return section?.visible !== false;
 }
 
-export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEditorialExperienceProps) {
+export function HomeEditorialExperience({ initialStore, rotationDay, gameOpen }: HomeEditorialExperienceProps) {
   const { content, products, sections } = initialStore;
   const home = content.home;
   const homeSections = sections.home;
@@ -74,7 +74,6 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
   );
 
   const shopLabel = home.heroPrimaryCtaLabel.trim() || "Voir le marché";
-  const arenaPrelaunch = isArenaPrelaunch();
 
   return (
     <div className={styles.page}>
@@ -288,7 +287,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
 
 
 
-      <HomeRewardsSection arenaPrelaunch={arenaPrelaunch} />
+      <HomeRewardsSection gameOpen={gameOpen} />
 
       <HomeBadgePromoBand />
 

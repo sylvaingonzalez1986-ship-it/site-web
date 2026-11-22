@@ -2,10 +2,16 @@ import "server-only";
 import { isArenaPrelaunch } from "@/lib/arena-opening";
 
 import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
-import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 import { loadContestBetaTesterEnabled } from "@/lib/supabase/customer-backend";
+
+/** The public scoreboards can be consulted from the lobby before a prize season opens. */
+export async function isArenaRankingRequestEnabled(): Promise<boolean> {
+  if (!isArenaPrelaunch() && isContestFeatureEnabledServer() && !isContestBetaAccessRestrictedServer()) return true;
+  return isKqPlayerRequestEnabled();
+}
 
 /** Same access rules, using a verified identity without creating a customer profile. */
 export async function isKqPlayerIdentityEnabled(session: { customerId: string; customer: { email: string } } | null): Promise<boolean> {

@@ -53,7 +53,7 @@ const modules = {
       if(url==='/api/account/collection/burn'){pages[0].duplicateGroups=[];return json({claim:{id:'burn-1'}});}
       return json({error:'Route absente de la démonstration'});
     };
-    createRoot(document.getElementById('root')).render(React.createElement(React.Fragment,null,React.createElement(SiteUiMaterials),React.createElement(CollectionAlbumContent,{embedded:params.has('embedded')})));`,
+    createRoot(document.getElementById('root')).render(React.createElement(React.Fragment,null,React.createElement(SiteUiMaterials),React.createElement(CollectionAlbumContent,{gameOpen:true,embedded:params.has('embedded')})));`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/profil/collection';export const useSearchParams=()=>new URLSearchParams();`,

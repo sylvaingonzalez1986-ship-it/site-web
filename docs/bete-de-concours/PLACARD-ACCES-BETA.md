@@ -13,8 +13,12 @@ Quand le module est actif, ouvrir `/arene/placard` sans session client valide
 redirige vers la connexion avec un retour au Placard. Une fois connecté, le
 compte doit toujours être admin ou bêta ; les autres comptes reçoivent une 404.
 
-Le contrôle `isKqPlayerRequestEnabled` est utilisé par la page Placard, ses API,
-les classements et les récompenses de l'Arène. Il relit les droits du compte à
+Depuis le 22 novembre 2026, le hall, le Carnet et les classements de l’Arène
+sont consultables sans invitation. Les deux API de classement publient le
+pseudonyme et les scores ; la position personnelle utilise la session du lecteur.
+
+Le contrôle `isKqPlayerRequestEnabled` est utilisé par la page Placard, les API
+de jeu personnel et les récompenses de l'Arène. Il relit les droits du compte à
 chaque requête, sans cache partagé. Désactiver l'accès bêta du compte révoque
 donc son accès privé dès la requête suivante. Désactiver les restrictions bêta
 générales de l'Arène ne donne pas accès au Placard aux comptes ordinaires.

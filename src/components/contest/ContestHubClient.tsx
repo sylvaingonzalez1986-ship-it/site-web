@@ -1623,12 +1623,14 @@ function ContestFeedReviewModal({ item, busy, error, onClose, onVote }: {
 export function ContestTesterProfileCard({
   progress,
   isAuthenticated,
+  playerAccess,
   onMascotClick,
   onMascotHover,
   onMascotLeave,
 }: {
   progress: PublicContestTesterProgress | null;
   isAuthenticated: boolean;
+  playerAccess: boolean;
   onMascotClick?: () => void;
   onMascotHover?: () => void;
   onMascotLeave?: () => void;
@@ -1646,7 +1648,7 @@ export function ContestTesterProfileCard({
   const tastingRank = (scope: "season" | "global") => tastingProgressUnavailable[scope] ? "Indisponible" : tastingProgress[scope] === undefined ? "…" : tastingProgress[scope]?.rank ? `#${tastingProgress[scope].rank}` : "Non classé";
 
   useEffect(() => {
-    if (!isAuthenticated || placardProgressLoaded) return;
+    if (!isAuthenticated || !playerAccess || placardProgressLoaded) return;
     const controller = new AbortController();
     let cancelled = false;
     void fetch("/api/arena/placard/me", { cache: "no-store", signal: controller.signal })
@@ -1669,7 +1671,7 @@ export function ContestTesterProfileCard({
       cancelled = true;
       controller.abort();
     };
-  }, [isAuthenticated, placardProgressLoaded]);
+  }, [isAuthenticated, playerAccess, placardProgressLoaded]);
 
   useEffect(() => {
     if (!isAuthenticated || !profilePseudo) return;
@@ -1790,7 +1792,7 @@ export function ContestTesterProfileCard({
           </dl>
         </section>
 
-        <section className={arenaStyles.personalRankingCard} data-ranking="placard">
+        {playerAccess && <section className={arenaStyles.personalRankingCard} data-ranking="placard">
           <h3>Kanab Quest</h3>
           <dl>
             <div><dt>Score Kanab Quest</dt><dd>{placardProgress ? formatPersonalScore(placardProgress.placardScore) : "—"}</dd></div>
@@ -1798,7 +1800,7 @@ export function ContestTesterProfileCard({
             <div><dt>Rang saison</dt><dd>{placardProgress?.rank ? `#${placardProgress.rank}` : placardProgressUnavailable ? "Indisponible" : placardProgressLoaded ? "Non classé" : "…"}</dd></div>
             <div><dt>Duels</dt><dd>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D` : "—"}</dd></div>
           </dl>
-        </section>
+        </section>}
 
         <section className={arenaStyles.personalRankingCard} data-ranking="general">
           <h3>Général</h3>
@@ -1831,13 +1833,13 @@ export function ContestTesterProfileCard({
           </p>
         </section>
 
-        <section className={arenaStyles.placardProfileSummary}>
+        {playerAccess && <section className={arenaStyles.placardProfileSummary}>
           <div>
             <p>Progression Kanab Quest</p>
             <strong>{placardProgress ? `${placardProgress.wins} V / ${placardProgress.losses} D · Classement ouvert à tous` : "Saison de culture"}</strong>
             <small>{placardProgress ? `${placardProgress.burnedFlowers} fleur(s) passée(s) au jury. Tous les joueurs peuvent se rencontrer dans la file commune.` : "Crée des Fleurs, relève les défis et affronte les autres joueurs pour entrer au classement."}</small>
           </div>
-        </section>
+        </section>}
       </div>
     </div>
   );
@@ -1846,6 +1848,7 @@ export function ContestTesterProfileCard({
 export function ContestTesterLeaderboard({
   profileSeasonCode,
   profileTrack,
+  rewardsEnabled,
   compact = false,
   viewerPseudo,
 }: {
@@ -1853,6 +1856,7 @@ export function ContestTesterLeaderboard({
   globalItems: PublicContestTesterRankingItem[];
   profileSeasonCode?: string;
   profileTrack: ContestEntryTrack;
+  rewardsEnabled: boolean;
   compact?: boolean;
   viewerPseudo?: string;
 }) {
@@ -1928,7 +1932,7 @@ export function ContestTesterLeaderboard({
   };
 
   useEffect(() => {
-    if (rewardPoolLoaded) return;
+    if (!rewardsEnabled || rewardPoolLoaded) return;
     const controller = new AbortController();
     let cancelled = false;
     void fetch("/api/arena/rewards", { cache: "no-store", signal: controller.signal })
@@ -1951,17 +1955,18 @@ export function ContestTesterLeaderboard({
       cancelled = true;
       controller.abort();
     };
-  }, [rewardPoolLoaded]);
+  }, [rewardsEnabled, rewardPoolLoaded]);
 
   useEffect(() => {
+    if (!rewardsEnabled) return;
     const refresh = () => { if (!document.hidden) setRewardPoolLoaded(false); };
     const timer = window.setInterval(refresh, 60_000);
     window.addEventListener("focus", refresh);
     return () => { window.clearInterval(timer); window.removeEventListener("focus", refresh); };
-  }, []);
+  }, [rewardsEnabled]);
 
   const rewardByPlayer = new Map(
-    (rewardPool?.status === "active" ? rewardPool.topRewards : []).map(reward => [reward.entryKey, reward]),
+    (rewardsEnabled && rewardPool?.status === "active" ? rewardPool.topRewards : []).map(reward => [reward.entryKey, reward]),
   );
   const toRow = (item: ArenaRankingEntry): ArenaRankingRow => {
     const profileParams = new URLSearchParams();
@@ -2007,7 +2012,7 @@ export function ContestTesterLeaderboard({
         onScopeChange={setScope}
         onRetry={retryRanking}
       />
-      <div className={arenaStyles.customerRewardPlacement}>
+      {rewardsEnabled && <div className={arenaStyles.customerRewardPlacement}>
         <ArenaCustomerRewardPot
           rankingId={rankingId}
           rewardPool={rewardPool}
@@ -2016,7 +2021,7 @@ export function ContestTesterLeaderboard({
           unavailable={rewardPoolUnavailable}
           viewerPseudo={viewerPseudo}
         />
-      </div>
+      </div>}
     </>
   );
 }
@@ -2290,7 +2295,7 @@ export function ContestHubClient({
   useEffect(() => () => rankingReviewsRequestRef.current?.abort(), []);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !isPlacardPlayerEnabled) {
       setAvailableBottePackCount(0);
       return;
     }
@@ -2318,7 +2323,7 @@ export function ContestHubClient({
       controller.abort();
       window.removeEventListener("kq:boosters-updated", handleUpdate);
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isPlacardPlayerEnabled]);
 
   useBodyScrollLock(isHubModalOpen);
 
@@ -2728,6 +2733,7 @@ export function ContestHubClient({
           {activeArenaView === "classement" ? <>
 
             <ContestTesterLeaderboard
+              rewardsEnabled={isPlacardPlayerEnabled}
               seasonItems={testerSeasonRankings}
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}
@@ -2738,6 +2744,7 @@ export function ContestHubClient({
               <summary>Mon profil et ma progression <ChevronDown size={18} aria-hidden="true" /></summary>
             <div className={arenaStyles.personalGrid}>
               <ContestTesterProfileCard
+                playerAccess={isPlacardPlayerEnabled}
                 progress={viewerProgress}
                 isAuthenticated={isAuthenticated}
                 onMascotClick={() => openMascotPanel("profile")}
@@ -3214,6 +3221,7 @@ export function ContestHubClient({
           <div className="grid gap-4">
             <ContestLeaderboardHelpDropdown />
             <ContestTesterLeaderboard
+              rewardsEnabled={isPlacardPlayerEnabled}
               seasonItems={testerSeasonRankings}
               globalItems={testerGlobalRankings}
               profileSeasonCode={selectedSeasonCode}

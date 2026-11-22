@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import styles from "./Navbar.module.css";
-import { isArenaPrelaunch } from "@/lib/arena-opening";
 import Link from "@/components/navigation/NavigationLink";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
@@ -51,25 +50,7 @@ function AnnouncementBanner() {
   );
 }
 
-function isExplicitlyDisabled(raw: string | undefined): boolean {
-  const normalized = raw?.trim().toLowerCase();
-  return normalized === "0" || normalized === "false" || normalized === "off" || normalized === "no";
-}
-
-const contestBetaAccessRestricted = !isExplicitlyDisabled(
-  process.env.NEXT_PUBLIC_CONTEST_BETA_ACCESS_ENABLED,
-);
-
-type ContestAccessResponse = {
-  canAccess?: boolean;
-};
-
-type ContestAccessCheck = {
-  key: string;
-  canAccess: boolean;
-};
-
-export function Navbar() {
+export function Navbar({ arenaOpen = true }: { arenaOpen?: boolean }) {
   const pathname = usePathname();
   const showAnnouncement = pathname === "/";
   const { totalItems, user, loyalty, hasWelcomePack, sessionLoading } = useCart();
@@ -81,8 +62,6 @@ export function Navbar() {
   const openCart = useCallback(() => setCartOpen(true), []);
   const [isScrolled, setIsScrolled] = useState(false);
   const [hideWelcomePackBadge, setHideWelcomePackBadge] = useState(false);
-  const [contestAccessCheck, setContestAccessCheck] = useState<ContestAccessCheck | null>(null);
-  const contestAccessKey = user?.id || user?.email || "";
   const moreMenuRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
@@ -122,70 +101,9 @@ export function Navbar() {
     [cmsPages],
   );
 
-  useEffect(() => {
-    const hasContestAccessFromUser =
-      user?.contestBetaEnabled === true || isAllowedAdminEmail(user?.email);
-
-    if (
-      !contestBetaAccessRestricted ||
-      !isAuthenticated ||
-      hasContestAccessFromUser ||
-      !contestAccessKey
-    ) {
-      return;
-    }
-
-    let cancelled = false;
-    const controller = new AbortController();
-
-    const refreshContestAccess = async () => {
-      try {
-        const response = await fetch("/api/contest/access", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          if (!cancelled) {
-            setContestAccessCheck({ key: contestAccessKey, canAccess: false });
-          }
-          return;
-        }
-
-        const data = (await response.json()) as ContestAccessResponse;
-        if (!cancelled) {
-          setContestAccessCheck({ key: contestAccessKey, canAccess: data.canAccess === true });
-        }
-      } catch (error) {
-        if (!cancelled && !(error instanceof DOMException && error.name === "AbortError")) {
-          setContestAccessCheck({ key: contestAccessKey, canAccess: false });
-        }
-      }
-    };
-
-    void refreshContestAccess();
-    window.addEventListener("focus", refreshContestAccess);
-
-    return () => {
-      cancelled = true;
-      controller.abort();
-      window.removeEventListener("focus", refreshContestAccess);
-    };
-  }, [contestAccessKey, isAuthenticated, user?.contestBetaEnabled, user?.email]);
-
   const links = useMemo(() => {
-    const contestAccessAllowed =
-      contestAccessCheck?.key === contestAccessKey && contestAccessCheck.canAccess;
-    const canSeeContestLink =
-      isArenaPrelaunch() ||
-      !contestBetaAccessRestricted ||
-      contestAccessAllowed === true ||
-      user?.contestBetaEnabled === true ||
-      isAllowedAdminEmail(user?.email);
-    const visibleBaseLinks = canSeeContestLink
-      ? baseLinks
-      : baseLinks.filter((link) => link.href !== "/arene");
     const merged = [
-      ...visibleBaseLinks,
+      ...baseLinks.filter(link => arenaOpen || link.href !== "/arene"),
       { href: "/profil/collection", label: "L’Album" },
       ...cmsNavLinks,
       ...(isAllowedAdminEmail(user?.email) ? [{ href: "/admin", label: "Admin" }] : []),
@@ -202,7 +120,7 @@ export function Navbar() {
     }
 
     return Array.from(byHref.values());
-  }, [cmsNavLinks, contestAccessCheck, contestAccessKey, user]);
+  }, [arenaOpen, cmsNavLinks, user]);
 
   const primaryHrefs = new Set(["/", "/boutique", "/arene", "/profil/collection", "/profil", "/compte/connexion"]);
   const desktopPrimaryLinks = links.filter(link => primaryHrefs.has(link.href));

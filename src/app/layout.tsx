@@ -9,6 +9,7 @@ import {
 } from "@/components/JsonLd";
 import { NewProductsPopup } from "@/components/NewProductsPopup";
 import { Navbar } from "@/components/Navbar";
+import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
 import { SupabaseRecoveryRedirect } from "@/components/SupabaseRecoveryRedirect";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsentProvider";
 import { COOKIE_CONSENT_COOKIE_NAME } from "@/components/cookies/cookie-consent-config";
@@ -251,7 +252,7 @@ export default async function RootLayout({
             <VercelAnalytics />
             <PendingPaymentRecoveryModal />
             <div className="site-background min-h-screen">
-              <Navbar />
+              <Navbar arenaOpen={isContestFeatureEnabledServer()} />
               <main id="main-content" tabIndex={-1} className="relative z-0">{children}</main>
               <Footer />
             </div>

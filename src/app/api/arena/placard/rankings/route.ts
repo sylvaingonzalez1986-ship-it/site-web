@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isArenaRankingRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getKqPublicLeaderboard } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  if (!await isKqPlayerRequestEnabled()) {
+  if (!await isArenaRankingRequestEnabled()) {
     return NextResponse.json({ error: "Introuvable." }, { status: 404 });
   }
   try {

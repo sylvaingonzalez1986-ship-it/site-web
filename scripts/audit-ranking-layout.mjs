@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer-core';
 const route='src/app/ranking-layout-preview/page.tsx';
 try{await access(route);throw new Error('Fixture already exists');}catch(e){if(e.code!=='ENOENT')throw e;}
 await mkdir(resolve(route,'..'),{recursive:true});await mkdir('output/ranking-layout/profile',{recursive:true});
-await writeFile(route,`import {ContestTesterLeaderboard} from '@/components/contest/ContestHubClient';import styles from '@/components/contest/ContestArena.module.css';export default function Page(){return <div className={styles.page} style={{padding:'120px 12px 20px'}}><div className={styles.playerRankingSection}><ContestTesterLeaderboard seasonItems={[]} globalItems={[]} profileTrack="regular" viewerPseudo="Sylvain" /></div></div>}`);
+await writeFile(route,`import {ContestTesterLeaderboard} from '@/components/contest/ContestHubClient';import styles from '@/components/contest/ContestArena.module.css';export default function Page(){return <div className={styles.page} style={{padding:'120px 12px 20px'}}><div className={styles.playerRankingSection}><ContestTesterLeaderboard rewardsEnabled seasonItems={[]} globalItems={[]} profileTrack="regular" viewerPseudo="Sylvain" /></div></div>}`);
 let chrome;
 try{
 chrome=await launch({userDataDir:resolve('output/ranking-layout/profile'),chromeFlags:['--headless','--disable-gpu']});

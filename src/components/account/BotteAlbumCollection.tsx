@@ -147,7 +147,7 @@ function HeritageCraftModal({
   );
 }
 
-export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boolean }) {
+export function BotteAlbumCollection({ isAuthenticated, gameOpen }: { isAuthenticated: boolean; gameOpen: boolean }) {
   const [selectedCard, setSelectedCard] = useState<KqSupportCard | null>(null);
   const [rarity, setRarity] = useState("all");
   const [snapshot, setSnapshot] = useState<BotteSnapshot | null>(null);
@@ -298,10 +298,10 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
       </section>
 
       <Link
-        href="/arene/placard"
+        href={gameOpen ? "/arene/placard" : "/arene"}
         className="inline-flex min-h-12 items-center justify-center border-2 border-ink bg-green px-5 text-sm font-black uppercase text-white shadow-[4px_4px_0_#1a1a1a]"
       >
-        Jouer à Kanab Quest
+        {gameOpen ? "Jouer à Kanab Quest" : "Voir l’Arène"}
       </Link>
       {craftOpen ? <HeritageCraftModal cards={craftableHeritages} fragmentBalance={fragmentBalance} craftingCode={craftingCode} notice={craftNotice} onCraft={(card) => void craftHeritage(card)} onClose={() => { if (!craftingCode) setCraftOpen(false); }} /> : null}
       {selectedCard ? <KqBotteCardDetail card={selectedCard} copies={snapshot?.collection ? supportCopies.get(selectedCard.code) ?? 0 : null} onClose={() => setSelectedCard(null)} /> : null}

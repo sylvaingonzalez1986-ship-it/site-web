@@ -32,6 +32,6 @@ export default async function PlacardPlayerPage({ searchParams }: {
     redirect(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   }
   if (!await isKqPlayerRequestEnabled()) notFound();
-  const betaConnectionKey = await getArenaBetaConnectionKey(session.customerId);
+  const betaConnectionKey = isKqPlayerApiEnabled() ? null : await getArenaBetaConnectionKey(session.customerId);
   return <ArenaGameEntry key={session.customerId} userId={session.customerId} betaConnectionKey={betaConnectionKey} />;
 }

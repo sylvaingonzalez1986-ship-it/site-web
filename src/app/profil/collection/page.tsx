@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { CollectionAlbumClient } from "@/components/account/CollectionAlbumClient";
+import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 
 export const metadata: Metadata = {
   title: "Mon album — Kanab Quest",
@@ -8,5 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionPage() {
-  return <CollectionAlbumClient />;
+  const gameOpen = await isKqPlayerRequestEnabled().catch(() => false);
+  return <CollectionAlbumClient gameOpen={gameOpen} />;
 }

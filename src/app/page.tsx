@@ -2,6 +2,7 @@
 import { HomeEditorialExperience } from "@/components/home/HomeEditorialExperience";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getCurrentProductRotationDay } from "@/lib/product-rotation-server";
+import { isKqPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
 
 export const metadata: Metadata = {
   title: "CBD naturel en Bretagne | Production et partenaires identifiés",
@@ -24,5 +25,5 @@ export default async function HomePage() {
     getCurrentProductRotationDay(),
   ]);
 
-  return <HomeEditorialExperience initialStore={store} rotationDay={rotationDay} />;
+  return <HomeEditorialExperience initialStore={store} rotationDay={rotationDay} gameOpen={isKqPlayerApiEnabled()} />;
 }

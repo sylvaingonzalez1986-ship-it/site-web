@@ -114,6 +114,16 @@ describe("arena preopening", () => {
   });
 });
 
+it("reports public lobby access separately from a pending player launch", async () => {
+  vi.mocked(Date.now).mockReturnValue(Date.parse("2026-11-22T12:00:00Z"));
+  vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
+  vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
+  vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false");
+  vi.stubEnv("KQ_PLAYER_API_LIVE", "true");
+  vi.stubEnv("KQ_LAUNCH_DOSSIER_JSON", "");
+  expect(await (await access()).json()).toMatchObject({ canAccess: true, betaRestricted: false, activitiesOpen: false });
+});
+
 it.each([true, false])("preopening server policy respects verified beta=%s even if public switches are on", async beta => {
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true"); vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
   vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "false"); vi.stubEnv("KQ_PLAYER_API_LIVE", "true");

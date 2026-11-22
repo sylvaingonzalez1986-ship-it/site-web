@@ -16,6 +16,38 @@ vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("
 vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => createElement("button", {}, "Créer mon personnage") }));
 
 describe("Arena home", () => {
+  it("lets a guest read public activities while the Quarter is still in private testing", () => {
+    const html = renderToStaticMarkup(createElement(ContestArenaHub, { gameOpen: false, guest: true }));
+    expect(html).toContain('href="/arene/carnet/regular"');
+    expect(html).toContain('href="/arene?vue=classement"');
+    expect(html).not.toContain('href="/arene/placard"');
+    expect(html).toContain('href="/compte/connexion?next=%2Farene%2Fplacard"');
+    expect(html).not.toContain('/compte/inscription');
+  });
+
+  it("offers free registration with a return to the public game", () => {
+    const html = renderToStaticMarkup(createElement(ContestArenaHub, { gameOpen: true, guest: true }));
+    expect(html).toContain('href="/arene/placard"');
+    expect(html).toContain('href="/compte/inscription?next=%2Farene%2Fplacard"');
+    expect(html).not.toContain("test privé");
+  });
+
+  it("lets a guest read public activities while the Quarter is still in private testing", () => {
+    const html = renderToStaticMarkup(createElement(ContestArenaHub, { gameOpen: false, guest: true }));
+    expect(html).toContain('href="/arene/carnet/regular"');
+    expect(html).toContain('href="/arene?vue=classement"');
+    expect(html).not.toContain('href="/arene/placard"');
+    expect(html).toContain('href="/compte/connexion?next=%2Farene%2Fplacard"');
+    expect(html).not.toContain('/compte/inscription');
+  });
+
+  it("offers free registration with a return to the public game", () => {
+    const html = renderToStaticMarkup(createElement(ContestArenaHub, { gameOpen: true, guest: true }));
+    expect(html).toContain('href="/arene/placard"');
+    expect(html).toContain('href="/compte/inscription?next=%2Farene%2Fplacard"');
+    expect(html).not.toContain("test privé");
+  });
+
   it("maps three direct activities without exposing the character from the Arena", () => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub));
     for (const [id, mode] of Object.entries(ARENA_LOBBY_MODES)) {

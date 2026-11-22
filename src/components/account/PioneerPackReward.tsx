@@ -9,7 +9,7 @@ import { PIONEER_CARD_IMAGE, isPioneerPackPrelaunch, PIONEER_PACK_OPENING_MESSAG
 import { isArenaPrelaunch, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import styles from "./PioneerPackReward.module.css";
 
-export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Promise<void> }) {
+export function PioneerPackReward({ gameOpen, onClaimed }: { gameOpen: boolean; onClaimed?: () => void | Promise<void> }) {
   const { isAuthenticated, authLoading, user, refreshSession } = useCart();
   const [state, setState] = useState<PioneerPackState | null>(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +77,8 @@ export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Prom
             <strong><Check size={18} aria-hidden="true" /> Ton pack a rejoint ta collection.</strong>
             {state.goldCard && <p>Ton Buddie {state.goldCard.rarity === "epic" ? "épique" : "or"} : <b>{state.goldCard.name}</b>.</p>}
             {isArenaPrelaunch() ? <p>{ARENA_OPENING_MESSAGE} pour ouvrir tes packs Botte du Chanvrier.</p>
-              : <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>}
+              : gameOpen ? <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>
+              : <p>Tes packs Botte du Chanvrier sont conservés. Tu pourras les ouvrir dès que tu auras accès au Quartier.</p>}
           </div> : state?.eligible ? <>
             <button data-ui-account="pioneer-action" data-ui-shape="control" type="button" className={styles.button} disabled={isPioneerPackPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isPioneerPackPrelaunch() ? PIONEER_PACK_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
             {!state.available && <p>Ton pack est réservé. Son contenu est momentanément indisponible.</p>}

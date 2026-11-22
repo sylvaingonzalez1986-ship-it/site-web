@@ -21,7 +21,7 @@ const modules = {
     if(params.has('empty')){store.products=[];store.content.home.seasonGalleryImages=[];}
     if(params.has('hidden')){store.sections.home=store.sections.home.map(section=>({...section,visible:false}));}
     if(params.has('long')){store.content.home.heroPrimaryCtaLabel='Decouvrir toutes les fleurs de nos producteurs';store.content.home.seasonGalleryTitle='Une tres longue saison dans les champs de nos producteurs bretons';}
-    createRoot(document.getElementById('root')).render(<><Navbar/><HomeEditorialExperience initialStore={store}/></>);
+    createRoot(document.getElementById('root')).render(<><Navbar/><HomeEditorialExperience initialStore={store} gameOpen/></>);
   `,
   'preview-cart': `import {buildEmptyLoyaltySummary} from '/src/lib/loyalty';export const useCart=()=>({user:null,isAuthenticated:new URLSearchParams(location.search).has('member'),loyalty:buildEmptyLoyaltySummary(),totalItems:0,hasWelcomePack:false,sessionLoading:false,authLoading:false,cartLoading:false,items:[],addToCart:(product,variant,qty)=>{window.__cartAdds=(window.__cartAdds||0)+qty;return {ok:true}}});`,
   'preview-pages': `export const useCmsPages=()=>({pages:location.search.includes('long')?Array.from({length:5},(_,i)=>({slug:'page-'+i,title:'Une histoire de chanvre et de producteurs '+i,navLabel:'',showInNav:true,position:i})):[]});`,

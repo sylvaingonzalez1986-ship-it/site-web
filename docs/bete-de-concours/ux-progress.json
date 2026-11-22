@@ -1,4 +1,10 @@
 {
+  "areneConsultationPublique20261122": {
+    "livraison": "L’entrée de l’Arène, le Carnet et les classements sont accessibles aux visiteurs depuis la navigation du site.",
+    "verification": "Les routes de classement servent la projection publique. Le rang personnel est calculé à partir de la session du lecteur.",
+    "preuves": ["src/app/api/arena/rankings/route.test.ts", "src/lib/kanab-quest-player-request-access.test.ts"],
+    "pointDeReprise": "Le dossier de la saison avec lots réels est encore au stade de projet. Les commandes personnelles du Quartier restent soumises au contrôle d’accès joueur."
+  },
   "resetAventure20261122": {
     "livraison": "Le 22 novembre à 16 h 56, les 3 personnages et les 31 cultures ont été remis à zéro. Les 42 portefeuilles repartent avec 2 000 € de base, dont 7 à 7 000 € avec leur bonus Pionnier.",
     "verification": "Relecture en production après validation de la transaction. Les 16 dégustations et les 22 écritures totalisant 545 points sont intactes. Les 3 285 cartes conservées correspondent aux achats, aux échanges de points et aux avantages Pionnier. Les 74 packs de bienvenue sont prêts à ouvrir.",

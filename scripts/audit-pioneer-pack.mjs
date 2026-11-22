@@ -24,7 +24,7 @@ const modules={
       const legacy=mode==='claimed-legacy';
       return new Response(JSON.stringify({eligible:mode!=='ineligible',claimed,available:mode!=='unavailable',cashCents:legacy?100000:500000,packCount:10,grantedAt:claimed?'2026-10-30T10:00:00Z':null,goldCard:claimed?{code:'HH2026-007',name:'Sour Space Candy',imageUrl:null,...(legacy?{}:{rarity:mode==='claimed-epic'?'epic':'gold'})}:null}));
     };
-    createRoot(document.getElementById('root')).render(<PioneerPackReward onClaimed={()=>{window.__refreshes++}}/>);
+    createRoot(document.getElementById('root')).render(<PioneerPackReward gameOpen={mode!=='claimed-private'} onClaimed={()=>{window.__refreshes++}}/>);
   `,
   '@/context/CartContext': `const context={isAuthenticated:new URLSearchParams(location.search).get('state')!=='guest',authLoading:false,user:{id:'preview-user'},refreshSession:async()=>{}};export const useCart=()=>context;`,
   '@/components/navigation/NavigationLink': `import React from 'react';export default function Link(props){return React.createElement('a',props)}`,
@@ -110,6 +110,10 @@ try {
   await goto('claimed',arenaOpeningAt);await overflow();
   assert(await page.$('a[href="/arene/placard?view=shop"]'),'shop link appears at exactly midnight 1 November in Paris');
   assert(!(await panelText()).includes('Rendez-vous le 1er novembre'),'opening notice disappears when the Arena opens');
+  await goto('claimed-private',arenaOpeningAt);
+  assert.equal(await page.$('a[href="/arene/placard?view=shop"]'),null);
+  assert((await panelText()).includes('Tes packs Botte du Chanvrier sont conservés.'));
+  await goto('claimed',arenaOpeningAt);
   results.push({state:'arena-opening',now:new Date(arenaOpeningAt).toISOString(),result:'pass'});
   await page.screenshot({path:resolve(output,'arena-open-1440.png'),fullPage:true});
   await page.setViewport({width:390,height:844,deviceScaleFactor:1});
