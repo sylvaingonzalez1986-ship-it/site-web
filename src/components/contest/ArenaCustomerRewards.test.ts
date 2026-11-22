@@ -1,6 +1,7 @@
 import { createElement, type AnchorHTMLAttributes } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
+import { ARENA_CUSTOMER_PRIZE_FORMULA } from "@/lib/arena-customer-rewards";
 import { ARENA_FORMULA_VERSION } from "@/lib/arena-ranking";
 import { ArenaCustomerRewardPot, type ArenaCustomerRewardPool } from "./ArenaCustomerRewards";
 
@@ -41,15 +42,18 @@ describe("customer reward eligibility and tied prizes", () => {
     expect(html).toContain("Tu as une chance dans La Fleur Surprise");
   });
 
-  it("explains combined tied slots and each eligible player's actual estimate", () => {
-    const html = render({ topRewards: [
+  it.each([
+    [undefined, "La part des joueurs non éligibles reste vacante."],
+    [ARENA_CUSTOMER_PRIZE_FORMULA, "Les parts vacantes, les fractions et la Fleur Surprise sans candidat s’ajoutent au socle de la saison suivante."],
+  ] as const)("explains tied slots, individual estimates and vacant shares for prize formula %s", (formulaVersion, vacantSharesCopy) => {
+    const html = render({ formulaVersion, topRewards: [
       { entryKey: "first", leaderboardRank: 1, rewardRank: 1, pseudo: "Camille", shareBps: 2250, estimatedGrams: 23, tiedPlayers: 2, occupiedThroughRank: 2 },
       { entryKey: "second", leaderboardRank: 1, rewardRank: 1, pseudo: "Lou", shareBps: 2250, estimatedGrams: 22, tiedPlayers: 2, occupiedThroughRank: 2 },
     ] });
     expect(html).toContain("Places #1 à #2 · 2 ex æquo");
     expect(html).toContain("Camille : ≈ 23 g · Lou : ≈ 22 g");
     expect(html).toContain("≈ 45 g");
-    expect(html).toContain("elle ne revient pas aux autres");
+    expect(html).toContain(vacantSharesCopy);
   });
 
   it("preserves the three-duel wording and actual grant for historical seasons", () => {

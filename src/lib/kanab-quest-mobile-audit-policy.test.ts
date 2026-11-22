@@ -1,14 +1,84 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("lighthouse", () => ({ default: vi.fn() }));
+vi.mock("chrome-launcher", () => ({ launch: vi.fn() }));
 
 const source = readFileSync(join(process.cwd(), "scripts/audit-placard-mobile.mjs"), "utf8");
 const playerShell = readFileSync(join(process.cwd(), "src/components/placard/PlacardPlayerShell.tsx"), "utf8");
 
 describe("Placard mobile audit policy", () => {
-  it("cannot target a remote environment", () => {
-    expect(source).toContain("if (!isLocal)");
-    expect(source).not.toContain("ALLOW_REMOTE");
+  describe("target isolation", () => {
+    const origin = "https://staging.example.test";
+    const database = "https://database.example.test";
+    const identity = {
+      origin,
+      version: "test-release",
+      databaseHash: createHash("sha256").update(database).digest("hex"),
+    };
+    const fetchTarget = vi.fn<typeof fetch>();
+    const runAudit = () => import("../../scripts/audit-placard-mobile.mjs");
+
+    beforeEach(() => {
+      vi.resetModules();
+      vi.stubGlobal("fetch", fetchTarget.mockReset());
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_BASE_URL", origin);
+      vi.stubEnv("PLACARD_MOBILE_REPORT_DIR", "output/placard-mobile-audits");
+      vi.stubEnv("PLACARD_MOBILE_MIN_ACCOUNTS", "2");
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_COOKIES", "session=test-a||session=test-b");
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_COOKIE", "");
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_ACCOUNTS_JSON", "");
+      vi.stubEnv("PLACARD_TEST_APP_ORIGIN", origin);
+      vi.stubEnv("PLACARD_TEST_DATABASE_ORIGIN", database);
+      vi.stubEnv("PLACARD_TEST_VERSION", identity.version);
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    });
+
+    it.each([
+      ["PLACARD_TEST_APP_ORIGIN", "https://other.example.test", "PLACARD_TEST_APP_ORIGIN"],
+      ["PLACARD_TEST_DATABASE_ORIGIN", "", "PLACARD_TEST_DATABASE_ORIGIN"],
+      ["PLACARD_TEST_VERSION", "", "PLACARD_TEST_VERSION"],
+    ])("rejects %s=%s before making a request", async (name, value, message) => {
+      vi.stubEnv(name, value);
+      await expect(runAudit()).rejects.toThrow(message);
+      expect(fetchTarget).not.toHaveBeenCalled();
+    });
+
+    it("requires HTTPS for a remote target", async () => {
+      const insecureOrigin = "http://staging.example.test";
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_BASE_URL", insecureOrigin);
+      vi.stubEnv("PLACARD_TEST_APP_ORIGIN", insecureOrigin);
+      await expect(runAudit()).rejects.toThrow("HTTPS");
+      expect(fetchTarget).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["origin", "https://other.example.test"],
+      ["version", "other-release"],
+      ["databaseHash", "other-database"],
+    ])("stops before using accounts if the reported %s differs", async (field, value) => {
+      fetchTarget.mockResolvedValue(Response.json({ ...identity, [field]: value }));
+      await expect(runAudit()).rejects.toThrow("diffère de la cible de recette");
+      expect(fetchTarget).toHaveBeenCalledExactlyOnceWith(`${origin}/api/arena/placard/test-target`, {
+        redirect: "error", signal: expect.any(AbortSignal),
+      });
+    });
+
+    it.each([origin, "http://127.0.0.1:3000"])("starts the age check after identifying %s", async (url) => {
+      vi.stubEnv("PLACARD_MOBILE_AUDIT_BASE_URL", url);
+      vi.stubEnv("PLACARD_TEST_APP_ORIGIN", url);
+      fetchTarget.mockResolvedValueOnce(Response.json({ ...identity, origin: url }))
+        .mockResolvedValueOnce(new Response(null, { status: 503 }));
+      await expect(runAudit()).rejects.toThrow("validation d’âge");
+      expect(fetchTarget).toHaveBeenNthCalledWith(2, `${url}/api/age-gate/verify`, expect.objectContaining({ method: "POST" }));
+      expect(fetchTarget).toHaveBeenCalledTimes(2);
+    });
   });
 
   it("audits multiple authenticated accounts in a smartphone viewport", () => {

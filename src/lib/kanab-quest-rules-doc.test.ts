@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { formatKqCash, KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
+import { formatKqCash, KQ_EQUIPMENT_CATALOG, KQ_STARTING_CASH_CENTS } from "@/lib/kanab-quest-equipment";
 import { KQ_ACTIVE_CARDS } from "@/lib/kanab-quest-game";
 import { KQ_SUPPORT_RARITY_WEIGHTS } from "@/lib/kanab-quest-booster";
 
@@ -78,7 +78,8 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("documents the durable equipment economy with the implemented prices", () => {
-    expect(normalizedRules).toContain("Chaque joueur commence avec `1 000 €` virtuels");
+    const startingCash = formatKqCash(KQ_STARTING_CASH_CENTS).replace(/\s+/g, " ");
+    expect(normalizedRules).toContain(`Chaque nouveau portefeuille reçoit \`${startingCash}\` virtuels`);
     expect(normalizedRules).toContain("ne peut pas être acheté, retiré, remboursé ou converti en argent réel");
     expect(normalizedRules).toContain("une seule facture d’analyse de `45 €` pour son lot commun, quel que soit le nombre de tentes");
     KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable).forEach((equipment) => {
