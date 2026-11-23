@@ -1327,10 +1327,13 @@ if ((loic || prizeDelivery) && !preview) {
       await page.evaluate(() => window.dispatchEvent(new Event('kq:farm-guide-open')));
       await waitStep('work-hours');
       await guideTarget();
-      await page.waitForSelector('[data-placard-view="hub"] [data-player-work-status][data-tutorial-ready="true"]', { visible: true });
+      await page.waitForSelector('[data-placard-view="hub"] [data-team-panel]', { visible: true });
+      if (await page.$('[data-team-open]')) await keyClick('[data-team-open]');
+      await page.waitForSelector('[data-team-person="player"]', { visible: true });
       assert.equal((await storedGuide()).completed.includes('work-hours'), false);
-      await keyClick('[data-player-work-status] details > summary');
+      await keyClick('[data-team-person="player"]');
       await waitStep('staff-candidate');
+      if (await page.$('[data-team-panel] dialog[open]')) await keyClick('[data-team-close]');
       await guideTarget();
       await page.waitForSelector('[data-placard-view="staff"] [data-guide-staff-ready="true"]', { visible: true });
       await guideTarget();
@@ -1776,7 +1779,7 @@ if ((loic || prizeDelivery) && !preview) {
       await keyClick('button[aria-label="Ouvrir le bilan de ma partie"]');
       await page.waitForSelector('[data-placard-next-action][data-priority="new-culture"][data-tone="ready"]');
       await page.evaluate(() => window.__control.workHours(0.5));
-      await page.waitForFunction(() => document.querySelector('[data-player-work-status] [role="meter"]')?.getAttribute('aria-valuenow') === '0.5');
+      assert.equal(await page.$('[data-player-work-status]'), null, 'The workday notice comes from the suggested action');
       await page.waitForFunction(() => document.querySelector('[data-resume-work-notice]')?.textContent.includes('0,5 h'));
       assert(await page.$eval('[data-placard-next-action]', node => node.textContent.includes('Le lancement demande 1 h')));
       await layout(); await screenshot('guide-workday-half-hour-' + width);

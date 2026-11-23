@@ -41,8 +41,6 @@ import React,{useState} from 'react';import {createRoot} from 'react-dom/client'
 import {KqStaffDesk} from '/src/components/placard/KqStaffDesk';
 import {KqStaffRecoveryProvider} from '/src/components/placard/KqStaffRecoveryContext';
 ${reauthOnly ? "import {AccountLoginForm} from '/src/components/account/AccountLoginForm';" : ''}
-import {KqQuarterWorkHelp} from '/src/components/placard/KqPlayerWorkStatus';
-import {useKqPlayerWorkAvailability} from '/src/components/placard/KqPlayerActionTime';
 import {KqCultureWorkStatus,useKqCultureWorkQuote} from '/src/components/placard/KqCultureWorkStatus';
 import {getKqPlayerWorkErrorMessage} from '/src/lib/kanab-quest-player-work-errors';
 import {KqWorkshopTrimDesk} from '/src/components/placard/KqWorkshopTrimDesk';
@@ -272,8 +270,7 @@ Object.assign(window.__staff,{condition:condition=>{if(condition==='weekend')raw
 Object.assign(window.__staff,{personalCondition:condition=>{if(condition==='late')raw.serverNow=new Date(Date.parse(now)+3*60*60*1000).toISOString();if(condition==='weekend-unpaid'){raw.serverNow=new Date(Date.parse(now)+5*KQ_GAME_DAY_MS).toISOString();raw.state.payroll.push({id:'personal-unpaid',employeeId:'former-employee',dueAt:now,grossCents:10000,employerCents:3500,indemnityCents:0,totalCents:13500,paidCents:0})}}});
 Object.assign(window.__staff,{personalDay:()=>{raw.serverNow=projectKqStaffSnapshot(raw).calendar.nextDayAt;api.notify('kq:staff-updated')},personalSocialHours:hours=>{const day=String(projectKqStaffSnapshot(raw).calendar.day);raw.state.playerWorkDays[day]={usedHours:(raw.state.playerWorkDays[day]?.usedHours??0)+hours};api.notify('kq:social-updated')},personalAvailability:value=>{unavailable=!value;api.notify('kq:staff-updated')}});
 Object.assign(window.__staff,{personalSkills:xp=>{raw.state.playerSkills={culture:xp,processing:xp,communication:xp,sales:xp,administration:xp};raw.state.playerProcessingXp=xp;api.notify('kq:staff-updated')}});
-function WorkdayHelp({view}){const availability=useKqPlayerWorkAvailability(view);return <div style={{maxWidth:1180,margin:'auto',padding:16}}><KqQuarterWorkHelp availability={availability}/></div>}
-function Fixture(){const[view,setView]=useState('staff'),[busy,setBusy]=useState(false),[disabled,setDisabled]=useState(false),[trimEmployee,setTrimEmployee]=useState(undefined);return <KqTutorialApiProvider api={api}><nav aria-label="Navigation de recette"><button disabled={busy} onClick={()=>setView('staff')}>Personnel</button><button disabled={busy} onClick={()=>setView('workshop')}>Atelier</button><button disabled={busy} onClick={()=>setDisabled(value=>!value)}>{disabled?'Déverrouiller le parent':'Verrouiller le parent'}</button></nav>{${playerWorkOnly || helpOnly}?<WorkdayHelp view={view}/>:null}{view==='staff'?<KqStaffDesk onOpenTrim={employeeId=>{setTrimEmployee(employeeId);setView('workshop')}}/>:<main style={{padding:'24px 16px',maxWidth:1180,margin:'auto'}}><KqWorkshopTrimDesk initialFlowerId={${workPlanOnly}&&trimEmployee?undefined:'trim-manual'} initialEmployeeId={trimEmployee} disabled={disabled} onBusyChange={setBusy} onOpenHarvests={flowerId=>openedHarvests.push(flowerId)}/></main>}</KqTutorialApiProvider>}
+function Fixture(){const[view,setView]=useState('staff'),[busy,setBusy]=useState(false),[disabled,setDisabled]=useState(false),[trimEmployee,setTrimEmployee]=useState(undefined);return <KqTutorialApiProvider api={api}><nav aria-label="Navigation de recette"><button disabled={busy} onClick={()=>setView('staff')}>Personnel</button><button disabled={busy} onClick={()=>setView('workshop')}>Atelier</button><button disabled={busy} onClick={()=>setDisabled(value=>!value)}>{disabled?'Déverrouiller le parent':'Verrouiller le parent'}</button></nav>{view==='staff'?<KqStaffDesk onOpenTrim={employeeId=>{setTrimEmployee(employeeId);setView('workshop')}}/>:<main style={{padding:'24px 16px',maxWidth:1180,margin:'auto'}}><KqWorkshopTrimDesk initialFlowerId={${workPlanOnly}&&trimEmployee?undefined:'trim-manual'} initialEmployeeId={trimEmployee} disabled={disabled} onBusyChange={setBusy} onOpenHarvests={flowerId=>openedHarvests.push(flowerId)}/></main>}</KqTutorialApiProvider>}
 function RecoveryFixture(){
  const params=new URLSearchParams(location.search);
  const[owner,setOwner]=useState(recoveryOwner),[view,setView]=useState(${reauthOnly}?params.get('view')??'staff':'staff'),[epoch,setEpoch]=useState(0),[mounted,setMounted]=useState(true);
@@ -1233,19 +1230,7 @@ try {
       await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
       await page.goto(origin, { waitUntil: 'networkidle0' });
       await page.waitForSelector('[data-guide-staff-ready="true"]'); await page.evaluate(() => document.fonts.ready);
-      await page.focus('[data-player-work-status] summary'); await page.keyboard.press('Enter');
-      await page.waitForSelector('[data-player-work-status] details[open]');
       const before = await raw();
-      for (const skill of ['communication', 'sales', 'processing', 'administration', 'culture']) {
-        await page.focus(`[data-player-cost-selector="${skill}"]`); await page.keyboard.press('Space');
-        assert.equal(await page.$eval(`[data-player-cost-selector="${skill}"]`, node => node.getAttribute('aria-pressed')), 'true');
-        assert.equal(await page.$$eval('[data-player-cost-group]:not([hidden])', nodes => nodes.length), 1);
-        assert.equal(await page.$eval('[data-player-cost-group]:not([hidden])', node => node.dataset.playerCostGroup), skill);
-        await layout();
-      }
-      await page.click('[data-player-cost-selector="communication"]');
-      await (await page.$('[data-player-work-status]')).screenshot({ path: resolve(output, `help-workday-${width}.png`) });
-      await disclosure('[data-player-work-status] details', false);
       for (const guide of ['planning', 'development']) {
         const selector = `[data-staff-guide="${guide}"]`;
         await disclosure(selector, true); await layout();
@@ -1278,7 +1263,7 @@ try {
       await trimHelp.screenshot({ path: resolve(output, `help-trim-${width}.png`) });
       assert.equal((await calls()).length, 0, 'Help and category selection never submit a command');
       assert.deepEqual(await raw(), before, 'Reading help leaves hours, money and assignments intact');
-      results.push({ width, scope: 'illustrated explanation dashboards', checks: ['keyboard disclosure and five activity buttons', 'five staff topics with one visible explanation', 'loaded generated scenes, decorative alt and no text overlap', 'day allocation and renewal', 'responsive staff rules and trim help', 'no horizontal overflow', 'no command or state change'], mutations: 0 });
+      results.push({ width, scope: 'illustrated explanation dashboards', checks: ['keyboard disclosure', 'five staff topics with one visible explanation', 'loaded generated scenes, decorative alt and no text overlap', 'responsive staff rules and trim help', 'no horizontal overflow', 'no command or state change'], mutations: 0 });
     }
   }
   if (dashboardOnly && !helpOnly) {
@@ -2167,37 +2152,33 @@ try {
   }
   if (playerWorkOnly) {
     const scope = '[data-player-work-desk]';
-    const workdayHours = async expected => page.waitForFunction(value => document.querySelector('[data-player-work-status] [role="meter"]')?.getAttribute('aria-valuenow') === String(value), {}, expected);
+    const personalMetric = '[data-staff-metric="player"]';
+    const workdayHours = expected => page.waitForFunction((selector, value) => document.querySelector(selector + ' [role="meter"]')?.getAttribute('aria-valuenow') === String(value), {}, personalMetric, expected);
     const ready = async () => { await page.waitForSelector('[data-guide-staff-ready="true"]'); await page.waitForSelector('[data-staff-work-plan]'); };
     const review = async () => { await button('Vérifier mon travail', scope); await page.waitForSelector('dialog[open]'); return page.$$eval('dialog dl > div', nodes => Object.fromEntries(nodes.map(node => [node.querySelector('dt')?.textContent, node.querySelector('dd')?.textContent]))); };
     const cashValue = text => Number(text.replace(/[^\d,.-]/g, '').replace(',', '.'));
     for (const width of [320, 390, 1440]) {
       await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
       await page.goto(origin, { waitUntil: 'networkidle0' }); await ready(); await page.evaluate(() => document.fonts.ready);
-      await workdayHours(12); await page.$eval('[data-player-work-status]', node => node.scrollIntoView({ block: 'start' })); await shot(`player-global-${width}`);
-      await disclosure('[data-player-work-status] details', true);
-      for (const [xp, level, hourGesture, halfHourGesture] of [[0, 1, '60 min', '30 min'], [1600, 5, '36 min', '18 min'], [8100, 10, '6 min', '3 min']]) {
-        await page.evaluate(value => window.__staff.personalSkills(value), xp);
-        await page.waitForFunction(level => document.querySelector('[data-player-cost-group="communication"]')?.dataset.skillLevel === String(level), {}, level);
-        for (const [skill, expected] of [['communication', [hourGesture, halfHourGesture]], ['processing', [hourGesture, halfHourGesture]], ['sales', [hourGesture, halfHourGesture]], ['administration', [halfHourGesture]]]) {
-          await page.click(`[data-player-cost-selector="${skill}"]`);
-          assert.equal(await page.$$eval('[data-player-cost-group]:not([hidden])', nodes => nodes.length), 1, 'Only the chosen activity is visible');
-          assert.equal(await page.$eval(`[data-player-cost-group="${skill}"]`, node => node.dataset.skillLevel), String(level));
-          assert.deepEqual(await page.$$eval(`[data-player-cost-group="${skill}"] li strong`, nodes => nodes.map(node => node.textContent)), expected);
-          const widths = await page.$$eval(`[data-player-cost-group="${skill}"] li div[aria-hidden] > span`, nodes => nodes.map(node => Number.parseFloat(node.style.width)));
-          assert.deepEqual(widths, expected.map(value => Number(value.split(' ')[0]) / 60 * 100), 'All activities share a true 60-minute scale');
-        }
-        assert.deepEqual(await page.$$eval('[data-player-cost-group="culture"] li strong', nodes => nodes.map(node => node.textContent)), ['30 min', '30 min'], 'Culture retains the half-hour-per-stage policy');
-      }
-      await page.click('[data-player-cost-selector="communication"]');
-      await page.$eval('[data-player-work-status]', node => node.scrollIntoView({ block: 'start' })); await shot(`action-time-level10-${width}`); await layout();
-      await page.evaluate(() => window.__staff.personalSkills(0));
-      await page.waitForFunction(() => document.querySelector('[data-player-cost-group="communication"]')?.dataset.skillLevel === '1');
-      await disclosure('[data-player-work-status] details', false);
-      results.push({ width, scope: 'proportional action durations', checks: ['level1/5/10', 'own workstation skill', '1h becomes0.1h', '30min becomes0.05h', 'culture unchanged', 'read-only refresh', 'no overflow'], mutations: 0 });
+      await workdayHours(12); await page.$eval(personalMetric, node => node.scrollIntoView({ block: 'start' })); await shot(`player-staff-hours-${width}`);
       assert.equal((await raw()).state.employees.length, 0);
       assert.equal(await page.$(scope), null, 'A personal mission opens only after choosing a station');
       await personalActivity('culture');
+      const skills = scope + ' > details';
+      await disclosure(skills, true);
+      for (const [xp, level] of [[0, 1], [1600, 5], [8100, 10]]) {
+        await page.evaluate(value => window.__staff.personalSkills(value), xp);
+        await page.waitForFunction((selector, level) => document.querySelector(selector + ' dd strong')?.textContent === 'Niv. ' + level, {}, skills, level);
+        const facts = await page.$$eval(skills + ' [data-help-facts] > div', rows => Object.fromEntries(rows.map(row => [row.querySelector('dt').textContent, row.querySelector('dd').textContent.replace(/\s/g, '')])));
+        assert.deepEqual(Object.keys(facts).sort(), ['Administration', 'Communication', 'Culture', 'Prospection', 'Transformation']);
+        assert(Object.values(facts).every(value => value === `Niv.${level}${xp}XP`));
+      }
+      await page.$eval(skills, node => node.scrollIntoView({ block: 'start' })); await shot(`player-skills-level10-${width}`);
+      await page.evaluate(() => window.__staff.personalSkills(0));
+      await page.waitForFunction(selector => document.querySelector(selector + ' dd strong')?.textContent === 'Niv. 1', {}, skills);
+      await disclosure(skills, false);
+      assert.equal((await calls()).length, 0);
+      results.push({ width, scope: 'personal skills', checks: ['five named skills', 'levels 1, 5 and 10 with exact XP', 'keyboard disclosure', 'read-only refresh', 'no overflow'], mutations: 0 });
       const durationTrigger = `${scope} [data-activity-duration]`;
       assert.equal(await page.$(`${scope} [role="meter"], ${durationDialog}`), null);
       await keyActivate(durationTrigger); await page.waitForSelector(durationRange);
@@ -2232,7 +2213,6 @@ try {
       assert.equal(await page.$('[data-trim-shared-form] input[type="number"]'), null);
       await keyActivate('[data-trim-shared-form] [data-activity-duration]'); await page.waitForSelector(durationRange);
       assert.equal(await page.$eval(durationRange, node => Number(node.max)), 8, 'Workshop allows only the same eight remaining hours after four reserved hours');
-      await workdayHours(8);
       await chooseDuration(2); await button('Vérifier le trim'); await button('Confirmer le trim', 'dialog');
       await page.waitForFunction(() => window.__staff.raw().state.tasks.length === 3);
       await button('Personnel', '[aria-label="Navigation de recette"]'); await ready();
@@ -2298,16 +2278,16 @@ try {
     assert.equal((await raw()).state.playerWorkDays['6'].usedHours, 2); assert.equal((await raw()).cashCents, 2500000);
     results.push({ width: 390, scope: 'personal availability', checks: ['end-of-day reservation blocked', 'weekend allowed', 'unpaid employee wages do not block player', 'no salary debit'], mutations: 1 });
     await workdayHours(10); await page.evaluate(() => window.__staff.personalDay()); await ready(); await workdayHours(12);
-    await page.evaluate(() => window.__staff.personalSocialHours(1.5)); await workdayHours(10.5);
+    await page.evaluate(() => window.__staff.personalSocialHours(1.5)); await button('Actualiser'); await workdayHours(10.5);
+    await keyActivate('[data-staff-tab="overview"]');
     await page.evaluate(() => window.__staff.personalAvailability(false));
-    await page.waitForFunction(() => document.querySelector('[data-player-work-status]')?.textContent.includes('Temps de travail indisponible'));
-    assert.equal(await page.$('[data-player-work-status] [role="meter"]'), null, 'Unavailable hours are not presented as zero or as a fresh allowance');
-    assert.deepEqual(await page.$$eval('[data-player-cost-group="communication"] dd', nodes => nodes.map(node => node.textContent)), ['6 min à 60 min', '3 min à 30 min']);
-    assert.deepEqual(await page.$$eval('[data-player-cost-group="processing"] dd', nodes => nodes.map(node => node.textContent)), ['6 min à 60 min', '3 min à 30 min']);
-    assert.equal(await page.$('[data-player-cost-group="communication"] figure'), null, 'Unknown skill has no fabricated current-duration chart');
-    await page.evaluate(() => window.__staff.personalAvailability(true)); await workdayHours(10.5);
+    await page.waitForSelector('[data-staff-dashboard][data-stale="true"]', { visible: true });
+    assert.match(await page.$eval('[data-staff-dashboard]', node => node.textContent), /Dernières données reçues/);
+    await workdayHours(10.5);
+    await page.evaluate(() => window.__staff.personalAvailability(true)); await ready();
+    await page.waitForSelector('[data-staff-dashboard]:not([data-stale])'); await workdayHours(10.5);
     await layout(); assert.equal((await calls()).length, 1, 'Availability refreshes only read the snapshot');
-    results.push({ width: 390, scope: 'personal availability refresh', checks: ['authoritative next-day renewal', 'social event refreshes confirmed hours', 'unknown data never presented as zero', 'read-only refresh recovers same remaining hours'], mutations: 0 });
+    results.push({ width: 390, scope: 'personal availability refresh', checks: ['authoritative next-day renewal', 'staff refresh reflects social work', 'read failure retains and labels last known hours', 'read-only refresh recovers same remaining hours'], mutations: 0 });
   }
   if (workSceneOnly) {
     const pause = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));

@@ -1,14 +1,26 @@
 .root { --hud-top: max(12px, env(safe-area-inset-top)); --hud-left: max(16px, env(safe-area-inset-left)); --hud-right: max(16px, env(safe-area-inset-right)); position: fixed; inset: 0; z-index: 70; isolation: isolate; overflow: hidden; color: #213e35; background: #159a9e; font-family: var(--font-body), system-ui, sans-serif; }
 :global(#main-content):has(.root) { z-index: 80; }
 .header { position: absolute; top: var(--hud-top); left: var(--hud-left); z-index: 7; display: flex; align-items: flex-start; gap: 10px; pointer-events: none; }
-.headerActions { display: flex; align-items: center; gap: 6px; }
+.headerActions { display: flex; align-items: stretch; gap: 4px; max-width: 100%; }
+.headerActions > button[aria-controls] { width: 130px; justify-content: flex-start; }
+.contextCommand {
+  --kq-menu-art-size: 28px;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-height: 46px; padding: 4px 12px; color: #213e35;
+  font: 800 16px/1.05 var(--font-display), Impact, sans-serif; text-decoration: none; white-space: nowrap;
+  border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  cursor: pointer;
+}
+.headerActions .contextCommand:active { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); color: #fff5dc; }
 .headerActions > :is(button, a), .header dialog, .gameSummary { pointer-events: auto; }
 .root[data-activity-open]::after { content: ""; position: absolute; z-index: 1; inset: 0; background: #163d363d; backdrop-filter: blur(3px); pointer-events: none; }
 .control, .iconControl, .label, .activity { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #213e35; cursor: pointer; text-decoration: none; }
 .control { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 17px; min-height: 46px; font-size: 13px; font-weight: 700; }
 .iconControl { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 8px; }
 .root :where(button, a):focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
-.root :where(button, a):hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.root :where(button, a):where(:not(.headerActions *)):hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .root :where(button):disabled { opacity: .45; cursor: default; }
 .stage { position: absolute; inset: 0; isolation: isolate; }
 .stage[inert] :is(.labels, .cameraControls, .bubble, .bubbleTail) { visibility: hidden; }
@@ -94,7 +106,9 @@
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-width: 760px), (pointer: coarse) and (max-height: 540px) {
   .root { --hud-top: max(8px, env(safe-area-inset-top)); --hud-left: max(8px, env(safe-area-inset-left)); --hud-right: max(8px, env(safe-area-inset-right)); }
-  .headerActions .control { padding: 8px 12px; }
+  .headerActions > button[aria-controls] { width: 104px; }
+  .headerActions > :is(button, a) { --game-control-edge: 9px; gap: 4px; padding-inline: 6px; font-size: 14px; }
+  .headerActions > :is(button, a) > [aria-hidden="true"] { --kq-menu-art-size: 24px; }
   .cameraControls { top: var(--hud-top); transform: none; gap: 4px; }
   .cameraControls > span { height: 2px; }
   .labels .label[data-village-building] { min-height: 26px; padding: 3px 6px; --game-control-edge: 8px; }
@@ -115,6 +129,11 @@
   .stage[data-village-unavailable] { padding-top: calc(var(--hud-top) + 116px); }
 }
 @media (max-width: 420px) {
+  .headerActions { gap: 2px; }
+  .headerActions > :is(button, a) { padding-inline: 5px; }
+  .headerActions > .contextCommand { flex-direction: column; gap: 0; font-size: 12px; }
+  .headerActions > button[aria-controls] { width: 98px; }
+  .root[data-activity-open] .header { max-width: calc(100% - var(--hud-left) - var(--hud-right)); }
   .settingsText { display: none; }
   .walletRow:has(.cash) { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; width: 100%; gap: 4px; }
   .gameSummary .lifeMenu > summary { gap: 4px; padding-inline: 6px; }
@@ -134,4 +153,8 @@
 @media (max-height: 540px) {
   .cameraControls { top: var(--hud-top); transform: none; grid-template-columns: repeat(2, 44px); gap: 4px; }
   .cameraControls > span { display: none; }
+}
+
+@media (hover: hover) {
+  .headerActions .contextCommand:not(:active):hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 }

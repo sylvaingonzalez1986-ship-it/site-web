@@ -1,4 +1,19 @@
 {
+  "heuresDansMonEquipe20261123": {
+    "livraison": "Dans Ma partie, la jauge supérieure et le volet sur les durées sont retirés. Mon équipe affiche les heures libres et leur répartition par personne.",
+    "verification": "Quatre parcours Chromium du Quartier à 320, 390 et 1440 px vérifient les disponibilités dans Mon équipe et l’absence du doublon dans le bilan. 94 tests ciblés réussis.",
+    "preuve": "output/placard-navigation/quarter-team-report.json",
+    "pointDeReprise": "Contrôler les heures dans Mon équipe lors de la prochaine modification du bilan."
+  },
+  "menuQuartier20261123": {
+    "livraison": "Barre du Quartier avec rubrique courante, menu illustré de onze destinations et retour permanent vers /arene. Quatorze pictogrammes, dont le panneau du menu et la coupe de l’Arène.",
+    "verification": "10 scénarios Chromium à 320 et 1440 px, jour et nuit. Rencontre Banque, brouillon d’entrepôt, rechargement, clavier et toucher vérifiés sur données locales. 30 tests unitaires réussis.",
+    "preuves": [
+      "docs/bete-de-concours/menu-quartier/recette.json",
+      "docs/bete-de-concours/ui-navigation-provenance.json"
+    ],
+    "pointDeReprise": "Pour une recette sur téléphone physique, ouvrir une activité depuis son URL et essayer le retour à l’Arène avec un brouillon d’entrepôt."
+  },
   "villageSansDialogues20261122": {
     "livraison": "Menu Observer et conversations du sonneur et du pêcheur retirés temporairement. Les habitants poursuivent leurs activités. Loïc ouvre directement son carnet et le panneau nocturne donne accès au marché des korrigans.",
     "verification": "22 tests ciblés réussis. Chromium vérifie les clics et les touchers sur les trois modèles, le carnet et l’entrepôt au clavier, ainsi que l’accès au marché nocturne à 320 px et sur ordinateur.",

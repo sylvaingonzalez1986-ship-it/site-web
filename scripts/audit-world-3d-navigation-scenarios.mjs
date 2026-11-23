@@ -1,5 +1,6 @@
 /** Shared live shell and Three canvas, with read-only local destination/API fixtures. */
 import assert from 'node:assert/strict';
+import {resolve} from 'node:path';
 import {bankReturnLink} from './audit-building-rooms-scenarios.mjs';
 
 export function world3dFixturePayload(path) {
@@ -7,6 +8,176 @@ export function world3dFixturePayload(path) {
   if (path === '/api/arena/chanvrier/progress') return {metrics:{},reputation:0,rating:1000,rank:null,rankAsOf:null,badges:[],missions:[],showcase:{badges:[],title:null,tracked:null},unlockedFamilies:0,packsGranted:0,newBadgeCount:0,badgeCount:0};
   if (path === '/api/arena/feedback') return {items:[],total:0,hasMore:false};
   return null;
+}
+
+export async function auditQuarterMenu({page, visit, assertNoOverflow, results, origin, output}) {
+  const trigger = 'button[aria-label="Ouvrir le menu du quartier"]';
+  const menu = 'dialog[aria-label="Menu de Kanab Quest"][open]';
+  const returnLink = 'a[href="/arene"][aria-label="Retour à l’Arène"]';
+  const readyCanvas = 'canvas[data-village-ready="true"]';
+  const destinations = ['hub', 'game', 'harvests', 'workshop', 'market', 'social', 'treasury', 'staff', 'school', 'missions', 'shop'];
+  const mobile = () => page.viewport().width === 320;
+  const activate = async selector => {
+    await page.waitForSelector(selector, {visible: true});
+    await page.$eval(selector, element => element.scrollIntoView({block: 'nearest', behavior: 'instant'}));
+    if (mobile()) await page.tap(selector);
+    else await page.click(selector);
+  };
+  const openMenu = async () => {
+    await activate(trigger);
+    await page.waitForSelector(menu, {visible: true});
+  };
+  const awaitMenuClose = () => page.waitForSelector(menu, {hidden: true});
+  const checkActive = async key => {
+    assert.deepEqual(await page.$$eval(`${menu} [aria-current="page"]`, items => items.map(item => item.dataset.placardNav)), [key]);
+  };
+  const checkOverflow = async () => {
+    await assertNoOverflow('Quarter menu');
+    assert.equal(await page.$eval(menu, element => {
+      const rect = element.getBoundingClientRect();
+      return rect.left >= 0 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1;
+    }), true, 'The menu stays inside the viewport and has no horizontal scroll');
+  };
+  const capture = async name => {
+    await page.$eval(menu, async element => {
+      await Promise.all([...element.querySelectorAll('img')].map(image => image.decode()));
+      await document.fonts.ready;
+    });
+    await page.screenshot({path: resolve(output, `quarter-menu-${name}.jpg`), quality: 92});
+  };
+  const waitArena = async () => {
+    await page.waitForSelector('main[data-world="arena"] h1', {visible: true});
+    assert.equal(new URL(page.url()).pathname, '/arene');
+    assert.equal(new URL(page.url()).search, '');
+  };
+  for (const width of [1440, 320]) {
+    await page.setViewport({width, height: width === 320 ? 710 : 900, isMobile: width === 320, hasTouch: width === 320});
+    await visit('starter', 'villageDay=1&villageMinute=720');
+    await page.waitForSelector(readyCanvas);
+    await page.waitForSelector('[data-village-phase="day"]');
+    await page.evaluate(selector => { window.__quarterMenuCanvas = document.querySelector(selector); }, readyCanvas);
+
+    await page.focus(trigger);
+    await page.keyboard.press('Enter');
+    await page.waitForSelector(menu);
+    await checkActive('hub');
+    await checkOverflow();
+    await capture(width);
+    const focused = new Set();
+    for (let index = 0; index < 20; index++) {
+      await page.keyboard.press('Tab');
+      const tab = await page.$eval(menu, element => ({
+        inside: element.contains(document.activeElement) || document.activeElement === document.body,
+        destination: document.activeElement?.dataset.placardNav,
+      }));
+      assert.equal(tab.inside, true, 'Tab cannot reach controls behind the modal');
+      if (tab.destination) focused.add(tab.destination);
+    }
+    assert.equal(focused.size, destinations.length, 'Every destination can receive keyboard focus');
+    await page.keyboard.press('Escape');
+    await awaitMenuClose();
+    await page.waitForFunction(selector => {
+      return document.activeElement?.matches(selector) && !document.documentElement.hasAttribute('data-site-scroll-locked');
+    }, {}, trigger);
+    await openMenu();
+    await page.goBack();
+    await awaitMenuClose();
+    assert.equal(new URL(page.url()).pathname, '/arene/placard');
+
+    for (const key of [...destinations.slice(1), 'hub']) {
+      await openMenu();
+      assert.deepEqual(await page.$$eval(`${menu} [data-placard-nav]`, items => items.map(item => item.dataset.placardNav).sort()), [...destinations].sort());
+      await activate(`${menu} [data-placard-nav="${key}"]`);
+      await awaitMenuClose();
+      if (key === 'treasury') await page.waitForSelector('[data-building-room="bank"]', {visible: true});
+      else await page.waitForSelector(`[data-placard-view="${key}"]`);
+      assert.equal(await page.evaluate(selector => window.__quarterMenuCanvas === document.querySelector(selector), readyCanvas), true);
+      await openMenu();
+      await checkActive(key);
+      await activate(`${menu} button[aria-label="Fermer le menu"]`);
+      await awaitMenuClose();
+    }
+    results.push({scenario: 'destinations-and-modal', width, destinations: destinations.length, keyboard: true, touch: mobile(), canvasRetained: true});
+
+    for (const [query, active] of [
+      ['view=hub&room=office', 'staff'],
+      ['view=hub&room=market', 'market'],
+      ['view=hub&room=missions', 'missions'],
+      ['view=hub&room=arena', 'harvests'],
+      ['view=hub&room=shop', 'shop'],
+      ['view=collection&section=buddies', 'shop'],
+      ['view=arena', 'harvests'],
+    ]) {
+      await page.evaluate(search => {
+        history.pushState({}, '', `?${search}`);
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      }, query);
+      if (query.startsWith('view=collection')) await page.waitForSelector('[data-placard-collections]');
+      await openMenu();
+      await checkActive(active);
+      await activate(`${menu} button[aria-label="Fermer le menu"]`);
+      await awaitMenuClose();
+    }
+    results.push({scenario: 'room-and-deep-link-active-state', width, collection: true, jury: true, rooms: true});
+
+    await visit('starter');
+    await openMenu();
+    await activate(`${menu} [data-arena-learning-trigger]`);
+    await page.waitForSelector('dialog[data-sylvain-library][open]', {visible: true});
+    await awaitMenuClose();
+    results.push({scenario: 'learning-launcher', width, guideVisible: true});
+
+    const query = 'view=market&section=sales&flower=fixture-flower';
+    await visit('starter', query);
+    await page.waitForSelector('[data-placard-view="market"]');
+    await activate(`header ${returnLink}`);
+    await waitArena();
+    await visit('starter', query);
+    await page.reload({waitUntil: 'domcontentloaded'});
+    await page.waitForSelector('[data-placard-view="market"]');
+    await page.evaluate(async () => {
+      const {registerNavigationGuard} = await import('/src/lib/navigation-guard.ts');
+      window.__quarterMenuGuard = registerNavigationGuard(continuation => { window.__quarterMenuContinue = continuation; });
+    });
+    const guardedUrl = page.url();
+    await openMenu();
+    await activate(`${menu} ${returnLink}`);
+    await page.waitForFunction(() => typeof window.__quarterMenuContinue === 'function');
+    await awaitMenuClose();
+    assert.equal(page.url(), guardedUrl, 'The guard retains the deep link until the player confirms');
+    assert.equal(await page.$eval('[data-market-section]', element => element.textContent), 'sales');
+    assert.equal(await page.evaluate(() => Boolean(window.history.state?.lcbOverlays?.length)), false);
+    await page.evaluate(() => {
+      window.__quarterMenuGuard();
+      window.__quarterMenuContinue();
+    });
+    await waitArena();
+    await page.goBack();
+    await page.waitForSelector('[data-placard-view="market"]');
+    await awaitMenuClose();
+    assert.equal(page.url(), guardedUrl);
+    results.push({scenario: 'arena-return', width, direct: true, reload: true, draftGuard: true, backRestoresActivity: true});
+  }
+
+  await page.goto(new URL('/menu-indisponible', origin).href, {waitUntil: 'domcontentloaded'});
+  await openMenu();
+  const disabled = `${menu} [data-placard-nav="game"]`;
+  assert.equal(await page.$eval(disabled, element => element.disabled), true);
+  assert.match(await page.$eval(disabled, element => element.getAttribute('aria-label')), /Culture indisponible/);
+  await activate(disabled);
+  assert.equal(await page.evaluate(() => document.body.hasAttribute('data-test-navigation')), false);
+  await page.waitForFunction(selector => document.querySelector(selector)?.textContent.includes('Culture indisponible pour cet essai'), {}, menu);
+  await checkOverflow();
+  results.push({scenario: 'unavailable-destination', width: 320, disabled: true, reasonVisible: true});
+
+  await visit('starter', 'villageDay=1&villageMinute=1320');
+  await page.waitForSelector(readyCanvas);
+  await page.waitForSelector('[data-village-phase="night"]');
+  await openMenu();
+  await checkActive('hub');
+  await checkOverflow();
+  await capture('nuit-320');
+  results.push({scenario: 'night-quarter-menu', width: 320});
 }
 
 export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin,warehousePlayer}) {

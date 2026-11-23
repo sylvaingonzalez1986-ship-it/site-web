@@ -1,4 +1,4 @@
-const BUILDING_VIEWS = {
+export const BUILDING_VIEWS = {
   bank: "treasury", office: "staff", market: "market", missions: "missions", arena: "arena", shop: "shop",
 } as const;
 

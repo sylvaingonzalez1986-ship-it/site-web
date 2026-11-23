@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { ArrowLeft, Hourglass } from "lucide-react";
-import Link from "@/components/navigation/NavigationLink";
 import { navigateWithDraftGuard } from "@/lib/navigation-guard";
 import { navigateAfterOverlays } from "@/lib/overlay-history";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
@@ -10,7 +9,7 @@ import { KqPlacardLobby } from "./KqPlacardLobby";
 import type { PlacardNavKey } from "./KqPlacardNavigation";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { useGamePanelScroll } from "@/hooks/useGamePanelScroll";
-import { buildingForActivity, buildingRoomHref, isIsometricBuilding, normalizeKqVillageLocation } from "@/lib/kanab-quest-world-mode";
+import { BUILDING_VIEWS, buildingForActivity, buildingRoomHref, isIsometricBuilding, normalizeKqVillageLocation } from "@/lib/kanab-quest-world-mode";
 import { ArenaJourneyEntry } from "../contest/ArenaJourneyEntry";
 import retro from "../contest/ArenaRetro.module.css";
 import styles from "./PlacardPlayerShell.module.css";
@@ -24,7 +23,6 @@ import { KqMissionFocusProvider, KqPinnedMission } from "./KqPinnedMission";
 import { KqStaffRecoveryProvider } from "./KqStaffRecoveryContext";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { FarmGuideDestination } from "@/lib/kanab-quest-guide-navigation";
-import { KqQuarterWorkHelp } from "./KqPlayerWorkStatus";
 import { KqPlayerWorkAvailabilityContext, useKqPlayerWorkAvailability } from "./KqPlayerActionTime";
 import type { KqPlayerWorkAvailability } from "@/lib/kanab-quest-player-work";
 import { resolveKqSchoolSection, type KqSchoolSection as SchoolSection } from "@/lib/kanab-quest-school-navigation";
@@ -431,7 +429,10 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
     </div>
   ) : null;
 
-  const activeNav: PlacardNavKey = view === "arena" ? "harvests" : view;
+  const menuView = room ? BUILDING_VIEWS[room] : view;
+  const activeNav: PlacardNavKey = menuView === "arena" ? "harvests" : menuView;
+  const menuLocation = menuView === "arena" ? "Jury & duels" : supportOpen ? "Producteurs"
+    : collectionOpen ? "Collection" : overviewOpen && view === "hub" && !room ? "Ma partie" : undefined;
   const currentTitle =
     view === "hub" ? "Mon quartier" : view === "harvests" ? "Mes récoltes" : view === "workshop" ? (warehouseSection === "processing" ? "L’Atelier" : warehouseSection === "storage" ? "Entrepôt · Stockage" : "L’Entrepôt") : view === "shop" ? "Maison des cartes" : view === "school" ? "QuizzShow" : view === "game" ? "Ma culture" : view === "market" ? "Mon commerce" : view === "social" ? "Mes réseaux" : view === "staff" ? "Personnel" : view === "treasury" ? KQ_BANK_DESK_LABELS[bankDesk] : view === "missions" ? "Mes missions" : "Jury & duels";
 
@@ -541,7 +542,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
           </header>
           <div className={styles.viewStage} data-placard-stage="support"><KqFinancialSupport gameReturnHref={supportPaymentReturnHref} /></div>
         </> : room ? <BuildingRoom key={room} id={room} onNavigate={openWorldHref} /> : <>
-        {view === "hub" ? <header className={styles.exitHeader}><Link href="/arene"><ArrowLeft size={18} aria-hidden="true" /> Retour à l’Arène</Link><span>{currentTitle}</span></header>
+        {view === "hub" ? <h1 ref={headingRef} tabIndex={-1} className="sr-only">Ma partie</h1>
           : view === "workshop" ? <h1 className="sr-only" ref={headingRef} tabIndex={-1}>{currentTitle}</h1> : <header className={styles.sectionHeader}>
           {view === "treasury" ? <a className={styles.roomLink} href={buildingRoomHref("bank")}><ArrowLeft size={18} aria-hidden="true" />Retour à la banque</a>
             : fromRoom ? <a className={styles.roomLink} href={buildingRoomHref(fromRoom)} aria-label="Entrer dans le bâtiment"><ArrowLeft size={18} aria-hidden="true" />Entrer</a>
@@ -550,7 +551,6 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
           {view !== "treasury" && activityRoom && activityRoom !== fromRoom && <a className={styles.roomLink} href={buildingRoomHref(activityRoom)}>Entrer</a>}
         </header>}
         {view === "hub" ? <ArenaJourneyEntry /> : null}
-        {view === "hub" ? <KqQuarterWorkHelp availability={workAvailability} /> : null}
         <div className={styles.viewStage} key={view} data-placard-stage={view}>
         {view === "hub" ? (
           <KqPlacardLobby onOpen={openView} workAvailability={workAvailability} visitOwnerId={panelOpen ? draftOwnerId : undefined}
@@ -648,7 +648,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
     }}>
       <a className={styles.skipLink} href="#placard-content" onClick={!panelOpen ? () => setOverviewOpen(true) : undefined}>Aller à l’activité</a>
       {guide}
-      <VillageWorld activeNav={activeNav}
+      <VillageWorld activeNav={activeNav} locationLabel={menuLocation}
         onNavigate={key => { if (key !== "hub" || view !== "hub" || room) navigate(key); else if (supportOpen) closeWorldActivity(); else setOverviewOpen(false); }}
         onNavigateHref={openWorldHref} onOpenSupport={openSupport} supportOpen={supportOpen} restoreSupportView={params.get("supportReturn") === "1"}
         activityOpen={panelOpen} onOpenOverview={() => setOverviewOpen(true)} onCloseActivity={closeWorldActivity}>

@@ -1,4 +1,4 @@
-/** Current Lobby/map and real Shell routing with destination stubs. All data and requests stay local. */
+/** Current lobby, team summary and shell routing with destination stubs. All data and requests stay local. */
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
@@ -20,6 +20,7 @@ const destinations={
 };
 const modules={entry:`import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
 import{KqPlacardLobby}from'/src/components/placard/KqPlacardLobby';
+import{KqQuarterTeamAccess}from'/src/components/placard/KqQuarterTeamAccess';
 import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
 import{KqMissionFocusProvider,KqPinnedMission}from'/src/components/placard/KqPinnedMission';
 import{KqTutorialApiProvider,createKqTutorialApi}from'/src/components/placard/KqTutorialApiContext';
@@ -68,8 +69,8 @@ const api={...createKqTutorialApi(async(input,init={})=>{
 window.__recover=()=>{mode='culture';api.notify('kq:commerce-updated')};window.__recoverQuiet=()=>{mode='culture'};window.__notify=name=>api.notify(name);
 window.__amounts=()=>({cashCents:commerce.cashCents,lab:commerce.business.lab.outstandingCents,suppliers:commerce.business.suppliers?.outstandingCents??null,packets:commerce.online.listings.reduce((sum,row)=>sum+row.remainingPackets,0)});
 window.__clearBills=()=>{commerce.business.lab={outstandingCents:0,overdueCents:0,invoices:[]};commerce.business.suppliers={outstandingCents:0,overdueCents:0,invoices:[]};api.notify('kq:treasury-updated')};
-function App(){const[epoch,setEpoch]=React.useState(0),[scope,setScope]=React.useState(['staff','workshop'].includes(new URLSearchParams(location.search).get('view'))?'shell':'lobby');window.mount=(name,nextScope='lobby')=>{configure(name);history.replaceState(null,'','/arene/placard');window.dispatchEvent(new PopStateEvent('popstate'));setScope(nextScope);setEpoch(v=>v+1)};
- return <KqTutorialApiProvider api={api}><div key={epoch} data-fixture={mode} data-scope={scope}>{scope==='shell'?<PlacardPlayerShell draftOwnerId="attention-fixture"/>:<div className={retro.surface}><KqMissionFocusProvider ownerId="attention-fixture"><KqPlacardLobby onOpen={(view,options)=>window.__navigation.push({view,options})} onOpenCollection={()=>window.__navigation.push({view:'collection'})}><KqPinnedMission onChoose={()=>window.__navigation.push({view:'missions'})} onContinue={()=>{}}/></KqPlacardLobby></KqMissionFocusProvider></div>}</div></KqTutorialApiProvider>;
+function App(){const[epoch,setEpoch]=React.useState(0),[scope,setScope]=React.useState(['staff','workshop'].includes(new URLSearchParams(location.search).get('view'))?'shell':'lobby'),[availability,setAvailability]=React.useState(null);window.mount=(name,nextScope='lobby')=>{configure(name);history.replaceState(null,'','/arene/placard');window.dispatchEvent(new PopStateEvent('popstate'));setScope(nextScope);setEpoch(v=>v+1)};
+ return <KqTutorialApiProvider api={api}><div key={epoch} data-fixture={mode} data-scope={scope}>{scope==='shell'?<PlacardPlayerShell draftOwnerId="attention-fixture"/>:<div className={retro.surface} data-village-activity-panel={scope==='overview'||undefined}><KqMissionFocusProvider ownerId="attention-fixture"><KqPlacardLobby workAvailability={scope==='overview'?availability:undefined} teamPanel={scope==='overview'?<KqQuarterTeamAccess onAvailabilityChange={setAvailability}/>:undefined} onOpen={(view,options)=>window.__navigation.push({view,options})} onOpenCollection={()=>window.__navigation.push({view:'collection'})}><KqPinnedMission onChoose={()=>window.__navigation.push({view:'missions'})} onContinue={()=>{}}/></KqPlacardLobby></KqMissionFocusProvider></div>}</div></KqTutorialApiProvider>;
 }createRoot(document.getElementById('root')).render(<App/>);`,
  'next/image':`import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return<img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
  'next/link':`import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return<a {...props}/>} `,
@@ -103,20 +104,24 @@ else try{
   for(const width of [320,390,1440]){
    await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});await page.goto(origin+'/arene/placard',{waitUntil:'networkidle0',timeout:90000});await page.waitForFunction(()=>typeof window.mount==='function');
    for(const name of ['healthy','mixed','unknown']){
-    await mount(name,'shell');await settled();await page.waitForSelector('[data-player-work-status] [role="meter"]');await page.evaluate(()=>document.fonts.ready);await page.evaluate(()=>scrollTo(0,0));
+    await mount(name,'overview');await settled();await page.evaluate(()=>document.fonts.ready);await page.evaluate(()=>scrollTo(0,0));
+    const hoursSelector=width<700?'[data-team-player-time] [role="meter"]':'[data-team-free="player"]';
+    await page.waitForSelector(hoursSelector,{visible:true});
+    if(width<700)assert.equal(await page.$eval(hoursSelector,node=>node.getAttribute('aria-valuenow')),'12');
+    else assert.equal(await page.$eval(hoursSelector,node=>node.textContent),'12 h libres');
     const geometry=await page.evaluate(()=>{
-     const map=document.querySelector('[data-placard-map]'),scene=document.querySelector('[id^="placard-map-viewport"]'),action=document.querySelector('[data-placard-next-action]'),dock=document.querySelector('nav[aria-label="Accès rapides de Kanab Quest"]');
-     return {mapTop:Math.round(map.getBoundingClientRect().top),sceneHeight:Math.round(scene.getBoundingClientRect().height),sceneBottom:Math.round(scene.getBoundingClientRect().bottom),actionTop:Math.round(action.getBoundingClientRect().top),primaryBottom:Math.round(action.querySelector(':scope > :is(button,a)').getBoundingClientRect().bottom),usableBottom:dock&&getComputedStyle(dock).display!=='none'?Math.round(dock.getBoundingClientRect().top):innerHeight,mapBeforeAction:!!(map.compareDocumentPosition(action)&Node.DOCUMENT_POSITION_FOLLOWING),overflow:document.documentElement.scrollWidth>innerWidth+1,hours:Number(document.querySelector('[data-player-work-status] [role="meter"]').getAttribute('aria-valuenow')),primaryCount:action.querySelectorAll(':scope > :is(button,a)').length};
+     const action=document.querySelector('[data-placard-next-action]'),control=action.querySelector(':scope > :is(button,a)');
+     return {actionTop:Math.round(action.getBoundingClientRect().top),primaryBottom:Math.round(control.getBoundingClientRect().bottom),viewportHeight:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth+1,primaryCount:action.querySelectorAll(':scope > :is(button,a)').length};
     });
-    assert(!geometry.mapBeforeAction,'Summary precedes the map in reading order');assert(geometry.actionTop<240,'Recommendation visible before the map');assert(geometry.sceneHeight>=200);assert(geometry.primaryBottom<=geometry.usableBottom,'Primary action stays visible above the mobile navigation');assert.equal(geometry.overflow,false);assert.equal(geometry.hours,12);assert.equal(geometry.primaryCount,1);
+    assert(geometry.primaryBottom<=geometry.viewportHeight,'Primary action fits alongside the team summary');assert.equal(geometry.overflow,false);assert.equal(geometry.primaryCount,1);
     if(name==='mixed')assert.deepEqual(await page.$$eval('[data-placard-next-action] > ul [data-resume-notice]',nodes=>nodes.map(node=>node.dataset.resumeNotice)),['invoice-overdue','sales-suspended']);
     if(name==='unknown')assert(await page.$('[data-resume-refresh]'));
     await page.screenshot({path:resolve(output,`visual-${name}-${width}.png`)});results.push({name,width,...geometry});
    }
-   await mount('healthy','shell');await settled();await enter('[data-map-building="office"]');await page.waitForSelector('[data-destination="staff"]');assert.equal(new URL(page.url()).searchParams.get('view'),'staff');
-   await enter('[data-placard-back="hub"]');await page.waitForSelector('[data-placard-map]');await enter('[data-map-building="bank"]');await page.waitForSelector('[data-destination="treasury"][data-pole="accounting"]');
-   await enter('[data-placard-back="hub"]');await page.waitForSelector('[data-placard-map]');await enter('[data-map-building="warehouse"]');await enter('[data-placard-activity="workshop"]');await page.waitForSelector('[data-destination="workshop"][data-section="processing"]');
-   assert((await page.evaluate(()=>window.__requests)).every(request=>request.method==='GET'));assert.deepEqual(await page.evaluate(()=>window.__amounts()),await page.evaluate(()=>window.__fixtureAmounts));results.push({name:'visual-destinations',width,staff:true,finance:true,atelier:true,readOnly:true});
+   await mount('overdue','overview');await settled();await enter(primary);
+   assert.deepEqual(await page.evaluate(()=>window.__navigation.at(-1)),{view:'staff',options:{staffSection:'accounting'}});
+   await mount('trim','overview');await settled();assert.equal(await page.$eval(primary,node=>node.getAttribute('href')),'/arene/placard?view=workshop&section=processing&workshop=trim');
+   assert((await page.evaluate(()=>window.__requests)).every(request=>request.method==='GET'));assert.deepEqual(await page.evaluate(()=>window.__amounts()),await page.evaluate(()=>window.__fixtureAmounts));results.push({name:'visual-destinations',width,accounting:true,trim:true,readOnly:true});
   }
  } else for(const width of [320,390,1440]){
   await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});await page.goto(origin+'/arene/placard',{waitUntil:'networkidle0',timeout:90000});await page.waitForFunction(()=>typeof window.mount==='function');
@@ -181,6 +186,6 @@ else try{
  assert.equal(await page.$eval('[data-placard-next-action]',e=>e.dataset.priority),'culture');
  assert.equal(await page.evaluate(()=>window.__requests.filter(r=>r.path.endsWith('/commerce')).length),1);
  await page.waitForSelector('[data-resume-refresh]',{timeout:15000});await page.evaluate(()=>window.__recoverQuiet());await enter('[data-resume-refresh]');await page.waitForFunction(()=>window.__attentionCompleted>0);await page.waitForFunction(()=>!document.querySelector('[data-resume-refresh]'));results.push({name:'timeout-retry',width:390,coreNeverBlocked:true});}
- assert.deepEqual(errors,[]);assert.deepEqual(external,[]);await writeFile(resolve(output,visualOnly?'visual-hierarchy-report.json':selectedCases?'report-targeted.json':'report.json'),JSON.stringify({createdAt:new Date().toISOString(),scope:'Real Lobby/map and Shell; local data; destination stubs; no remote traffic or POST',viewportHeight:visualOnly?900:844,results,errors,external},null,2));console.log(JSON.stringify({passed:results.length,errors,external,output}));
+ assert.deepEqual(errors,[]);assert.deepEqual(external,[]);await writeFile(resolve(output,visualOnly?'visual-hierarchy-report.json':selectedCases?'report-targeted.json':'report.json'),JSON.stringify({createdAt:new Date().toISOString(),scope:visualOnly?'Real lobby, team summary and resume actions with local data':'Real lobby and shell routing with local data and destination stubs',viewportHeight:visualOnly?900:844,results,errors,external},null,2));console.log(JSON.stringify({passed:results.length,errors,external,output}));
 }catch(error){await page?.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{});throw error;}
 finally{if(!preview){await browser?.close();await server.close();}}

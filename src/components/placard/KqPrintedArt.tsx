@@ -3,10 +3,26 @@ import styles from "./KqPrintedArt.module.css";
 
 export type KqPrintedArtKind = "school" | "quarter" | "culture" | "harvest" | "warehouse" | "commerce" | "social" | "accounts" | "staff" | "collection" | "missions" | "card-shop" | "buddies-pack" | "buddies-cards" | "album-rewards" | "achievements" | "mailbox"
   | "help-team" | "help-plan" | "help-time" | "help-culture" | "help-workshop" | "help-travel" | "help-social" | "help-accounts" | "help-training" | "help-rest" | "help-care" | "help-quality" | "producer-support" | "culture-desk" | "mission-levels" | "mission-rewards" | "staff-production" | "school-library"
-  | "culture-tab-play" | "culture-tab-care" | "culture-tab-cards" | "culture-tab-harvest" | "culture-tab-journal" | "culture-tab-rules";
+  | "culture-tab-play" | "culture-tab-care" | "culture-tab-cards" | "culture-tab-harvest" | "culture-tab-journal" | "culture-tab-rules"
+  | "arena" | "menu" | "game-summary";
+
+const menuDestinations = new Set<KqPrintedArtKind>([
+  "quarter", "culture", "harvest", "commerce", "warehouse", "accounts",
+  "staff", "social", "school", "missions", "card-shop",
+]);
 
 /** Decorative printed vignettes. Labels, amounts and actions stay in accessible HTML. */
-export function KqPrintedArt({ kind, className = "", sizes = "(max-width: 600px) 96px, 160px" }: { kind: KqPrintedArtKind; className?: string; sizes?: string }) {
+export function KqPrintedArt({ kind, className = "", sizes = "(max-width: 600px) 96px, 160px", variant }: {
+  kind: KqPrintedArtKind;
+  className?: string;
+  sizes?: string;
+  variant?: "menu";
+}) {
+  if (kind === "arena" || kind === "menu" || kind === "game-summary" || (variant === "menu" && menuDestinations.has(kind))) {
+    return <span className={`${styles.art} ${styles.menuArt} ${className}`} aria-hidden="true">
+      <Image src={`/placard/ui/navigation/${kind}-v1.webp`} alt="" width={112} height={112} unoptimized />
+    </span>;
+  }
   if (kind === "school-library") return <span className={`${styles.art} ${className}`} aria-hidden="true">
     <Image src="/placard/school/isometric/library.webp" alt="" width={980} height={690} sizes={sizes} />
   </span>;

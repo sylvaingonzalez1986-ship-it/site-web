@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-23",
+  "commande": "node scripts/audit-placard-navigation.mjs --quarter-menu",
+  "environnement": "Chromium local, composants du Quartier et village 3D du jeu. API joueur et routeur de recette simulés, certaines activités remplacées par des écrans de test.",
+  "navigation": [
+    {
+      "scenario": "destinations-and-modal",
+      "width": 1440,
+      "destinations": 11,
+      "keyboard": true,
+      "touch": false,
+      "canvasRetained": true
+    },
+    {
+      "scenario": "room-and-deep-link-active-state",
+      "width": 1440,
+      "collection": true,
+      "jury": true,
+      "rooms": true
+    },
+    {
+      "scenario": "learning-launcher",
+      "width": 1440,
+      "guideVisible": true
+    },
+    {
+      "scenario": "arena-return",
+      "width": 1440,
+      "direct": true,
+      "reload": true,
+      "draftGuard": true,
+      "backRestoresActivity": true
+    },
+    {
+      "scenario": "destinations-and-modal",
+      "width": 320,
+      "destinations": 11,
+      "keyboard": true,
+      "touch": true,
+      "canvasRetained": true
+    },
+    {
+      "scenario": "room-and-deep-link-active-state",
+      "width": 320,
+      "collection": true,
+      "jury": true,
+      "rooms": true
+    },
+    {
+      "scenario": "learning-launcher",
+      "width": 320,
+      "guideVisible": true
+    },
+    {
+      "scenario": "arena-return",
+      "width": 320,
+      "direct": true,
+      "reload": true,
+      "draftGuard": true,
+      "backRestoresActivity": true
+    },
+    {
+      "scenario": "unavailable-destination",
+      "width": 320,
+      "disabled": true,
+      "reasonVisible": true
+    },
+    {
+      "scenario": "night-quarter-menu",
+      "width": 320
+    }
+  ],
+  "requetesParMethode": {
+    "GET": 100
+  },
+  "erreursNavigateur": [],
+  "rencontreBanque": [
+    {
+      "width": 320,
+      "meeting": "bank",
+      "current": "treasury",
+      "localNavigationRetainsLesson": true,
+      "disabled": true,
+      "arenaReturn": true
+    },
+    {
+      "width": 1440,
+      "meeting": "bank",
+      "current": "treasury",
+      "localNavigationRetainsLesson": true,
+      "disabled": true,
+      "arenaReturn": true
+    }
+  ],
+  "commandesAccessibles": [
+    "320 × 550",
+    "568 × 320",
+    "768 × 1024",
+    "1024 × 768",
+    "1280 × 720"
+  ],
+  "next": "Accès anonyme local à /arene vérifié sur Next.js, avec rendu du hall de l’Arène. L’accès direct au Quartier conserve la destination lors de la redirection vers la connexion.",
+  "tests": "30 tests Vitest sur les URL du village, l’historique des fenêtres et les brouillons de préparation. ESLint ciblé et TypeScript validés.",
+  "captures": {
+    "ordinateur": [
+      "avant-1440.jpg",
+      "apres-1440.jpg",
+      "barre-1440.jpg"
+    ],
+    "mobile": [
+      "avant-320.jpg",
+      "apres-320.jpg",
+      "barre-320.jpg",
+      "nuit-320.jpg"
+    ]
+  },
+  "brouillonEntrepot": "Entrepôt réel avec un plan modifié sur données de recette. Depuis la barre, Continuer à modifier garde le joueur dans l’entrepôt. Depuis le menu ouvert, Quitter en gardant le brouillon transmet /arene au routeur. Le contenu du brouillon en sessionStorage reste identique, sans écriture API."
+}

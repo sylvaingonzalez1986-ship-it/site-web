@@ -192,9 +192,11 @@ export async function auditQuarterTeam({ page, visit, screenshot, assertNoOverfl
     await activate("[data-team-close]");await page.waitForSelector("[data-team-open]");
     await page.waitForFunction(()=>document.activeElement===document.querySelector("[data-team-open]"));
     await activate('button[aria-label="Ouvrir le bilan de ma partie"]');
-    const quarterMeter = '[data-player-work-status] [role="meter"]';
-    await page.waitForSelector(quarterMeter, { visible: true });
-    assert.equal(await page.$eval(quarterMeter, node => node.getAttribute('aria-valuenow')), '9.5');
+    const overview = '[data-placard-stage="hub"]';
+    await page.waitForSelector(overview + ' [data-team-panel]', { visible: true });
+    assert.equal(await page.$('[data-player-work-status]'), null, 'The overview shows hours only in Mon équipe');
+    await showPanel();
+    assert.equal(await free("player"), "9,5 h libres");
     await visit('starter', 'view=staff');
     await page.waitForSelector('[data-placard-stage="staff"]');
     assert.equal(await page.$('[data-player-work-status], [data-team-player-time], [data-activity-duration-dialog]'), null);

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Component, useCallback, useContext, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { ArrowLeft, BookOpen, House, Landmark, Mail, Minus, NotebookPen, Pause, Play, Plus, RotateCcw, RotateCw, Scan, Settings, ShoppingBag, Sprout, Store, Swords, Target, UsersRound } from "lucide-react";
+import { BookOpen, House, Landmark, Mail, Minus, Pause, Play, Plus, RotateCcw, RotateCw, Scan, Settings, ShoppingBag, Sprout, Store, Swords, Target, UsersRound } from "lucide-react";
 import { QuarterAppearanceEditorContext, QuarterCharacterContext } from "../../contest/QuarterCharacterContext";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_FARM_GUIDE_OPEN_EVENT } from "@/lib/kanab-quest-guide-navigation";
@@ -14,6 +14,7 @@ import type { VillageBuildingKind } from "./village-buildings";
 import { HEMP_FARM, HEMP_FARM_ID, VILLAGE_PLACES, type VillagePlaceId } from "./village-layout";
 import { KqMailbox } from "../KqMailbox";
 import { KqPlacardNavigation, type PlacardNavKey } from "../KqPlacardNavigation";
+import { KqPrintedArt } from "../KqPrintedArt";
 import type { VillageCameraRequest } from "./VillageCanvas";
 import { VillageActivities } from "./VillageActivities";
 import { useVillageActivity, useVillageMotionPreference, villageBuildingStatus } from "./useVillageActivity";
@@ -52,10 +53,11 @@ class SceneBoundary extends Component<{ children: ReactNode; onError: () => void
   render() { return this.state.failed ? null : this.props.children; }
 }
 
-export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, activeNav = "hub", activityOpen = false, onOpenOverview, onOpenSupport, onCloseActivity, supportOpen, restoreSupportView, children }: {
+export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, activeNav = "hub", locationLabel, activityOpen = false, onOpenOverview, onOpenSupport, onCloseActivity, supportOpen, restoreSupportView, children }: {
   onNavigateHref?: (href: string) => void;
   onNavigate?: (key: PlacardNavKey) => void;
   activeNav?: PlacardNavKey;
+  locationLabel?: string;
   activityOpen?: boolean;
   onOpenOverview?: () => void;
   onOpenSupport?: () => void;
@@ -190,12 +192,12 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
   }}>
     <header ref={headerNode} className={styles.header}>
       <h1 className={styles.srOnly} hidden={activityOpen}>Mon quartier</h1>
-      <div className={styles.headerActions}>
-        <KqPlacardNavigation active={activeNav} onNavigate={navigate} onHighlight={highlight} drawerOnly triggerClassName={styles.control} />
-        {onOpenOverview ? <button className={styles.control} type="button" data-village-toolbar-return={activityOpen || undefined} aria-label={activityOpen ? "Revenir au village 3D" : "Ouvrir le bilan de ma partie"} onClick={() => { if (activityOpen) onCloseActivity?.(); else navigateWithDraftGuard(onOpenOverview); }}>
-          {activityOpen ? <ArrowLeft size={18} /> : <NotebookPen size={18} />}<span>{activityOpen ? "Au village" : "Ma partie"}</span>
-        </button> : <Link className={styles.control} href="/arene/placard" prefetch={false} aria-label="Retour au quartier"><ArrowLeft size={18} /><span>Retour au jeu</span></Link>}
-      </div>
+      <nav className={styles.headerActions} aria-label="Commandes du quartier">
+        <KqPlacardNavigation active={activeNav} locationLabel={locationLabel} onNavigate={navigate} onHighlight={highlight} drawerOnly />
+        {onOpenOverview ? <button className={styles.contextCommand} type="button" data-village-toolbar-return={activityOpen || undefined} aria-label={activityOpen ? "Revenir au village 3D" : "Ouvrir le bilan de ma partie"} onClick={() => { if (activityOpen) onCloseActivity?.(); else navigateWithDraftGuard(onOpenOverview); }}>
+          <KqPrintedArt kind={activityOpen ? "quarter" : "game-summary"} variant="menu" /><span>{activityOpen ? "Au village" : "Ma partie"}</span>
+        </button> : <Link className={styles.contextCommand} href="/arene/placard" prefetch={false} aria-label="Retour au quartier"><KqPrintedArt kind="quarter" variant="menu" /><span>Retour au jeu</span></Link>}
+      </nav>
       <div className={styles.gameSummary} data-village-activity-state={status} hidden={activityOpen}>
         {calendar && <VillageCalendarSign calendar={calendar} />}
         <div className={styles.walletRow}>

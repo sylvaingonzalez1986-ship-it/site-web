@@ -1,4 +1,29 @@
 {
+  "quarterMenu": {
+    "date": "2026-11-23",
+    "directory": "/placard/ui/navigation/",
+    "usage": "Variante menu de KqPrintedArt pour les destinations du Quartier et les trois commandes de sa barre. Libellés et interactions en HTML.",
+    "sources": {
+      "quarter": "/placard/ui/quarter-v1.webp",
+      "culture": "/placard/ui/culture-tab-play-v1.webp",
+      "harvest": "/placard/ui/harvest-v1.webp",
+      "commerce": "/placard/ui/commerce-v1.webp",
+      "warehouse": "/placard/ui/warehouse-v1.webp",
+      "accounts": "/placard/ui/accounts-v1.webp",
+      "staff": "/placard/ui/staff-v1.webp",
+      "social": "/placard/ui/social-v1.webp",
+      "school": "/placard/ui/school-v4.webp",
+      "missions": "/placard/ui/missions-v1.webp",
+      "card-shop": "/placard/ui/card-shop-v1.webp",
+      "game-summary": "/placard/ui/culture-tab-journal-v1.webp"
+    },
+    "drawn": {
+      "arena": "Coupe du jury redessinée avec étoile et ruban vert. Palette et coupe inspirées de /placard/ui/achievements-v1.webp. Tracé original dans docs/bete-de-concours/menu-quartier/arena-source.svg.",
+      "menu": "Deux flèches de bois inspirées des panneaux du Quartier, avec filets d’encre et têtes de clous. Tracé original dans docs/bete-de-concours/menu-quartier/menu-source.svg."
+    },
+    "processing": "Recadrage sur l’alpha dans Sharp, mise à l’échelle de chaque silhouette entre 96 et 108 px, marge transparente sur un carré de 112 px. Sorties nommées ${kind}-v1.webp, WebP qualité 85 et alpha 96. 14 vignettes, 80 172 octets au total.",
+    "verification": "Lecture visuelle à 44, 36 et 28 px sur des fonds crème, abricot et vert de la série. Le plant en pot distingue Culture du bâtiment Entrepôt. La planche se trouve dans docs/bete-de-concours/menu-quartier/vignettes.png."
+  },
   "cultureTabs": {
     "date": "2026-11-21",
     "generator": "Built-in image_gen",
