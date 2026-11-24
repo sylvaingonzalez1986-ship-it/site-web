@@ -1,9 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import type { ShopCardOrigin } from "@/components/ProductCard";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
 import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
+import { restoreShopPanelBeforePaint } from "@/components/boutique/ShopResultsRestore";
+import { REGION_RESULTS_ID } from "@/components/boutique/ShopResultsRestore";
 import { FRENCH_REGION_LABELS, type FrenchRegion } from "@/data/france-geo";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { Product } from "@/data/products";
@@ -11,9 +14,13 @@ import type { PublicContestProductTastingSummary } from "@/lib/contest-public-ap
 import type { Producer } from "@/types/store";
 
 type RegionCarouselOverlayProps = {
-  open: boolean;
+  origin: ShopCardOrigin;
   region: FrenchRegion;
   producers: Producer[];
+  selectedProducerId: string | null;
+  onSelectProducer: (producerId: string | null) => void;
+  productGrid: ReactNode;
+  productsShortcut: ReactNode;
   productsByProducerId: Map<string, Product[]>;
   addButtonLabel: string;
   lowStockThresholdGrams: number;
@@ -24,9 +31,13 @@ type RegionCarouselOverlayProps = {
 };
 
 export function RegionCarouselOverlay({
-  open,
+  origin,
   region,
   producers,
+  selectedProducerId: requestedProducerId,
+  onSelectProducer,
+  productGrid,
+  productsShortcut,
   productsByProducerId,
   addButtonLabel,
   lowStockThresholdGrams,
@@ -39,10 +50,11 @@ export function RegionCarouselOverlay({
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const scrollSettleTimeoutRef = useRef<number | null>(null);
   const suppressClickUntilRef = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
+  const selectedIndex = producers.findIndex(producer => producer.id === requestedProducerId);
+  const selectedProducerId = selectedIndex >= 0 ? requestedProducerId : null;
+  const [activeIndex, setActiveIndex] = useState(Math.max(0, selectedIndex));
 
-  useBodyScrollLock(open);
+  useBodyScrollLock(true);
 
   const producerCount = producers.length;
   const visibleIndex =
@@ -95,20 +107,16 @@ export function RegionCarouselOverlay({
       return;
     }
 
-    setSelectedProducerId(producerId);
+    onSelectProducer(producerId);
     const nextIndex = producers.findIndex((producer) => producer.id === producerId);
     if (nextIndex >= 0) {
       setActiveIndex(nextIndex);
     }
-  }, [producers]);
+  }, [onSelectProducer, producers]);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    syncViewportToIndex(0, "auto");
-  }, [open, syncViewportToIndex]);
+    if (selectedIndex >= 0) syncViewportToIndex(selectedIndex, "auto");
+  }, [selectedIndex, syncViewportToIndex]);
 
   const handleViewportScroll = () => {
     const viewport = viewportRef.current;
@@ -130,27 +138,19 @@ export function RegionCarouselOverlay({
     }, 90);
   };
 
+  useLayoutEffect(() => {
+    closeButtonRef.current?.focus({ preventScroll: true });
+    restoreShopPanelBeforePaint();
+  }, []);
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    closeButtonRef.current?.focus();
-
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || selectedProducerId !== null) return;
       if (event.key === "Escape") {
-        if (selectedProducerId !== null) {
-          setSelectedProducerId(null);
-          return;
-        }
-
+        event.preventDefault();
         onClose();
         return;
       }
-
-      if (selectedProducerId !== null) {
-        return;
-      }
+      if (!(event.target instanceof Element) || !event.target.closest(".region-carousel-overlay__showcase")) return;
 
       if (event.key === "ArrowLeft") {
         goToPrevious();
@@ -166,7 +166,7 @@ export function RegionCarouselOverlay({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [goToNext, goToPrevious, onClose, open, selectedProducerId, producers.length]);
+  }, [goToNext, goToPrevious, onClose, selectedProducerId]);
 
   useEffect(() => {
     return () => {
@@ -176,19 +176,29 @@ export function RegionCarouselOverlay({
     };
   }, []);
 
-  if (!open) {
-    return null;
-  }
-
   const regionLabel = FRENCH_REGION_LABELS[region];
   return (
     <>
       <div
         className="region-carousel-overlay"
+        data-shop-scroll-container
         role="dialog"
         aria-modal="true"
         aria-label={`Producteurs en ${regionLabel}`}
         onClick={onClose}
+        onKeyDown={event => {
+          if (event.key !== "Tab" || event.defaultPrevented) return;
+          const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(
+            "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, [tabindex='0']",
+          )).filter(control => control.getClientRects().length && control.tabIndex >= 0);
+          const first = controls[0];
+          const last = controls.at(-1);
+          const target = event.shiftKey && event.target === first ? last : !event.shiftKey && event.target === last ? first : undefined;
+          if (target) {
+            event.preventDefault();
+            target.focus();
+          }
+        }}
       >
         <div className="region-carousel-overlay__backdrop" aria-hidden="true" />
         <div className="region-carousel-overlay__stage" onClick={(event) => event.stopPropagation()}>
@@ -203,11 +213,12 @@ export function RegionCarouselOverlay({
           </button>
 
           <div className="region-carousel-overlay__header">
-            <p className="region-carousel-overlay__title">{regionLabel}</p>
+            <h3 id={productGrid ? undefined : REGION_RESULTS_ID} data-shop-panel-results tabIndex={-1} className="region-carousel-overlay__title">{regionLabel}</h3>
             <p className="region-carousel-overlay__count">
               {producerCount} producteur{producerCount > 1 ? "s" : ""}
             </p>
           </div>
+          {productsShortcut}
 
           {producerCount === 0 ? (
             <p className="region-carousel-overlay__empty">
@@ -260,10 +271,14 @@ export function RegionCarouselOverlay({
               </p>
             </div>
           )}
+          {productGrid || (producerCount > 0 && (
+            <p className="region-carousel-overlay__empty">Aucun produit dans cette région actuellement.</p>
+          ))}
         </div>
       </div>
 
       <ProducerTcgModal
+        origin={origin}
         open={selectedProducerId !== null}
         producers={producers}
         selectedProducerId={selectedProducerId}
@@ -273,8 +288,8 @@ export function RegionCarouselOverlay({
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
         tastingSummariesByProductId={tastingSummariesByProductId}
-        onClose={() => setSelectedProducerId(null)}
-        onSelectProducer={handleSelectProducer}
+        onClose={() => onSelectProducer(null)}
+        onSelectProducer={onSelectProducer}
       />
     </>
   );

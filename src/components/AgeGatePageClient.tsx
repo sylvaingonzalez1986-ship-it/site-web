@@ -33,7 +33,13 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
       }
 
       window.dispatchEvent(new Event(AGE_VERIFIED_EVENT));
-      window.location.assign(sanitizeNextPath(nextPathParam));
+      const destination = sanitizeNextPath(nextPathParam);
+      // Browsers inherit the original fragment across the HTTP redirect to the gate.
+      // It is never sent to the middleware that builds the next parameter.
+      const fragment = window.location.hash;
+      const keepFragment = destination.startsWith("/boutique") && !destination.includes("#") &&
+        (fragment === "#avis-degustation" || /^#shop-card-[\w-]+$/.test(fragment));
+      window.location.assign(keepFragment ? destination + fragment : destination);
     } catch {
       setError("Verification impossible.");
     } finally {

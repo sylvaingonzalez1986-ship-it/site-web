@@ -89,6 +89,14 @@
   color: var(--market-paper);
 }
 .page .hero button:disabled { opacity: .5; }
+.resultsAction { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; }
+.resultsAction > p { color: var(--market-green); font-size: .875rem; font-weight: 700; }
+.page .hero .resultsButton {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  min-height: 48px;
+  padding: 8px 20px;
+  font-size: .875rem;
+}
 .tabDetail { display: block; font-size: .65rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
 .page [data-tutorial="category-filter"] { justify-content: flex-start; }
 .cultureFilter { min-width: 0; margin-top: 16px; padding: 0; border: 0; }
@@ -99,6 +107,10 @@
   .page .hero button:hover:not(:disabled) {
     --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
     color: var(--market-dark);
+  }
+  .page .hero .resultsButton:hover {
+    --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+    color: var(--market-paper);
   }
 }
 @media (max-width: 899px) {
@@ -119,10 +131,10 @@
   .page .hero :is([data-tutorial="category-filter"], .cultureOptions) button { padding-inline: 12px; font-size: .65rem; }
 }
 .sectionIntro { margin-bottom: 24px; padding: clamp(18px, 3vw, 32px); border: 1px solid var(--market-green); border-left: 6px solid var(--market-green); background: var(--market-paper); }
-.sectionIntro h2 { text-transform: uppercase; font-size: clamp(28px, 4vw, 46px); line-height: 1; }
-.catalogueHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 32px 0 24px; padding-bottom: 14px; border-bottom: 2px solid var(--market-green); }
-.catalogueHeading h2 { color: var(--market-green); font-family: var(--font-display); font-size: clamp(25px, 3vw, 38px); text-transform: uppercase; }
-.catalogueHeading span { flex-shrink: 0; padding: .4rem .6rem; border: 1px solid var(--market-green); background: var(--market-paper); color: var(--market-green); font: 800 .7rem/1.4 ui-monospace, monospace; }
+.catalogueHeading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 32px 0 24px; padding-bottom: 14px; border-bottom: 2px solid var(--market-green); }
+.catalogueHeading h2 { scroll-margin-top: 112px; color: var(--market-green); font-family: var(--font-display); font-size: clamp(25px, 3vw, 38px); text-transform: uppercase; }
+.catalogueHeading h2:focus-visible { outline: 2px solid var(--market-green); outline-offset: 4px; }
+.catalogueHeading span { padding: .4rem .6rem; border: 1px solid var(--market-green); background: var(--market-paper); color: var(--market-green); font: 800 .7rem/1.4 ui-monospace, monospace; }
 @media (max-width: 640px) {
   .page { background-size: 40px 40px; }
   .catalogueHeading span { font-size: .6rem; }

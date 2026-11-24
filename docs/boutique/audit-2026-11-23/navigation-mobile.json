@@ -1,0 +1,111 @@
+{
+  "origine": "https://www.leschanvriersbretons.com",
+  "viewport": [
+    390,
+    844
+  ],
+  "client": "Chrome headless, tactile émulé",
+  "version": "Chrome/157.0.8103.79",
+  "observations": [
+    {
+      "action": "Mobile · sélection avant ouverture tactile",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 2169,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": 131,
+      "carteVisible": true,
+      "focus": "body"
+    },
+    {
+      "action": "Mobile · Précédent navigateur",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 2169,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": 131,
+      "carteVisible": true,
+      "focus": "body"
+    },
+    {
+      "action": "Mobile · Retour Fleurs CBD",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "topCarte": 6107,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Mobile · résultat vide",
+      "url": "/boutique?culture=indoor",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Indoor"
+      ],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "Indoor",
+      "aide": "Aucun produit en culture Indoor pour ces filtres.Voir tous les types de culture"
+    },
+    {
+      "action": "Mobile · retrait du filtre vide",
+      "url": "/boutique",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Tous"
+      ],
+      "count": 2,
+      "first": [
+        "Small Bud Mix",
+        "Heaven"
+      ],
+      "scrollY": 30,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "Fermer"
+    },
+    {
+      "action": "Nouvelle session mobile, accès direct après le sas",
+      "url": "/boutique/e-liquide-cbd",
+      "title": "E-liquides CBD",
+      "count": 0,
+      "message": "Aucun produit dans cette catégorie pour le moment."
+    }
+  ]
+}

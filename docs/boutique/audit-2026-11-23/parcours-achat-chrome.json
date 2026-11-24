@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-23",
+  "navigateur": "Chrome piloté par Puppeteer",
+  "fenetres": [
+    { "largeurCss": 390, "hauteurCss": 844, "tactileEmule": true },
+    { "largeurCss": 1440, "hauteurCss": 900, "tactileEmule": false }
+  ],
+  "portee": {
+    "interface": "Pages publiques de production et panier stocké dans le navigateur isolé",
+    "paiement": "Interface de production avec compte, données associées et disponibilité Bitcoin simulés dans Chrome",
+    "envoiPaiement": false,
+    "commandeCreee": false
+  },
+  "parcoursInvite": {
+    "produit": "Small Bud Mix",
+    "fiche": "/boutique/fleurs-cbd/product-1775333841673",
+    "gestes": [
+      "Passer de la liste de produits à la fiche",
+      "Augmenter la quantité à 2 et ajouter au panier",
+      "Ouvrir avec Voir mon panier, fermer avec Échap, puis rouvrir",
+      "Sélectionner Point relais et continuer vers la connexion",
+      "Recharger la fiche, rouvrir le panier et retirer le dernier article avec Entrée sur mobile"
+    ],
+    "quantiteApresAjoutSurFiche": 1,
+    "quantiteDansPanierApresRechargement": 2,
+    "prixEnCentimesTtc": { "produits": 200, "livraisonPointRelais": 490, "totalEstime": 690 },
+    "destinationConnexion": "/compte/connexion?next=%2Fboutique%2Ffleurs-cbd%2Fproduct-1775333841673%3Fpanier%3D1",
+    "focusOuverture": "Fermer le panier",
+    "focusApresEchap": "Voir mon panier",
+    "focusApresRetraitClavierMobile": "BODY",
+    "focusAuTabSuivant": "Découvrir les produits"
+  },
+  "paiementAvecProfilFictif": {
+    "quantite": 1,
+    "modeLivraison": "Domicile",
+    "prixEnCentimesTtc": { "produits": 100, "livraisonDomicile": 690, "totalAffiche": 790 },
+    "moyenDePaiementSelectionneAuClavier": "Carte bancaire",
+    "boutonDesactiveAvantSelection": true,
+    "saisieEmail": "invalide",
+    "emailTypeMismatchDansChrome": true,
+    "boutonDesactiveApresSaisie": false,
+    "comportementLuDansLeCode": "Le bouton type=button appelle directement le gestionnaire qui envoie un POST à /api/checkout/viva. L'adresse e-mail est ensuite contrôlée par l'API."
+  }
+}

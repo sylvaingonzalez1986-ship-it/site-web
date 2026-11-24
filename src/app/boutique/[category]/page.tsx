@@ -3,6 +3,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { notFound, permanentRedirect } from "next/navigation";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/ProductCard";
+import { ShopResultsRestore } from "@/components/boutique/ShopResultsRestore";
 import { type ProductCategory } from "@/data/products";
 import { getActiveCatalogCategories } from "@/lib/catalog-categories";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
@@ -86,6 +87,7 @@ export default async function CategoryPage({
 
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-32">
+      <ShopResultsRestore />
       <BreadcrumbJsonLd items={[
         { name: "Accueil", url: baseUrl },
         { name: "Boutique CBD", url: `${baseUrl}/boutique` },
@@ -112,7 +114,7 @@ export default async function CategoryPage({
             <span className="font-bold text-ink">{categoryInfo.label}</span>
           </nav>
 
-          <h1 className="section-title text-ink">{categoryInfo.label}</h1>
+          <h1 id="boutique-resultats" tabIndex={-1} className="section-title scroll-mt-32 text-ink">{categoryInfo.label}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-charcoal">
             {categoryDescription}
           </p>
@@ -126,11 +128,12 @@ export default async function CategoryPage({
           </nav>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+        <div data-shop-list-view="category" className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
+              origin={{ surface: "category", categorySlug: slug, selection: "products" }}
               producer={resolveProductProducer(product, producersById, ownProducer)}
               addButtonLabel={store.content.boutique.addButtonLabel}
               lowStockThresholdGrams={store.content.boutique.lowStockThresholdGrams}

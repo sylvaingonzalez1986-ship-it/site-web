@@ -12,11 +12,13 @@ import {
 } from "@/lib/boutique-helpers";
 import { getProductCardTastingSummaries } from "@/lib/product-card-tasting-backend";
 import { getCurrentProductRotationDay } from "@/lib/product-rotation-server";
+import { shopSearchParams } from "@/lib/shop-origin";
 
-export default async function BoutiquePage() {
-  const [store, rotationDay] = await Promise.all([
+export default async function BoutiquePage({ searchParams }: PageProps<"/boutique">) {
+  const [store, rotationDay, query] = await Promise.all([
     readPublicStoreByBackend(),
     getCurrentProductRotationDay(),
+    searchParams,
   ]);
   const boutique = store.content.boutique;
   const uniqueProducts = dedupeProducts(store.products);
@@ -57,6 +59,10 @@ export default async function BoutiquePage() {
     ]} />
     <CollectionPageJsonLd name="Boutique CBD" description="Production bretonne et producteurs partenaires : catégories et références du catalogue." url={`${getSiteUrl()}/boutique`} products={uniqueProducts} />
     <BoutiquePageClient
+      initialSearch={shopSearchParams({
+        selection: query.selection, categorie: query.categorie, culture: query.culture,
+        region: query.region, producteur: query.producteur,
+      }).toString()}
       rotationDay={rotationDay}
       boutique={boutique}
       producers={store.producers}

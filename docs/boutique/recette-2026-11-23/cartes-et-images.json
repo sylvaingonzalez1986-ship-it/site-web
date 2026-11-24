@@ -1,0 +1,52 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "before": {
+      "id": "shop-card-market-product-1784378769542",
+      "index": 3,
+      "y": 428
+    },
+    "after": {
+      "index": 0,
+      "y": 428,
+      "focus": true
+    },
+    "stable": {
+      "index": 0,
+      "y": 428,
+      "focus": true
+    },
+    "completedImages": 1,
+    "missing": {
+      "title": "Produits des voisins",
+      "url": "/boutique?selection=neighbors&culture=greenhouse"
+    },
+    "respected": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "before": {
+      "id": "shop-card-market-product-1784378769542",
+      "index": 3,
+      "y": 400
+    },
+    "after": {
+      "index": 0,
+      "y": 400,
+      "focus": true
+    },
+    "stable": {
+      "index": 0,
+      "y": 400,
+      "focus": true
+    },
+    "completedImages": 1,
+    "missing": {
+      "title": "Produits des voisins",
+      "url": "/boutique?selection=neighbors&culture=greenhouse"
+    },
+    "respected": true
+  }
+]

@@ -1,0 +1,259 @@
+{
+  "date": "2026-11-23",
+  "serveur": "http://localhost:3000",
+  "sitemap": {
+    "statut": 200,
+    "fiches": 19,
+    "avecQueryOuFragment": 0
+  },
+  "ecrans": [
+    {
+      "largeur": 1440,
+      "hauteur": 900,
+      "tactileEmule": false,
+      "observations": [
+        {
+          "scenario": "Sas âge et avis",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?culture=greenhouse&selection=neighbors&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Ancienne catégorie avec avis et provenance",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Recharge",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Fiche seule",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "",
+          "hash": "",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "Voir les fleurs CBD",
+              "href": "/boutique/fleurs-cbd"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177",
+            "/boutique/fleurs-cbd/product-1773870065552"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Producteur inconnu",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?depuis=producteur&producteur=inexistant&selection=neighbors&entree=product-1795269223044",
+          "hash": "",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "Voir les fleurs CBD",
+              "href": "/boutique/fleurs-cbd"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177",
+            "/boutique/fleurs-cbd/product-1773870065552"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        }
+      ]
+    },
+    {
+      "largeur": 390,
+      "hauteur": 844,
+      "tactileEmule": true,
+      "observations": [
+        {
+          "scenario": "Sas âge et avis",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?culture=greenhouse&selection=neighbors&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Ancienne catégorie avec avis et provenance",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Recharge",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+          "hash": "#avis-degustation",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "← Retour aux résultats",
+              "href": "/boutique?selection=neighbors&culture=greenhouse#shop-card-market-product-1795269223044"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044",
+            "/boutique/fleurs-cbd/product-1773870065552?selection=neighbors&culture=greenhouse&depuis=marche&entree=product-1795269223044"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Fiche seule",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "",
+          "hash": "",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "Voir les fleurs CBD",
+              "href": "/boutique/fleurs-cbd"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177",
+            "/boutique/fleurs-cbd/product-1773870065552"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        },
+        {
+          "scenario": "Producteur inconnu",
+          "path": "/boutique/fleurs-cbd/product-1795269223044",
+          "search": "?depuis=producteur&producteur=inexistant&selection=neighbors&entree=product-1795269223044",
+          "hash": "",
+          "title": "Pineapple Mimosa",
+          "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "og": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+          "returnLink": [
+            {
+              "label": "Voir les fleurs CBD",
+              "href": "/boutique/fleurs-cbd"
+            }
+          ],
+          "pager": [
+            "/boutique/fleurs-cbd/product-1793171523177",
+            "/boutique/fleurs-cbd/product-1773870065552"
+          ],
+          "structured": [
+            "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+          ]
+        }
+      ]
+    }
+  ],
+  "buildLocal": {
+    "next": "16.4.6",
+    "mode": "next start",
+    "lectureMarche": 200,
+    "cartesRendues": [
+      "product-1788596868038",
+      "product-1788597425269",
+      "product-1795269223044",
+      "product-1784378769542"
+    ],
+    "lectureFiche": 200,
+    "retourFiltreDansHTML": true,
+    "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044"
+  }
+}

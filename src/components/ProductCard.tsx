@@ -7,6 +7,8 @@ import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel
 import { ProductImageZoom } from "@/components/boutique/ProductImageZoom";
 import { ProductCardActions } from "@/components/ProductCardActions";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
+import { ShopProductLink } from "@/components/boutique/ShopProductLink";
+import { shopCardId, type ShopOrigin } from "@/lib/shop-origin";
 import {
   categoryLabels,
   isProductCultureModeEligible,
@@ -43,6 +45,8 @@ const categorySlugs: Record<string, string> = {
 
 const IMAGE_SIZES = "(max-width: 1024px) 46vw, 31vw";
 
+export type ShopCardOrigin = Omit<ShopOrigin, "entry" | "resume">;
+
 type ProductCardProps = {
   product: Product;
   producer?: Producer;
@@ -50,6 +54,7 @@ type ProductCardProps = {
   lowStockThresholdGrams?: number;
   imagePriority?: boolean;
   tastingSummary?: PublicContestProductTastingSummary;
+  origin?: ShopCardOrigin;
 };
 
 export function ProductCard({
@@ -59,6 +64,7 @@ export function ProductCard({
   lowStockThresholdGrams = 0,
   imagePriority = false,
   tastingSummary,
+  origin: listOrigin,
 }: ProductCardProps) {
   const allImages = product.images?.length ? product.images : [product.image];
   const firstImage = allImages[0];
@@ -71,6 +77,7 @@ export function ProductCard({
     ? [producer.department, producer.region].filter(Boolean).join(", ") || producer.location
     : "";
   const productHref = `/boutique/${categorySlugs[product.category] ?? `${product.category}-cbd`}/${product.id}`;
+  const origin = listOrigin ? { ...listOrigin, entry: product.id } : undefined;
   const showCultureBadge =
     isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
   const tastingEntry = tastingSummary?.entry;
@@ -87,7 +94,7 @@ export function ProductCard({
       : 0;
 
   return (
-    <article data-ui-commerce="product-card" data-ui-shape="panel" className={`product-card group ${styles.card}`} data-world="market">
+    <article id={origin ? shopCardId(origin) : undefined} data-shop-product-id={product.id} data-ui-commerce="product-card" data-ui-shape="panel" className={`product-card group ${styles.card}`} data-world="market">
       {/* Keep the single photo server-rendered; its zoom trigger is interactive. */}
       {hasMultipleImages ? (
         <ProductImageCarousel
@@ -161,10 +168,10 @@ export function ProductCard({
           </div>
         )}
         <div className={styles.titleRow}>
-          <h3 className={styles.title}>
-            <Link href={productHref} className="hover:underline">
+          <h3 className={styles.title} data-shop-impression-title>
+            <ShopProductLink href={productHref} origin={origin} control="title" className="hover:underline">
               {product.name}
-            </Link>
+            </ShopProductLink>
           </h3>
           {!inStock && (
             <span className={`${styles.status} bg-[#f8d7da] text-[#7f1d1d]`}>
@@ -245,12 +252,15 @@ export function ProductCard({
                 </div>
               ) : null}
 
-              <Link data-ui-commerce="tasting-link" data-ui-shape="control"
+              <ShopProductLink data-ui-commerce="tasting-link" data-ui-shape="control"
                 href={`${productHref}#avis-degustation`}
+                origin={origin}
+                control="reviews"
+                aria-label={`Lire les avis sur la fiche de ${product.name}`}
                 className={styles.tastingLink}
               >
                 Lire les avis sur la fiche
-              </Link>
+              </ShopProductLink>
             </div>
           </details>
         ) : null}
@@ -271,6 +281,7 @@ export function ProductCard({
           <ProductCardActions
             product={product}
             productHref={productHref}
+            origin={origin}
             addButtonLabel={addButtonLabel}
             inStock={inStock}
             requiresVariantChoice={requiresVariantChoice}

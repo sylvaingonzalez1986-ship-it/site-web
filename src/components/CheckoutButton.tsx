@@ -47,6 +47,7 @@ type CheckoutButtonProps = {
   promoCode?: string;
   lotteryRewardClaimId?: string;
   disabled?: boolean;
+  validateDelivery: () => boolean;
   onSuccess?: () => void;
 };
 
@@ -73,17 +74,23 @@ export function CheckoutButton({
   promoCode,
   lotteryRewardClaimId,
   disabled = false,
+  validateDelivery,
   onSuccess,
 }: CheckoutButtonProps) {
   const { hasConsent } = useCookieConsent();
   const methodName = useId();
   const checkoutRequest = useRef<AbortController | null>(null);
   const [bitcoinAvailability, setBitcoinAvailability] = useState<BitcoinAvailability>("loading");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resumeUrl, setResumeUrl] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const amountInCents = Math.round(amountToPay * 100);
+  const hasPayableAmount = Number.isSafeInteger(amountInCents) && amountInCents > 0;
+  const paymentMethod = hasPayableAmount &&
+    (selectedMethod !== "bitcoin_lightning" || bitcoinAvailability === "enabled") ? selectedMethod : null;
+  const canSubmit = !loading && itemsCount > 0 && !disabled && Boolean(paymentMethod);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -103,14 +110,14 @@ export function CheckoutButton({
   useEffect(() => () => checkoutRequest.current?.abort(), []);
 
   const handleCheckout = async () => {
-    if (checkoutRequest.current || !paymentMethod ||
-        (paymentMethod === "bitcoin_lightning" && bitcoinAvailability !== "enabled")) return;
-    const controller = new AbortController();
-    checkoutRequest.current = controller;
-    setLoading(true);
+    if (checkoutRequest.current || !canSubmit || !paymentMethod) return;
     setError(null);
     setResumeUrl(null);
     setSuccess(null);
+    if (!validateDelivery()) return;
+    const controller = new AbortController();
+    checkoutRequest.current = controller;
+    setLoading(true);
     if (hasConsent("analytics")) {
       track("checkout_payment_clicked", {
         amount: amountToPay,
@@ -262,7 +269,7 @@ export function CheckoutButton({
   };
 
   const selectMethod = (method: PaymentMethod) => {
-    setPaymentMethod(method);
+    setSelectedMethod(method);
     setError(null);
     setResumeUrl(null);
   };
@@ -275,7 +282,7 @@ export function CheckoutButton({
         data-checkout-payment-methods
         tabIndex={-1}
         className="mb-3 grid gap-1"
-        disabled={loading}
+        disabled={loading || !hasPayableAmount}
         aria-describedby={paymentDescriptionId}
       >
         <legend className="mb-1 text-sm font-bold text-ink">Choisis ton moyen de paiement</legend>
@@ -308,7 +315,7 @@ export function CheckoutButton({
       <button data-ui-commerce="primary" data-ui-shape="control"
         type="button"
         onClick={handleCheckout}
-        disabled={loading || itemsCount === 0 || disabled || !paymentMethod}
+        disabled={!canSubmit}
         aria-busy={loading}
         aria-describedby={paymentDescriptionId}
         className="btn-cartoon btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
@@ -318,7 +325,9 @@ export function CheckoutButton({
           : `Payer ${formatPrice(amountToPay)}`}
       </button>
       <p id={paymentDescriptionId} className="mt-2 text-center text-xs font-semibold leading-relaxed text-charcoal">
-        {paymentMethod
+        {!hasPayableAmount
+          ? "Le total doit être supérieur à 0 € pour lancer un paiement. Vérifie le récapitulatif."
+          : paymentMethod
           ? "En cliquant, tu confirmes une commande avec obligation de paiement."
           : "Sélectionne un moyen de paiement pour continuer."}
       </p>

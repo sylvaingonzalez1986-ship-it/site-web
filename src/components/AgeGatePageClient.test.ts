@@ -53,4 +53,11 @@ describe("age verification return navigation", () => {
     await confirm("/boutique");
     expect(mocks.assign).not.toHaveBeenCalled();
   });
+
+  it("restores the product review fragment inherited by the age gate", async () => {
+    vi.stubGlobal("window", { location: { assign: mocks.assign, hash: "#avis-degustation" }, dispatchEvent: mocks.dispatchEvent });
+    const next = "/boutique/fleurs-cbd/fleur-a?depuis=marche&entree=fleur-a";
+    await confirm(next);
+    expect(mocks.assign).toHaveBeenCalledExactlyOnceWith(next + "#avis-degustation");
+  });
 });

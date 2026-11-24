@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-23",
+  "url": "https://www.leschanvriersbretons.com/boutique",
+  "mesures": [
+    {
+      "largeur": 390,
+      "hauteur": 844,
+      "largeurDocument": 390,
+      "nom": "SMALL BUD MIX",
+      "premiereCarteY": 1198,
+      "modes": [
+        "Mes produits",
+        "Mes voisins",
+        "Les copains de France et de Navarre",
+        "Par région"
+      ],
+      "nombreCartes": 2,
+      "dialogs": []
+    },
+    {
+      "largeur": 1440,
+      "hauteur": 900,
+      "largeurDocument": 1440,
+      "nom": "SMALL BUD MIX",
+      "premiereCarteY": 1344,
+      "modes": [
+        "Mes produits",
+        "Mes voisins",
+        "Les copains de France et de Navarre",
+        "Par région"
+      ],
+      "nombreCartes": 2,
+      "dialogs": []
+    }
+  ]
+}

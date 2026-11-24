@@ -1,0 +1,302 @@
+{
+  "origin": "http://localhost:3000",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "candidates": [
+    {
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 0,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 1386
+      }
+    }
+  ],
+  "history": {
+    "producer": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 924,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 462
+      },
+      "h1": "Chanvre naturel"
+    },
+    "product": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Cake Brulée"
+    },
+    "back": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 914,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 467
+      },
+      "h1": "Chanvre naturel"
+    },
+    "backStable": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 914,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 469
+      },
+      "h1": "Chanvre naturel"
+    },
+    "forward": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Cake Brulée"
+    },
+    "backAgain": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 914,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 462
+      },
+      "h1": "Chanvre naturel"
+    },
+    "backTwice": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    },
+    "desktopEscape": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=fb478954-d67c-4a34-a999-9e4e2582810a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 805,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    }
+  }
+}

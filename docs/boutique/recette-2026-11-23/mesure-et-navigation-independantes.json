@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-23",
+  "mesure": {
+    "navigateur": "Chrome headless",
+    "fenetrePx": [390, 500],
+    "adresse": "127.0.0.1, port temporaire",
+    "conditions": "Page isolée, modules de mesure et utilitaires de consentement du projet, visibilité du document simulée",
+    "impressionsSurDeuxVues": 2,
+    "ouverturesDeFiche": 1,
+    "ajoutsVarianteConfirmesSimules": 1,
+    "emissionsAvantConsentement": 0,
+    "emissionsApresRetrait": 0,
+    "impressionTitreSansPrix": false,
+    "impressionPendantMasquage": false,
+    "impressionDerriereModale": false,
+    "doublonApresRerendu": false,
+    "nouvelleImpressionAuChangementDeFiltre": true,
+    "marqueurResumeDansEvenements": false,
+    "requetesExternes": 0,
+    "testsVitest": { "fichiers": 2, "reussis": 8 },
+    "panierEtHorsEcran": {
+      "fenetrePx": [390, 844],
+      "conditions": "Page de test utilisant la mutation panier et un format limité à une unité",
+      "impressionsCarteHorsEcran": 0,
+      "impressionsApresDefilement": 1,
+      "gestesAjout": 2,
+      "mutationsConfirmees": 1,
+      "mutationsRefuseesPourStock": 1,
+      "evenementsAjout": 1,
+      "requetesExternes": 0
+    },
+    "controlesAuxDimensionsDuBrief": [
+      {
+        "fenetrePx": [1440, 900],
+        "impressionsCarteVisibleAvantAccord": 0,
+        "impressionsCarteHorsEcranApresAccord": 0,
+        "impressionsCarteVisibleApresAccord": 1,
+        "gestesAjout": 2,
+        "mutationsConfirmees": 1,
+        "mutationsRefuseesPourStock": 1,
+        "evenementsAjout": 1,
+        "emissionsApresRetrait": 0,
+        "requetesExternes": 0
+      },
+      {
+        "fenetrePx": [390, 844],
+        "impressionsCarteVisibleAvantAccord": 0,
+        "impressionsCarteHorsEcranApresAccord": 0,
+        "impressionsCarteVisibleApresAccord": 1,
+        "gestesAjout": 2,
+        "mutationsConfirmees": 1,
+        "mutationsRefuseesPourStock": 1,
+        "evenementsAjout": 1,
+        "emissionsApresRetrait": 0,
+        "requetesExternes": 0
+      }
+    ]
+  },
+  "navigation": {
+    "adresse": "http://localhost:3000",
+    "parcours": "Mes voisins, Greenhouse, Pineapple Mimosa et Skunk",
+    "recetteMobile": {
+      "fenetrePx": [390, 844],
+      "resultats": 4,
+      "aPuisRetour": { "produit": "Pineapple Mimosa", "controle": "view", "focusRestitue": true, "deltaPx": 0 },
+      "bPuisRetour": { "produit": "Skunk", "controle": "title", "focusRestitue": true, "deltaPx": 0 },
+      "precedentSuivant": { "retourAuBonProduit": true, "focusRestitue": true, "deltaPx": -2, "suivantRouvreLaFiche": true },
+      "paginationPuisRetourA": { "controleFocalise": "view", "focusRestitue": true, "deltaPx": 0, "bonneAncre": true },
+      "onglets": [
+        { "selection": "neighbors", "culture": "greenhouse", "references": 4 },
+        { "selection": "copains", "culture": "outdoor", "references": 5 }
+      ],
+      "rechargeDepuisNouvelOnglet": {
+        "conditions": "Tap natif en émulation mobile, target blank et noopener posés sur le lien seulement dans le navigateur de test",
+        "ongletInitialSurLaListe": true,
+        "produit": "Pineapple Mimosa",
+        "entree": "product-1795269223044",
+        "filtresRetenus": ["neighbors", "greenhouse"],
+        "marqueurDeRepriseRequis": false,
+        "ancreAvantEtApresRecharge": "#shop-card-market-product-1795269223044"
+      }
+    },
+    "recetteBureau": {
+      "fenetrePx": [1440, 900],
+      "aPuisRetour": { "produit": "Pineapple Mimosa", "controle": "view", "focusRestitue": true, "deltaPx": 0 },
+      "bPuisRetour": { "produit": "Skunk", "controle": "title", "focusRestitue": true, "deltaPx": 0 },
+      "precedentSuivant": { "retourAuBonProduit": true, "focusRestitue": true, "deltaPx": 0, "suivantRouvreLaFiche": true },
+      "paginationPuisRetourA": { "controleFocalise": "view", "focusRestitue": true, "deltaPx": 0, "bonneAncre": true },
+      "onglets": [
+        { "selection": "neighbors", "culture": "greenhouse", "references": 4 },
+        { "selection": "copains", "culture": "outdoor", "references": 5 }
+      ],
+      "rechargeDepuisNouvelOnglet": {
+        "clicMilieu": { "natif": true, "bouton": 1, "annule": false },
+        "ongletInitialSurLaListe": true,
+        "produit": "Pineapple Mimosa",
+        "filtresRetenus": ["neighbors", "greenhouse"],
+        "marqueurDeRepriseRequis": false,
+        "ancreApresRecharge": "#shop-card-market-product-1795269223044"
+      },
+      "paginationEtRetourSansRepriseEnregistree": {
+        "produitEntree": "product-1795269223044",
+        "produitSuivant": "product-1773870065552",
+        "ancreRetour": "#shop-card-market-product-1795269223044",
+        "controleFocalise": "title",
+        "hautDuLienPx": 80,
+        "carteVisible": true,
+        "filtresRetenus": ["neighbors", "greenhouse"]
+      }
+    },
+    "conditionsRecetteAetB": "Navigateur isolé, choix fictif de refus préétabli et fenêtre Nouveautés fermée lorsqu’elle était ouverte",
+    "harmonisationAncreHistorique": {
+      "fenetrePx": [1440, 900],
+      "retourExpliciteB": { "ancre": "#shop-card-market-product-1788596868038", "focus": true, "hautDuLienPx": 428 },
+      "precedentApresOuvertureA": { "ancre": "#shop-card-market-product-1795269223044", "focus": true, "hautDuLienPx": 428 },
+      "rechargeDeCetteEntree": { "ancre": "#shop-card-market-product-1795269223044", "focus": true, "hautDuLienPx": 428 }
+    }
+  },
+  "anomaliesPubliques": {
+    "heureParis": "19:50",
+    "pineappleMimosa": { "ficheHttp": 200, "enStockDansLesDonneesStructurees": true, "dansFluxOpenAI": false },
+    "categorieELiquides": { "http": 200, "catalogueVide": true },
+    "anciennesFichesELiquides": { "nombre": 2, "http": 200, "titre": "Produit introuvable" }
+  }
+}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { usePathname } from "next/navigation";
+import { hasShopResultsRestore } from "@/components/boutique/ShopResultsRestore";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import { categoryLabels, isProductCultureModeEligible } from "@/data/products";
@@ -137,6 +138,7 @@ function NewProductsPopupContent({ onDismiss }: { onDismiss: () => void }) {
 
     let timer: number;
     const openWhenAvailable = () => {
+      if (hasShopResultsRestore()) return;
       if (isVisitBusy()) {
         timer = window.setTimeout(openWhenAvailable, POPUP_OPEN_DELAY_MS);
         return;

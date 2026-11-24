@@ -1,0 +1,372 @@
+{
+  "origin": "http://localhost:3000",
+  "viewport": {
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "isMobile": true,
+      "hasTouch": true
+    }
+  },
+  "documents": [
+    [
+      200,
+      "http://localhost:3000/boutique?selection=regions"
+    ],
+    [
+      200,
+      "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958"
+    ]
+  ],
+  "desktopRegion": {
+    "before": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        }
+      ],
+      "scrollY": 2018,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 719,
+        "height": 787,
+        "fullHeight": 1619
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 472
+      },
+      "h1": "Chanvre naturel"
+    },
+    "product": {
+      "currentIndex": 4,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 11,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=b7de94be-3e0d-470d-8b6d-956b53a53151&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "activeControl": null,
+      "activeHref": null,
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Heaven"
+    },
+    "return": {
+      "currentIndex": 5,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 11,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=b7de94be-3e0d-470d-8b6d-956b53a53151&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=b7de94be-3e0d-470d-8b6d-956b53a53151#shop-card-region-Bretagne-les-chanvriers-bretons-product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 2018,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 709,
+        "height": 787,
+        "fullHeight": 1619
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 482
+      },
+      "h1": "Chanvre naturel"
+    },
+    "stable": {
+      "currentIndex": 5,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 11,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=b7de94be-3e0d-470d-8b6d-956b53a53151&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=b7de94be-3e0d-470d-8b6d-956b53a53151#shop-card-region-Bretagne-les-chanvriers-bretons-product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 2018,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 709,
+        "height": 787,
+        "fullHeight": 1619
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 482
+      },
+      "h1": "Chanvre naturel"
+    }
+  },
+  "mobileDirect": {
+    "before": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 14,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 16,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "typed"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 3599,
+        "height": 746,
+        "fullHeight": 4488
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 437
+      },
+      "h1": "Chanvre naturel"
+    },
+    "product": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 14,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 16,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "typed"
+        },
+        {
+          "id": 18,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=959a408c-a4fb-46df-b34f-264a28b4d24a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "activeControl": null,
+      "activeHref": null,
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Cake Brulée"
+    },
+    "back": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 14,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 16,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "typed"
+        },
+        {
+          "id": 18,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=959a408c-a4fb-46df-b34f-264a28b4d24a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 3589,
+        "height": 746,
+        "fullHeight": 4488
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 447
+      },
+      "h1": "Chanvre naturel"
+    },
+    "stable": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 14,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 16,
+          "url": "http://localhost:3000/boutique?selection=neighbors&producteur=producer-1773870264609-7958",
+          "type": "typed"
+        },
+        {
+          "id": 18,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=959a408c-a4fb-46df-b34f-264a28b4d24a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "activeControl": "title",
+      "activeHref": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 3589,
+        "height": 746,
+        "fullHeight": 4488
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&depuis=producteur&entree=product-1784378769542",
+        "top": 447
+      },
+      "h1": "Chanvre naturel"
+    },
+    "escape": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 14,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 16,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "typed"
+        },
+        {
+          "id": 18,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542?selection=neighbors&producteur=producer-1773870264609-7958&resume=959a408c-a4fb-46df-b34f-264a28b4d24a&depuis=producteur&entree=product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "ARTICLE Découvrir la fiche de Ty Kanna",
+      "activeControl": null,
+      "activeHref": null,
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    }
+  }
+}

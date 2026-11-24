@@ -1,0 +1,203 @@
+{
+  "environnement": "http://localhost:3000",
+  "navigateur": "Chrome piloté par Puppeteer",
+  "conditions": "Compte, panier, relais et disponibilité Bitcoin simulés. Les dialogues de première visite ont été fermés pendant la recette. Les accès externes du navigateur étaient bloqués.",
+  "creationsPaiementReelles": 0,
+  "commandesReelles": 0,
+  "parcours": [
+    {
+      "fenetreCss": [
+        390,
+        844
+      ],
+      "tactileEmule": true,
+      "catalogue": {
+        "maison": {
+          "label": "Voir les 2 produits",
+          "count": 2,
+          "heading": "PRODUITS MAISON",
+          "headingTop": 112,
+          "navBottom": 72,
+          "overflow": 0
+        },
+        "voisins": {
+          "label": "Voir les 8 produits",
+          "count": 8,
+          "heading": "PRODUITS DES VOISINS",
+          "headingTop": 112,
+          "navBottom": 72,
+          "overflow": 0
+        },
+        "region": {
+          "label": "Voir la carte des producteurs",
+          "heading": "PRODUITS PAR RÉGION",
+          "headingTop": 112,
+          "navBottom": 72,
+          "overflow": 0
+        },
+        "selectionVide": {
+          "products": 0,
+          "shortcut": false
+        }
+      },
+      "paiement": {
+        "emailInvalide": {
+          "focused": true,
+          "invalid": true,
+          "message": "Saisis une adresse e-mail valide, par exemple nom@exemple.fr."
+        },
+        "relaisManquant": {
+          "focused": true,
+          "invalid": true,
+          "message": "Choisis un point relais disponible dans le pays de livraison."
+        },
+        "requetesInvalides": 0,
+        "reponsesFictivesApresCorrection": [
+          {
+            "paymentMethod": "card",
+            "deliveryMethod": "home",
+            "relayAttached": false,
+            "emailCorrected": true
+          },
+          {
+            "paymentMethod": "bitcoin_lightning",
+            "deliveryMethod": "relay",
+            "relayAttached": true,
+            "emailCorrected": true
+          }
+        ]
+      },
+      "panierVide": {
+        "focusApresRetrait": "DÉCOUVRIR LES PRODUITS",
+        "annoncesDeRetrait": 1,
+        "focusApresMajTab": "Fermer le panier",
+        "focusApresEchap": "Panier"
+      }
+    },
+    {
+      "fenetreCss": [
+        1440,
+        900
+      ],
+      "tactileEmule": false,
+      "catalogue": {
+        "maison": {
+          "label": "Voir les 2 produits",
+          "count": 2,
+          "heading": "PRODUITS MAISON",
+          "headingTop": 112,
+          "navBottom": 99,
+          "overflow": 0
+        },
+        "voisins": {
+          "label": "Voir les 8 produits",
+          "count": 8,
+          "heading": "PRODUITS DES VOISINS",
+          "headingTop": 112,
+          "navBottom": 99,
+          "overflow": 0
+        },
+        "region": {
+          "label": "Voir la carte des producteurs",
+          "heading": "PRODUITS PAR RÉGION",
+          "headingTop": 112,
+          "navBottom": 99,
+          "overflow": 0
+        },
+        "selectionVide": {
+          "products": 0,
+          "shortcut": false
+        }
+      },
+      "paiement": {
+        "emailInvalide": {
+          "focused": true,
+          "invalid": true,
+          "message": "Saisis une adresse e-mail valide, par exemple nom@exemple.fr."
+        },
+        "relaisManquant": {
+          "focused": true,
+          "invalid": true,
+          "message": "Choisis un point relais disponible dans le pays de livraison."
+        },
+        "requetesInvalides": 0,
+        "reponsesFictivesApresCorrection": [
+          {
+            "paymentMethod": "card",
+            "deliveryMethod": "home",
+            "relayAttached": false,
+            "emailCorrected": true
+          },
+          {
+            "paymentMethod": "bitcoin_lightning",
+            "deliveryMethod": "relay",
+            "relayAttached": true,
+            "emailCorrected": true
+          }
+        ]
+      },
+      "panierVide": {
+        "focusApresRetrait": "DÉCOUVRIR LES PRODUITS",
+        "annoncesDeRetrait": 1,
+        "focusApresMajTab": "Fermer le panier",
+        "focusApresEchap": "Panier"
+      }
+    }
+  ],
+  "totalNul": {
+    "fenetreCss": [
+      1440,
+      900
+    ],
+    "montantEuros": 0,
+    "carteActive": false,
+    "bitcoinActif": false,
+    "demandesPaiement": 0
+  },
+  "disponibiliteBitcoin": {
+    "metadataProduction": true,
+    "metadataLocale": false,
+    "prestataireTeste": false
+  },
+  "scriptLocal": "output/boutique-experience/local-validation.mjs",
+  "raccourciRegionChoisie": [
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "populated": {
+        "label": "Voir les 9 produits",
+        "count": 9,
+        "heading": "Produits · Bretagne",
+        "focused": true,
+        "top": 98,
+        "navbarBottom": 86
+      },
+      "empty": {
+        "label": "Voir la région",
+        "count": 0,
+        "heading": "ÎLE-DE-FRANCE",
+        "focused": true,
+        "top": 97,
+        "navbarBottom": 86
+      }
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "tactileEmulated": true,
+      "populated": {
+        "label": "Voir les 9 produits",
+        "count": 9,
+        "heading": "Produits · Bretagne",
+        "focused": true,
+        "top": 12,
+        "navbarBottom": 72,
+        "panelScroll": 645
+      }
+    }
+  ]
+}

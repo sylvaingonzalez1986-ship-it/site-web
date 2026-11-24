@@ -48,6 +48,7 @@ export function ProducerTcgCard({
   return (
     <article
       data-producer-card
+      data-producer-id={producer.id}
       role="button"
       tabIndex={0}
       onClick={onClick}

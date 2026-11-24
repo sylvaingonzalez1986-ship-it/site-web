@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChevronDown, ExternalLink, MapPin, X } from "lucide-react";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard, type ShopCardOrigin } from "@/components/ProductCard";
 import { ProducerSocialLinks } from "@/components/boutique/ProducerSocialLinks";
 import {
   PRODUCER_CLIMATE_DETAILS,
@@ -18,6 +18,7 @@ import photoStyles from "./ProductPhoto.module.css";
 
 type ProducerDetailPanelProps = {
   producer: Producer;
+  origin: ShopCardOrigin;
   products: Product[];
   addButtonLabel: string;
   lowStockThresholdGrams: number;
@@ -73,6 +74,7 @@ function ProducerFact({ title, value, details }: ProducerFactProps) {
 
 export function ProducerDetailPanel({
   producer,
+  origin,
   products,
   addButtonLabel,
   lowStockThresholdGrams,
@@ -201,7 +203,7 @@ export function ProducerDetailPanel({
         <div className={styles.productsHeader}>
           <div>
             <p className={styles.eyebrow}>La sélection de</p>
-            <h3 className={styles.productsTitle}>{producer.name}</h3>
+            <h3 data-shop-panel-results tabIndex={-1} className={styles.productsTitle}>{producer.name}</h3>
           </div>
           <p className={`${styles.eyebrow} ${styles.productCount}`}>
             {products.length} produit{products.length > 1 ? "s" : ""}
@@ -209,11 +211,12 @@ export function ProducerDetailPanel({
         </div>
 
         {products.length > 0 ? (
-          <div className={styles.productGrid}>
+          <div data-shop-list-view="producer-panel" className={styles.productGrid}>
             {products.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
+                origin={origin}
                 producer={producer}
                 addButtonLabel={addButtonLabel}
                 lowStockThresholdGrams={lowStockThresholdGrams}
