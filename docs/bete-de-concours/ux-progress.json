@@ -1,4 +1,11 @@
 {
+  "atelierCoiffures20261125": {
+    "livraison": "La coupe portée revient dans le bandeau. Deux commandes parcourent les 14 coiffures au clavier ou au doigt et conservent le brouillon jusqu’à la validation.",
+    "preuve": "docs/bete-de-concours/atelier-personnage/recette-coiffures.md",
+    "verification": "Sélection visible sur 0/5 fenêtres avant, 5/5 après. 41 tests Vitest, SQL en mémoire, 14 groupes d’arrivée, 10 de menu, recette du studio 3D, typage, lint ciblé et build local validés.",
+    "environnement": "470cbd11, dix skills importés au SHA vérifié et six rôles Codex du projet. Les trois skills préexistants sont dans 64e92db7.",
+    "pointDeReprise": "Tester deux modifications simultanées du surnom sur PostgreSQL local. Pour l’atelier, contrôler le nuancier et le clavier sur téléphone physique."
+  },
   "heuresDansMonEquipe20261123": {
     "livraison": "Dans Ma partie, la jauge supérieure et le volet sur les durées sont retirés. Mon équipe affiche les heures libres et leur répartition par personne.",
     "verification": "Quatre parcours Chromium du Quartier à 320, 390 et 1440 px vérifient les disponibilités dans Mon équipe et l’absence du doublon dans le bilan. 94 tests ciblés réussis.",

@@ -151,6 +151,11 @@
 .fieldHeading { width: 100%; margin: 0 0 7px; padding: 0 0 4px; border-bottom: 1px solid var(--workshop-rule); font: 800 22px/1.08 var(--font-display), Impact, sans-serif; }
 .traitNote { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
 .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hairStepper { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 6px; padding-bottom: 4px; margin-bottom: 7px; border-bottom: 1px solid var(--workshop-rule); }
+.hairStepper button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; cursor: pointer; }
+.hairStepper [role="status"] { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 2px 8px; text-align: center; }
+.hairStepper strong { font: 800 22px/1.1 var(--font-display), Impact, sans-serif; }
+.hairStepper small { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .choices[data-feature-choices="hair"] {
   grid-auto-columns: calc((100% - 24px) / 4.25);
   grid-auto-flow: column;
@@ -238,7 +243,7 @@
 .dialog[data-profile-step="look"] .actions button { min-height: 47px; font-size: 17px; }
 .dialog[data-profile-step="look"] :is(button, summary, button span) { text-transform: none !important; }
 
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option,
+.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option,
 .customColor input, .recentColors button, .actions button, .strengths button, .editLink {
   --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
   color: var(--ink);
@@ -248,7 +253,7 @@
   box-shadow: none;
   border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
+.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
 .stepNumber { --game-control-edge: 7px; }
 .previewTools button[aria-pressed="true"], .lookTabs button[aria-pressed="true"], .fieldTabs button[aria-pressed="true"], .recentColors button[aria-pressed="true"] {
   --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
@@ -264,7 +269,7 @@
   border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 @media (hover: hover) {
-  :is(.close, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .recentColors button, .actions button, .editLink):hover:not(:disabled, [aria-pressed="true"]) {
+  :is(.close, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option, .recentColors button, .actions button, .editLink):hover:not(:disabled, [aria-pressed="true"]) {
     --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
     color: var(--ink);
   }

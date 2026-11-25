@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
-import { Check, Dices, Eye, Glasses, RotateCcw, Scissors, Shirt, Smile, Undo2, UserRound } from "lucide-react";
+import { useEffect, useEffectEvent, useId, useLayoutEffect, useRef, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, Dices, Eye, Glasses, RotateCcw, Scissors, Shirt, Smile, Undo2, UserRound } from "lucide-react";
 import {
   CHANVRIER_APPEARANCE_OPTIONS as OPTIONS, CHANVRIER_CLOTHES, CHANVRIER_DYE_ZONES, CHANVRIER_FABRICS, CHANVRIER_SKINS,
   getChanvrierAppearance, getChanvrierColors, type ChanvrierAppearance, type ChanvrierAvatarProfile, type ChanvrierChoiceKey, type ChanvrierDyeZone,
@@ -237,6 +237,29 @@ export function ChanvrierWardrobe({ wardrobe, profile, onViewChange }: {
   const appearance = getChanvrierAppearance(profile);
   const fields = category.fields.filter(item => !PAIRED_COLORS.has(item));
   const palette = PAIRED_PALETTES[field];
+  const hairStrip = useRef<HTMLDivElement>(null);
+  const hairIndex = OPTIONS.hair.findIndex(item => item.code === appearance.hair);
+  const changeHair = (offset: number) => {
+    const index = (hairIndex + offset + OPTIONS.hair.length) % OPTIONS.hair.length;
+    apply(withOption(profile, "hair", OPTIONS.hair[index].code));
+  };
+  useLayoutEffect(() => {
+    const strip = hairStrip.current;
+    if (field !== "hair" || !strip) return;
+    // Only move the horizontal strip. Keep focus and the editor's vertical scroll.
+    const revealSelection = () => {
+      const choice = strip.querySelector<HTMLButtonElement>('[aria-pressed="true"]');
+      if (!choice) return;
+      const bounds = strip.getBoundingClientRect();
+      const item = choice.getBoundingClientRect();
+      if (item.left < bounds.left) strip.scrollLeft += item.left - bounds.left - 5;
+      else if (item.right > bounds.right) strip.scrollLeft += item.right - bounds.right + 5;
+    };
+    revealSelection();
+    const observer = new ResizeObserver(revealSelection);
+    observer.observe(strip);
+    return () => observer.disconnect();
+  }, [field, appearance.hair]);
   const accessoryNote = field === "hair" && appearance.headwear !== "none" ? "Les vignettes montrent les coiffures sans couvre-chef."
     : (field === "eyes" || field === "eyebrows") && (appearance.accessory === "glasses" || appearance.accessory === "round-glasses") ? "Les vignettes montrent le regard sans lunettes." : null;
 
@@ -260,9 +283,13 @@ export function ChanvrierWardrobe({ wardrobe, profile, onViewChange }: {
           const next = withOutfit(profile, outfit);
           return <WardrobeChoice key={outfit.code} label={outfit.name} profile={next} selected={sameAppearance(profile, next)} view="full" onClick={() => apply(next)} />;
         })}</div>
-      </section>) : <fieldset className={styles.optionGroup} key={field}>
-        <legend className={styles.fieldHeading}>{LABELS[field]}</legend>
-        <div className={styles.choices} data-feature-choices={field}>{field === "gender" ? GENDERS.map(item => {
+      </section>) : <fieldset className={styles.optionGroup} key={field} aria-label={field === "hair" ? LABELS.hair : undefined}>
+        {field === "hair" ? <div className={styles.hairStepper}>
+          <button type="button" aria-label="Coupe précédente" title="Coupe précédente" onClick={() => changeHair(-1)}><ChevronLeft size={20} aria-hidden="true" /></button>
+          <span role="status" aria-atomic="true"><strong>{OPTIONS.hair[hairIndex].name}</strong> <small>{hairIndex + 1} sur {OPTIONS.hair.length}</small></span>
+          <button type="button" aria-label="Coupe suivante" title="Coupe suivante" onClick={() => changeHair(1)}><ChevronRight size={20} aria-hidden="true" /></button>
+        </div> : <legend className={styles.fieldHeading}>{LABELS[field]}</legend>}
+        <div className={styles.choices} ref={field === "hair" ? hairStrip : undefined} data-feature-choices={field}>{field === "gender" ? GENDERS.map(item => {
           const next = { ...profile, gender: item.code, appearance };
           return <WardrobeChoice key={item.code} label={item.name} profile={next} selected={profile.gender === item.code} view="full" onClick={() => apply(next)} />;
         }) : OPTIONS[field].map(item => {
