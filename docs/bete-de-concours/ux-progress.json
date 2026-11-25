@@ -4,7 +4,8 @@
     "preuve": "docs/bete-de-concours/atelier-personnage/recette-coiffures.md",
     "verification": "Sélection visible sur 0/5 fenêtres avant, 5/5 après. 41 tests Vitest, SQL en mémoire, 14 groupes d’arrivée, 10 de menu, recette du studio 3D, typage, lint ciblé et build local validés.",
     "environnement": "470cbd11, dix skills importés au SHA vérifié et six rôles Codex du projet. Les trois skills préexistants sont dans 64e92db7.",
-    "pointDeReprise": "Tester deux modifications simultanées du surnom sur PostgreSQL local. Pour l’atelier, contrôler le nuancier et le clavier sur téléphone physique."
+    "sauvegardeSurnom": "PostgreSQL 18.7, deux sessions locales. Interblocage observé avant correction. Après la migration 20261125000100, les deux sauvegardes aboutissent, les profils concordent et le refus de spécialité annule toute modification. Retour à la définition SQL précédente vérifié en base jetable.",
+    "pointDeReprise": "Étudier deux éditions concurrentes de l’apparence v2. Pour l’atelier, contrôler le nuancier et le clavier sur téléphone physique."
   },
   "heuresDansMonEquipe20261123": {
     "livraison": "Dans Ma partie, la jauge supérieure et le volet sur les durées sont retirés. Mon équipe affiche les heures libres et leur répartition par personne.",

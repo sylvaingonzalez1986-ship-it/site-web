@@ -50,6 +50,21 @@ La branche `feat/atelier-quartier-codex` sépare le socle préexistant `64e92db7
 | Priorité | Constat, coût et risque | Vérification attendue |
 | --- | --- | --- |
 | Livré · forte confiance | Dans `ChanvrierWardrobe.tsx`, le remontage du champ réinitialisait le défilement horizontal. Impact immédiat sur la comparaison des coupes. Faible coût et faible risque, correction limitée au sélecteur et à sa CSS. | Le même choix est visible après changement de rubrique et rechargement. Le focus, le cadrage et l’unicité de l’enregistrement sont conservés. |
-| Ensuite · impact potentiellement fort, confiance moyenne | Deux chemins de modification du surnom écrivent les profils du concours et du personnage dans un ordre différent. Revue statique de `contest-backend.ts` et de la RPC de `20260914000100_arena_chanvrier_profiles.sql`. Un échec transactionnel simultané reste possible. Effort moyen et risque de régression côté base. | Tester la concurrence sur deux connexions PostgreSQL de test. Si confirmé, uniformiser l’ordre des verrous et vérifier cohérence et reprise sur les deux parcours. |
+| Corrigé localement · impact confirmé | Deux modifications simultanées du surnom pouvaient faire échouer une des sauvegardes. La migration du 25 novembre aligne l’ordre des écritures. | Deux sessions PostgreSQL indépendantes aboutissent et les deux profils affichent le même surnom. |
 | Puis · impact moyen, confiance forte sur le code | La RPC d’apparence v2 remplace l’objet complet. Deux éditions ouvertes sur des états différents peuvent perdre une retouche. Effort moyen et risque de compatibilité. Voir `20261118000500_chanvrier_appearance_v2.sql`. | Essayer deux éditions de test. Évaluer une révision serveur et la conservation du brouillon en cas de conflit. |
 | Terrain · coût faible | L’émulation couvre la géométrie de l’écran. Le clavier logiciel, l’encoche et la manipulation de la palette restent à contrôler sur matériel. | Sur un téléphone physique, rouvrir la dernière coupe, choisir une teinte puis confirmer sur un compte de préproduction autorisé. |
+
+### Sauvegarde du surnom · vérification du 25 novembre
+
+Sur PostgreSQL 18.7 local, un compte fictif a modifié son surnom depuis le concours et son apparence depuis l’atelier. Avant correction, l’une des deux transactions simultanées a reçu `40P01` et a été annulée. Après correction, les deux aboutissent. Le surnom final est commun au concours et au personnage. La coupe lutin, la spécialité, le solde et la date de création ont été vérifiés après relecture. Une tentative de changer la spécialité définitive annule aussi le changement de surnom.
+
+La migration modifie seulement la fonction de sauvegarde du personnage. Elle conserve le verrou du portefeuille, écrit le profil concours, puis vérifie et enregistre le personnage dans la même transaction. Un surnom déjà pris peut donc être signalé en premier si la même demande contient aussi une spécialité interdite. Les sauvegardes valides gardent la règle du dernier surnom écrit. [Migration](../../../supabase/migrations/20261125000100_chanvrier_nickname_lock_order.sql)
+
+La recette utilise la RPC et l’upsert SQL du backend, deux connexions sous `service_role` et une base jetable dans le cluster dédié. Les dépendances de jeu proviennent de la fixture de personnalisation. Les appels HTTP et une base Supabase hébergée restent hors de cette mesure. Depuis la racine, avec le cluster de recette démarré sur la boucle locale et le client PostgreSQL déjà présent, lancer la commande suivante.
+
+```powershell
+$env:KQ_TEST_POSTGRES_CLIENT = (Resolve-Path 'output/placard-reliability/postgres/client/package/src/index.js').Path
+node scripts/test-chanvrier-customization.mjs --concurrent-nicknames
+```
+
+Pour un retour arrière après une éventuelle application, conserver au préalable le résultat de `SELECT pg_get_functiondef('public.rpc_arena_save_chanvrier(uuid,jsonb)'::regprocedure)`. Tant que la fonction n’a pas évolué depuis, réappliquer cette définition dans une transaction. Cette restauration et la conservation des droits d’exécution ont été vérifiées sur la base jetable.
