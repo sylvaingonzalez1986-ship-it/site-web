@@ -1,0 +1,12 @@
+# Preserve the byte hashes recorded in the vendored skill manifest on Windows.
+.agents/skills/router/** -text
+.agents/skills/camera-systems/** -text
+.agents/skills/create-game-assets/** -text
+.agents/skills/game-docs/** -text
+.agents/skills/game-feel/** -text
+.agents/skills/game-ui-ux/** -text
+.agents/skills/performance-optimization/** -text
+.agents/skills/save-systems/** -text
+.agents/skills/threejs-materials-lighting/** -text
+.agents/skills/threejs-scene-setup/** -text
+.agents/third-party/awesome-gamedev-agent-skills/** -text
