@@ -1,0 +1,16 @@
+---
+name: lcb-jeu-3d
+description: Examiner ou faire évoluer une scène 3D, un personnage, un bâtiment ou une mécanique de gestion de L’Arène et du Placard. À mobiliser pour un asset intégré, la lisibilité en scène, les performances ou l’équilibrage.
+---
+
+# 3D et game design du Quartier
+
+Pars de la scène jouée, du geste à rendre lisible et de l’appareil visé. Identifie le bâtiment, le profil et l’état de progression nécessaires pour reproduire la situation. Pour une reprise UX, consulte le point d’avancement indiqué dans AGENTS.md et seulement les preuves du sujet.
+
+- **Retrouver le rendu.** Depuis `src/components/placard/PlacardPlayerShell.tsx`, suis la destination jusqu’à sa scène. L’extérieur utilise Three.js avec React Three Fiber dans `src/components/placard/world/VillageCanvas.tsx`. Pour un personnage, pars de `src/components/placard/kq-grow-worker-model.ts`, partagé entre plusieurs scènes. Examine la fabrique, ses instances, les matériaux et la pose avant de proposer un outil d’import.
+- **Choisir la référence.** Pour un visage, utilise les planches de `docs/bete-de-concours/atelier-personnage/` ou de `docs/bete-de-concours/pnj-quartier/`. Pour un bâtiment ou un accessoire, prends un voisin du village breton comme repère d’échelle, de silhouette et de matière. Note l’origine de toute image et le cadrage retenu. Une maquette guide la direction artistique. Pour contrôler la géométrie, instancie le modèle réellement utilisé.
+- **Intégrer et comparer.** Si la réalisation est demandée, travaille sur une variante réversible. Contrôle le maillage, les normales, les dimensions, le pivot, les axes, les UV et textures utilisés, les matériaux, et les poses ou clips à l’exécution. Pour un fichier importé, vérifie ces éléments après import dans la scène cible. Compare référence et rendu avec angle, zoom, pose et éclairage comparables. Pour un visage, examine proportions et expression de face, de trois quarts et en mouvement. Vérifie à la distance de jeu que l’action reste identifiable et accessible.
+- **Mesurer.** Sur la même scène et le même parcours, relève appareil, navigateur, définition et DPR. Selon le problème, relève temps de frame médian et p95, appels de rendu, triangles ou temps de chargement, avant et après. Distingue comptages du modèle et coût d’une image complète. Fixe le budget d’après la mesure initiale et la fluidité attendue sur les appareils cibles. Signale les mesures prises en émulation. Le script local `scripts/audit-village-3d.mjs` sous-tend `npm.cmd run audit:village` et écrit ses résultats sous `output/`.
+- **Protéger le jeu enregistré.** Retrouve les identifiants persistés, coordonnées, orientations, interactions, coûts et déblocages. Vérifie les placements personnalisés et une sauvegarde antérieure sur des données de test. Pour une boucle de culture, de stockage ou de progression, compare durée, ressources consommées et récompenses avec les règles serveur. Présente toute variation de règle comme une proposition de gameplay à arbitrer par Sylvain.
+
+Livre le chemin de la scène ou de la fabrique, une comparaison à cadrage constant si disponible, les mesures avec leurs conditions et les limites. Distingue les corrections visuelles des choix à valider sur l’équilibre, les sauvegardes ou la direction artistique.
