@@ -10,6 +10,7 @@ import seoContent from "./seo-content.json";
 
 const PAGE_SLUG = "analyse-laboratoire-cbd";
 const LAST_REVIEWED = "2026-08-22";
+const selectedVariants: readonly string[] = seoContent.variants;
 
 const FAQ_ITEMS = [
   {
@@ -157,7 +158,7 @@ export default function CbdAnalysisGuidePage() {
           </ol>
         </article>
 
-        {seoContent.variants.includes("find-report") && (
+        {selectedVariants.includes("find-report") && (
           <article className="cartoon-border mt-8 bg-cream p-6 md:p-10" aria-labelledby="trouver-rapport-analyse">
             <h2 id="trouver-rapport-analyse" className="font-display text-3xl text-ink">
               Où trouver le rapport d’analyse ?

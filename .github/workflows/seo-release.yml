@@ -1,0 +1,213 @@
+name: Publication SEO restreinte
+
+on:
+  schedule:
+    - cron: '43 6 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: seo-release-master
+  cancel-in-progress: false
+
+env:
+  SEO_RELEASE_ENABLED: ${{ vars.SEO_RELEASE_ENABLED }}
+  SEO_RELEASE_COST_CEILING_EUR: ${{ vars.SEO_RELEASE_COST_CEILING_EUR }}
+  SEO_RELEASE_PROPOSER_ID: ${{ vars.SEO_RELEASE_PROPOSER_ID }}
+
+jobs:
+  propose:
+    if: >-
+      github.repository == 'sylvaingonzalez1986-ship-it/site-web' &&
+      github.ref == 'refs/heads/master' && github.event_name == 'schedule' &&
+      vars.SEO_RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/seo-release/release.mjs propose
+
+  plan:
+    needs: propose
+    if: >-
+      !cancelled() && github.repository == 'sylvaingonzalez1986-ship-it/site-web' &&
+      github.ref == 'refs/heads/master' &&
+      (github.event_name == 'workflow_dispatch' || needs.propose.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      ready: ${{ steps.pr.outputs.ready }}
+      number: ${{ steps.pr.outputs.number }}
+      base: ${{ steps.pr.outputs.base }}
+      head: ${{ steps.pr.outputs.head }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - id: pr
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/seo-release/release.mjs plan
+
+  ci:
+    needs: [plan, preview]
+    if: needs.plan.outputs.ready == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+    with:
+      checkout_ref: ${{ needs.plan.outputs.head }}
+
+  build:
+    needs: [plan, preview]
+    if: needs.plan.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:3190
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: seo-public-fixture
+      SUPABASE_SERVICE_ROLE_KEY: seo-local-fixture
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.head }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - run: npm ci
+      - run: node --test scripts/seo-release/policy.test.mjs
+      - name: Construire et vérifier le rendu local du candidat
+        run: |
+          node scripts/seo-release/catalog-fixture.mjs &
+          fixture_pid=$!
+          trap 'kill "$fixture_pid" ${next_pid:-} 2>/dev/null || true' EXIT
+          curl --silent --fail --retry 10 --retry-all-errors --retry-delay 1 --max-time 2 \
+            http://127.0.0.1:3190/rest/v1/products --output /dev/null
+          npm run build
+          npm run start -- --hostname 127.0.0.1 --port 3189 >"$RUNNER_TEMP/seo-next.log" 2>&1 &
+          next_pid=$!
+          curl --silent --fail --retry 15 --retry-all-errors --retry-delay 2 --max-time 10 \
+            http://127.0.0.1:3189/analyse-laboratoire-cbd --output /dev/null
+          node scripts/seo-release/release.mjs local-preview http://127.0.0.1:3189
+
+  preview:
+    needs: plan
+    if: needs.plan.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      deployments: read
+    environment: seo-preview
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.base }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SEO_PREVIEW_BYPASS_TOKEN: ${{ secrets.SEO_PREVIEW_BYPASS_TOKEN }}
+          BASE: ${{ needs.plan.outputs.base }}
+          CANDIDATE: ${{ needs.plan.outputs.head }}
+        run: node scripts/seo-release/release.mjs preview "$BASE" "$CANDIDATE"
+
+  blocked:
+    needs: [plan, preview, ci, build]
+    if: >-
+      !cancelled() && needs.plan.outputs.ready == 'true' &&
+      (needs.preview.result != 'success' || needs.ci.result != 'success' || needs.build.result != 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      PREVIEW_RESULT: ${{ needs.preview.result }}
+      CI_RESULT: ${{ needs.ci.result }}
+      BUILD_RESULT: ${{ needs.build.result }}
+    steps:
+      - run: |
+          printf 'Publication bloquée. Prévisualisation Vercel `%s`, CI `%s`, build et rendu local `%s`.\n' \
+            "$PREVIEW_RESULT" "$CI_RESULT" "$BUILD_RESULT" >> "$GITHUB_STEP_SUMMARY"
+
+  merge:
+    needs: [plan, build, preview, ci]
+    if: github.event_name == 'schedule' && vars.SEO_RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      deployments: read
+      pull-requests: read
+    outputs:
+      merged: ${{ steps.merge.outputs.merged }}
+      reservation: ${{ steps.merge.outputs.reservation }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.base }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - id: merge
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.plan.outputs.number }}
+          CANDIDATE: ${{ needs.plan.outputs.head }}
+        run: node scripts/seo-release/release.mjs merge "$PR_NUMBER" "$CANDIDATE"
+
+  production:
+    needs: [plan, merge]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      deployments: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.base }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BASE: ${{ needs.plan.outputs.base }}
+          CANDIDATE: ${{ needs.plan.outputs.head }}
+          MERGED: ${{ needs.merge.outputs.merged }}
+          RESERVATION: ${{ needs.merge.outputs.reservation }}
+        run: node scripts/seo-release/release.mjs production "$BASE" "$CANDIDATE" "$MERGED" "$RESERVATION"
