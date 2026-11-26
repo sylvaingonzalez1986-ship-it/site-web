@@ -1,0 +1,15 @@
+# Intentions de recherche
+
+Cartographie proposée après le crawl du 26 novembre 2026 et l’échantillon externe francophone. Les pages cibles suivent les fonctions actuelles. Les positions moyennes, la demande et les conversions par requête sont N/D. [Observations](observations.md)
+
+Sur les 28 derniers jours complets examinés dans Vercel, le croisement des chemins publics suivis et des référents moteurs a fait ressortir l’accueil, la boutique, la catégorie fleurs, Lorient et Saint-Brieuc. Maintenir leur protection. Les autres pages régionales et locales gardent leur protection provisoire en attendant les couples requête–page dans Search Console/Bing. Les volumes d’audience restent dans l’état privé de la machine.
+
+| Requête | Tâche du lecteur | Destination existante | Périmètre |
+| --- | --- | --- | --- |
+| `CBD Bretagne`, `Bretagne CBD` | Repérer une boutique bretonne ou vérifier la provenance | [Accueil](https://www.leschanvriersbretons.com/) pour l’offre régionale, [guide breton](https://www.leschanvriersbretons.com/cbd-breton) pour la provenance | Protégé. Les pages locales répondent à une demande de livraison, par exemple [Rennes](https://www.leschanvriersbretons.com/cbd-rennes). |
+| `CBD breton`, `CBD bretons` | Savoir si la fleur a poussé en Bretagne | [Guide breton](https://www.leschanvriersbretons.com/cbd-breton), puis fiche | Protégé. Distinguer les étapes et les origines. Demande et rang du pluriel N/D. |
+| `CBD naturel` | Comprendre l’origine végétale et vérifier la composition | [Guide naturel](https://www.leschanvriersbretons.com/cbd-naturel), [glossaire](https://www.leschanvriersbretons.com/glossaire-cbd) et [guide d’analyse](https://www.leschanvriersbretons.com/analyse-laboratoire-cbd) en appui | Garder le guide naturel en place. Le guide d’analyse est le candidat du premier lot. |
+| `CBD producteur`, `CBD producteurs`, `CBD direct producteur`, `vente directe producteur` | Identifier Sylvain ou le partenaire qui a cultivé une référence | [Ferme et partenaires](https://www.leschanvriersbretons.com/a-propos#notre-ferme), [catalogue](https://www.leschanvriersbretons.com/boutique#producteurs) et fiches | Garder les destinations en place. La pertinence des variantes « producteur » doit être mesurée par URL. |
+| `CBD français`, `fleurs de CBD françaises` | Choisir une fleur attribuée à un producteur français | [Fleurs CBD](https://www.leschanvriersbretons.com/boutique/fleurs-cbd) et fiches | Protégé. Le producteur indiqué sur la fiche sert de preuve à l’échelle de la référence. |
+| `CBD pas cher` | Comparer un petit format ou un prix par gramme | [Guide des prix](https://www.leschanvriersbretons.com/cbd-pas-cher), puis fiche du format | Protégé. Relever frais, prix, formats et dates avant toute comparaison. |
+| `analyse laboratoire CBD`, `rapport d’analyse CBD` | Trouver le PDF disponible et le relier au numéro de lot | [Guide d’analyse](https://www.leschanvriersbretons.com/analyse-laboratoire-cbd), puis catégorie fleurs et fiche | Candidat `find-report`. Un lecteur doit pouvoir partir du guide et retrouver ce que la fiche affiche dans les deux cas. |

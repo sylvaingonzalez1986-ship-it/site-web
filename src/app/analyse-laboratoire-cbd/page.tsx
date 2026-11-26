@@ -6,9 +6,11 @@ import {
   FaqJsonLd,
 } from "@/components/JsonLd";
 import { getSiteUrl } from "@/lib/site-url";
+import seoContent from "./seo-content.json";
 
 const PAGE_SLUG = "analyse-laboratoire-cbd";
 const LAST_REVIEWED = "2026-08-22";
+const selectedVariants: readonly string[] = seoContent.variants;
 
 const FAQ_ITEMS = [
   {
@@ -155,6 +157,38 @@ export default function CbdAnalysisGuidePage() {
             ))}
           </ol>
         </article>
+
+        {selectedVariants.includes("find-report") && (
+          <article className="cartoon-border mt-8 bg-cream p-6 md:p-10" aria-labelledby="trouver-rapport-analyse">
+            <h2 id="trouver-rapport-analyse" className="font-display text-3xl text-ink">
+              Où trouver le rapport d’analyse ?
+            </h2>
+            <ol className="mt-4 max-w-4xl list-decimal space-y-3 pl-5 leading-relaxed text-charcoal">
+              <li>
+                Ouvrez la fiche d’une fleur depuis le{" "}
+                <Link href="/boutique/fleurs-cbd" className="font-bold underline! underline-offset-4 hover:text-ink">
+                  catalogue des fleurs CBD
+                </Link>
+                . Repérez le nom du producteur affiché sur la fiche.
+              </li>
+              <li>
+                Si le lien « Voir l’analyse laboratoire » est affiché, ouvrez le PDF. Relevez le numéro
+                de lot et comparez-le à celui de l’étiquette si vous avez le produit.
+              </li>
+              <li>
+                Si la fiche indique qu’aucune analyse n’est publiée, les résultats du lot ne sont pas
+                consultables depuis cette fiche.
+              </li>
+            </ol>
+            <p className="mt-4 leading-relaxed text-charcoal">
+              Pour vérifier le lieu de culture indiqué, consultez le{" "}
+              <Link href="/cbd-breton" className="font-bold underline! underline-offset-4 hover:text-ink">
+                guide sur l’origine d’une fleur bretonne
+              </Link>
+              .
+            </p>
+          </article>
+        )}
 
         <article className="cartoon-border mt-8 bg-cream p-6 md:p-10">
           <h2 className="font-display text-3xl text-ink">Pourquoi rapprocher l&apos;étiquette et l&apos;analyse ?</h2>

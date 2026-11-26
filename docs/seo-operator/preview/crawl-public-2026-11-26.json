@@ -1,0 +1,1009 @@
+{
+  "collectedAt": "2026-11-26T17:16:57.888317+01:00",
+  "base": "https://www.leschanvriersbretons.com",
+  "botUserAgent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+  "mobileUserAgent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36",
+  "robots": {
+    "status": 200,
+    "url": "https://www.leschanvriersbretons.com/robots.txt",
+    "text": "User-Agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: OAI-SearchBot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: ChatGPT-User\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: GPTBot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: Googlebot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: Google-Extended\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: Claude-SearchBot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: Claude-User\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: ClaudeBot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: PerplexityBot\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nUser-Agent: Perplexity-User\nAllow: /\nDisallow: /admin/\nDisallow: /api/\nDisallow: /compte/\nDisallow: /profil\nDisallow: /age-gate\nDisallow: /jeu\n\nHost: https://www.leschanvriersbretons.com\nSitemap: https://www.leschanvriersbretons.com/sitemap.xml"
+  },
+  "sitemap": {
+    "status": 200,
+    "url": "https://www.leschanvriersbretons.com/sitemap.xml",
+    "entries": 51,
+    "unique": 51,
+    "domains": [
+      "www.leschanvriersbretons.com"
+    ],
+    "productPaths": 19,
+    "blogPaths": 6
+  },
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD naturel en Bretagne | Production et partenaires identifiés"
+      ],
+      "h1": [
+        "Du CBD vrai.Au prix juste."
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Disponibles maintenant.",
+        "Parce qu'on pense aussi aux petits budgets.",
+        "Notre philosophie.",
+        "Notre récolte. Et celle de producteurs qu'on connaît.",
+        "Tes avis, du jeu.Et des cadeaux.",
+        "Ta fidélité a de la valeur.",
+        "En direct de nos cultures",
+        "Les fleurs du Marché, de la récolte au sachet"
+      ],
+      "description": [
+        "Découvrez Les Chanvriers Bretons : production bretonne et références de producteurs partenaires, avec origine, composition et analyses disponibles par produit."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "#notre-philosophie": "Notre philosophie",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/boutique/fleurs-cbd": "Voir les fleurs CBD",
+        "/a-propos#notre-ferme": "Rencontrer les producteurs",
+        "/cbd-naturel": "Vérifier l’origine et le lot",
+        "/cbd-breton": "Comprendre l’origine bretonne",
+        "/cbd-pas-cher": "Comprendre notre prix juste",
+        "/boutique/fleurs-cbd/product-1785789994800": "Legendary Platinium",
+        "/boutique/fleurs-cbd/product-1791486846758": "Black Berserker",
+        "/boutique/fleurs-cbd/product-1793171523177": "Lemon Flambé"
+      }
+    },
+    {
+      "path": "/a-propos",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/a-propos",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Sylvain, producteur de chanvre en Ille-et-Vilaine | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Sylvain, producteur de chanvre en Ille-et-Vilaine"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Notre ferme et les producteurs partenaires",
+        "Identité vérifiable hors de ce site",
+        "Référencements sectoriels externes",
+        "Notre méthode éditoriale"
+      ],
+      "description": [
+        "Rencontrez Sylvain, producteur de chanvre en Ille-et-Vilaine, découvrez sa récolte et retrouvez les producteurs partenaires des Chanvriers Bretons."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/a-propos"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "#notre-ferme": "Notre ferme et nos partenaires",
+        "/boutique/fleurs-cbd/product-1775333841673": "Voir Small Bud Mix, une fleur maison en stock",
+        "/boutique/fleurs-cbd/product-1782391212934": "Voir Heaven et son analyse",
+        "/boutique#producteurs": "Découvrir les producteurs au Marché",
+        "/boutique/fleurs-cbd": "Voir les fleurs et les formats",
+        "/cbd-naturel#cbd-naturel-en-bref": "Vérifier l’origine et le lot",
+        "/mentions-legales": "mentions légales"
+      }
+    },
+    {
+      "path": "/boutique",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Boutique CBD naturel | Origine et producteurs identifiés | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Chanvre naturel"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Tous les produits",
+        "Explorer le catalogue CBD"
+      ],
+      "description": [
+        "Catalogue CBD actualisé selon les références disponibles. Production des Chanvriers Bretons et producteurs partenaires distingués sur chaque fiche."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/boutique"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/boutique/fleurs-cbd/product-1782391212934": "Heaven",
+        "/boutique/fleurs-cbd/product-1782391212934#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd": "Fleurs CBD",
+        "/cbd-pas-cher": "CBD pas cher : comparer les prix",
+        "/cbd-naturel": "CBD naturel : origine et composition",
+        "/cbd-breton": "Notre production et le CBD breton"
+      }
+    },
+    {
+      "path": "/boutique/fleurs-cbd",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Fleurs de CBD de producteurs français | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Fleurs CBD"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Comment vérifier l’origine d’une fleur de CBD française ?"
+      ],
+      "description": [
+        "Retrouvez les fleurs de notre ferme et celles de nos partenaires. Comparez le producteur, sa région, les formats en stock et les analyses publiées."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/boutique/fleurs-cbd"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/cbd-pas-cher": "Comparer les prix du CBD",
+        "/cbd-naturel": "Choisir un CBD naturel",
+        "/analyse-laboratoire-cbd": "Lire une analyse de lot",
+        "/cbd-breton": "Vérifier l’origine bretonne d’une fleur",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/boutique/fleurs-cbd/product-1773870609046": "Suver Haze",
+        "/boutique/fleurs-cbd/product-1784378769542": "Cake Brulée",
+        "/boutique/fleurs-cbd/product-1773871822760": "Shiva's Nectar",
+        "/boutique/fleurs-cbd/product-1778010711652": "Pink Indica",
+        "/boutique/fleurs-cbd/product-1787247334187": "Caramelo",
+        "/boutique/fleurs-cbd/product-1785789994800": "Legendary Platinium",
+        "/boutique/fleurs-cbd/product-1775333135261": "Blood Lime",
+        "/boutique/fleurs-cbd/product-1790013054742": "Shaolin",
+        "/boutique/fleurs-cbd/product-1773870065552": "Sour RNA",
+        "/boutique/fleurs-cbd/product-1773870065552#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1788596868038": "Skunk",
+        "/boutique/fleurs-cbd/product-1788597425269": "White Cbg",
+        "/boutique/fleurs-cbd/product-1795269223044": "Pineapple Mimosa",
+        "/boutique/fleurs-cbd/product-1785787553459": "Pink Pineapple",
+        "/boutique/fleurs-cbd/product-1784378979737": "Strawnana OG",
+        "/boutique/fleurs-cbd/product-1793171523177": "Lemon Flambé",
+        "/boutique/fleurs-cbd/product-1773870383362": "Sour Space Candy",
+        "/boutique/fleurs-cbd/product-1791486846758": "Black Berserker",
+        "/boutique/fleurs-cbd/product-1782391212934": "Heaven",
+        "/boutique/fleurs-cbd/product-1773870609046#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1784378769542#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1773871822760#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1778010711652#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1787247334187#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1785789994800#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1775333135261#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1790013054742#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1788596868038#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1788597425269#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1795269223044#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1785787553459#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1784378979737#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1793171523177#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1773870383362#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1791486846758#avis-degustation": "Lire les avis sur la fiche",
+        "/boutique/fleurs-cbd/product-1782391212934#avis-degustation": "Lire les avis sur la fiche"
+      }
+    },
+    {
+      "path": "/boutique/e-liquide-cbd",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique/e-liquide-cbd",
+      "location": null,
+      "inSitemap": false,
+      "xRobotsTag": null,
+      "title": [
+        "E-liquides CBD | Composition et dosage"
+      ],
+      "h1": [
+        "E-liquides CBD"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Comment choisir un e-liquide CBD ?",
+        "Vous aimerez aussi"
+      ],
+      "description": [
+        "Consultez nos e-liquides CBD avec leur composition, leur dosage, leur marque et leurs précautions d'utilisation."
+      ],
+      "robots": [
+        "noindex, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/boutique/e-liquide-cbd"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "CollectionPage"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/cbd-pas-cher": "Comparer les prix du CBD",
+        "/cbd-naturel": "Choisir un CBD naturel",
+        "/analyse-laboratoire-cbd": "Lire une analyse de lot",
+        "/boutique/fleurs-cbd": "Fleurs CBD"
+      }
+    },
+    {
+      "path": "/boutique/fleurs-cbd/product-1775333841673",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1775333841673",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Small Bud Mix | Fleurs CBD — Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Small Bud Mix"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie."
+      ],
+      "description": [
+        "Small Bud Mix. Dès 1,00 € les 1 g. Les Chanvriers Bretons. Culture outdoor. Origine et formats sur la fiche."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1775333841673"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Product"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/boutique/fleurs-cbd": "Fleurs CBD",
+        "/cbd-pas-cher": "Comparer les prix du CBD",
+        "/cbd-naturel": "Comprendre l’origine et la composition",
+        "/boutique/fleurs-cbd/product-1782391212934": "‹ Précédent",
+        "/boutique/fleurs-cbd/product-1784378769542": "Suivant ›"
+      }
+    },
+    {
+      "path": "/boutique/fleurs-cbd/product-1773870065552",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1773870065552",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Sour RNA | Fleurs CBD — La Vaca Del Diablo"
+      ],
+      "h1": [
+        "Sour RNA"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Notes & critiques."
+      ],
+      "description": [
+        "Sour RNA. Dès 2,50 € les 1 g. La Vaca Del Diablo. Culture greenhouse. Analyse consultable. Origine et formats sur la fiche."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1773870065552"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Product"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/boutique/fleurs-cbd": "Fleurs CBD",
+        "/analyse-laboratoire-cbd": "Comment lire ce document ?",
+        "/cbd-pas-cher": "Comparer les prix du CBD",
+        "/cbd-naturel": "Comprendre l’origine et la composition",
+        "/boutique/fleurs-cbd/product-1795269223044": "‹ Précédent",
+        "/boutique/fleurs-cbd/product-1773870383362": "Suivant ›"
+      }
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/blog",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Blog CBD | Guides, Actualites et Conseils Chanvre Bio Breton | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Le Blog CBD"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Tous les articles"
+      ],
+      "description": [
+        "Retrouvez nos guides, actualites et conseils autour du CBD bio breton. Legislation CBD en France, bien-etre au chanvre, astuces et nouveautes des Chanvriers Bretons."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/blog"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/blog/les-hypoth-ses-du-champ-pisode-1": "LES HYPOTHÈSES DU CHAMP — ÉPISODE 1",
+        "/blog/cbd-naturel-et-pas-cher-en-2026-pourquoi-les-fleurs-et-r-sines-deviennent-la-meilleure-alternative-apr-s-l-interdiction-des-produits-alimentaires": "CBD Naturel et Pas Cher en 2026 : Pourquoi les Fleurs et Résines Deviennent la Meilleure Alternative après l’Interdiction des Produits Alimentaires",
+        "/blog/est-ce-que-prohibition-rime-avec-corruption": "Est-ce que prohibition rime avec corruption?",
+        "/blog/nous-sommes-gouvern-s-par-des-veaux": "Nous sommes gouvernés par des veaux!",
+        "/blog/pourquoi-le-site-a-failli-crever-2": "Pourquoi le site a failli crever!",
+        "/blog/histoire-du-chanvre-cbd-des-origines-aux-vari-t-s-riches-en-cbd": "# Histoire du Chanvre CBD : Des origines aux variétés riches en CBD"
+      }
+    },
+    {
+      "path": "/blog/les-hypoth-ses-du-champ-pisode-1",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/blog/les-hypoth-ses-du-champ-pisode-1",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "LES HYPOTHÈSES DU CHAMP — ÉPISODE 1"
+      ],
+      "h1": [
+        "LES HYPOTHÈSES DU CHAMP — ÉPISODE 1"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Note de l'article",
+        "Du journal au marché",
+        "À lire aussi",
+        "Commentaires"
+      ],
+      "description": [
+        "LA PLANTE ÉTAIT BONNE. LE PAYSAN ÉTAIT DE TROP.\n\nFiction dystopique. France, 2030. Personnages, institutions et événements inventés."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/blog/les-hypoth-ses-du-champ-pisode-1"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/boutique/fleurs-cbd": "Nos Fleurs CBD",
+        "/blog/est-ce-que-prohibition-rime-avec-corruption": "Est-ce que prohibition rime avec corruption?21/05/2026",
+        "/blog/nous-sommes-gouvern-s-par-des-veaux": "Nous sommes gouvernés par des veaux! 10/05/2026",
+        "/blog/pourquoi-le-site-a-failli-crever-2": "Pourquoi le site a failli crever!03/05/2026"
+      }
+    },
+    {
+      "path": "/blog/cbd-naturel-et-pas-cher-en-2026-pourquoi-les-fleurs-et-r-sines-deviennent-la-meilleure-alternative-apr-s-l-interdiction-des-produits-alimentaires",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/blog/cbd-naturel-et-pas-cher-en-2026-pourquoi-les-fleurs-et-r-sines-deviennent-la-meilleure-alternative-apr-s-l-interdiction-des-produits-alimentaires",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD Naturel et Pas Cher en 2026 : Pourquoi les Fleurs et Résines Deviennent la Meilleure Alternative après l’Interdiction des Produits Alimentaires"
+      ],
+      "h1": [
+        "CBD Naturel et Pas Cher en 2026 : Pourquoi les Fleurs et Résines Deviennent la Meilleure Alternative après l’Interdiction des Produits Alimentaires"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Note de l'article",
+        "Du journal au marché",
+        "À lire aussi",
+        "Commentaires"
+      ],
+      "description": [
+        "Après l’interdiction des gummies et huiles CBD en mai 2026, découvrez pourquoi le CBD naturel (fleurs, résines) reste légal, économique et plus sûr. Guide et astuces.\n"
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/blog/cbd-naturel-et-pas-cher-en-2026-pourquoi-les-fleurs-et-r-sines-deviennent-la-meilleure-alternative-apr-s-l-interdiction-des-produits-alimentaires"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Article"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/boutique/fleurs-cbd": "Decouvrir nos Fleurs CBD",
+        "/blog/histoire-du-chanvre-cbd-des-origines-aux-vari-t-s-riches-en-cbd": "# Histoire du Chanvre CBD : Des origines aux variétés riches en CBD22/03/2026"
+      }
+    },
+    {
+      "path": "/cbd-naturel",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/cbd-naturel",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD naturel : fleurs et producteurs identifiés | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "CBD naturel : des producteurs identifiés"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Notre sélection en stock",
+        "Le CBD naturel en bref",
+        "De la fleur au rapport de laboratoire",
+        "Observatoire de transparence",
+        "Qu'est-ce que le CBD naturel ?",
+        "Quels critères vérifier pour choisir un CBD naturel ?",
+        "Les formats actuellement présents dans le catalogue",
+        "Fleurs CBD outdoor, greenhouse ou indoor : que comparer ?",
+        "Qui a cultivé la fleur ?",
+        "CBD naturel, CBD bio, CBD de synthèse : quelles différences ?"
+      ],
+      "description": [
+        "Découvrez notre CBD naturel : fleurs en stock, production bretonne et partenaires identifiés. Comparez l’origine, les formats, les prix et les analyses disponibles."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/cbd-naturel"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage",
+        "Article",
+        "Dataset",
+        "FAQPage",
+        "ItemList"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "#selection-cbd-naturel": "Voir la sélection en stock",
+        "#cbd-naturel-en-bref": "Vérifier l’origine et le lot",
+        "/boutique/fleurs-cbd": "Fleurs CBD",
+        "/a-propos": "Les Chanvriers Bretons",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/boutique/fleurs-cbd/product-1773870065552": "Sour RNA",
+        "/boutique/fleurs-cbd/product-1773870383362": "Sour Space Candy",
+        "/boutique/fleurs-cbd/product-1773870609046": "Suver Haze",
+        "/boutique/fleurs-cbd/product-1773871822760": "Shiva's Nectar",
+        "/boutique/fleurs-cbd/product-1775333135261": "Blood Lime",
+        "/analyse-laboratoire-cbd": "comment lire une analyse laboratoire CBD",
+        "/cbd-breton": "CBD breton",
+        "/glossaire-cbd": "glossaire du CBD",
+        "/cbd-pas-cher#prix-au-gramme": "tableau des prix au gramme",
+        "/a-propos#notre-ferme": "notre ferme et nos partenaires",
+        "/cbd-pas-cher": "Voir le CBD à prix accessible",
+        "/cbd-rennes": "CBD Rennes",
+        "/cbd-quimper": "CBD Quimper",
+        "/cbd-brest": "CBD Brest",
+        "/cbd-vannes": "CBD Vannes",
+        "/cbd-lorient": "CBD Lorient",
+        "/cbd-saint-brieuc": "CBD Saint-Brieuc",
+        "/cbd-saint-malo": "CBD Saint-Malo",
+        "/cbd-fougeres": "CBD Fougères",
+        "/cbd-vitre": "CBD Vitré",
+        "/cbd-redon": "CBD Redon",
+        "/boutique/fleurs-cbd/product-1778010711652": "Pink Indica",
+        "/boutique/fleurs-cbd/product-1782391212934": "Heaven",
+        "/boutique/fleurs-cbd/product-1784378769542": "Cake Brulée",
+        "/boutique/fleurs-cbd/product-1784378979737": "Strawnana OG",
+        "/boutique/fleurs-cbd/product-1785787553459": "Pink Pineapple",
+        "/boutique/fleurs-cbd/product-1785789994800": "Legendary Platinium",
+        "/boutique/fleurs-cbd/product-1787247334187": "Caramelo",
+        "/boutique/fleurs-cbd/product-1788596868038": "Skunk",
+        "/boutique/fleurs-cbd/product-1788597425269": "White Cbg",
+        "/boutique/fleurs-cbd/product-1790013054742": "Shaolin",
+        "/boutique/fleurs-cbd/product-1791486846758": "Black Berserker",
+        "/boutique/fleurs-cbd/product-1793171523177": "Lemon Flambé",
+        "/boutique/fleurs-cbd/product-1795269223044": "Pineapple Mimosa",
+        "/cbd-naturel/catalogue-transparence.json": "jeu de données JSON"
+      }
+    },
+    {
+      "path": "/cbd-breton",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/cbd-breton",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD breton : production, origine et traçabilité | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "CBD breton : quelle origine réelle ?"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Le CBD breton en bref",
+        "Que peut vouloir dire « produit en Bretagne » ?",
+        "Notre méthode d’attribution de l’origine",
+        "La checklist avant de choisir",
+        "Origine bretonne et conformité : deux vérifications séparées",
+        "Références rattachées à notre production",
+        "Questions fréquentes sur le CBD breton",
+        "Sources publiques consultées",
+        "Le CBD en Bretagne, ville par ville",
+        "Comparer l’origine avant le produit"
+      ],
+      "description": [
+        "Comprendre ce que signifie CBD breton : chanvre cultivé, transformé ou expédié de Bretagne. Production propre et producteurs partenaires clairement distingués."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/cbd-breton"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage",
+        "Article",
+        "FAQPage",
+        "ItemList"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/a-propos": "Les Chanvriers Bretons",
+        "/cbd-naturel": "CBD naturel",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/cbd-rennes": "CBD Rennes",
+        "/cbd-quimper": "CBD Quimper",
+        "/cbd-brest": "CBD Brest",
+        "/cbd-vannes": "CBD Vannes",
+        "/cbd-lorient": "CBD Lorient",
+        "/cbd-saint-brieuc": "CBD Saint-Brieuc",
+        "/cbd-saint-malo": "CBD Saint-Malo",
+        "/cbd-fougeres": "CBD Fougères",
+        "/cbd-vitre": "CBD Vitré",
+        "/cbd-redon": "CBD Redon",
+        "/analyse-laboratoire-cbd": "Lire une analyse CBD"
+      }
+    },
+    {
+      "path": "/cbd-pas-cher",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/cbd-pas-cher",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD pas cher : fleurs dès 1,00 €/g | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "CBD pas cher, naturel et au prix juste"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Fleurs CBD pas chères : comparer le prix au gramme",
+        "Comment proposer un CBD moins cher sans rogner sur l'essentiel ?",
+        "Notre sélection CBD à petit prix",
+        "Bien comparer les prix du CBD",
+        "Questions fréquentes sur le CBD pas cher",
+        "Tous nos produits CBD au même endroit"
+      ],
+      "description": [
+        "Fleurs CBD dès 1,00 €/g : comparez les prix TTC, les formats en stock et les producteurs. Hors livraison. Catalogue actualisé."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/cbd-pas-cher"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage",
+        "FAQPage",
+        "ItemList"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "#selection": "Voir les petits prix",
+        "#prix-au-gramme": "Comparer les fleurs au gramme",
+        "/cbd-naturel": "Choisir un CBD naturel",
+        "/boutique/fleurs-cbd/product-1775333841673": "Small Bud Mix",
+        "/boutique/fleurs-cbd/product-1775333135261": "Blood Lime",
+        "/boutique/fleurs-cbd/product-1787247334187": "Caramelo",
+        "/boutique/fleurs-cbd/product-1778010711652": "Pink Indica",
+        "/boutique/fleurs-cbd/product-1785787553459": "Pink Pineapple",
+        "/boutique/fleurs-cbd/product-1773871822760": "Shiva's Nectar",
+        "/boutique/fleurs-cbd/product-1788596868038": "Skunk",
+        "/boutique/fleurs-cbd/product-1773870065552": "Sour RNA",
+        "/boutique/fleurs-cbd/product-1773870383362": "Sour Space Candy",
+        "/boutique/fleurs-cbd/product-1773870609046": "Suver Haze",
+        "/boutique/fleurs-cbd/product-1784378769542": "Cake Brulée",
+        "/boutique/fleurs-cbd/product-1785789994800": "Legendary Platinium",
+        "/analyse-laboratoire-cbd": "analyses disponibles",
+        "/boutique/fleurs-cbd": "Voir toutes les fleurs CBD"
+      }
+    },
+    {
+      "path": "/analyse-laboratoire-cbd",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/analyse-laboratoire-cbd",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Analyse laboratoire CBD : lire un certificat (COA) | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Comment lire une analyse laboratoire CBD ?"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "La réponse courte",
+        "Pourquoi rapprocher l'étiquette et l'analyse ?",
+        "1. Identifier le produit, le lot et le rapport",
+        "2. Comprendre le profil des cannabinoïdes",
+        "3. Lire les unités, LOD, LOQ et ND",
+        "4. Vérifier ce qui a réellement été recherché",
+        "5. Vérifier le laboratoire et sa portée",
+        "Checklist avant de retenir une analyse CBD",
+        "Questions fréquentes",
+        "Sources et suite de lecture"
+      ],
+      "description": [
+        "Méthode pratique pour lire une analyse CBD : lot, cannabinoïdes, unités, LOD, LOQ, contaminants et portée d'accréditation du laboratoire."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/analyse-laboratoire-cbd"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Article",
+        "FAQPage"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/cbd-naturel": "CBD naturel",
+        "/a-propos": "Les Chanvriers Bretons"
+      }
+    },
+    {
+      "path": "/glossaire-cbd",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/glossaire-cbd",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Glossaire du CBD : 15 définitions vérifiables | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Glossaire du CBD"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Comment utiliser ce glossaire ?",
+        "Accès direct aux définitions",
+        "CBD (cannabidiol)",
+        "Chanvre",
+        "Cannabinoïde",
+        "THC (delta-9-tétrahydrocannabinol)",
+        "CBD naturel",
+        "CBD de synthèse",
+        "Full spectrum",
+        "Broad spectrum"
+      ],
+      "description": [
+        "CBD naturel, THC, cannabinoïdes, full spectrum, isolat, analyse de laboratoire et Novel Food : définitions courtes, contrôles pratiques et sources publiques."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/glossaire-cbd"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "WebPage",
+        "Article",
+        "DefinedTermSet"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/a-propos": "Les Chanvriers Bretons",
+        "/cbd-naturel": "Guide CBD naturel",
+        "/analyse-laboratoire-cbd": "Lire une analyse CBD",
+        "/cbd-breton": "Vérifier une origine bretonne",
+        "#cbd-cannabidiol": "CBD (cannabidiol)",
+        "#chanvre": "Chanvre",
+        "#cannabinoide": "Cannabinoïde",
+        "#thc": "THC (delta-9-tétrahydrocannabinol)",
+        "#cbd-naturel": "CBD naturel",
+        "#cbd-synthese": "CBD de synthèse",
+        "#full-spectrum": "Full spectrum",
+        "#broad-spectrum": "Broad spectrum",
+        "#isolat-cbd": "Isolat de CBD",
+        "#terpenes": "Terpènes",
+        "#certificat-analyse": "Certificat d’analyse",
+        "#numero-lot": "Numéro de lot",
+        "#tracabilite-cbd": "Traçabilité du CBD",
+        "#novel-food": "Novel Food (nouvel aliment)",
+        "#cbd-bio": "CBD bio"
+      }
+    },
+    {
+      "path": "/cbd-rennes",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/cbd-rennes",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "CBD Rennes : livraison, origine et analyses | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "CBD à Rennes : livraison et traçabilité"
+      ],
+      "h2": [
+        "Où on va ?",
+        "Des cookies sans cachotterie.",
+        "Comment vérifier un CBD livré à Rennes ?",
+        "Produits CBD disponibles à Rennes",
+        "Catégories actuellement disponibles à Rennes",
+        "Commander du CBD à Rennes depuis la Bretagne",
+        "Questions fréquentes sur le CBD à Rennes",
+        "Quels éléments vérifier avant de commander ?",
+        "Production bretonne et producteurs partenaires",
+        "Découvrir le CBD breton",
+        "CBD dans les villes proches"
+      ],
+      "description": [
+        "CBD livré à Rennes : comparez les produits disponibles, leur origine, leur producteur et les analyses publiées avant de commander."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/cbd-rennes"
+      ],
+      "schema": [
+        "OnlineStore",
+        "WebSite",
+        "BreadcrumbList",
+        "Service",
+        "WebPage",
+        "FAQPage",
+        "ItemList"
+      ],
+      "internalLinks": {
+        "#main-content": "Aller au contenu",
+        "/": "Les Chanvriers Bretons",
+        "/boutique": "Le Marché",
+        "/blog": "Le Journal",
+        "/politique-cookies": "Lire la politique cookies",
+        "/cbd-naturel": "Consulter le guide complet et ses sources publiques",
+        "/boutique/fleurs-cbd/product-1773870065552": "Sour RNA",
+        "/boutique/fleurs-cbd/product-1773870383362": "Sour Space Candy",
+        "/boutique/fleurs-cbd/product-1773870609046": "Suver Haze",
+        "/boutique/fleurs-cbd/product-1773871822760": "Shiva's Nectar",
+        "/boutique/fleurs-cbd": "Fleurs CBDVoir les références actuellement publiées, leur origine et les informations disponibles sur leur fiche.",
+        "/analyse-laboratoire-cbd": "lire une analyse de laboratoire",
+        "/a-propos": "qui sommes-nous",
+        "/cbd-vitre": "CBD Vitré",
+        "/cbd-fougeres": "CBD Fougères",
+        "/cbd-saint-malo": "CBD Saint-Malo",
+        "/cbd-redon": "CBD Redon"
+      }
+    }
+  ],
+  "mobileHttp": [
+    {
+      "path": "/",
+      "status": 307,
+      "finalUrl": "https://www.leschanvriersbretons.com/",
+      "location": "/age-gate?next=%2F",
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [],
+      "h1": []
+    },
+    {
+      "path": "/boutique",
+      "status": 307,
+      "finalUrl": "https://www.leschanvriersbretons.com/boutique",
+      "location": "/age-gate?next=%2Fboutique",
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [],
+      "h1": []
+    },
+    {
+      "path": "/blog",
+      "status": 307,
+      "finalUrl": "https://www.leschanvriersbretons.com/blog",
+      "location": "/age-gate?next=%2Fblog",
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [],
+      "h1": []
+    },
+    {
+      "path": "/analyse-laboratoire-cbd",
+      "status": 200,
+      "finalUrl": "https://www.leschanvriersbretons.com/analyse-laboratoire-cbd",
+      "location": null,
+      "inSitemap": true,
+      "xRobotsTag": null,
+      "title": [
+        "Analyse laboratoire CBD : lire un certificat (COA) | Les Chanvriers Bretons"
+      ],
+      "h1": [
+        "Comment lire une analyse laboratoire CBD ?"
+      ],
+      "description": [
+        "Méthode pratique pour lire une analyse CBD : lot, cannabinoïdes, unités, LOD, LOQ, contaminants et portée d'accréditation du laboratoire."
+      ],
+      "robots": [
+        "index, follow"
+      ],
+      "canonical": [
+        "https://www.leschanvriersbretons.com/analyse-laboratoire-cbd"
+      ]
+    }
+  ]
+}

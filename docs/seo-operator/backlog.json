@@ -1,0 +1,14 @@
+{
+  "candidates": [
+    {
+      "id": "find-report",
+      "path": "/analyse-laboratoire-cbd",
+      "kind": "content",
+      "publishedAnchor": "trouver-rapport-analyse",
+      "priority": 80,
+      "title": "Où trouver le rapport d’analyse ?",
+      "reason": "Rapprocher la méthode du guide et les deux états observés sur les fiches produit au début de la lecture.",
+      "evidence": "Relevé public du 26 novembre 2026 : /boutique/fleurs-cbd/product-1773870065552 affiche un lien d’analyse, /boutique/fleurs-cbd/product-1775333841673 indique l’absence de rapport publié."
+    }
+  ]
+}

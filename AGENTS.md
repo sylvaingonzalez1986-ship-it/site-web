@@ -1,6 +1,6 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
@@ -40,6 +40,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Keep search output bounded and tool logs concise. Read targeted ranges rather than whole large files. Use existing scripts before creating another harness.
 - Run relevant tests once after changes; rerun after a failure or material change. Preserve payment, data-loss, accessibility and migration checks when affected. Broad checks belong at shared-code changes or integration milestones.
 - Keep progress and final reports short. Update the compact checkpoint with completed work, evidence and the next bounded task. Use it to resume in a fresh conversation when the existing thread is long.
+
+## Référencement de la boutique
+
+Pour un cycle SEO, partir du [mandat et des limites de publication](.agents/seo/mandat.md), du [dernier bilan](.agents/seo/reports/) et de la [file de travail](.agents/seo/backlog.md). Charger ensuite seulement la compétence et les sources utiles au lot.
 
 ## Spécialistes du site et du jeu
 

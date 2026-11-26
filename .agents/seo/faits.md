@@ -1,0 +1,12 @@
+# Faits vérifiés
+
+| Fait utilisable | Source et date | Limite |
+| --- | --- | --- |
+| Les Chanvriers Bretons est la marque. Les Champs Bretons est l’éditeur identifié par le SIREN 942 368 994. | [À propos](https://www.leschanvriersbretons.com/a-propos) · [Annuaire des entreprises](https://annuaire-entreprises.data.gouv.fr/entreprise/942368994), consultés le 26 novembre 2026 | Un registre identifie l’éditeur. La provenance se lit sur les fiches et pièces de traçabilité. |
+| Sylvain présente sa production en Ille-et-Vilaine et distingue ses récoltes des références partenaires. | [Ferme et partenaires](https://www.leschanvriersbretons.com/a-propos#notre-ferme), relevé le 26 novembre 2026 | Conserver la distinction entre récolte maison, sélection maison et référence partenaire. |
+| Deux fiches illustrent les états d’analyse. Sour RNA affiche « Voir l’analyse laboratoire » et renvoie au guide de lecture. Small Bud Mix indique qu’aucune analyse n’est publiée. | [Sour RNA](https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1773870065552) · [Small Bud Mix](https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1775333841673), HTML reçu le 26 novembre 2026 | Les états et les documents peuvent changer. Le guide utilise des conditions et aucun exemple figé de produit. |
+| Le numéro du lot relie une étiquette à un rapport lorsqu’il figure sur les deux pièces. L’analyse décrit les mesures du rapport. | [Guide d’analyse](https://www.leschanvriersbretons.com/analyse-laboratoire-cbd) · [Étude MILDECA sur la composition et l’étiquetage](https://www.drogues.gouv.fr/etude-cbd) | L’opérateur ne statue pas sur un produit, un seuil ou la conformité d’un lot. |
+| L’accueil présente un prix juste dès le premier gramme. Le guide de prix présente des exemples du catalogue. | [Accueil](https://www.leschanvriersbretons.com/) · [Guide des prix](https://www.leschanvriersbretons.com/cbd-pas-cher), observés le 26 novembre 2026 | Éviter de recopier des prix ou des disponibilités dans un contenu statique. |
+| Une rubrique journal contient des chroniques et des guides. Les titres sur l’alimentaire et la légalité appellent une lecture éditoriale avec sources à jour. | [Journal](https://www.leschanvriersbretons.com/blog), observé le 26 novembre 2026 | Les formulations du journal sont à vérifier avant réutilisation. |
+
+Enregistrer chaque nouvelle affirmation avec sa portée, son URL de preuve, la date de vérification et la condition de relecture. [Relevé HTTP](../../docs/seo-operator/preview/crawl-public-2026-11-26.json)
