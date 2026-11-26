@@ -27,7 +27,8 @@ L’outil web a renvoyé des exemples francophones sur « CBD Bretagne », « CB
 | Google, Bing et Brave France | Rangs actuels N/D. Le 19 novembre, une collecte directe Bing avait observé l’accueil en positions 2 à 4 sur trois variantes régionales. La date et le caractère ponctuel limitent la comparaison. [Relevé daté](../../docs/seo/releve-recherche-fr.md) |
 | Googlebot, Bing et robots IA | Les directives d’exploration sont publiques. La fréquence de passage, l’indexation et les citations réelles restent N/D. |
 | ChatGPT, Gemini, Perplexity, Claude | Réponses et citations vérifiées N/D. Un lien ou un résultat d’un outil web ne vaut pas une citation d’un moteur de réponse. |
-| Trafic, engagement, commandes attribuées et Web Vitals terrain | Valeurs et tendances N/D. Les contrôles HTTP et navigateur couvrent le fonctionnement des pages et de leur navigation. |
+| Fréquentation Vercel | Agrégats de production accessibles avec la session Windows du projet. Le bilan chiffré reste privé. [Mesure et conditions](mesure.md) |
+| Commandes attribuées et Web Vitals terrain | N/D. Les contrôles HTTP et navigateur couvrent le fonctionnement des pages. [Mesure de laboratoire sur le guide](../../docs/seo-operator/preview/performance-labo.json) |
 
 La recette Chrome locale du guide mesure le rendu et les interactions à trois largeurs. Elle utilise une fixture et des fenêtres émulées sur Windows. Aucun score Lighthouse n’a été relevé pour ce lot. Les mesures Lighthouse historiques décrivent la page et les conditions de laboratoire de leur date. Les Core Web Vitals terrain exigent une fenêtre de données utilisateurs, par exemple CrUX ou une mesure réelle autorisée. [Recette du lot](../../docs/seo-operator/preview/README.md) · [Mesure de laboratoire historique](../../docs/seo/AUDIT-2026-09-11.md)
 

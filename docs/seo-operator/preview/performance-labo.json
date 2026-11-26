@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-11-26T16:59:05.584Z",
+  "sha": "dd76d98c",
+  "chrome": "Chrome/157.0.8103.79",
+  "page": "/analyse-laboratoire-cbd",
+  "conditions": "Windows, Chrome headless, build Next local en production, catalogue fictif, écran de consentement initial, cache navigateur désactivé, sans bridage CPU/réseau, navigateur et serveur sur la même machine. Ressources hors origine et requêtes privées bloquées. Une navigation par largeur; dernière peinture et somme des déplacements sans interaction lus après chargement des polices + 2,2 s.",
+  "results": [
+    {
+      "width": 390,
+      "height": 844,
+      "largestPaintMs": 1428,
+      "largestPaintTag": "P",
+      "layoutShift": 0,
+      "serverWaitMs": 77,
+      "domReadyMs": 439,
+      "imageCount": 1,
+      "missingImageAlt": 0,
+      "missingImageDimensions": 0,
+      "variant": true
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "largestPaintMs": 268,
+      "largestPaintTag": "H1",
+      "layoutShift": 0,
+      "serverWaitMs": 24,
+      "domReadyMs": 121,
+      "imageCount": 1,
+      "missingImageAlt": 0,
+      "missingImageDimensions": 0,
+      "variant": true
+    }
+  ]
+}

@@ -15,6 +15,7 @@ env:
   SEO_RELEASE_ENABLED: ${{ vars.SEO_RELEASE_ENABLED }}
   SEO_RELEASE_COST_CEILING_EUR: ${{ vars.SEO_RELEASE_COST_CEILING_EUR }}
   SEO_RELEASE_PROPOSER_ID: ${{ vars.SEO_RELEASE_PROPOSER_ID }}
+  SEO_RELEASE_PREFLIGHT_GENERATION: ${{ vars.SEO_RELEASE_PREFLIGHT_GENERATION }}
 
 jobs:
   propose:
@@ -27,6 +28,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      execution: ${{ steps.propose.outputs.execution }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -37,7 +40,8 @@ jobs:
         with:
           node-version: 24
           package-manager-cache: false
-      - env:
+      - id: propose
+        env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/seo-release/release.mjs propose
 
@@ -46,13 +50,15 @@ jobs:
     if: >-
       !cancelled() && github.repository == 'sylvaingonzalez1986-ship-it/site-web' &&
       github.ref == 'refs/heads/master' &&
-      (github.event_name == 'workflow_dispatch' || needs.propose.result == 'success')
+      (github.event_name == 'workflow_dispatch' ||
+       (needs.propose.result == 'success' && needs.propose.outputs.execution == format('{0}-{1}', github.run_id, github.run_attempt)))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
       pull-requests: read
     outputs:
+      execution: ${{ needs.propose.outputs.execution }}
       ready: ${{ steps.pr.outputs.ready }}
       number: ${{ steps.pr.outputs.number }}
       base: ${{ steps.pr.outputs.base }}
@@ -74,7 +80,9 @@ jobs:
 
   ci:
     needs: [plan, preview]
-    if: needs.plan.outputs.ready == 'true'
+    if: >-
+      needs.plan.outputs.ready == 'true' && (github.event_name == 'workflow_dispatch' ||
+      needs.plan.outputs.execution == format('{0}-{1}', github.run_id, github.run_attempt))
     permissions:
       contents: read
     uses: ./.github/workflows/ci.yml
@@ -83,7 +91,9 @@ jobs:
 
   build:
     needs: [plan, preview]
-    if: needs.plan.outputs.ready == 'true'
+    if: >-
+      needs.plan.outputs.ready == 'true' && (github.event_name == 'workflow_dispatch' ||
+      needs.plan.outputs.execution == format('{0}-{1}', github.run_id, github.run_attempt))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -120,7 +130,9 @@ jobs:
 
   preview:
     needs: plan
-    if: needs.plan.outputs.ready == 'true'
+    if: >-
+      needs.plan.outputs.ready == 'true' && (github.event_name == 'workflow_dispatch' ||
+      needs.plan.outputs.execution == format('{0}-{1}', github.run_id, github.run_attempt))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -161,7 +173,9 @@ jobs:
 
   merge:
     needs: [plan, build, preview, ci]
-    if: github.event_name == 'schedule' && vars.SEO_RELEASE_ENABLED == 'true'
+    if: >-
+      github.event_name == 'schedule' && vars.SEO_RELEASE_ENABLED == 'true' &&
+      needs.plan.outputs.execution == format('{0}-{1}', github.run_id, github.run_attempt)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

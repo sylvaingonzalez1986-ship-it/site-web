@@ -11,7 +11,7 @@ Utiliser le dernier jour complet **finalisé par la source**. Avec une clôture 
 | Google Search Console, recherche Web | Clics, impressions, CTR, position moyenne pour un segment, indexation via le rapport Pages/inspection. Les apparitions des fonctionnalités IA entrent dans le total Web. | Non disponible |
 | Bing Webmaster Tools | Performance Bing et indexation. Le rapport natif AI Performance couvre ses surfaces déclarées, dont Copilot. | Non disponible |
 | Brave Search | Observation directe datée des résultats France. | [Échantillon de novembre](../../docs/seo/releve-recherche-fr.md) |
-| Vercel Analytics | Trafic agrégé consenti et événements de référent IA par page. | Aucun export disponible |
+| Vercel Analytics | Audience agrégée de production dans la session Vercel existante. Les visites avec référent moteur, les citations IA et les achats attribués ont des séries distinctes. | Accès vérifié. Chiffres conservés dans l’état local privé. |
 | Attribution des ventes | Achats confirmés et CA en EUR rattachés à une entrée organique avec un modèle d’attribution explicite. | Non disponible |
 | Terrain et laboratoire | Web Vitals terrain si disponibles avec population/période. Les essais navigateur, Chrome et Lighthouse sont des mesures de laboratoire. | [Recette historique](../../docs/seo/recette-technique.md) et [aperçu du lot](../../docs/seo-operator/preview/) |
 

@@ -26,4 +26,6 @@ Le guide répond 200 dans les deux versions. Le titre, la description, le H1, la
 
 ## Mesure
 
+Sur le build de production local du candidat `dd76d98c`, la dernière peinture principale observée (LCP) arrive à 1 428 ms à 390 px et à 268 ms à 1 440 px. Chrome n’a enregistré aucun déplacement de mise en page pendant ces deux observations courtes. L’image présente dans chaque rendu a un attribut alt et des dimensions déclarées. Ces deux chargements Windows en boucle locale, avec un navigateur neuf et le consentement initial, constituent un échantillon de laboratoire. Les Web Vitals des visiteurs restent à obtenir. [Conditions et résultats](performance-labo.json)
+
 Le parcours visé part du guide, atteint une fiche fleur puis cherche le numéro de lot. Les impressions, clics, positions, visites et ventes attribuées sont N/D. Aucun gain de trafic ou de vente n’est déduit de la recette. Le premier contrôle après mise en ligne consiste à relire le HTML public du guide et à rejouer ses liens.

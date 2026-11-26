@@ -2,6 +2,8 @@
 
 Cartographie proposée après le crawl du 26 novembre 2026 et l’échantillon externe francophone. Les pages cibles suivent les fonctions actuelles. Les positions moyennes, la demande et les conversions par requête sont N/D. [Observations](observations.md)
 
+Sur les 28 derniers jours complets examinés dans Vercel, le croisement des chemins publics suivis et des référents moteurs a fait ressortir l’accueil, la boutique, la catégorie fleurs, Lorient et Saint-Brieuc. Maintenir leur protection. Les autres pages régionales et locales gardent leur protection provisoire en attendant les couples requête–page dans Search Console/Bing. Les volumes d’audience restent dans l’état privé de la machine.
+
 | Requête | Tâche du lecteur | Destination existante | Périmètre |
 | --- | --- | --- | --- |
 | `CBD Bretagne`, `Bretagne CBD` | Repérer une boutique bretonne ou vérifier la provenance | [Accueil](https://www.leschanvriersbretons.com/) pour l’offre régionale, [guide breton](https://www.leschanvriersbretons.com/cbd-breton) pour la provenance | Protégé. Les pages locales répondent à une demande de livraison, par exemple [Rennes](https://www.leschanvriersbretons.com/cbd-rennes). |

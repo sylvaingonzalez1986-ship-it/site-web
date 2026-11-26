@@ -1,6 +1,7 @@
 import { appendFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { checkVariant, findDeployment, github, productionOrigin, repository } from "./deployment.mjs";
+import { readAttempts, recordAttempt } from "./preflight.mjs";
 import { createProposal, isNativeProposal, proposals } from "./proposal.mjs";
 import {
   assertSha, candidateBranch, enforceLimits, git, isPending, ledgerPrefix, limits, primaryBranch,
@@ -19,13 +20,18 @@ function summary(message) {
   console.log(message);
 }
 
-function checkActivation() {
+function checkContext() {
   const env = process.env;
   if (env.GITHUB_REPOSITORY !== repository || env.GITHUB_REF !== `refs/heads/${primaryBranch}`
     || !["schedule", "workflow_dispatch"].includes(env.GITHUB_EVENT_NAME)
-    || (env.GITHUB_EVENT_NAME === "schedule" && env.SEO_RELEASE_ENABLED !== "true")
-    || env.SEO_RELEASE_COST_CEILING_EUR !== String(limits.budgetEuros)) {
-    throw new Error("Activation et plafond de 0 € à confirmer par le propriétaire.");
+    || (env.GITHUB_EVENT_NAME === "schedule" && env.SEO_RELEASE_ENABLED !== "true")) {
+    throw new Error("Activation à confirmer par le propriétaire.");
+  }
+}
+
+function checkCost() {
+  if (process.env.SEO_RELEASE_COST_CEILING_EUR !== String(limits.budgetEuros)) {
+    throw new Error("Plafond de 0 € à confirmer par le propriétaire.");
   }
 }
 
@@ -60,15 +66,27 @@ async function propose() {
   requireSchedule();
   requireResolvedPublications();
   const base = process.env.GITHUB_SHA;
-  if (!isPending(base)) {
-    summary("La variante autorisée est déjà active sur master.");
-    return;
+  let selectionError;
+  try {
+    if (!isPending(base)) {
+      summary("La variante autorisée est déjà active sur master.");
+      return;
+    }
+  } catch (error) {
+    selectionError = error;
   }
+  const generation = process.env.SEO_RELEASE_PREFLIGHT_GENERATION || "1";
+  const receipt = await recordAttempt(base, generation, readAttempts(generation), request);
+  const execution = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`;
+  summary(`Tentative avant publication enregistrée dans ${receipt} pour l’exécution ${execution}.`);
+  if (selectionError) throw selectionError;
+  checkCost();
   await publicationPath(base);
   enforceLimits(readLedger());
   const { pr, created } = await createProposal(base, request, validateCandidate);
   summary(created ? `PR #${pr.number} créée sur ${pr.head.sha}.`
     : `PR #${pr.number} déjà enregistrée (${pr.state}).`);
+  output("execution", execution);
 }
 
 async function publicationPath(base) {
@@ -206,10 +224,13 @@ try {
     if (!/^http:\/\/127\.0\.0\.1:\d{1,5}$/.test(origin ?? "")) throw new Error("Origine locale Next requise.");
     await checkVariant(origin, true);
     crawl(origin);
+  } else if (mode === "propose") {
+    checkContext();
+    await propose();
   } else {
-    checkActivation();
-    if (mode === "propose") await propose();
-    else if (mode === "plan") await plan();
+    checkContext();
+    checkCost();
+    if (mode === "plan") await plan();
     else if (mode === "preview") await preview(...args);
     else if (mode === "merge") await merge(...args);
     else if (mode === "production") await production(...args);

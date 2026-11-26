@@ -29,7 +29,7 @@ const days = await query(shifted(date, -14), shifted(date, -1), ["date"], [], 20
 const through = days.map(row => row.keys[0]).sort().at(-1);
 if (!through) throw new Error("Aucun jour finalisé renvoyé pour cette propriété et la France.");
 const from = shifted(through, -89);
-const brandExpression = "(?i)(les[ -]+)?chanvriers?[ -]+bretons?|leschanvriersbretons";
+const brandExpression = "(?i)les[ -]+chanvriers?[ -]+bretons?|leschanvriersbretons";
 const rows = [];
 for (const [brand, operator] of [["brand","includingRegex"], ["nonbrand","excludingRegex"]]) {
   const group = await query(from, through, ["date", "device", "page"], [{ dimension: "query", operator, expression: brandExpression }], 25000);

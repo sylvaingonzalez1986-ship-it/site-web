@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { findDeployment } from "./deployment.mjs";
+import { readAttempts, recordAttempt } from "./preflight.mjs";
 import {
   candidateBranch, enforceLimits, git, isPending, proposedSelection, publicationTag, readLedger,
   requireResolvedPublications, selectPublicationPath, selector, validateCandidate,
@@ -27,6 +28,9 @@ test("uniquement une addition autorisée dans le sélecteur sur le SHA courant",
     git("commit", "--quiet", "-m", "Base");
     const base = git("rev-parse", "HEAD");
     git("switch", "--quiet", "-c", candidateBranch);
+    git("tag", "seo-preflight/find-report/1/1", base);
+    assert.deepEqual(readAttempts("1"), ["refs/tags/seo-preflight/find-report/1/1"]);
+    assert.deepEqual(readAttempts("2"), []);
     const prepare = fileURLToPath(new URL("./prepare.mjs", import.meta.url));
     const generated = execFileSync(process.execPath, [prepare, base, "find-report"], { encoding: "utf8" }).trim();
     assert.doesNotThrow(() => validateCandidate(base, generated));
@@ -73,6 +77,26 @@ test("uniquement une addition autorisée dans le sélecteur sur le SHA courant",
     process.chdir(previousDirectory);
     rmSync(fixture, { recursive: true });
   }
+});
+
+test("deux tentatives durables pour un lot malgré le changement de base", async () => {
+  const initialBase = "a".repeat(40);
+  const laterBase = "b".repeat(40);
+  const refs = [];
+  const request = async (path, { method, body }) => {
+    assert.equal(path, "git/refs");
+    assert.equal(method, "POST");
+    refs.push(body.ref);
+    return { ref: body.ref, object: { sha: body.sha } };
+  };
+
+  const prefix = "refs/tags/seo-preflight/find-report/";
+  assert.equal(await recordAttempt(initialBase, "1", refs, request), `${prefix}1/1`);
+  assert.equal(await recordAttempt(laterBase, "1", refs, request), `${prefix}1/2`);
+  await assert.rejects(recordAttempt(laterBase, "1", refs, request), /Deux tentatives/);
+  assert.equal(refs.length, 2);
+  assert.equal(await recordAttempt(laterBase, "2", refs, request), `${prefix}2/1`);
+  await assert.rejects(recordAttempt(laterBase, "2", refs, async () => ({})), /non enregistrée/);
 });
 
 test("production d’une PR bornée, reprise d’une branche et conservation du statut fermé", async () => {
