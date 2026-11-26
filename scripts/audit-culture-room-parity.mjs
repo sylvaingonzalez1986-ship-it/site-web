@@ -268,7 +268,12 @@ export async function checkWarehouseParity({page,output,viewport,visit,state,geo
       await page.evaluate(()=>window.unmountReferencePlan());
     }
   }
-  await writeFile(resolve(output,"coordinates.json"),JSON.stringify(samples.map(({crops,...s})=>s),null,2));
+  const coordinates = samples.map(sample => {
+    const coordinate = { ...sample };
+    delete coordinate.crops;
+    return coordinate;
+  });
+  await writeFile(resolve(output,"coordinates.json"),JSON.stringify(coordinates,null,2));
   for(const width of [1440,390]){
     const file="rotation-details-"+width+".png";await writeFile(resolve(output,file),await objectSheet(samples,width));screenshots.push(file);
   }

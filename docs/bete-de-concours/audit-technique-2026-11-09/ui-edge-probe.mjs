@@ -252,50 +252,13 @@ if (preview) {
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   const keyClick = async selector => { await page.waitForSelector(selector, { visible: true }); await page.focus(selector); await page.keyboard.press('Enter'); };
   async function button(label, scope = 'body') { const match = await page.waitForFunction((label, scope) => [...document.querySelectorAll(scope + ' button')].find(node => node.textContent.trim() === label && !node.disabled && node.getClientRects().length), {}, label, scope); await match.asElement().focus(); await page.keyboard.press('Enter'); await match.dispose(); }
-  const fixture = () => page.evaluate(() => window.__fixture());
-  const rememberedDeck = () => page.evaluate(() => JSON.parse(sessionStorage.getItem('lcb:culture-preparation:v1:journey-local-fixture')).deckCodes.sort());
-  const mutations = () => page.evaluate(() => window.__calls.filter(call => call.method !== 'GET'));
   async function load(scenario, width = 390, query = '') {
     await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); }).catch(() => {});
     await page.setViewport({ width, height: width === 320 ? 720 : width === 390 ? 844 : 1000 });
     await page.goto(`${origin}${guideOnly ? '/arene/placard' : '/'}?scenario=${scenario}${query ? '&' + query : ''}`, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);
   }
-  async function layout() { assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal page overflow'); }
   const settled = () => page.waitForFunction(() => !document.querySelector('[data-placard-view] > [role="status"]'));
   async function screenshot(name) { await settled(); await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done)))); await page.screenshot({ path: resolve(output, name + '.png'), fullPage: false }); }
-  async function visibleBelowHeader(selector) {
-    await settled();
-    const position = await page.$eval(selector, node => ({ top: node.getBoundingClientRect().top, headerBottom: document.querySelector('#placard-content > header').getBoundingClientRect().bottom }));
-    assert(position.top >= position.headerBottom + 8, `Focused target must clear sticky header: ${JSON.stringify(position)}`);
-  }
-  const cards = '[data-setup-choice="cards"]', heritage = '[data-setup-choice="heritage"]';
-  async function openChoice(selector) { if (!await page.$eval(selector, node => node.open)) await keyClick(selector + ' > summary'); }
-  const deck = () => page.$eval('[data-preparation-deck]', node => node.dataset.preparationDeck.split(',').filter(Boolean).sort());
-  async function prepare({ empty = false, noHeritage = false } = {}) {
-    await page.waitForSelector('[data-culture-preparation]'); await openChoice(cards);
-    await button('Retirer les cartes', cards);
-    if (!empty) for (const code of ['BOTTE-005', 'BOTTE-005', 'BOTTE-024', 'BOTTE-003']) await keyClick(`${cards} [data-card-code="${code}"] button[aria-label^="Ajouter"]`);
-    const selected = await deck(); await keyClick(`${cards} [data-culture-keep-choice]`);
-    await openChoice(heritage);
-    if (noHeritage) await button('Sans Héritage', heritage);
-    else await keyClick(`${heritage} button[aria-label^="Équiper"]:not([disabled])`);
-    const heritageText = await page.$eval(heritage + ' > summary strong', node => node.textContent);
-    await keyClick(`${heritage} [data-culture-keep-choice]`);
-    return { selected, heritageText };
-  }
-  async function openPlan() {
-    await keyClick('[data-preparation-edit-plan]'); await page.waitForSelector('[data-warehouse-v4]', { visible: true });
-    await page.waitForSelector('[data-warehouse-map]'); assert.equal(new URL(page.url()).searchParams.get('from'), 'game');
-    assert.equal((await mutations()).length, 0, 'Opening the plan does not launch a culture or buy equipment');
-  }
-  async function assertPreparation(expected, campaign = true) {
-    await page.waitForSelector('[data-culture-preparation]', { visible: true });
-    if (campaign) assert.equal(new URL(page.url()).searchParams.get('campaign'), '1');
-    assert.equal(await page.$eval(heritage + ' > summary strong', node => node.textContent), expected.heritageText);
-    await openChoice(cards); assert.deepEqual(await deck(), expected.selected);
-    assert.equal((await fixture()).production.game, null); assert.equal((await mutations()).length, 0);
-    await layout();
-  }
   await load('workshop', 320, 'view=workshop&section=processing&workshop=trim&flower='+targetId);
   await page.waitForSelector('[data-trim-shared-form]', {visible: true});
   await keyClick('[data-placard-back="hub"]');

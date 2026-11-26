@@ -55,7 +55,8 @@ async function rules(user, changes = {}) {
   const snapshot = await read(user);
   const policy = { enabled: true, employeeId: snapshot.state.employees[0].id, paySuppliers: true, payPayroll: true,
     maxDailyCents: 10000, cashReserveCents: 1000, supplierDueDays: 1, ...changes, updatedAt: snapshot.serverNow };
-  const { updatedAt, ...command } = policy;
+  const command = { ...policy };
+  delete command.updatedAt;
   return commit(user, snapshot, { action: "set-administration-rules", ...command }, { ...empty(snapshot), administrationRules: policy });
 }
 async function invoice(user, amount = 1000, dueHours = 2) {
@@ -137,7 +138,8 @@ try {
 
   snapshot = await read(user);
   const invalid = { enabled: true, employeeId: snapshot.state.employees[0].id, paySuppliers: true, payPayroll: true, maxDailyCents: 10000, cashReserveCents: 1000, supplierDueDays: 8, updatedAt: snapshot.serverNow };
-  const { updatedAt, ...invalidCommand } = invalid;
+  const invalidCommand = { ...invalid };
+  delete invalidCommand.updatedAt;
   await rejectUnchanged("Due horizon is capped server-side", user,
     () => commit(user, snapshot, { action: "set-administration-rules", ...invalidCommand }, { ...empty(snapshot), administrationRules: invalid }), /staff_administration_invalid/);
   invalid.supplierDueDays = 1; invalid.employeeId = (await read(other)).state.employees[0].id;

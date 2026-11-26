@@ -45,7 +45,7 @@ async function concurrentCheck(db, peer, first, second, expectedError) {
   }
 }
 
-async function campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote }) {
+async function campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseQuote }) {
   await db.exec("COMMIT");
   // Load additional actual production definitions missing from the deliberately
   // smaller commerce fixture. Core snapshot dependencies are not executed here.
@@ -622,7 +622,7 @@ assert(source.includes('refresh.indexOf("END $$;", refreshStart) + 7'), "Heritag
 source = source.replace('refresh.indexOf("END $$;", refreshStart) + 7', 'refresh.lastIndexOf("COMMIT;")');
 const marker = '  console.log("Zone cultures: actual start/play/finish, capacity, replay, preservation and grants passed.");';
 assert(source.includes(marker), "zone fixture end marker changed");
-source = source.replace(marker, marker + '\n  await campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote });')
+source = source.replace(marker, marker + '\n  await campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseQuote });')
   .replace(/^import .*;\n/gm, "").replace('new URL("./test-placard-warehouse.mjs", import.meta.url)', `new URL("./test-placard-warehouse.mjs", ${JSON.stringify(sourceUrl.href)})`);
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 let cluster;

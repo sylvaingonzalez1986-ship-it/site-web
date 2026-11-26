@@ -10,7 +10,7 @@ import { PGlite } from "@electric-sql/pglite";
 import { createServer } from "vite";
 import { setupStaffTrimDatabase } from "./test-placard-staff-trim.mjs";
 
-async function cultureChecks({ db, vite, scalar, query, migration, section, check, rejects, read, stored }) {
+async function cultureChecks({ db, vite, scalar, query, migration, section, check, rejects, read }) {
   const definition = async (file, name) => {
     const sql = await migration(file);
     const start = sql.search(new RegExp(`CREATE(?: OR REPLACE)? FUNCTION public\\.${name}\\(`));
@@ -465,7 +465,7 @@ async function cultureChecks({ db, vite, scalar, query, migration, section, chec
 let source = (await readFile(new URL("./test-placard-shared-trim.mjs", import.meta.url), "utf8")).replaceAll("\r\n", "\n");
 const anchor = '  console.log(`Shared TRIM and weekly-plan SQL: ${checks.length} checks passed (isolated PGlite).`);';
 assert(source.includes(anchor), "Shared staff integration fixture marker changed");
-source = source.replace(anchor, `  await cultureChecks({ db, vite, scalar, query, migration, section, check, rejects, read, stored });
+source = source.replace(anchor, `  await cultureChecks({ db, vite, scalar, query, migration, section, check, rejects, read });
   console.log(\`Culture steps + staff/trim/weekly SQL: \${checks.length} checks passed (isolated PGlite).\`);`)
   .replace(/^import .*;\n/gm, "");
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;

@@ -2,7 +2,11 @@ import { readFile, writeFile } from 'node:fs/promises';
 const root = 'docs/encyclopedia-revision';
 const report = JSON.parse(await readFile(`${root}/cross-reviews/products-final.json`, 'utf8'));
 const extra = report.additionalTargetedVerification;
-const [claims, penal] = extra.sourceProposals.map(({ replacementScope, ...source }) => source);
+const [claims, penal] = extra.sourceProposals.map(proposal => {
+  const source = { ...proposal };
+  delete source.replacementScope;
+  return source;
+});
 const paperCorrection = report.requiredCorrections.find(c => c.id === 'products-final-paper-food-contact');
 const paper = {
   id: 'products-official-paper-food-contact', title: 'Matériaux organiques à base de fibres végétales — contact alimentaire',

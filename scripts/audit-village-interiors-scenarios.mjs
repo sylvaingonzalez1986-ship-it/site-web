@@ -180,15 +180,6 @@ export async function runInteriorAudit({ origin, output }) {
     }
     const buildMenu = 'dialog[data-warehouse-build-menu][open]';
     async function closeBuild() { await page.click(`${buildMenu} [aria-label="Fermer"]`); await page.waitForSelector(buildMenu, { hidden: true }); }
-    async function cellPopup(x, y) {
-      const point = await floorPoint(x + .5 - 5, y + .5 - 5); await page.mouse.click(point.x, point.y); await page.waitForSelector(buildMenu);
-    }
-    async function keyboardPlacement(x, y) {
-      await closeBuild();
-      await page.locator('[data-interior] summary::-p-text(Choisir une case au clavier)').click();
-      for (const [name, value] of [['column', x + 1], ['row', y + 1]]) await page.$eval(`[name="${name}"]`, (node, value) => { node.value = String(value); }, value);
-      await page.locator('[data-interior] button::-p-text(Choisir cette case)').click(); await page.waitForSelector(buildMenu);
-    }
     async function begin(id = 'zone-a') {
       const item = await page.evaluate(async ({ id, state }) => (await import('/src/lib/kanab-quest-warehouse-spatial.ts')).getKqWarehouseSpatialLayout(state).items.find(item => item.id === id), { id, state: snapshot.state });
       const point = await floorPoint(item.x, item.z, .5); await page.mouse.click(point.x, point.y); await page.waitForSelector(`${buildMenu}[data-build-mode="occupied"]`);

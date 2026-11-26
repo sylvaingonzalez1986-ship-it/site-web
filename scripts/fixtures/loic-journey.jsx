@@ -85,7 +85,8 @@ window.fetch = async (input, init = {}) => {
     const result = previewPreparations({...extras, cashCents:farm.cashCents, state:farm.warehouse}, init, {
       catalog:KQ_WAREHOUSE_PREPARATION_CATALOG, packFor:getKqWarehouseInputPack, gameClock:getKqBusinessClock,
       dayMs:KQ_GAME_DAY_MS, dailyHours:KQ_PLAYER_DAILY_HOURS, entrance:getKqWarehouseStationEntrance(farm.warehouse.floor),
-      now: Date.now() + clockOffsetMs, save: ({ state, cashCents, ...saved }) => {
+      now: Date.now() + clockOffsetMs, save: ({ cashCents, ...saved }) => {
+        delete saved.state;
         farm.cashCents = cashCents;
         sessionStorage.setItem(key, JSON.stringify(farm));
         sessionStorage.setItem('loic-preparations', JSON.stringify(saved));

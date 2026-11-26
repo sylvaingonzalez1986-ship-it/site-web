@@ -322,7 +322,8 @@ if (preview) {
       await page.waitForSelector('[data-care-reserve-status="ready"]', { visible: true });
     }
     const gameSnapshot = () => page.evaluate(() => {
-      const { milestones, ...production } = window.__fixture().production;
+      const production = { ...window.__fixture().production };
+      delete production.milestones;
       return JSON.stringify(production);
     });
     const guideSnapshot = () => page.evaluate(() => Object.fromEntries(Object.keys(localStorage).filter(key => /farm-guide|farm-progress/.test(key)).map(key => [key, localStorage.getItem(key)])));
@@ -453,8 +454,9 @@ if (preview) {
     const qualityLink = '[data-care-quality-link]';
     const careTabs = () => page.$$eval('[data-care-section]', nodes => nodes.map(node => node.dataset.careSection));
     const snapshot = () => page.evaluate(() => {
-      const { milestones, ...production } = window.__fixture().production;
       // The local lesson records the first health read; it is not a game action.
+      const production = { ...window.__fixture().production };
+      delete production.milestones;
       return JSON.stringify(production);
     });
     async function panel(id) {

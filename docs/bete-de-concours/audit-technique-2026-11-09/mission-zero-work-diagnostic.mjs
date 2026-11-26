@@ -3,17 +3,11 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { PGlite } from "@electric-sql/pglite";
-import { KQ_MISSION_DEFINITIONS } from "../../../src/lib/kanab-quest-missions.ts";
-import { getKqMissionLevel } from "../../../src/lib/kanab-quest-mission-progression.ts";
 
 const db = new PGlite();
 const sql = name => readFile(new URL(`../../../supabase/migrations/${name}`, import.meta.url), "utf8");
 const scalar = async (query, values = []) => Object.values((await db.query(query, values)).rows[0])[0];
-let checks = 0;
-const equal = (actual, expected, message) => { assert.deepEqual(actual, expected, message); checks++; };
-const reject = async (fn, message) => { await assert.rejects(fn, error => error.message.includes(message)); checks++; };
 const state = owner => scalar("SELECT rpc_kq_mission_state($1)", [owner]);
-const claim = (owner, code) => scalar("SELECT rpc_kq_claim_mission($1,$2)", [owner, code]);
 const mission = async (owner, code) => (await state(owner)).missions.find(item => item.code === code);
 const functionSql = (source, name) => {
   const match = source.match(new RegExp(`CREATE(?: OR REPLACE)? FUNCTION public\\.${name}\\([\\s\\S]*?\\$\\$;`));
@@ -82,10 +76,6 @@ try {
     await db.query("INSERT INTO auth.users VALUES($1)", [id]);
     await db.query("INSERT INTO kq_commerce_accounts(user_id,clients,shop_partners) VALUES($1,$2,$3)", [id, clients, partners]);
     return id;
-  };
-  const flower = async (user, variety = "HH2026-001", quality = 14, status = "completed") => {
-    const run = await scalar("INSERT INTO kq_runs(user_id,status) VALUES($1,$2) RETURNING id", [user, status]);
-    return scalar("INSERT INTO kq_flowers(owner_id,run_id,variety_code,quality,status) VALUES($1,$2,$3,$4,'burned') RETURNING id", [user, run, variety, quality]);
   };
 
   await db.exec(`

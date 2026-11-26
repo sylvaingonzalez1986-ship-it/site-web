@@ -153,7 +153,8 @@ try{
   // A started game crosses midnight; a waiting lobby cannot start on Monday.
   await reset();
   await setNow('2026-11-15T22:59:55Z');
-  const [late]=await users(),lateLobby=await call(late,command('join'));
+  const [late]=await users();
+  await call(late,command('join'));
   await setNow('2026-11-15T23:00:01Z');
   const expired=await call(late);
   check('unfinished lobby expires at Monday midnight instead of starting bots',[expired.room.status,expired.room.reason,expired.room.players.length,expired.event.isOpen],['cancelled','event_closed',1,false]);

@@ -55,7 +55,7 @@ ${await readFile('supabase/migrations/20261114000400_kq_school_tournament_weekly
  await result(users[1],command('join'));await result(users[2],command('join'));
  let [a,b]=await racing('fourth and fifth entrants',call(users[3],command('join')),call(users[4],command('join')));
  check('fourth entrant completes first room',[a.room.id,a.room.players.length],[room,4]);
- assert.notEqual(b.room.id,room);check('fifth entrant gets another room',b.room.players.length,1);const otherRoom=b.room.id;
+ assert.notEqual(b.room.id,room);check('fifth entrant gets another room',b.room.players.length,1);
  check('no room contains five seats',await sql('SELECT max(n) FROM (SELECT count(*) n FROM kq_school_tournament_participants GROUP BY room_id) x;'),'4');
  for(const user of users.slice(5))await result(user,command('join'));
 
