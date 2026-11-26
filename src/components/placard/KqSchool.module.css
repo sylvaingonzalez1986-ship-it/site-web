@@ -13,8 +13,9 @@
 .school summary { cursor: pointer; font-weight: 700; padding-block: 8px; }
 .school details > :not(summary) { margin-top: 10px; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.tabs { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; border-bottom: 1px solid #17292333; padding-bottom: 12px; }
-.tabs button { min-width: 0; padding-inline: 8px; }
+.tabs { display: flex; align-items: stretch; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid #17292340; padding-block: 4px 12px; }
+.tabs > :is(button, span) { padding: 8px 14px; font-size: 1rem; line-height: 1.15; }
+.tabs .hallReturn { margin-inline-end: auto; }
 .panel { min-width: 0; background: transparent; border: 2px solid transparent; box-shadow: none; --game-panel-art: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; padding: clamp(16px, 2.5vw, 28px); }
 .panel { display: grid; gap: 20px; }
 .warm { --game-panel-art: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); }
@@ -92,6 +93,10 @@
 @media (max-width:1000px) { .courseGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width:700px) { .workshopLayout { grid-template-columns: minmax(0,1fr); } .metrics { gap: 12px; } .school { gap: 16px; } .panel { padding: 16px; } .crossword { max-width: 420px; margin-inline: auto; } .journeyBar { gap: 14px; } .compactMetrics { gap: 9px 16px; } .courseGrid { gap: 24px 14px; } .cardActions { grid-template-columns: 1fr; } .feedback > summary { grid-template-columns: 65px minmax(0, 1fr) 12px; gap: 7px; } }
 @media (max-width:480px) { .courseGrid { grid-template-columns: minmax(0, 1fr); } .courseCard { gap: 12px; } .cardActions { grid-template-columns: 1fr 1fr; } .compactMetrics { width: 100%; justify-content: space-between; } .compactMetrics > div { display: grid; gap: 3px; } .journeyBar > button { width: 100%; } }
-@media (max-width:380px) { .metrics { grid-template-columns: minmax(0,1fr); } .metric { display: flex; justify-content: space-between; align-items: center; } .tabs { gap: 4px; } .tabs button { padding-inline: 8px; font-size: .88rem; } .questionNav button { padding-inline: 11px; } }
-@media (max-width:420px) { .tabs button { padding-inline: 5px; font-size: .86rem; } .tabs button svg { display: none; } }
+@media (max-width:580px) {
+  .tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 4px; padding-bottom: 8px; }
+  .tabs > :is(button, span) { flex-direction: column; gap: 2px; padding: 7px 3px; font-size: .88rem; overflow-wrap: anywhere; }
+  .tabs .hallReturn { grid-column: 1 / -1; justify-self: start; flex-direction: row; padding-inline: 12px; }
+}
+@media (max-width:380px) { .metrics { grid-template-columns: minmax(0,1fr); } .metric { display: flex; justify-content: space-between; align-items: center; } .questionNav button { padding-inline: 11px; } }
 @media (max-width:700px) { .school nav[aria-label="Choisir un atelier"] { grid-template-columns: repeat(2, minmax(0,1fr)); } .school nav[aria-label="Choisir un atelier"] button { padding-inline: 10px; font-size: .85rem; } }

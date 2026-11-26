@@ -23,7 +23,7 @@ function createResident(profile: ChanvrierAvatarProfile, terrain: Group, surface
   model.object.traverse(part => { part.castShadow = false; });
   return {
     model, surface, route: createVillagePlayerRoute(surface, paths, model.object.position),
-    steps: [] as Point[], distance: 0, time: 0, posedAt: -1, screenPoint: new Vector3(), speed: 0, walk: 0, groundY: spawn[1],
+    steps: [] as Point[], distance: 0, time: 0, posedAt: -1, screenPoint: new Vector3(), speed: 0, walk: 0, turnYaw: 0, groundY: spawn[1],
   };
 }
 
@@ -37,6 +37,7 @@ function finishReducedWalk(resident: NonNullable<ReturnType<typeof createResiden
   }
   resident.speed = 0;
   resident.walk = 0;
+  resident.turnYaw = 0;
   model.pose(resident.distance, 0, null, 0, null);
 }
 
@@ -66,10 +67,12 @@ export function useVillagePlayer(profile: ChanvrierAvatarProfile | null, layer: 
     const dt = Math.min(0.05, delta);
     resident.time += dt;
     let step = 0;
+    let lookAhead = 0;
     if (next && dt > 0) {
       const dx = next.x - object.position.x, dz = next.z - object.position.z, length = Math.hypot(dx, dz);
       const heading = Math.atan2(dx, dz);
       const turn = villageAngleDifference(heading, object.rotation.y);
+      lookAhead = Math.max(-.46, Math.min(.46, turn));
       object.rotation.y += approachVillageValue(0, turn, TURN_RATE * dt);
       if (Math.abs(villageAngleDifference(heading, object.rotation.y)) <= HEADING_LIMIT) {
         const following = resident.steps[1];
@@ -92,6 +95,8 @@ export function useVillagePlayer(profile: ChanvrierAvatarProfile | null, layer: 
     object.position.y = approachVillageValue(object.position.y, resident.groundY, dt * 0.9);
     if (dt > 0) resident.speed = step / dt;
     resident.walk = villageWalkBlend(resident.walk, resident.speed, dt);
+    const previousYaw = resident.turnYaw;
+    resident.turnYaw = approachVillageValue(previousYaw, lookAhead, dt * 3.2);
     const projected = resident.screenPoint.copy(object.position);
     projected.y += 1;
     projected.project(camera);
@@ -99,12 +104,12 @@ export function useVillagePlayer(profile: ChanvrierAvatarProfile | null, layer: 
       const pixelsPerUnit = camera instanceof OrthographicCamera ? size.height * camera.zoom / (camera.top - camera.bottom) : Infinity;
       // Keep navigation at frame rate. At map scale a breathing idle rarely moves a full pixel.
       const interval = pixelsPerUnit >= 52 ? 0 : resident.walk > .01 ? 1 / 30 : 1 / 12;
-      if (resident.time - resident.posedAt >= interval) {
-        resident.model.pose(resident.distance, resident.walk, null, 0, null, undefined, resident.time);
+      if (resident.time - resident.posedAt >= interval || (previousYaw !== 0 && resident.turnYaw === 0)) {
+        resident.model.pose(resident.distance, resident.walk, null, 0, null, undefined, resident.time, resident.turnYaw);
         resident.posedAt = resident.time;
       }
     }
-    if (next || resident.walk > 0 || object.position.y !== resident.groundY) invalidate();
+    if (next || resident.walk > 0 || resident.turnYaw !== 0 || object.position.y !== resident.groundY) invalidate();
   });
   return (destination: Point) => {
     const resident = actor.current;

@@ -442,7 +442,8 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
   const returnToSchoolHome = view === "school" && schoolSection !== "home" && !contextualReturn;
   const returnView: PlacardView = returnToPreparation ? "game" : contextualReturn ?? (returnToSchoolHome ? "school" : view === "game" ? "workshop" : view === "arena" ? "harvests"
       : view === "shop" ? shopReturnView : "hub");
-  const returnLabel = returnToPreparation ? { label: "Préparation", accessibleLabel: "Revenir à ma préparation" } : PLACARD_RETURN_LABELS[returnView];
+  const returnLabel = returnToPreparation ? { label: "Préparation", accessibleLabel: "Revenir à ma préparation" }
+    : returnToSchoolHome ? { label: "La salle", accessibleLabel: "Revenir à la salle de QuizzShow" } : PLACARD_RETURN_LABELS[returnView];
   const returnToParent = () => {
     if (fromRoom) openWorldHref(buildingRoomHref(fromRoom));
     else if (returnToSchoolHome) openView("school");
@@ -546,7 +547,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
           : view === "workshop" ? <h1 className="sr-only" ref={headingRef} tabIndex={-1}>{currentTitle}</h1> : <header className={styles.sectionHeader}>
           {view === "treasury" ? <a className={styles.roomLink} href={buildingRoomHref("bank")}><ArrowLeft size={18} aria-hidden="true" />Retour à la banque</a>
             : fromRoom ? <a className={styles.roomLink} href={buildingRoomHref(fromRoom)} aria-label="Entrer dans le bâtiment"><ArrowLeft size={18} aria-hidden="true" />Entrer</a>
-            : <button type="button" data-placard-back={returnView} aria-label={returnLabel.accessibleLabel} onClick={returnToParent}><ArrowLeft size={18} aria-hidden="true" />{returnLabel.label}</button>}
+            : <button type="button" data-placard-back={returnView} data-school-home-return={returnToSchoolHome || undefined} aria-label={returnLabel.accessibleLabel} onClick={returnToParent}><ArrowLeft size={18} aria-hidden="true" />{returnLabel.label}</button>}
           <h1 ref={headingRef} tabIndex={-1}>{currentTitle}</h1>
           {view !== "treasury" && activityRoom && activityRoom !== fromRoom && <a className={styles.roomLink} href={buildingRoomHref(activityRoom)}>Entrer</a>}
         </header>}
@@ -579,7 +580,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
           />}
           </>
         ) : view === "school" ? (
-          <KqSchool initialSection={schoolSection} initialModuleId={schoolModule} initialPassageId={schoolPassage}
+          <KqSchool initialSection={schoolSection} initialModuleId={schoolModule} initialPassageId={schoolPassage} hasHallReturn={returnToSchoolHome && !fromRoom}
             onSectionChange={(section, moduleId, passageId?: string) => openView("school", { schoolSection: section, schoolModule: moduleId, schoolPassage: passageId, buddyCode, from: from === "shop" ? "shop" : undefined })}
             onOpenBuddy={(code, moduleId, passageId?: string) => openView("shop", { cardsTab: "collection", shopSection: "buddies", buddyCode: code, schoolModule: moduleId, schoolSection, schoolPassage: passageId ?? schoolPassage, from: "school" })}
             onExit={() => openView("hub")} />
@@ -642,6 +643,8 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
       const link = (event.target as Element).closest<HTMLAnchorElement>("a[href]");
       if (!link || link.getAttribute("href")?.startsWith("#") || link.hasAttribute("download") || link.target && link.target !== "_self") return;
       if (link.closest("[data-playable-lesson], [data-releve-native-culture], [data-releve-production], [data-arena-journey-ui]")) return;
+      // The reader saves the selected entry and scroll position in its own click handler.
+      if (link.matches("[data-reference-entry], [data-reference-read]") || link.closest("[data-cannabis-article]")) return;
       const target = new URL(link.href, window.location.href);
       if (target.origin !== window.location.origin || target.pathname !== "/arene/placard") return;
       event.preventDefault(); event.stopPropagation(); openWorldHref(link.href);

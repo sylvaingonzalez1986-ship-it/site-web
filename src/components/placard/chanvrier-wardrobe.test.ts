@@ -49,7 +49,7 @@ describe("chanvrier tailoring", () => {
     worker.dispose();
   });
 
-  it("keeps the folded short cuffs open and the deck trousers flared in motion", () => {
+  it("keeps the folded cuffs distinct from the fabric and ankle in motion", () => {
     const worker = createGrowWorker(profile);
     const skin = new THREE.Color(getChanvrierColors(profile).skin);
     const a = new THREE.Vector3(), b = new THREE.Vector3();
@@ -73,11 +73,46 @@ describe("chanvrier tailoring", () => {
             const cuff = Math.max(...rows.slice(skinRow! - 7, skinRow).map(diameter));
             expect(cuff).toBeGreaterThan(diameter(skinRow!) * 1.28);
           } else {
-            expect(diameter(rows.at(-1)!)).toBeGreaterThan(diameter(8) * 1.05);
+            const cuff = Math.max(...rows.slice(-14).map(diameter));
+            expect(cuff).toBeGreaterThan(diameter(rows.at(-1)!) * 1.6);
+            expect(cuff).toBeGreaterThan(diameter(8) * 1.04);
           }
         }
       }
     }
     worker.dispose();
+  });
+
+  it("recolors the knit in place and isolates two models sharing its material", () => {
+    const look: ChanvrierAvatarProfile = {
+      ...profile,
+      appearance: { ...DEFAULT_CHANVRIER_APPEARANCE, top: "mariniere", accessory: "neckerchief", dyes: { top: "#f5e3be", accent: "#b14b42" } },
+    };
+    const first = createGrowWorker(look);
+    const second = createGrowWorker(look);
+    try {
+      const torso = (worker: typeof first) => worker.object.getObjectByName("haut-mariniere") as THREE.Mesh;
+      const sleeve = (worker: typeof first) => worker.object.getObjectByName("chanvrier-arm--1") as THREE.Mesh;
+      const scarf = first.object.getObjectByName("accessoire-neckerchief") as THREE.Mesh;
+      const { geometry, material } = torso(first);
+      const sleeveGeometry = sleeve(first).geometry;
+      const previous = Array.from(geometry.getAttribute("color").array);
+      const rest = Array.from(geometry.getAttribute("clothRest").array);
+      expect(torso(second).material).toBe(material);
+
+      first.object.rotation.y = Math.PI * .45;
+      first.updateAppearance({ ...look, appearance: { ...look.appearance!, dyes: { ...look.appearance!.dyes, stripe: "#225369" } } });
+      first.pose(.35, 1, null, 0, null);
+      expect(torso(first).geometry).toBe(geometry);
+      expect(sleeve(first).geometry).toBe(sleeveGeometry);
+      expect(first.object.getObjectByName("accessoire-neckerchief")).toBe(scarf);
+      expect(Array.from(geometry.getAttribute("color").array)).not.toEqual(previous);
+      expect(Array.from(geometry.getAttribute("clothRest").array)).toEqual(rest);
+      expect(Array.from(torso(second).geometry.getAttribute("color").array)).toEqual(previous);
+      expect(second.object.rotation.y).toBe(0);
+    } finally {
+      first.dispose();
+      second.dispose();
+    }
   });
 });

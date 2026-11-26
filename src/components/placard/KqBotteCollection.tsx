@@ -11,6 +11,8 @@ import { useKqCollectionDialog as useCardDialog, clickedCollectionBackdrop as cl
 import { KqBuddiesCollection } from "./KqBuddiesCollection";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqChapterHeading } from "./KqChapterHeading";
+import { KqAlbumSearch, KqAlbumSummary } from "./KqAlbumTools";
+import retro from "../contest/ArenaRetro.module.css";
 import styles from "./KqBotteCollection.module.css";
 
 const RARITIES = KQ_CARD_RARITY_LABELS;
@@ -68,7 +70,10 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
       const payload = await response.json() as { error?: string; collection?: { cards?: Array<{ code: string; ownedCopies: number }> } };
       if (!response.ok) throw new Error(response.status === 401 ? "Connecte-toi pour retrouver ta collection Botte du Chanvrier." : payload.error || "Impossible de charger ta collection.");
       if (!Array.isArray(payload.collection?.cards)) throw new Error("Les informations de ta collection sont indisponibles.");
-      const counts = Object.fromEntries(payload.collection.cards.map((card) => [card.code, Number.isFinite(card.ownedCopies) ? Math.max(0, Math.floor(card.ownedCopies)) : 0]));
+      if (payload.collection.cards.some(card => !Number.isSafeInteger(card.ownedCopies) || card.ownedCopies < 0)) {
+        throw new Error("Le stock de ton album est indisponible. Réessaie pour retrouver tes quantités.");
+      }
+      const counts = Object.fromEntries(payload.collection.cards.map(card => [card.code, card.ownedCopies]));
       if (!controller.signal.aborted) setInventory(counts);
     } catch (reason) {
       if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Collection indisponible.");
@@ -93,10 +98,10 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
   if (typeof document === "undefined") return null;
   const content = <>
       <div className={styles.albumLayout}>
-        <KqChapterHeading title="Collection" titleId="botte-collection-title" compact actions={!embedded ? <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button> : undefined} />
+        {!embedded ? <KqChapterHeading title="Collection" titleId="botte-collection-title" compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>} /> : null}
         <div data-farm-guide-host />
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
-          {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => selectAlbum(kind)} onKeyDown={event => {
+          {(["botte", "buddies"] as const).map(kind => <button key={kind} className={retro.sectionSign} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => selectAlbum(kind)} onKeyDown={event => {
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
             event.preventDefault();
             const next = event.key === "Home" ? "botte" : event.key === "End" ? "buddies" : kind === "botte" ? "buddies" : "botte";
@@ -106,10 +111,14 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
         </div>
         <div className={styles.albumPanel} hidden={album !== "botte"} role="tabpanel" id="collection-panel-botte" aria-labelledby="collection-tab-botte" data-collection-panel="botte"
           data-sylvain-target="cards" data-sylvain-seen={!api.isTutorial && inventory && !loading && !error ? "cards" : undefined} tabIndex={-1}>
-        <section className={styles.progress} aria-label="État de ta collection"><div><strong>{inventory ? `${owned} / ${KQ_CARDS.length}` : "…"}</strong><span>cartes différentes en stock</span></div><progress value={inventory ? owned : 0} max={KQ_CARDS.length} aria-label="Cartes différentes possédées" /><div><strong>{inventory ? copies : "…"}</strong><span>exemplaires disponibles</span></div></section>
+        <KqAlbumSummary label="Cartes différentes en stock" owned={inventory ? owned : null} total={KQ_CARDS.length} quantity={inventory ? copies : null} quantityLabel="Exemplaires disponibles" />
         <div className={styles.filters}>
           <nav aria-label="Afficher les cartes"><button type="button" aria-pressed={ownership === "owned"} disabled={!inventory} onClick={() => setOwnership("owned")}>Mes cartes <b>{inventory ? owned : "…"}</b></button><button type="button" aria-pressed={ownership === "all"} onClick={() => setOwnership("all")}>Album complet <b>{KQ_CARDS.length}</b></button><button type="button" aria-pressed={ownership === "missing"} disabled={!inventory} onClick={() => setOwnership("missing")}>Manquantes <b>{inventory ? KQ_CARDS.length - owned : "…"}</b></button></nav>
-          <div><label className={styles.search}><Search size={17} aria-hidden="true" /><input aria-label="Rechercher une carte" placeholder="Nom, situation…" value={query} onChange={(event) => setQuery(event.target.value)} /></label><label className={styles.utility}><span>Utilité</span><select aria-label="Filtrer par utilité" value={utility} onChange={(event) => setUtility(event.target.value)}><option value="all">Toutes les utilités</option>{Object.entries(KQ_CARD_ROLES).map(([key, role]) => <option key={key} value={key}>{role.label}</option>)}</select></label><label className={styles.utility}><span>Rareté</span><select aria-label="Filtrer par rareté" value={rarity} onChange={(event) => setRarity(event.target.value)}><option value="all">Toutes les raretés</option>{Object.entries(RARITIES).map(([code, label]) => <option key={code} value={code}>{label}</option>)}</select></label></div>
+          <KqAlbumSearch active={Boolean(query.trim()) || utility !== "all" || rarity !== "all"} matches={inventory ? visible.length : null}>
+            <label className={styles.search}><Search size={17} aria-hidden /><input type="search" aria-label="Rechercher une carte" placeholder="Nom, situation…" value={query} onChange={event => setQuery(event.target.value)} /></label>
+            <label className={styles.utility}><span>Utilité</span><select aria-label="Filtrer par utilité" value={utility} onChange={event => setUtility(event.target.value)}><option value="all">Toutes les utilités</option>{Object.entries(KQ_CARD_ROLES).map(([key, role]) => <option key={key} value={key}>{role.label}</option>)}</select></label>
+            <label className={styles.utility}><span>Rareté</span><select aria-label="Filtrer par rareté" value={rarity} onChange={event => setRarity(event.target.value)}><option value="all">Toutes les raretés</option>{Object.entries(RARITIES).map(([code, label]) => <option key={code} value={code}>{label}</option>)}</select></label>
+          </KqAlbumSearch>
         </div>
         <div className={styles.cardsArea} aria-busy={loading}>
           {loading ? <p role="status" className={styles.notice}>{inventory ? "Actualisation de tes cartes…" : "Ouverture de ton album…"}</p> : null}
@@ -128,6 +137,6 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
       </div>
     {selected ? <KqBotteCardDetail card={selected} copies={inventory ? inventory[selected.code] ?? 0 : null} onClose={() => setSelected(null)} /> : null}
   </>;
-  if (embedded) return <section className={styles.embeddedCollection} data-placard-collections aria-labelledby="botte-collection-title">{content}</section>;
+  if (embedded) return <section className={styles.embeddedCollection} data-placard-collections aria-label="Collection">{content}</section>;
   return createPortal(<dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={event => { event.preventDefault(); onClose(); }} onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onClick={event => { if (clickedBackdrop(event)) onClose(); }}>{content}</dialog>, document.body);
 }

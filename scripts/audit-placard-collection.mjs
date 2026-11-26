@@ -44,7 +44,7 @@ try{
  const inspectBuddies=async(width)=>{
   await page.focus('[data-collection-tab=botte]');await page.keyboard.press('ArrowRight');await waitBuddies(3);
   assert.equal(await page.$eval('[data-collection-tab=buddies]',el=>el.getAttribute('aria-selected')),'true');
-  assert.equal(await page.$eval(buddiePanel+' progress',el=>el.value),3);
+  assert.equal(await page.$eval(buddiePanel+' [role=meter]',el=>Number(el.getAttribute('aria-valuenow'))),3);
   assert.equal(await page.$eval(buddiePanel,el=>el.scrollWidth>el.clientWidth+1),false);
   await snap('buddies-owned-'+width);
   await page.click('[data-buddie-collection-filter=duplicates]');await waitBuddies(1);
@@ -57,6 +57,7 @@ try{
   assert.equal(await page.$eval(album,el=>el.open),true);
   assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-buddie-collection-card')),'HH2026-020');
   await page.click('[data-buddie-collection-filter=all]');await waitBuddies(52);
+  await page.click(buddiePanel+' details > summary');
   await page.select(buddiePanel+' select','legendary');await waitBuddies(1);
   await page.click(buddieCards);await page.waitForSelector('[data-buddie-collection-detail="HH2026-001"][open]');
   assert.equal(await page.$('[data-buddie-collection-profile]'),null,'Missing Buddies keep their identity/profile undisclosed');
@@ -69,10 +70,11 @@ try{
  for(const [width,height]of(collectionOnly?[[320,740],[390,844],[1440,1000]]:[[320,740],[390,844],[768,1024],[1440,1000],[844,390]])){
   await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await visit();await snap('entry-'+width);await open();await clickText('Album complet 30');await waitCards(30);
   assert.equal(await page.$$eval(album+' [data-owned=true]',els=>els.length),3);
-  assert.equal(await page.$eval(album+' progress',el=>el.value),3);
+  assert.equal(await page.$eval(album+' [role=meter]',el=>Number(el.getAttribute('aria-valuenow'))),3);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
   assert.equal(await page.$eval(album,el=>el.scrollWidth>el.clientWidth+1),false);
   await snap('album-'+width);assert.equal(await page.$$eval(album+' button[data-card-code] img',els=>els.every(img=>img.complete&&img.naturalWidth>0)),true,'Every active card artwork must load');
+  await page.click('[data-collection-panel=botte] details > summary');
   await page.select('[aria-label="Filtrer par rareté"]','epic');await waitCards(4);assert.equal(await page.$$eval(album+' [data-rarity=epic]',els=>els.filter(el=>el.matches('button')).length),4);await snap('epics-'+width);await page.select('[aria-label="Filtrer par rareté"]','all');await waitCards(30);
   assert.equal(await page.$$eval(album+' button[data-card-code]',els=>els.some(el=>['BOTTE-002','BOTTE-004','BOTTE-010','BOTTE-011','BOTTE-012','BOTTE-022','BOTTE-023','BOTTE-025'].includes(el.dataset.cardCode))),false);
   await clickText('Manquantes 27');await waitCards(27);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');
@@ -92,8 +94,8 @@ try{
   await visit('view=shop');await snap('shop-entry');await clickText('Collections');await waitCards(3);await snap('shop-album');await page.keyboard.press('Escape');await page.waitForSelector(album,{hidden:true});assert.ok(await page.$('[aria-label="Quitter la boutique"]'));assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');assert.equal(await page.evaluate(()=>document.activeElement?.textContent.trim()),'Collections');
  }
  await visit('fail');await open();await page.waitForSelector(album+' [role=alert]');assert.equal(await page.$$eval(album+' button[data-card-code][data-owned]',els=>els.length),0);await page.evaluate(()=>window.__fixture.failCollection=false);await clickText('Réessayer');await waitCards(3);
- await page.evaluate(()=>{window.__counts['BOTTE-005']=1;window.dispatchEvent(new Event('kq:collection-updated'));});await page.waitForFunction(()=>document.querySelector('dialog progress')?.value===4);
- await visit('empty');await open();await waitCards(0);assert.equal(await page.$eval(album+' progress',el=>el.value),0);await clickText('Mes cartes 0');await waitCards(0);await clickText('Manquantes 30');await waitCards(30);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');await page.mouse.click(2,2);await page.waitForSelector(detail,{hidden:true});assert.equal(await page.$eval(album,d=>d.open),true);
+ await page.evaluate(()=>{window.__counts['BOTTE-005']=1;window.dispatchEvent(new Event('kq:collection-updated'));});await page.waitForFunction(()=>document.querySelector('dialog [role=meter]')?.getAttribute('aria-valuenow')==='4');
+ await visit('empty');await open();await waitCards(0);assert.equal(await page.$eval(album+' [role=meter]',el=>Number(el.getAttribute('aria-valuenow'))),0);await clickText('Mes cartes 0');await waitCards(0);await clickText('Manquantes 30');await waitCards(30);await page.click(album+' button[data-owned=false]');await page.waitForSelector(detail+'[open]');await page.mouse.click(2,2);await page.waitForSelector(detail,{hidden:true});assert.equal(await page.$eval(album,d=>d.open),true);
  await visit('complete');await open();await waitCards(30);await clickText('Manquantes 0');await page.waitForFunction(()=>document.querySelector('dialog')?.textContent.includes('Tu possèdes toutes les cartes'));
  await visit('view=profile');await page.waitForSelector('button[aria-label="Agrandir Brassage ajusté"]');await page.click('button[aria-label="Agrandir Brassage ajusté"]');await page.waitForSelector(detail+'[open]');assert.equal(await page.$eval(detail,el=>el.textContent.includes('2 exemplaires en stock')),true);await page.keyboard.press('Escape');
  for(const width of [320,1440]){

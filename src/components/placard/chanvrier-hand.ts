@@ -1,13 +1,25 @@
 import * as THREE from "three";
+import { recomputeLatheNormals } from "./chanvrier-geometry";
 import { Assembly, type CharacterPoint } from "./world/village-character-art";
 
 type HandPose = "relaxed" | "pinch" | "grip";
 type Side = -1 | 1;
 
-function palm() {
-  const profile = [[0, -.052], [.023, -.049], [.042, -.036], [.047, -.010], [.043, .017],
-    [.033, .041], [.030, .058], [.030, .075], [0, .079]];
-  return new THREE.LatheGeometry(profile.map(([width, y]) => new THREE.Vector2(width, y)), 14).scale(1, 1, .70);
+function palm(side: Side) {
+  const rings = [[0, -.058], [.025, -.052], [.043, -.037], [.047, -.012], [.041, .019],
+    [.032, .043], [.030, .060], [.030, .074], [0, .080]];
+  const profile = new THREE.CatmullRomCurve3(rings.map(([width, y]) => new THREE.Vector3(width, y, 0)));
+  const geometry = new THREE.LatheGeometry(profile.getPoints(20).map(point => new THREE.Vector2(Math.max(0, point.x), point.y)), 16).scale(1, 1, .63);
+  const position = geometry.getAttribute("position");
+  for (let i = 0; i < position.count; i++) {
+    const [x, y, z] = [position.getX(i), position.getY(i), position.getZ(i)];
+    const thenar = THREE.MathUtils.smoothstep(-side * x, -.004, .036) * Math.exp(-(((y - .009) / .039) ** 2));
+    const knuckle = Math.exp(-(((y + .045) / .017) ** 2));
+    position.setX(i, x - side * .0055 * thenar);
+    position.setZ(i, z + .009 * thenar + .0042 * knuckle);
+  }
+  recomputeLatheNormals(geometry);
+  return geometry;
 }
 
 function roundedDigit(art: Assembly, skin: string, points: CharacterPoint[], radius: number) {
@@ -17,9 +29,8 @@ function roundedDigit(art: Assembly, skin: string, points: CharacterPoint[], rad
 
 function handArt(side: Side, skin: string, pose: HandPose) {
   const art = new Assembly();
-  const nail = `#${new THREE.Color(skin).lerp(new THREE.Color("#efbca8"), .23).getHexString()}`;
   if (pose === "grip") {
-    art.add(palm().rotateZ(-side * Math.PI / 2), skin, [side * .017, 0, -.028]);
+    art.add(palm(side).rotateZ(-side * Math.PI / 2), skin, [side * .017, 0, -.028]);
     for (let digit = 0; digit < 4; digit++) {
       const y = .036 - digit * .024, radius = [.0124, .0127, .0119, .010][digit];
       const width = 1 - digit * .039;
@@ -33,28 +44,27 @@ function handArt(side: Side, skin: string, pose: HandPose) {
   }
 
   const pinching = pose === "pinch";
-  art.add(palm(), skin, [0, pinching ? .017 : 0, -.010]);
+  art.add(palm(side), skin, [0, pinching ? .017 : 0, -.010]);
   for (let digit = 0; digit < 4; digit++) {
-    const index = side > 0 ? digit : 3 - digit;
     const x = side * (-.033 + digit * .024);
-    const length = [.045, .054, .050, .038][digit], radius = [.0125, .0125, .0115, .010][digit];
+    const length = [.044, .050, .044, .032][digit], radius = [.0140, .0136, .0125, .0107][digit];
     if (pinching) {
       roundedDigit(art, skin, [[x, -.011, -.002], [x, -.032, .004], [x, -.041, .023],
         [x * .98, -.030, .039], [x * .91, -.014, .034]], radius);
     } else {
-      const spread = x + (index - 1.5) * .004;
-      roundedDigit(art, skin, [[x, -.024, -.007], [x * 1.12, -.041, -.008],
-        [spread, -.031 - length * .71, .000], [spread, -.034 - length * .91, .013],
-        [spread, -.036 - length, .021]], radius);
-      art.ball([spread, -.032 - length * .87, .005], radius, nail, [.64, .59, .21]);
+      const spread = x + side * (digit - 1.5) * .0031;
+      const curl = .020 + digit * .0034;
+      roundedDigit(art, skin, [[x * .90, -.026, -.011], [x * 1.07, -.044, -.009],
+        [spread, -.037 - length * .56, .002], [spread - side * .003, -.042 - length * .83, curl * .62],
+        [spread - side * .007, -.045 - length * .88, curl]], radius);
     }
   }
   if (pinching) {
     roundedDigit(art, skin, [[-side * .027, .012, -.006], [-side * .050, -.002, .013],
       [-side * .048, -.015, .033], [-side * .031, -.023, .048], [-side * .021, -.022, .043]], .014);
   } else {
-    roundedDigit(art, skin, [[-side * .025, .020, .000], [-side * .048, .001, .013],
-      [-side * .055, -.021, .026], [-side * .051, -.039, .037], [-side * .047, -.047, .041]], .015);
+    roundedDigit(art, skin, [[-side * .023, .017, .003], [-side * .045, -.002, .013],
+      [-side * .056, -.018, .022], [-side * .057, -.034, .032], [-side * .050, -.045, .040]], .017);
   }
   return art;
 }

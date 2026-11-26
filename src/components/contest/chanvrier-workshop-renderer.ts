@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import { villageApproachSpeed, villageWalkBlend } from "../placard/world/village-character-motion";
-import { createGrowWorker } from "../placard/kq-grow-worker-model";
+import { createGrowWorker, type ChanvrierExpression } from "../placard/kq-grow-worker-model";
 import { VILLAGE_LIGHT } from "../placard/world/village-lighting";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { CHANVRIER_STUDIO_LIGHT, frameChanvrierStudio } from "./chanvrier-studio-light";
 
 export type ChanvrierWorkshopView = "portrait" | "full" | "village";
-export type ChanvrierWorkshopFrame = { view: ChanvrierWorkshopView; rotation: number; walking: boolean };
+export type ChanvrierWorkshopFrame = { view: ChanvrierWorkshopView; rotation: number; walking: boolean; zoom?: number; expression?: ChanvrierExpression };
 
 export function createChanvrierWorkshopRenderer(canvas: HTMLCanvasElement, profile: ChanvrierAvatarProfile, onUnavailable: () => void) {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
@@ -95,6 +95,8 @@ export function createChanvrierWorkshopRenderer(canvas: HTMLCanvasElement, profi
       headBounds.setFromObject(head);
       character.object.rotation.y = frame.rotation;
       frameChanvrierStudio(camera, headBounds, frame.view, width, height);
+      camera.zoom = frame.zoom ?? 1;
+      camera.updateProjectionMatrix();
     }
   }
 
@@ -129,11 +131,12 @@ export function createChanvrierWorkshopRenderer(canvas: HTMLCanvasElement, profi
       schedule();
     },
     updateFrame(next: ChanvrierWorkshopFrame) {
-      const viewChanged = next.view !== frame.view;
+      const framingChanged = next.view !== frame.view || next.zoom !== frame.zoom;
       const inVillage = next.view === "village";
       if (inVillage !== (frame.view === "village")) setLighting(inVillage);
+      if (next.expression !== frame.expression) character.setExpression(next.expression ?? "neutral");
       frame = next;
-      if (viewChanged) alignCamera();
+      if (framingChanged) alignCamera();
       schedule();
     },
     dispose() {

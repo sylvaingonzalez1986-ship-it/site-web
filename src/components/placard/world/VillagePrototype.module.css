@@ -5,7 +5,7 @@
 .headerActions > button[aria-controls] { width: 130px; justify-content: flex-start; }
 .contextCommand {
   --kq-menu-art-size: 28px;
-  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
   min-height: 46px; padding: 4px 12px; color: #213e35;
   font: 800 16px/1.05 var(--font-display), Impact, sans-serif; text-decoration: none; white-space: nowrap;
@@ -26,14 +26,16 @@
 .stage[inert] :is(.labels, .cameraControls, .bubble, .bubbleTail) { visibility: hidden; }
 .stage[inert] .label { visibility: hidden; }
 .stage canvas { touch-action: none; }
-.gameSummary { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; max-width: 330px; font-size: 12px; padding: 0 6px 0 12px; background: transparent; border: 2px solid transparent; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.gameSummary { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; max-width: 330px; font-size: 12px; padding: 3px 7px 3px 12px; background: transparent; border: 2px solid transparent; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .gameSummary[hidden] { display: none; }
-.gameSummary strong { margin-left: 8px; }
 .gameSummary:has(.lifeMenu[open]) { z-index: 7; }
 .gameSummary a { color: inherit; text-underline-offset: 3px; }
 .gameSummary .control { padding: 5px 10px; min-height: 44px; }
 .gameSummary:has(.calendar) { max-width: none; gap: 0 12px; padding: 5px 7px 5px 12px; }
 .walletRow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.cash { display: grid; gap: 1px; line-height: 1.2; }
+.cash strong { color: #164e41; font: 850 clamp(18px, 2vw, 23px)/1 var(--font-display), Impact, sans-serif; }
+.gameSummary:has(.calendar) > .walletRow { padding-right: 10px; border-right: 1px solid #38534940; }
 .calendar { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .calendarBody { min-width: 148px; }
 .calendarIcon { flex: none; color: #805013; }
@@ -123,8 +125,6 @@
 @media (max-width: 620px) {
   .header { flex-direction: column; gap: 4px; max-width: calc(100% - var(--hud-left) - var(--hud-right) - 50px); }
   .gameSummary { max-width: 100%; }
-  .cash { display: grid; gap: 1px; }
-  .cash strong { margin: 0; }
   .lifeChoices { max-height: calc(100dvh - var(--hud-top) - 175px - env(safe-area-inset-bottom)); }
   .stage[data-village-unavailable] { padding-top: calc(var(--hud-top) + 116px); }
 }
@@ -135,14 +135,15 @@
   .headerActions > button[aria-controls] { width: 98px; }
   .root[data-activity-open] .header { max-width: calc(100% - var(--hud-left) - var(--hud-right)); }
   .settingsText { display: none; }
-  .walletRow:has(.cash) { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; width: 100%; gap: 4px; }
+  .walletRow:has(.cash) { gap: 8px; }
   .gameSummary .lifeMenu > summary { gap: 4px; padding-inline: 6px; }
   .gameSummary [data-village-settings] summary { min-width: 44px; }
 }
 @media (max-width: 900px), (min-width: 1000px) and (max-width: 1100px) {
   .gameSummary:has(.calendar) { flex-direction: column; align-items: stretch; max-width: 100%; padding: 6px 10px 4px; }
-  .calendar { padding-bottom: 3px; border-bottom: 1px solid #38534940; }
+  .calendar { padding-top: 4px; border-top: 1px solid #38534940; }
   .calendarBody { flex: 1; min-width: 0; }
+  .gameSummary:has(.calendar) > .walletRow { padding-right: 0; border-right: 0; }
   .walletRow { justify-content: space-between; }
   .gameSummary:has(.calendar) .lifeChoices { max-height: calc(100dvh - var(--hud-top) - 190px - env(safe-area-inset-bottom)); }
   .stage[data-village-unavailable] { padding-top: calc(var(--hud-top) + 152px); }
@@ -156,5 +157,5 @@
 }
 
 @media (hover: hover) {
-  .headerActions .contextCommand:not(:active):hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+  .headerActions .contextCommand:not(:active):hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
 }

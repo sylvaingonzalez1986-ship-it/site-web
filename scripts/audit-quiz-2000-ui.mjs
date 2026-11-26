@@ -77,11 +77,17 @@ try{
  assert(score>0);
  assert((await page.$eval('[data-tournament-reveal]',el=>el.textContent)).includes(plan.questions[0].answer.explanation));
  await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=public.kq_school_tournament_now()+interval '90 seconds' WHERE id=$1",[correctState.room.id]);
- await page.reload({waitUntil:'networkidle0'});
+ await page.reload({waitUntil:'domcontentloaded'});
  await page.waitForSelector('[data-tournament-reveal]');
  assert.equal((await fixture.request('GET',null,owner)).body.room.players.find(p=>p.userId===owner).score,score);
  await page.screenshot({path:out+'/correction-320.png'});
  checks.push('Keyboard answer, matching explanation, SQL score and reload without double scoring');
+ await page.focus('[data-tournament-leave]');await page.keyboard.press('Enter');
+ await page.waitForFunction(()=>document.activeElement?.textContent==='Rester');
+ await page.keyboard.press('Escape');
+ assert.equal(await page.$eval('[data-tournament-leave]',button=>button===document.activeElement && button.getAttribute('aria-expanded')==='false'),true);
+ assert.equal((await fixture.request('GET',null,owner)).body.room.id,correctState.room.id);
+ checks.push('Escape cancels the departure, restores focus and preserves the room');
  await fixture.db.query("UPDATE kq_school_tournament_rooms SET next_at=public.kq_school_tournament_now()-interval '1 millisecond' WHERE id=$1",[correctState.room.id]);
  await page.waitForSelector('[data-tournament-question="'+plan.questions[1].question.id+'"]');
  const wrong=plan.questions[1].question.options.find(option=>option.id!==plan.questions[1].answer.correctOptionId).id;

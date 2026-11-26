@@ -105,17 +105,24 @@ async function run(vite) {
   assert.deepEqual(await loadLook(legacy), {...getChanvrierAppearance({gender:'female'}), ...oldLook});
   assert.equal((await savings(legacy)).cashCents,previousCash);
   assert.deepEqual(await loadLook(treasury), appearance);
-  const dyed = {...appearance, dyes:{skin:'#bd8459', top:'#6ab9ca', accent:'#483d28'}};
+  const previousValidator = (await db.query("SELECT proacl::text FROM pg_proc WHERE oid='public.arena_valid_appearance(jsonb)'::regprocedure")).rows[0];
+  const historical = await loadLook(legacy);
+  await db.exec(await migration('20261125000200_chanvrier_stripe_dye.sql'));
+  assert.deepEqual(await loadLook(legacy), historical);
+  assert.deepEqual((await db.query("SELECT proacl::text FROM pg_proc WHERE oid='public.arena_valid_appearance(jsonb)'::regprocedure")).rows[0], previousValidator);
+  const dyed = {...appearance, dyes:{skin:'#bd8459', top:'#6ab9ca', accent:'#483d28', stripe:'#b96d45'}};
   await save(treasury,{...profile,appearance:dyed});
   assert.deepEqual(await loadLook(treasury),dyed);
-  for (const malformed of [{...dyed,dyes:{unknown:'#123456'}},{...dyed,dyes:{skin:'red'}},{...dyed,version:7},{version:2,body:'regular'}]) {
+  for (const malformed of [{...dyed,dyes:{unknown:'#123456'}},{...dyed,dyes:{stripe:'red'}},{...dyed,dyes:{skin:'red'}},{...dyed,version:7},{version:2,body:'regular'}]) {
     await assert.rejects(()=>save(treasury,{...profile,appearance:malformed}),/check constraint/);
     assert.deepEqual(await loadLook(treasury),dyed);
   }
   await save(treasury,{...profile,appearance:{hair:'curls'}});
   assert.deepEqual(await loadLook(treasury),{...dyed,hair:'curls'},'legacy edit preserves modern slots and dyes');
   await save(treasury,{...profile,appearance});
-  assert.deepEqual(await loadLook(treasury),appearance,'v2 edit can clear dyes');
+  assert.deepEqual(await loadLook(treasury),{...appearance,dyes:{stripe:'#b96d45'}},'an older full v2 editor can clear its dyes and keeps a newer stripe');
+  await save(treasury,{...profile,appearance,supportsStripe:true});
+  assert.deepEqual(await loadLook(treasury),appearance,'the new editor can restore automatic stripes');
   for(const [key,choices] of Object.entries(CHANVRIER_APPEARANCE_OPTIONS)) for(const choice of choices){
     const saved=await save(treasury,{...profile,appearance:{...appearance,[key]:choice.code}});
     assert.deepEqual(saved.profile.appearance,{...appearance,[key]:choice.code});

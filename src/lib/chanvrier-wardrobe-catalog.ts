@@ -113,3 +113,5 @@ export const CHANVRIER_BRETON_OUTFITS = [
     },
   },
 ] as const;
+
+export const CHANVRIER_FEATURED_OUTFITS = ["quart-au-port", "grain-au-large", "fete-en-pays-bigouden", "matin-au-marche"] as const;

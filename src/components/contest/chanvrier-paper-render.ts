@@ -19,7 +19,8 @@ export function paintChanvrierMesh(canvas: HTMLCanvasElement, root: THREE.Group,
   const sunlight = new THREE.Color(light.key.color), rimlight = new THREE.Color(light.rim.color);
   const illumination = new THREE.Color(), pigment = new THREE.Color();
   const projected = new THREE.Matrix4(), view = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-  const normalMatrix = new THREE.Matrix3(), normal = new THREE.Vector3(), vertex = new THREE.Vector3(), tint = new THREE.Color();
+  const normalMatrix = new THREE.Matrix3(), normal = new THREE.Vector3(), targetNormal = new THREE.Vector3();
+  const vertex = new THREE.Vector3(), tint = new THREE.Color();
   root.traverseVisible(node => {
     if (!(node instanceof THREE.Mesh) || node instanceof THREE.InstancedMesh || Array.isArray(node.material) || node.material.transparent) return;
     const { geometry, material } = node;
@@ -29,12 +30,22 @@ export function paintChanvrierMesh(canvas: HTMLCanvasElement, root: THREE.Group,
     normalMatrix.getNormalMatrix(node.matrixWorld);
     const coords = new Float32Array(positions.count * 3);
     const shades = new Uint8ClampedArray(positions.count * 3);
+    const influences = node.morphTargetInfluences;
+    const morphNormals: readonly (THREE.BufferAttribute | THREE.InterleavedBufferAttribute)[] = geometry.morphAttributes.normal ?? [];
+    const activeNormals = morphNormals
+      .map((attribute, index) => ({ attribute, weight: influences?.[index] ?? 0 }))
+      .filter(target => target.weight !== 0);
+    const baseWeight = geometry.morphTargetsRelative ? 1 : 1 - activeNormals.reduce((sum, target) => sum + target.weight, 0);
     for (let i = 0; i < positions.count; i++) {
-      vertex.fromBufferAttribute(positions, i).applyMatrix4(projected);
+      node.getVertexPosition(i, vertex).applyMatrix4(projected);
       coords[3*i] = (vertex.x + 1) * width / 2;
       coords[3*i+1] = (1 - vertex.y) * height / 2;
       coords[3*i+2] = vertex.z;
-      normal.fromBufferAttribute(normals, i).applyNormalMatrix(normalMatrix);
+      normal.fromBufferAttribute(normals, i).multiplyScalar(baseWeight);
+      for (const { attribute, weight } of activeNormals) {
+        normal.addScaledVector(targetNormal.fromBufferAttribute(attribute, i), weight);
+      }
+      normal.applyNormalMatrix(normalMatrix);
       const sun = light.key.power * Math.max(0, normal.dot(key));
       const edge = light.rim.power * Math.max(0, normal.dot(rim));
       illumination.lerpColors(ground, sky, .5 + .5 * normal.y).multiplyScalar(light.hemi);

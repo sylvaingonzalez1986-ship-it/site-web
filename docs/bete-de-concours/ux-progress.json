@@ -1,4 +1,23 @@
 {
+  "refontePersonnages3D20261125": {
+    "livraison": "Maël en marinière, visages animés, coiffures et pilosités, quatre tenues principales, étoffes recolorables et rayure indépendante du foulard. Essais d’expression et zoom dans l’atelier.",
+    "preuve": "docs/bete-de-concours/refonte-personnages/recette.md",
+    "verification": "Comparaison multivue, marche et inspection, deux personnages côte à côte, quatre en mouvement. Atelier à 320, 390 et 1360 px sur Iris Xe. Persistance testée en PostgreSQL embarqué.",
+    "pointDeReprise": "Essayer le zoom et les contrôles de teinture sur un téléphone physique. La migration facultative de couleur est testée localement et attend la décision de publication."
+  },
+  "machineKorrigans20261125": {
+    "livraison": "Façade illustrée au bonnet rouge, rouleaux aux motifs du jeu et poignée jouable. Affichage du seuil de reprise et accès aux récoltes depuis un stock vide.",
+    "preuve": "docs/bete-de-concours/korrigans/marche.md",
+    "dialogue": "Bonnet rouge et Bonnet bleu accueillent le joueur, reconnaissent son offrande et réagissent au résultat confirmé. Huit parcours Chromium dans output/korrigan-dialogue/navigateur.json.",
+    "recette": "output/korrigan-finition/apres/navigateur.json et navigateur-postgres.json. Clavier, mouvements réduits, coupure après débit et trois tirages en base locale.",
+    "pointDeReprise": "Essayer la poignée sur téléphone physique."
+  },
+  "finitionInterface20261125": {
+    "livraison": "HUD et menu, entrepôt et comparateur de machines, inventaire, atelier de personnage, albums et activités de QuizzShow. Travail local sur feat/finition-interface-quartier depuis f980a336.",
+    "preuve": "docs/bete-de-concours/finition-interface/recette.md",
+    "verification": "Profils fictifs, Chromium de 320 à 1440 px. Focus, filtres, défilement, confirmation, erreur et réessai vérifiés. Mesures du studio avant/après sur Iris Xe et cinq cycles de mémoire après collecte.",
+    "pointDeReprise": "Recette sur téléphone physique du retour à une lecture, du nuancier et des onglets fixes du personnage. Vérifier le texte agrandi avec les réglages d’accessibilité du téléphone."
+  },
   "atelierCoiffures20261125": {
     "livraison": "La coupe portée revient dans le bandeau. Deux commandes parcourent les 14 coiffures au clavier ou au doigt et conservent le brouillon jusqu’à la validation.",
     "preuve": "docs/bete-de-concours/atelier-personnage/recette-coiffures.md",

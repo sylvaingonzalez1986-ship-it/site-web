@@ -10,7 +10,7 @@ import { openKorriganFixture } from "./test-korrigan-market.mjs";
 export async function auditKorriganPostgres(origin) {
   const fixture = await openKorriganFixture();
   let browser, api;
-  const out = resolve("output/korrigans");
+  const out = resolve(process.env.KORRIGAN_AUDIT_REPORT_DIR ?? "output/korrigans");
   await mkdir(out, { recursive: true });
   try {
     const player = await fixture.player();

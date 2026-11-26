@@ -35,7 +35,8 @@ function Fixture(){
 export async function run({origin,output}) {
   const browser = await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader'],userDataDir:join(output,'chrome')});
   const report = { scope:'Chromium local, API de profil simulée, émulation tactile. Les intervalles portent sur les images WebGL de l’aperçu et le tas sur la page entière.', frames:[], captures:[], errors:[] };
-  const page=await browser.newPage();
+  const context=await browser.createBrowserContext();
+  const page=await context.newPage();
   const cdp=await page.createCDPSession();
   page.setDefaultTimeout(60000);
   let profile=null, requests=0, rejectOnce=true;
@@ -95,6 +96,7 @@ export async function run({origin,output}) {
       };
     });
     await page.setViewport(desktop);await page.goto(origin);await page.waitForSelector(stage);
+    assert.equal(await page.$eval('[data-profile-next]', button => document.getElementById(button.getAttribute('aria-describedby'))?.textContent), 'Renseigne ton surnom pour continuer.');
     report.graphics=await page.$eval(stage+' canvas',canvas=>{
       const gl=canvas.getContext('webgl2'), ext=gl?.getExtension('WEBGL_debug_renderer_info');
       return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : 'indisponible';
@@ -116,6 +118,23 @@ export async function run({origin,output}) {
     };
     await field('Nez');await checkDetails('nose');
     await field('Expression');await checkDetails('mouth');
+    if (process.argv.includes('--avatar-refit')) {
+      await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
+      const portraits = new Set();
+      for (const mood of ['neutral','smile','surprise','focus']) {
+        await page.select('label select:has(option[value="surprise"])',mood);
+        await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
+        const image=await (await page.$(stage+' canvas:not([hidden])')).screenshot();
+        portraits.add(Buffer.from(image).toString('base64'));
+      }
+      assert.equal(portraits.size,4,'The four expressions change the live portrait with idle motion disabled');
+      await page.select('label select:has(option[value="surprise"])','neutral');
+      await page.focus(stage);await page.keyboard.press('+');
+      assert.ok(await page.$eval(stage,n=>Number(n.dataset.previewZoom)>1));
+      await page.keyboard.press('Home');assert.equal(await page.$eval(stage,n=>n.dataset.previewZoom),'1');
+      await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
+      report.expressions={visible:4, keyboardZoom:true, requestsBeforeConfirmation:requests};
+    }
     await field('Sourcils');await checkDetails('eyebrows');
     await category('Cheveux');await field('Barbe et moustache');await checkDetails('facialHair');
     await category('Yeux');
@@ -124,6 +143,7 @@ export async function run({origin,output}) {
     await page.focus(stage);await page.keyboard.press('ArrowRight');
     assert.notEqual(await page.$eval(stage,n=>n.dataset.previewRotation),'0.000');
     await page.keyboard.press('Home');assert.equal(await page.$eval(stage,n=>n.dataset.previewRotation),'0.000');
+    assert.equal(await page.$eval(button('Recentrer la vue'), n => n.getAttribute('aria-disabled')), 'true');
     await page.keyboard.press('Escape');await page.click('#edit');await page.waitForSelector(stage);
     assert.equal(await page.$eval('input[autocomplete="nickname"]',n=>n.value),'Mael29');
     await page.reload();await page.waitForSelector(stage);await category('Yeux');
@@ -134,11 +154,32 @@ export async function run({origin,output}) {
     await category('Tenue');await byText('Fête en pays bigouden');
     await page.waitForSelector('[data-avatar-state="ready"]');
     assert.equal((await layout()).overflows,false);
+    const lookTools = '[aria-label="Modifier la catégorie Tenue"]';
+    const toolsClear = (group) => [...group.querySelectorAll('button')].every(button => {
+      const {left, right, top, bottom} = button.getBoundingClientRect();
+      const panel = group.closest('section').getBoundingClientRect();
+      return top >= panel.top + 4 && bottom <= panel.bottom - 4
+        && button.contains(document.elementFromPoint((left + right) / 2, (top + bottom) / 2));
+    });
+    assert(await page.$eval(lookTools, toolsClear), 'All desktop appearance controls remain visible after scrolling to a selected outfit');
     await shot('atelier-breton-ordinateur');
+    await page.focus('[aria-label="Élément à modifier"] button:last-child');
+    for (const name of ['Annuler', 'Au hasard', 'Réinitialiser']) {
+      await page.keyboard.press('Tab');
+      assert.equal(await page.$eval(lookTools, group => {
+        const focused = document.activeElement;
+        return group.contains(focused) && focused.matches(':focus-visible') && getComputedStyle(focused).outlineStyle === 'solid'
+          ? focused.textContent.trim() : null;
+      }), name);
+      assert(await page.$eval(lookTools, toolsClear));
+    }
+    await shot('atelier-breton-clavier');
+    report.desktopAppearanceTools = { visibleAfterSelection: true, tabOrder: true, focusVisible: true };
     await byText('Faire marcher');await measure('1360 × 900 · marche');
     await page.click(button('Tourner à droite'));assert.notEqual(await page.$eval(stage,n=>n.dataset.previewRotation),'0.000');
     await page.click(button('Recentrer la vue'));
     await page.click(button('Vue du Quartier en isométrie'));
+    assert.match(await page.$eval(stage,n=>n.textContent), /Échelle en jeu · En marche/);
     await shot('atelier-echelle-quartier');
     // Puppeteer reloads the document when setViewport switches isMobile. Rotate
     // this live editor using CDP so a viewport change never replaces its draft.
@@ -178,7 +219,9 @@ export async function run({origin,output}) {
     await resizePhone(320,640);
     report.smallScreen=await layout();assert.equal(report.smallScreen.overflows,false);await shot('atelier-320');
     assert.equal(requests,0);
-    await page.click('[data-profile-next]'); await page.click('[data-profile-next]'); await page.click('[name=confirm-strength]');await page.click('[data-profile-next]');
+    await page.click('[data-profile-next]'); await page.click('[data-profile-next]');
+    assert.equal(await page.$eval('[data-profile-next]', button => document.getElementById(button.getAttribute('aria-describedby'))?.textContent), 'Confirme ta spécialité pour continuer.');
+    await page.click('[name=confirm-strength]');await page.click('[data-profile-next]');
     await page.waitForSelector('dialog [role=alert]');await page.click('[data-profile-next]');await page.waitForSelector('#edit');assert.equal(requests,2);
     assert.equal(profile.appearance.hair,'braids');assert.equal(profile.appearance.headwear,'bigouden-coif');assert.equal(profile.appearance.dyes.top,'#427a91');
     report.saved=profile;
@@ -196,6 +239,16 @@ export async function run({origin,output}) {
     await page.goto(origin+'/?culture');await page.waitForSelector('[data-personalized="true"]');await shot('salle-culture');
     await page.goto(origin+'/?shop');await page.waitForSelector('canvas[data-ready="true"]');await page.click('#quality');await page.waitForSelector('canvas[data-quality="low"]');await shot('boutique-qualite-reduite');
     await page.goto(origin+'/?village');await page.waitForSelector('canvas[data-village-ready="true"]');
+    await shot('quartier-distance-jeu');
+    report.quarter = await page.$eval('canvas[data-village-ready="true"]', async canvas => {
+      const { fiberRoots } = await import('/@id/__x00__audit-village-camera');
+      const { gl, scene, camera } = fiberRoots.get(canvas).store.getState();
+      const residents = [];
+      scene.traverseVisible(node => {
+        if (['chanvrier', 'village-loic', 'village-breton', 'village-fisherman'].includes(node.name)) residents.push(node.name);
+      });
+      return { residents, zoom: camera.zoom, callsInLastFrame: gl.info.render.calls, trianglesInLastFrame: gl.info.render.triangles };
+    });
     await frameVillageSubject(page, 'player');
     await shot('personnage-au-quartier');
     assert.equal(await page.$('[data-observe-life]'), null);
@@ -204,7 +257,43 @@ export async function run({origin,output}) {
     await page.click('[data-village-settings][open] [aria-label="Modifier mon personnage"]');
     await page.waitForSelector(stage);await category('Tenue');await field('Haut');
     assert.equal(await page.$eval('input[type=color]',el=>el.value),'#427a91');
+    await resizePhone(320,640);
+    const categoryNav = 'nav[aria-label="Personnaliser l’apparence"]';
+    await page.$eval(categoryNav,nav=>{nav.closest('section').scrollTop=300;});
+    assert(await page.$eval(categoryNav,nav=>{
+      const top=nav.getBoundingClientRect().top, panelTop=nav.closest('section').getBoundingClientRect().top;
+      const {x,y}=nav.querySelector('button').getBoundingClientRect();
+      return Math.abs(top-panelTop)<=8 && nav.contains(document.elementFromPoint(x+10,y+10));
+    }));
+    await category('Accessoires');await field('Coiffe et chapeau');
+    await category('Tenue');
+    assert.equal(await page.$eval('[data-feature-choices]', n => n.dataset.featureChoices), 'top');
+    await field('Tenues bretonnes');await byText('Grain au large');
+    await page.click(button('Réinitialiser la tenue et les accessoires'));
+    assert.equal(await page.$eval(button('Réinitialiser la tenue et les accessoires'), n => n.disabled), true);
+    await category('Accessoires');
+    assert.equal(await page.$eval(button('Coiffe et chapeau : Coiffe haute bigoudène'), n => n.getAttribute('aria-pressed')), 'true');
+    await byText('Annuler');
+    assert.equal(await page.$eval(button('Coiffe et chapeau : Chapeau de pluie'), n => n.getAttribute('aria-pressed')), 'true');
+    report.finish = { stickyCategories320: true, rememberedField: true, completeOutfitResetAndUndo: true, visibleStageMode: true, disabledReason: true };
     await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});assert.equal(requests,2);
+    if (process.argv.includes('--avatar-refit')) {
+      await page.goto(origin);await page.waitForSelector(stage);await category('Tenue');await field('Tenues bretonnes');
+      assert.equal(await page.$$eval('section[aria-label="Tenues bretonnes"] button',buttons=>buttons.length),4);
+      await byText('Quart au port');
+      await byText('Rayures','[aria-label="Couleurs de la tenue"] button');
+      const stripe='[data-palette="stripe"]';
+      await page.click(stripe+' button[aria-label$=" : Brique"]');
+      await page.click('[data-profile-next]');await page.click('[data-profile-next]');await page.waitForSelector('#edit');
+      assert.equal(profile.appearance.dyes.stripe,'#ac4939');
+      assert.equal(profile.appearance.dyes.accent,'#a84237');
+      assert.equal(profile.supportsStripe,true);
+      await page.reload();await page.waitForSelector(stage);await category('Tenue');await field('Tenues bretonnes');
+      await byText('Rayures','[aria-label="Couleurs de la tenue"] button');
+      assert.equal(await page.$eval(stripe+' button[aria-label$=" : Brique"]',b=>b.getAttribute('aria-pressed')),'true');
+      report.separateDyes={stripe:profile.appearance.dyes.stripe,scarf:profile.appearance.dyes.accent,reloaded:true};
+      await shot('rayures-et-foulard');
+    }
     await page.evaluateOnNewDocument(()=>{
       const get=HTMLCanvasElement.prototype.getContext;
       HTMLCanvasElement.prototype.getContext=function(type,...args){return type==='webgl2'?null:get.call(this,type,...args)};

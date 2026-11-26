@@ -2,6 +2,7 @@
 
 import { Check, LockKeyhole, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -36,7 +37,7 @@ const activityGroups = [
 const mobileKeys = ["hub", "game", "harvests", "market"] as const;
 const arenaHref = "/arene";
 
-export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true, drawerOnly = false }: {
+export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true, drawerOnly = false, contextAction }: {
   active: PlacardNavKey;
   locationLabel?: string;
   onNavigate: (key: PlacardNavKey) => void;
@@ -45,6 +46,7 @@ export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighl
   localNavigation?: boolean;
   showLearning?: boolean;
   drawerOnly?: boolean;
+  contextAction?: ReactNode;
 }) {
   const router = useRouter();
   const drawerId = useId();
@@ -80,7 +82,7 @@ export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighl
   }
 
   function arenaLink(compact = false) {
-    return <Link href={arenaHref} prefetch={false} className={styles.arenaReturn} aria-label="Retour à l’Arène" onNavigate={event => {
+    return <Link href={arenaHref} prefetch={false} className={styles.arenaReturn} data-compact={compact || undefined} aria-label="Retour à l’Arène" onNavigate={event => {
       event.preventDefault();
       const leave = () => navigateWithDraftGuard(() => navigateAfterOverlays(() => router.push(arenaHref)));
       if (open && !localNavigation) history.navigate(leave);
@@ -92,10 +94,11 @@ export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighl
   }
 
   function menuTrigger(quick = false) {
-    return <button type="button" className={styles.menuTrigger} ref={trigger} aria-haspopup="dialog" aria-label={quick ? "Plus d’activités" : "Ouvrir le menu du quartier"} aria-description={`Rubrique actuelle : ${currentLabel}`} aria-expanded={open} aria-controls={drawerId}
+    return <button type="button" className={styles.menuTrigger} ref={trigger} aria-haspopup="dialog" aria-label={quick ? "Plus d’activités" : "Ouvrir le menu du quartier"} aria-describedby={`${drawerId}-trigger-location`} aria-expanded={open} aria-controls={drawerId}
       onClick={() => { drawer.current?.showModal(); setOpen(true); }}>
       <KqPrintedArt kind="menu" variant="menu" className={styles.commandArt} />
       {quick ? <span>Plus</span> : <span className={styles.triggerLabel}>Menu<small>{currentLabel}</small></span>}
+      <span id={`${drawerId}-trigger-location`} hidden>Rubrique actuelle · {currentLabel}</span>
     </button>;
   }
 
@@ -128,7 +131,7 @@ export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighl
   </div>;
 
   return <>
-    {drawerOnly ? <>{menuTrigger()}{arenaLink(true)}</> : <>
+    {drawerOnly ? <>{menuTrigger()}{contextAction}{arenaLink(true)}</> : <>
       <aside className={styles.sidebar}>
         <div className={styles.drawerHeader}><h2>Destinations</h2></div>
         {directory()}
@@ -138,12 +141,18 @@ export function KqPlacardNavigation({ active, locationLabel, onNavigate, onHighl
         {mobileKeys.map(key => destination(key, true))}{menuTrigger(true)}{arenaLink(true)}
       </nav>
     </>}
-    <dialog ref={drawer} id={drawerId} className={styles.navDrawer} data-drawer-only={drawerOnly || undefined} aria-label="Menu de Kanab Quest"
+    <dialog ref={drawer} id={drawerId} className={styles.navDrawer} data-drawer-only={drawerOnly || undefined} aria-label="Menu de Kanab Quest" aria-describedby={locationLabel ? `${drawerId}-location` : undefined}
       onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }}
       onCancel={event => { if (event.target === event.currentTarget) { event.preventDefault(); event.stopPropagation(); closeMenu(); } }}
       onClick={event => { if (event.target === event.currentTarget) closeMenu(); }}>
       <div className={styles.drawerSheet}>
-        <header className={styles.drawerHeader}><h2>Destinations</h2><button className={styles.drawerClose} type="button" aria-label="Fermer le menu" onClick={closeMenu}><X size={21} aria-hidden="true" /></button></header>
+        <header className={styles.drawerHeader}>
+          <div>
+            <h2>Destinations</h2>
+            {locationLabel ? <p id={`${drawerId}-location`} className={styles.drawerLocation}>Rubrique actuelle · {locationLabel}</p> : null}
+          </div>
+          <button className={styles.drawerClose} type="button" aria-label="Fermer le menu" onClick={closeMenu}><X size={21} aria-hidden="true" /></button>
+        </header>
         {directory(true)}
         <div className={styles.navFooter}>{arenaLink()}</div>
       </div>

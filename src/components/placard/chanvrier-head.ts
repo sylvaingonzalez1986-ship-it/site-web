@@ -1,19 +1,22 @@
 import * as THREE from "three";
 import type { ChanvrierAppearance, getChanvrierColors } from "@/lib/arena-chanvrier";
+import { CHANVRIER_EXPRESSION_TARGETS, CHANVRIER_FACE_POSES, type ChanvrierExpression } from "./chanvrier-expression";
+import { recomputeLatheNormals } from "./chanvrier-geometry";
 import { createChanvrierHair, type ChanvrierScalp } from "./chanvrier-hair";
 import { Assembly, type CharacterPoint } from "./world/village-character-art";
 import { createPortraitEar, portraitMoustache } from "./world/village-portrait-sculpt";
 
 type Colors = ReturnType<typeof getChanvrierColors>;
 type Face = ChanvrierAppearance["face"];
-const eyeHeight = .156;
+const eyeHeight = .158;
+const eyeSpacing = .076;
 const ink = "#3c261e";
 const ivory = "#f7e6c9";
 const sections = [-.101, -.087, -.062, -.030, .014, .066, .122, .184, .235, .283, .322, .348, .355];
 const oval = [0, .072, .115, .145, .171, .190, .198, .194, .182, .157, .117, .065, 0];
 const contours: Record<Face, { radii: number[]; height: number }> = {
   oval: { radii: oval, height: 1 },
-  round: { radii: [0, .070, .119, .152, .181, .199, .205, .199, .185, .156, .114, .062, 0], height: 1 },
+  round: { radii: [0, .081, .124, .153, .174, .198, .205, .199, .185, .156, .114, .062, 0], height: 1 },
   square: { radii: [0, .090, .147, .171, .183, .190, .195, .195, .183, .158, .117, .065, 0], height: .98 },
   heart: { radii: [0, .055, .091, .126, .158, .182, .194, .198, .188, .159, .117, .063, 0], height: 1 },
   long: { radii: [0, .063, .102, .131, .154, .171, .181, .184, .176, .152, .112, .063, 0], height: 1.06 },
@@ -23,19 +26,19 @@ const contours: Record<Face, { radii: number[]; height: number }> = {
 };
 
 const reliefByFace: Record<Face, { cheekY: number; cheek: number; jaw: number; chin: number }> = {
-  oval: { cheekY: .098, cheek: .028, jaw: -.002, chin: .022 },
-  round: { cheekY: .078, cheek: .025, jaw: .005, chin: .017 },
-  square: { cheekY: .091, cheek: .022, jaw: .017, chin: .026 },
-  heart: { cheekY: .112, cheek: .035, jaw: -.011, chin: .028 },
-  long: { cheekY: .101, cheek: .018, jaw: -.004, chin: .030 },
-  angular: { cheekY: .119, cheek: .042, jaw: .014, chin: .021 },
-  pear: { cheekY: .072, cheek: .030, jaw: .014, chin: .023 },
-  cheeked: { cheekY: .073, cheek: .042, jaw: -.007, chin: .017 },
+  oval: { cheekY: .099, cheek: .020, jaw: -.002, chin: .013 },
+  round: { cheekY: .085, cheek: .020, jaw: .003, chin: .012 },
+  square: { cheekY: .091, cheek: .017, jaw: .013, chin: .016 },
+  heart: { cheekY: .112, cheek: .022, jaw: -.008, chin: .017 },
+  long: { cheekY: .101, cheek: .013, jaw: -.004, chin: .018 },
+  angular: { cheekY: .119, cheek: .027, jaw: .011, chin: .012 },
+  pear: { cheekY: .072, cheek: .023, jaw: .011, chin: .013 },
+  cheeked: { cheekY: .076, cheek: .030, jaw: -.005, chin: .011 },
 };
 
 const noseShapes = {
   small: { width: .030, height: .030, depth: .041, bridge: .010, y: .093 },
-  round: { width: .037, height: .034, depth: .052, bridge: .012, y: .094 },
+  round: { width: .037, height: .034, depth: .050, bridge: .009, y: .095 },
   wide: { width: .049, height: .030, depth: .047, bridge: .014, y: .091 },
 };
 
@@ -49,18 +52,23 @@ export function createChanvrierScalp(face: Face, nose: ChanvrierAppearance["nose
     profile,
     height,
     relief(x, y, z) {
-      if (z <= 0 || y > .241) return z;
+      // The mandible projects in front of the throat. Moving the entire section
+      // brings the underside toward the chin while leaving room for the nape.
+      const jawSet = (face === "round" ? .044 : .031) * (1 - THREE.MathUtils.smoothstep(y, -.112, .084));
+      if (z <= 0 || y > .260) return z + jawSet;
       const side = Math.abs(x);
-      const cheek = feature.cheek * ovalWeight(side, y, .117, feature.cheekY, .111, .095);
+      const cheek = feature.cheek * softWeight(side, y, .113, feature.cheekY, .078, .076);
       const corner = feature.jaw * ovalWeight(side, y, .108, -.009, .080, .061);
-      const socket = .008 * ovalWeight(side, y, .073, eyeHeight, .071, .064);
-      const brow = .008 * ovalWeight(side, y, .073, .207, .077, .045);
-      const chin = feature.chin * ovalWeight(x, y, 0, -.042, .115, .075);
-      const muzzle = .013 * ovalWeight(x, y, 0, .022, .108, .068);
-      const tipRadius = (x / (tip.width * 1.43)) ** 2 + ((y - tip.y) / (tip.height * 1.40)) ** 2;
+      const socket = .013 * ovalWeight(side, y, eyeSpacing, eyeHeight, .065, .055);
+      const brow = .014 * ovalWeight(side, y, eyeSpacing, .214, .081, .046);
+      const chin = feature.chin * softWeight(x, y, 0, -.051, .094, .050);
+      const muzzle = .010 * softWeight(x, y, 0, .031, .071, .040);
+      const philtrum = .0016 * ovalWeight(x, y, 0, .051, .020, .027);
+      const tipRadius = (x / (tip.width * 1.38)) ** 2 + ((y - tip.y) / (tip.height * 1.38)) ** 2;
       const noseTip = tip.depth * Math.max(0, 1 - tipRadius * (.57 + .43 * tipRadius)) ** 1.65;
       const bridge = tip.bridge * ovalWeight(x, y, 0, .137, tip.width * .93, .058);
-      return z + (cheek + corner - socket + brow + chin + muzzle + noseTip + bridge) * THREE.MathUtils.smoothstep(z, .036, .116);
+      return z + jawSet + (cheek + corner - socket + brow + chin + muzzle - philtrum + noseTip + bridge)
+        * THREE.MathUtils.smoothstep(z, .018, .112);
     },
     radius(y) {
       const index = profile.findIndex(p => p.y >= y);
@@ -80,15 +88,23 @@ function ovalWeight(x: number, y: number, centerX: number, centerY: number, widt
   return Math.max(0, 1 - radius) ** 2;
 }
 
+function softWeight(x: number, y: number, centerX: number, centerY: number, width: number, height: number) {
+  return Math.exp(-(((x - centerX) / width) ** 2 + ((y - centerY) / height) ** 2));
+}
+
 function surface(scalp: ChanvrierScalp, x: number, y: number) {
   const z = Math.sqrt(Math.max(0, scalp.radius(y * scalp.height) ** 2 - x * x)) * .91;
   return scalp.relief(x, y, z);
 }
 
+type FaceTargets = Pick<THREE.BufferGeometry["morphAttributes"], "position" | "normal">;
+const faceTargets = new Map<string, FaceTargets>();
+const faceTargetLimit = 24;
+
 function createPart(parent: THREE.Group, name: string, material: THREE.Material) {
   let key: string | undefined;
   let mesh: THREE.Mesh | undefined;
-  return (dependencies: string[], draw: (a: Assembly) => void, visible = true) => {
+  return (dependencies: string[], draw: (art: Assembly, expression: ChanvrierExpression) => void, visible = true, morphShape?: string[] | null) => {
     const nextKey = dependencies.join("|");
     if (nextKey === key) return;
     key = nextKey;
@@ -97,56 +113,76 @@ function createPart(parent: THREE.Group, name: string, material: THREE.Material)
     mesh = undefined;
     if (!visible) return;
     const art = new Assembly();
-    draw(art);
+    draw(art, "neutral");
     mesh = art.finish(name, parent, material);
+    if (morphShape !== undefined) {
+      const morphKey = morphShape && [name, ...morphShape].join("|");
+      let targets = morphKey ? faceTargets.get(morphKey) : undefined;
+      if (!targets) {
+        const geometries = CHANVRIER_EXPRESSION_TARGETS.map(expression => {
+          draw(art, expression);
+          const target = art.finish(expression, parent, material);
+          target.removeFromParent();
+          return target.geometry;
+        });
+        targets = {
+          position: geometries.map(geometry => geometry.getAttribute("position")),
+          normal: geometries.map(geometry => geometry.getAttribute("normal")),
+        };
+        for (const geometry of geometries) geometry.dispose();
+      }
+      if (morphKey) {
+        faceTargets.delete(morphKey);
+        faceTargets.set(morphKey, targets);
+        const oldest = faceTargets.keys().next().value;
+        if (faceTargets.size > faceTargetLimit && oldest !== undefined) faceTargets.delete(oldest);
+      }
+      // Each mesh keeps its own geometry, materials and expression weights.
+      // Only read-only pose attributes are shared between matching shapes.
+      mesh.geometry.morphAttributes.position = targets.position?.slice();
+      mesh.geometry.morphAttributes.normal = targets.normal?.slice();
+      mesh.updateMorphTargets();
+    }
     mesh.castShadow = false;
     return mesh;
   };
 }
 
-function drawSkin(art: Assembly, scalp: ChanvrierScalp, skin: string, nose: ChanvrierAppearance["nose"]) {
-  const sides = 64, rows = scalp.profile.length;
-  const skull = new THREE.LatheGeometry(scalp.profile, sides, Math.PI).scale(1, 1, .91);
-  const vertices = skull.getAttribute("position"), normals = skull.getAttribute("normal");
+function drawSkin(art: Assembly, scalp: ChanvrierScalp, face: Face, skin: string, nose: ChanvrierAppearance["nose"]) {
+  const skull = new THREE.LatheGeometry(scalp.profile, 80, Math.PI).scale(1, 1, .91);
+  const vertices = skull.getAttribute("position");
   for (let i = 0; i < vertices.count; i++) vertices.setZ(i, scalp.relief(vertices.getX(i), vertices.getY(i) / scalp.height, vertices.getZ(i)));
-  skull.computeVertexNormals();
-  const a = new THREE.Vector3(), b = new THREE.Vector3();
-  for (let i = 1; i < rows - 1; i++) {
-    const seam = sides * rows + i;
-    a.fromBufferAttribute(normals, i).add(b.fromBufferAttribute(normals, seam)).normalize();
-    normals.setXYZ(i, a.x, a.y, a.z);
-    normals.setXYZ(seam, a.x, a.y, a.z);
-  }
+  recomputeLatheNormals(skull);
   paintSkin(skull, scalp, skin, nose);
   art.add(skull, null);
-  const cartilage = shade(skin, "#a35440", .33);
+  const cartilage = shade(skin, "#a35440", .42);
   for (const side of [-1, 1]) {
-    const x = side * (scalp.radius(.093 * scalp.height) + .006), h = scalp.height;
-    const ear = createPortraitEar(skin, cartilage, .042, .053 * h, .059, side);
-    ear.rotateY(side * .16);
-    art.add(ear, null, [x, .078 * h, .008]);
+    const x = side * (scalp.radius(.083 * scalp.height) + .003), h = scalp.height;
+    const ear = createPortraitEar(skin, cartilage, .044, .057 * h, .058, side);
+    ear.rotateZ(side * -.16).rotateY(side * (face === "round" ? .27 : .52));
+    art.add(ear, null, [x, .076 * h, .001]);
   }
 }
 
 function paintSkin(geometry: THREE.BufferGeometry, scalp: ChanvrierScalp, skin: string, nose: ChanvrierAppearance["nose"]) {
   const vertices = geometry.getAttribute("position"), colors = new Float32Array(vertices.count * 3);
   const base = new THREE.Color(skin), tint = new THREE.Color();
-  const rouge = base.clone().lerp(new THREE.Color("#dc7656"), .46);
+  const rouge = base.clone().lerp(new THREE.Color("#e97859"), .41);
   const shadow = base.clone().lerp(new THREE.Color("#915e58"), .25).multiplyScalar(.91);
   const light = base.clone().lerp(new THREE.Color("#f9d0ad"), .24);
   const tip = noseShapes[nose];
   const tipLight = base.clone().multiplyScalar(1.17).lerp(new THREE.Color("#f8b985"), .042);
-  const tipShade = base.clone().lerp(new THREE.Color("#9d563a"), .20).multiplyScalar(.85);
+  const tipShade = base.clone().lerp(new THREE.Color("#b0714c"), .16).multiplyScalar(.98);
   for (let i = 0; i < vertices.count; i++) {
     const x = Math.abs(vertices.getX(i)), y = vertices.getY(i) / scalp.height, z = vertices.getZ(i);
     const front = THREE.MathUtils.smoothstep(z, .022, .123);
-    const cheeks = .65 * ovalWeight(x, y, .119, .077, .103, .091);
+    const cheeks = .55 * softWeight(x, y, .132, .085, .067, .060);
     const noseLight = ovalWeight(x, y, 0, tip.y + .009, tip.width * 1.08, .031);
-    const noseShade = .72 * ovalWeight(x, y, 0, tip.y - .024, tip.width * 1.08, .018);
+    const noseShade = .50 * ovalWeight(x, y, 0, tip.y - .025, tip.width * 1.08, .025);
     const temple = .16 * ovalWeight(x, y, .142, .181, .095, .101);
     const eyes = .13 * ovalWeight(x, y, .074, eyeHeight, .073, .067);
-    const jaw = .19 * ovalWeight(x, y, .123, -.029, .102, .073);
-    const edgeLight = .15 * ovalWeight(x, y, .121, .118, .078, .061) + .16 * ovalWeight(x, y, .056, .238, .111, .068);
+    const jaw = .08 * softWeight(x, y, .126, -.025, .076, .063);
+    const edgeLight = .17 * ovalWeight(x, y, .119, .123, .087, .060) + .17 * ovalWeight(x, y, .056, .238, .111, .068);
     tint.copy(base).lerp(rouge, cheeks * front).lerp(shadow, (temple + eyes + jaw) * front).lerp(light, edgeLight * front);
     tint.lerp(tipShade, noseShade * front).lerp(tipLight, noseLight * front);
     tint.toArray(colors, i * 3);
@@ -201,36 +237,38 @@ function ellipse(x: number, y: number, width: number, height: number) {
 }
 
 const eyeShapes = {
-  almond: { width: .028, top: .038, bottom: .035, taper: 1.10 },
-  round: { width: .030, top: .034, bottom: .032, taper: 1 },
-  relaxed: { width: .031, top: .023, bottom: .025, taper: 1.24 },
-  bright: { width: .031, top: .043, bottom: .038, taper: 1.03 },
+  almond: { width: .032, top: .043, bottom: .040, taper: 1.05 },
+  round: { width: .032, top: .035, bottom: .034, taper: 1 },
+  relaxed: { width: .032, top: .025, bottom: .026, taper: 1.23 },
+  bright: { width: .032, top: .044, bottom: .040, taper: 1.03 },
 };
 
-function drawEyes(art: Assembly, look: ChanvrierAppearance, color: string, scalp: ChanvrierScalp, layer: "iris" | "lids") {
-  const { width, top, bottom, taper } = eyeShapes[look.eyes];
-  const pupil = new THREE.Color("#2e2118"), irisColor = new THREE.Color(color), tint = new THREE.Color();
+function drawEyes(art: Assembly, look: ChanvrierAppearance, color: string, scalp: ChanvrierScalp, layer: "iris" | "lids", expression: ChanvrierExpression) {
+  const eye = eyeShapes[look.eyes];
+  const pose = CHANVRIER_FACE_POSES[expression];
+  const { width, taper } = eye, top = eye.top * pose.eyeTop, bottom = eye.bottom * pose.eyeBottom;
+  const pupil = new THREE.Color("#2b1c16"), irisColor = new THREE.Color(color), tint = new THREE.Color();
   for (const side of [-1, 1]) {
-    const x = side * .073;
+    const x = side * eyeSpacing;
     const shape = (angle: number, centerX: number, sizeX: number, sizeY: number): FacePoint => {
       const c = Math.cos(angle), s = Math.sin(angle);
       const h = s < 0 ? bottom : top;
-      return [centerX + c * width * sizeX, eyeHeight + (Math.sign(s) * Math.abs(s) ** taper * h + side * c * .003) * sizeY];
+      return [centerX + c * width * sizeX, eyeHeight + (Math.sign(s) * Math.abs(s) ** taper * h + side * c * (.003 + pose.eyeTilt)) * sizeY];
     };
     const bulge = (px: number, py: number) => {
       const r = ((px - x) / width) ** 2 + ((py - eyeHeight) / (py < eyeHeight ? bottom : top)) ** 2;
-      return .0023 + .0047 * Math.max(0, 1 - r);
+      return .0014 + .0068 * Math.max(0, 1 - r);
     };
     if (layer === "iris") {
-      const irisX = x - side * width * .135;
-      patch(art, scalp, [irisX, eyeHeight], a => shape(a, irisX, .81, .94), (px, py) => bulge(px, py) + .0018, (r, a) => {
+      const irisX = x - side * width * .115;
+      patch(art, scalp, [irisX, eyeHeight], a => shape(a, irisX, .80, .92), (px, py) => bulge(px, py) + .0013, (r, a) => {
         const lowerLight = 1 - THREE.MathUtils.smoothstep(Math.sin(a), -.85, .3);
-        const ring = THREE.MathUtils.smoothstep(r, .38, .73) * (1 - .66 * THREE.MathUtils.smoothstep(r, .85, 1));
-        return tint.copy(pupil).lerp(irisColor, ring * (.25 + .34 * lowerLight));
+        const ring = THREE.MathUtils.smoothstep(r, .52, .85) * (1 - .65 * THREE.MathUtils.smoothstep(r, .88, 1));
+        return tint.copy(pupil).lerp(irisColor, ring * (.18 + .48 * lowerLight));
       }, eyeHeight, [28, 7]);
       const catchlightX = irisX - width * .21, catchlightY = eyeHeight + top * .48;
-      patch(art, scalp, [catchlightX, catchlightY], ellipse(catchlightX, catchlightY, .0044, .0056),
-        (px, py) => bulge(px, py) + .0035, "#fff8e9", eyeHeight, [12, 1]);
+      patch(art, scalp, [catchlightX, catchlightY], ellipse(catchlightX, catchlightY, .0049, .0058),
+        (px, py) => bulge(px, py) + .0027, "#fff8e9", eyeHeight, [14, 1]);
       continue;
     }
     patch(art, scalp, [x, eyeHeight], a => shape(a, x, 1, 1), bulge, ivory, eyeHeight, [28, 5]);
@@ -238,13 +276,13 @@ function drawEyes(art: Assembly, look: ChanvrierAppearance, color: string, scalp
       const [px, py] = shape(i * Math.PI / 8, x, 1, 1);
       return [px, (py - eyeHeight) * scalp.height, surface(scalp, px, py) + bulge(px, py) + .0004];
     });
-    art.sweep(lidPoints, [0, .0006, .0011, .0015, .0017, .0015, .0011, .0006, 0], ink, 6);
+    art.sweep(lidPoints, [0, .0008, .0017, .0022, .0024, .0022, .0017, .0008, 0], ink, 7);
   }
 }
 
 function drawClosedEyes(art: Assembly, scalp: ChanvrierScalp) {
   for (const side of [-1, 1]) {
-    const x = side * .073;
+    const x = side * eyeSpacing;
     lineOnFace(art, scalp, [[x - .025, eyeHeight + .001], [x - .011, eyeHeight - .005],
       [x + .009, eyeHeight - .006], [x + .024, eyeHeight + .002]], [.0005, .0019, .0021, .0007], ink, .0027);
   }
@@ -275,48 +313,58 @@ function mouthStrip(
   addPatch(art, positions, indices, color);
 }
 
-function drawMouth(art: Assembly, scalp: ChanvrierScalp, mouth: ChanvrierAppearance["mouth"]) {
+function drawMouth(art: Assembly, scalp: ChanvrierScalp, mouth: ChanvrierAppearance["mouth"], skin: string, expression: ChanvrierExpression) {
   const calm = mouth === "calm", grin = mouth === "grin";
-  const width = calm ? .043 : grin ? .071 : .064;
-  const arc = (u: number) => .018 + (calm ? .006 : .033) * (1 - Math.sqrt(1 - .88 * u * u)) + .0014 * u;
+  const parameters = {
+    neutral: { width: calm ? .043 : grin ? .074 : .065, y: .017, arc: calm ? .006 : .036, top: grin ? .004 : .0030, bottom: grin ? .016 : .0032 },
+    smile: { width: .082, y: .021, arc: .048, top: grin ? .006 : .0042, bottom: grin ? .020 : .006 },
+    surprise: { width: .024, y: .014, arc: .001, top: .020, bottom: .027 },
+    focus: { width: .050, y: .016, arc: -.007, top: .0021, bottom: .0026 },
+  }[expression];
+  const arc = (u: number) => parameters.y + parameters.arc * (1 - Math.sqrt(1 - .90 * u * u)) + .0014 * u;
   const taper = (u: number) => Math.sqrt(1 - u * u);
-  const stroke = calm ? .0039 : .0056;
+  const upper = (u: number) => arc(u) + parameters.top * taper(u);
+  const lower = (u: number) => arc(u) - parameters.bottom * taper(u);
+  // A shallow roll catches light at the lower lip. Both skin-coloured edges
+  // follow the underlying cheek so the expression still reads in profile.
+  mouthStrip(art, scalp, parameters.width, 1, u => upper(u) + .0038 * taper(u), upper, shade(skin, "#9f5140", .085), .0003, .0014);
+  mouthStrip(art, scalp, parameters.width, 1, lower, u => lower(u) - .0065 * taper(u), shade(skin, "#efaa83", .12), .0004, .0023);
+  mouthStrip(art, scalp, parameters.width, 1, upper, lower, ink, .0022);
   if (grin) {
-    const lower = (u: number) => arc(u) - .018 * taper(u);
-    mouthStrip(art, scalp, width, 1, arc, lower, ink, .0033);
-    mouthStrip(art, scalp, width, .80, u => arc(u) - .0031, u => arc(u) - .0031 - .0062 * taper(u / .80), ivory, .0040);
-    return;
+    const teeth = expression === "neutral" || expression === "smile" ? .0062 : 0;
+    mouthStrip(art, scalp, parameters.width, .77, u => upper(u) - .0022, u => upper(u) - .0022 - teeth * taper(u / .77), ivory, .0031);
   }
-  mouthStrip(art, scalp, width, 1, u => arc(u) + stroke * .48 * taper(u),
-    u => arc(u) - stroke * .52 * taper(u), ink, .0028);
 }
 
-function drawBrows(art: Assembly, scalp: ChanvrierScalp, brow: ChanvrierAppearance["eyebrows"], hair: string, skin: string) {
-  const arch = brow === "arched" ? .230 : .223;
-  const thickness = brow === "thick" ? .014 : brow === "arched" ? .009 : .011;
-  const color = shade(shade(hair, "#43271b", .42), skin, .045);
+function drawBrows(art: Assembly, scalp: ChanvrierScalp, brow: ChanvrierAppearance["eyebrows"], hair: string, skin: string, expression: ChanvrierExpression) {
+  const pose = CHANVRIER_FACE_POSES[expression];
+  const arch = (brow === "arched" ? .235 : .230) + pose.browHeight;
+  const thickness = brow === "thick" ? .015 : brow === "arched" ? .010 : .012;
+  const color = shade(shade(hair, "#43271b", .54), skin, .028);
   for (const side of [-1, 1]) {
-    const x = side * .074;
+    const x = side * eyeSpacing;
     const edge = (angle: number): FacePoint => {
       const u = Math.cos(angle), outward = side * u;
-      const y = arch - .015 * outward ** 2 - .008 * outward;
-      return [x + u * .044, y + Math.sin(angle) * thickness * (1 - .43 * outward)];
+      const y = arch - (.016 + pose.browCurve) * outward ** 2 - (.008 - pose.browTilt) * outward;
+      return [x + u * .045, y + Math.sin(angle) * thickness * (1 - .43 * outward)];
     };
-    patch(art, scalp, [x, arch], edge, (_, __, r) => .0019 + .0034 * (1 - r * r), color, 0, [28, 4]);
+    patch(art, scalp, [x, arch], edge, (_, __, r) => .0011 + .0048 * (1 - r * r), color, 0, [28, 4]);
   }
 }
 
-function drawFacialHair(art: Assembly, scalp: ChanvrierScalp, kind: ChanvrierAppearance["facialHair"], hair: string, skin: string) {
+function drawFacialHair(art: Assembly, scalp: ChanvrierScalp, kind: ChanvrierAppearance["facialHair"], hair: string, skin: string, expression: ChanvrierExpression) {
   const dark = shade(hair, "#332526", .26), highlight = shade(hair, "#dfac83", .13);
   const width = Math.min(.166, scalp.radius(.072 * scalp.height) - .014);
-  const beardTop = (x: number) => -.016 + .135 * Math.abs(x) ** 2.04 + .003 * Math.cos(x * 27);
-  const beardBottom = (x: number) => -.097 + .148 * Math.abs(x) ** 1.55;
+  const lipSpace = expression === "surprise" ? .033 : expression === "smile" ? .027 : .023;
+  const beardTop = (u: number) => .001 + .134 * Math.abs(u) ** 2.26 + .0021 * Math.cos(u * 27)
+    - lipSpace * (1 - THREE.MathUtils.smoothstep(Math.abs(u), .21, .68));
+  const beardBottom = (u: number) => -.096 + .152 * Math.abs(u) ** 1.60;
   if (kind === "beard") {
-    mouthStrip(art, scalp, width, 1, beardTop, beardBottom, hair, .0030, .0095);
+    mouthStrip(art, scalp, width, 1, beardTop, beardBottom, hair, .0020, .0105);
     for (let i = 0; i < 18; i++) {
       const u = (i - 8.5) / 10, x = u * width;
       const y = THREE.MathUtils.lerp(beardTop(u), beardBottom(u), .36 + .17 * Math.sin(i * 3.6));
-      lineOnFace(art, scalp, [[x, y], [x * .97, y - .009], [x * .93, y - .015]], [.0003, .0010, .0003], i % 2 ? dark : highlight, .010);
+      lineOnFace(art, scalp, [[x, y], [x * .97, y - .009], [x * .93, y - .015]], [.0003, .0010, .0003], i % 2 ? dark : highlight, .0107);
     }
   }
   if (kind === "stubble") {
@@ -328,9 +376,10 @@ function drawFacialHair(art: Assembly, scalp: ChanvrierScalp, kind: ChanvrierApp
     }
   }
   if (kind === "moustache" || kind === "beard") {
+    const height = expression === "surprise" ? .075 : expression === "smile" ? .069 : .065;
     for (const side of [-1, 1]) {
       const h = scalp.height;
-      art.add(portraitMoustache(side, .066, .065 * h, h, hair, (x, y) => surface(scalp, x, y / h)), null);
+      art.add(portraitMoustache(side, .066, height * h, h, hair, (x, y) => surface(scalp, x, y / h)), null);
     }
   }
 }
@@ -371,7 +420,8 @@ export function createChanvrierHead(parent: THREE.Group, material: THREE.Materia
   parent.add(eyes, lids);
   const eyeArt = createPart(eyes, "chanvrier-eyes", material);
   const sclera = createPart(eyes, "chanvrier-eyelids", material);
-  let irisMesh: THREE.Mesh | undefined, browMesh: THREE.Mesh | undefined;
+  let irisMesh: THREE.Mesh | undefined, scleraMesh: THREE.Mesh | undefined;
+  let browMesh: THREE.Mesh | undefined, mouthMesh: THREE.Mesh | undefined, facialHairMesh: THREE.Mesh | undefined;
   const lidArt = createPart(lids, "chanvrier-closed-eyes", material);
   const mouth = createPart(parent, "chanvrier-mouth", material);
   const brows = createPart(parent, "chanvrier-brows", material);
@@ -381,7 +431,27 @@ export function createChanvrierHead(parent: THREE.Group, material: THREE.Materia
   let face: Face = "oval";
   let nose: ChanvrierAppearance["nose"] = "small";
   let scalp = createChanvrierScalp(face, nose);
+  let targetIndex = -1;
+  let expressionStrength = 0;
+
+  function applyExpression() {
+    for (const mesh of [irisMesh, scleraMesh, browMesh, mouthMesh, facialHairMesh]) {
+      const weights = mesh?.morphTargetInfluences;
+      if (!weights) continue;
+      weights.fill(0);
+      if (targetIndex >= 0) weights[targetIndex] = expressionStrength;
+    }
+  }
+
   return {
+    setExpression(expression: ChanvrierExpression, strength = 1) {
+      const index = CHANVRIER_EXPRESSION_TARGETS.findIndex(target => target === expression);
+      const amount = Number.isFinite(strength) ? THREE.MathUtils.clamp(strength, 0, 1) : 1;
+      if (targetIndex === index && expressionStrength === amount) return;
+      targetIndex = index;
+      expressionStrength = amount;
+      applyExpression();
+    },
     update(look: ChanvrierAppearance, colors: Colors) {
       if (look.face !== face || look.nose !== nose) {
         face = look.face;
@@ -390,13 +460,18 @@ export function createChanvrierHead(parent: THREE.Group, material: THREE.Materia
       }
       const { skin } = colors;
       eyes.position.y = eyeHeight * scalp.height;
-      skull([face, skin, nose], art => drawSkin(art, scalp, skin, nose));
-      sclera([face, nose, look.eyes], art => drawEyes(art, look, colors.eyes, scalp, "lids"));
-      irisMesh = eyeArt([face, nose, look.eyes, colors.eyes], art => drawEyes(art, look, colors.eyes, scalp, "iris")) ?? irisMesh;
+      skull([face, skin, nose], art => drawSkin(art, scalp, face, skin, nose));
+      const eyeShape = [face, nose, look.eyes], mouthShape = [face, nose, look.mouth], browShape = [face, nose, look.eyebrows];
+      scleraMesh = sclera(eyeShape, (art, expression) => drawEyes(art, look, colors.eyes, scalp, "lids", expression), true, eyeShape) ?? scleraMesh;
+      irisMesh = eyeArt([...eyeShape, colors.eyes], (art, expression) => drawEyes(art, look, colors.eyes, scalp, "iris", expression), true, eyeShape) ?? irisMesh;
       lidArt([face, nose], art => drawClosedEyes(art, scalp));
-      mouth([face, look.mouth], art => drawMouth(art, scalp, look.mouth));
-      browMesh = brows([face, look.eyebrows, colors.hair, skin], art => drawBrows(art, scalp, look.eyebrows, colors.hair, skin)) ?? browMesh;
-      facialHair([face, nose, look.facialHair, colors.hair, skin], art => drawFacialHair(art, scalp, look.facialHair, colors.hair, skin), look.facialHair !== "none");
+      mouthMesh = mouth([...mouthShape, skin], (art, expression) => drawMouth(art, scalp, look.mouth, skin, expression), true, mouthShape) ?? mouthMesh;
+      browMesh = brows([...browShape, colors.hair, skin], (art, expression) => drawBrows(art, scalp, look.eyebrows, colors.hair, skin, expression), true, browShape) ?? browMesh;
+      const hairStyle = look.facialHair;
+      const facialHairPart = facialHair([face, nose, hairStyle, colors.hair, skin],
+        (art, expression) => drawFacialHair(art, scalp, hairStyle, colors.hair, skin, expression), hairStyle !== "none",
+        hairStyle === "beard" || hairStyle === "moustache" ? null : undefined);
+      facialHairMesh = hairStyle === "none" ? undefined : facialHairPart ?? facialHairMesh;
       const { accessory: item } = look;
       if (item === "glasses" || item === "round-glasses" || item === "earrings") {
         const dye = look.dyes?.accent || (look.accentColor === "cream" ? undefined : colors.accent);
@@ -404,6 +479,7 @@ export function createChanvrierHead(parent: THREE.Group, material: THREE.Materia
       } else accessory([], () => {}, false);
       hair([face, look.hair, colors.hair, skin, look.headwear],
         art => createChanvrierHair(art, scalp, look.hair, colors.hair, look.headwear, skin), look.hair !== "bald");
+      applyExpression();
     },
     blink(elapsedSeconds?: number, walking = 0, reach = 0, yaw = 0) {
       const cycle = (elapsedSeconds ?? 0) % 4.35;

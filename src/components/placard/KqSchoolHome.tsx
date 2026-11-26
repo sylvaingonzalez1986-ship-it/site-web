@@ -1,12 +1,12 @@
 "use client";
 
-import { BellRing, LibraryBig, Pause, Play, Trophy } from "lucide-react";
+import { ArrowRight, BellRing, LibraryBig, Pause, Play, Trophy } from "lucide-react";
 import { useState } from "react";
 import type { QuizzShowDestination } from "./world/quizzshow-renderer";
 import { KqQuizzShowScene } from "./KqQuizzShowScene";
 import styles from "./KqSchoolHome.module.css";
 
-const destinations = [
+export const schoolDestinations = [
   { id: "tournament", title: "Tournoi", detail: "Les quatre pupitres", icon: BellRing },
   { id: "ranking", title: "Classement", detail: "Scores et palmarès", icon: Trophy },
   { id: "learn", title: "Encyclopédie", detail: "La grande bibliothèque", icon: LibraryBig },
@@ -20,12 +20,13 @@ export function KqSchoolHome({ onChoose }: {
   return <nav className={styles.home} aria-label="Les espaces de QuizzShow" data-school-home>
     <KqQuizzShowScene mode="hall" onChoose={onChoose} focus={focus} motion={!paused} />
     <div className={styles.signs}>
-      {destinations.map(({ id, title, detail, icon: Icon }) =>
+      {schoolDestinations.map(({ id, title, detail, icon: Icon }) =>
         <button key={id} type="button" className={styles.sign} onClick={() => onChoose(id)} data-school-destination={id}
           onFocus={() => setFocus(id)} onBlur={() => setFocus(null)} onPointerEnter={() => setFocus(id)}
           onPointerLeave={event => { if (!event.currentTarget.matches(":focus-visible")) setFocus(null); }}>
           <Icon size={24} strokeWidth={1.8} aria-hidden="true" />
-          <span><strong>{title}</strong><small>{detail}</small></span>
+          <span><strong>{title}</strong><small data-game-caption>{detail}</small></span>
+          <ArrowRight size={19} className={styles.direction} aria-hidden />
         </button>
       )}
     </div>

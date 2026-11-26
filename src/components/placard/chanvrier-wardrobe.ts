@@ -2,6 +2,7 @@ import * as THREE from "three";
 import type { ChanvrierAppearance, getChanvrierColors } from "@/lib/arena-chanvrier";
 import { createChanvrierScalp } from "./chanvrier-head";
 import { chanvrierHeadwearEdge, chanvrierHeadwearFit, type WornHeadwear } from "./chanvrier-headwear-fit";
+import { borrowKnittedFabric, knitPalette, prepareKnittedFabric, releaseKnittedFabric } from "./chanvrier-knitted-fabric";
 import { createCharacterLimbSurface, type CharacterLimbRing } from "./world/character-limb-surface";
 import { Assembly, type CharacterPoint } from "./world/village-character-art";
 
@@ -26,6 +27,7 @@ const ink = "#302d33";
 const brass = "#c79953";
 const TAU = Math.PI * 2;
 const sides = [-1, 1] as const;
+const knitBands = [-.025, .069, .163, .257, .351] as const;
 
 function tint(color: string, target: string, amount: number) {
   return `#${new THREE.Color(color).lerp(new THREE.Color(target), amount).getHexString()}`;
@@ -162,6 +164,38 @@ function topCut(fit: GarmentFit): Profile {
   });
 }
 
+const mariniereCut: Profile = [
+  [0, -.102], [.174, -.100], [.195, -.092], [.202, -.079], [.200, -.060],
+  [.192, -.044], [.190, .035], [.192, .132], [.199, .226], [.210, .312],
+  [.235, .383], [.244, .414], [.221, .447], [.172, .479], [.140, .500], [.118, .508],
+];
+
+function mariniereArt(art: Assembly) {
+  const drape = topFits.mariniere;
+  const width = .028;
+  const heights = new Set(mariniereCut.map(([, y]) => y));
+  for (const y of knitBands) {
+    heights.add(y - .0008); heights.add(y);
+    heights.add(y + width); heights.add(y + width + .0008);
+  }
+  const cut = [...heights].sort((a, b) => a - b).map(y => [radiusAt(mariniereCut, y), y] as const);
+  const body = openShell(cut, torsoDepth, () => 0, drape);
+  const pigments = new Float32Array(body.getAttribute("position").count * 3);
+  const color = new THREE.Color(), stitches = cut.map(([, y]) => knitBands.some(low => y >= low && y <= low + width));
+  for (const [row, [, y]] of cut.entries()) {
+    color.set(knitPalette[stitches[row] ? 1 : y < -.091 ? 2 : 0]);
+    for (let i = 0; i < 25; i++) color.toArray(pigments, (row * 25 + i) * 3);
+  }
+  body.setAttribute("color", new THREE.BufferAttribute(pigments, 3));
+  art.add(body, null);
+  // The neckline rolls into the neck opening. Its upper and lower edges
+  // share the drop of the sweater so it reads as knit binding on the shoulder.
+  const collar: Profile = [[.140, .500], [.138, .511], [.128, .523], [.114, .536], [.104, .540], [.098, .536], [.096, .527]];
+  art.add(openShell(collar, .79, () => 0, drape), knitPalette[0], [0, 0, .012]);
+  const neckSeam: Profile = [[.142, .501], [.140, .506], [.138, .509]];
+  art.add(openShell(neckSeam, .79, () => 0, drape), knitPalette[2], [0, 0, .003]);
+}
+
 function shirtCollarFlap(art: Assembly, side: -1 | 1, color: string, surface: FrontSurface) {
   const rows = 7, positions: number[] = [], indices: number[] = [];
   const index = (row: number, column: number) => row * (rows + 1) - row * (row - 1) / 2 + column;
@@ -214,13 +248,21 @@ function bib(art: Assembly, coverall: boolean, color: string) {
   const depth = 1.05;
   art.add(openShell(profile, depth, () => 1.15).rotateY(Math.PI), color, [0, 0, .018]);
   patch(art, [[-.12, .248, .142], [-.17, -.1, .126], [-.085, -.126, .178], [.085, -.126, .178], [.17, -.1, .126], [.12, .248, .142], [0, .263, .182]], color);
-  pocket(art, (x, y, lift) => front([[.177, .03], [.179, .148]], 1.07, x, y, lift), 0, .1, .129, .079, color);
+  const frontBib: FrontSurface = (x, y, lift) => front([[.173, -.071], [.180, .148]], 1.12, x, y, lift);
+  if (coverall) pocket(art, frontBib, 0, .1, .129, .079, color);
+  else {
+    pocket(art, frontBib, .047, .007, .159, .103, tint(color, cream, .07));
+    art.sweep([[-.114, .241, .148], [-.056, .255, .177], [0, .259, .187], [.056, .255, .177], [.114, .241, .148]],
+      [.0021, .0035, .004, .0035, .0021], seam(color), 6);
+  }
   for (const side of sides) {
     art.sweep([
       [side * .116, .228, .153], [side * .139, .39, .155], [side * .132, .476, .081],
       [side * .133, .483, -.078], [side * .125, .23, -.133],
     ], [.018, .021, .020, .023, .018], color, 7);
     art.ball([side * .116, .234, .174], .014, coverall ? brass : seam(color), [1, 1, .44]);
+    if (!coverall) art.sweep([[side * .129, -.056, .149], [side * .143, -.090, .143], [side * .152, -.106, .129]],
+      [.003, .0035, .002], tint(color, cream, .30), 6);
   }
   art.sweep([[-.172, -.071, .109], [-.125, -.072, .142], [0, -.068, .194], [.125, -.072, .142], [.172, -.071, .109]], [.011, .011, .011, .011, .011], seam(color), 7);
 }
@@ -258,16 +300,14 @@ function topArt(art: Assembly, look: ChanvrierAppearance, colors: Colors) {
   const bodyColor = style === "embroidered-vest" ? striping(cloth) : cloth;
   art.add(openShell(cut, torsoDepth, () => 0, drape), bodyColor);
   const collarColor = style === "shirt" || style === "linen-shirt" ? tint(cloth, cream, .22) : seam(bodyColor);
-  const neckWidth = style === "mariniere" ? .132 : .115;
+  const neckWidth = .115;
   const binding: Profile = [[.090, .504], [neckWidth, .501], [neckWidth + .005, .509], [neckWidth - .006, .519], [.092, .521]];
   art.add(openShell(binding, .85, () => 0, drape), collarColor);
   stripe(art, cut, torsoDepth, -.077, style === "fisher-knit" || style === "hoodie" ? .035 : .018, seam(bodyColor), drape);
 
   const stitched = (points: ReadonlyArray<readonly [x: number, y: number]>, color: string, size = .006) =>
     art.sweep(points.map(([x, y]) => surface(x, y, .006)), points.map(() => size), color, 7);
-  if (style === "mariniere") {
-    for (const y of [-.038, .029, .096, .163, .23, .297, .364]) stripe(art, cut, torsoDepth, y, .022, striping(cloth), drape);
-  } else if (style === "overalls" || style === "apron") {
+  if (style === "overalls" || style === "apron") {
     bib(art, style === "overalls", style === "overalls" ? colors.bottom : tint(colors.accent, "#b59469", .47));
   } else if (style === "hoodie") {
     if (look.jacket !== "raincoat" && look.jacket !== "kabig") {
@@ -308,10 +348,14 @@ function topArt(art: Assembly, look: ChanvrierAppearance, colors: Colors) {
         const a = Math.max(.14, .14 + (y - .27) * 2.15);
         return [side * r * Math.sin(a), y, (r + .004) * .807 * Math.cos(a)];
       });
-      art.sweep(points, points.map(() => .008), colors.accent, 7);
-      for (const y of [.044, .112, .18, .248, .316]) {
-        const p = front(vest, .807, side * .082, y, .01);
-        embroidery(art, p, colors.accent, .014);
+      art.sweep(points, points.map(() => .007), colors.accent, 6);
+      const embroideryThread = tint(colors.accent, brass, .40);
+      const vine = [.013, .067, .112, .169, .220, .272, .324].map((y, i) =>
+        front(vest, .807, side * (.094 + Math.sin(i * Math.PI * .62) * .015), y, .005));
+      art.sweep(vine, [.001, .0023, .0027, .0026, .0027, .0023, .001], embroideryThread, 5);
+      for (const y of [.074, .155, .237, .307]) {
+        const p = front(vest, .807, side * (.108 + .013 * Math.cos(y * 18)), y, .011);
+        embroidery(art, p, embroideryThread, .014);
       }
     }
   } else if (style === "sailor-blouse") {
@@ -323,7 +367,7 @@ function topArt(art: Assembly, look: ChanvrierAppearance, colors: Colors) {
 
 function coatCut(style: ChanvrierAppearance["jacket"]): Profile {
   const vest = style === "wool-vest", trim = style === "chupenn", long = style === "pea-coat" || style === "raincoat" || style === "kabig";
-  const hem = long ? -.139 : trim ? -.065 : -.097;
+  const hem = style === "raincoat" ? -.164 : long ? -.139 : trim ? -.065 : -.097;
   const fullness = style === "raincoat" ? .023 : style === "kabig" ? .014 : style === "pea-coat" ? .010 : 0;
   const waist = trim ? .213 : style === "kabig" ? .239 : .224;
   return [
@@ -363,7 +407,7 @@ function jacketArt(art: Assembly, style: Exclude<ChanvrierAppearance["jacket"], 
   }
   for (const side of sides) {
     const edge = cut.map(([r, y]) => fabricPoint(r + .006, y, side * open(y), depth, drape));
-    art.sweep(edge, edge.map(() => .007), edgeColor, 7);
+    if (style !== "raincoat") art.sweep(edge, edge.map(() => .007), edgeColor, 7);
     if (style === "pea-coat") {
       const lapel: CharacterPoint[] = [
         surface(side * .034, .294, .018), surface(side * .174, .412, .019),
@@ -375,7 +419,10 @@ function jacketArt(art: Assembly, style: Exclude<ChanvrierAppearance["jacket"], 
       for (const y of [.109, .174, .239, .304, .37]) embroidery(art, surface(side * .104, y, .014), accent, .015);
       art.sweep([[.070, .067], [.072, .145], [.075, .219], [.104, .297], [.132, .369]].map(([x, y]) => surface(side * x, y, .009)), [.004, .004, .004, .004, .004], tint(accent, ink, .38), 6);
     }
-    pocket(art, surface, side * .13, style === "chupenn" ? .018 : -.016, .085, .082, cloth);
+    if (style === "raincoat") {
+      art.sweep([surface(side * .078, .030, .008), surface(side * .125, .016, .010), surface(side * .175, -.002, .006)],
+        [.002, .007, .004], seam(cloth), 7);
+    } else pocket(art, surface, side * .13, style === "chupenn" ? .018 : -.016, .085, .082, cloth);
   }
   if (style === "raincoat" || style === "kabig") {
     if (style === "kabig") {
@@ -385,12 +432,16 @@ function jacketArt(art: Assembly, style: Exclude<ChanvrierAppearance["jacket"], 
       pocket(art, surface, -.123, .31, .103, .066, cloth);
       embroidery(art, surface(-.122, .310, .018), accent, .015);
     } else {
-      art.ball([0, .466, -.138], .158, seam(cloth), [1.12, .67, .72]);
-      art.ball([0, .483, -.149], .155, cloth, [1.04, .59, .73]);
+      art.ball([0, .465, -.129], .159, seam(cloth), [1.12, .66, .72]);
+      art.ball([0, .479, -.148], .151, cloth, [1.07, .66, .77]);
+      const placket = [-.145, -.10, -.03, .045, .12, .21, .299, .390, .477, .512];
+      art.sweep(placket.map(y => surface(.001, y, .012)), [.006, .012, .014, .014, .014, .014, .014, .014, .013, .005], tint(cloth, cream, .12), 7);
+      art.sweep(placket.map(y => surface(.018, y, .009)), [.001, .002, .002, .002, .002, .002, .002, .002, .002, .001], seam(cloth), 5);
     }
-    for (const y of [.083, .19, .298]) {
-      const p = surface(.026, y, .010);
-      art.ball(p, style === "raincoat" ? .009 : .014, accent, [1.4, .65, .47]);
+    for (const y of (style === "raincoat" ? [-.083, .04, .164, .288, .414] : [.083, .19, .298])) {
+      const p = surface(style === "raincoat" ? .010 : .026, y, style === "raincoat" ? .025 : .010);
+      art.ball(p, style === "raincoat" ? .0065 : .014, style === "raincoat" ? tint(cloth, accent, .53) : accent,
+        style === "raincoat" ? [1, 1, .52] : [1.4, .65, .47]);
       if (style === "kabig") art.rod(surface(-.052, y, .012), surface(.052, y, .012), .005, seam(cloth));
     }
   }
@@ -476,7 +527,23 @@ const shortSleeve: LimbCut = [
 ];
 const shortArm: LimbCut = [[.714, .063, .055], [.745, .062, .055], ...bareArm.slice(2)];
 
-function armRings(style: ChanvrierAppearance["top"], jacket: ChanvrierAppearance["jacket"], colors: Colors) {
+const mariniereSleeve: LimbCut = [
+  [-.29, .032, .028], [-.17, .052, .051], [.03, .071, .066], [.24, .078, .071],
+  [.45, .075, .069], [.70, .071, .065], [.91, .066, .061], [1.09, .064, .058],
+  [1.32, .064, .058], [1.55, .061, .053], [1.708, .054, .047], [1.75, .051, .045],
+  [1.772, .057, .050], [1.815, .059, .052], [1.891, .058, .051], [1.921, .052, .045],
+  [1.935, .038, .032], [1.951, .035, .029], [2.045, .031, .026],
+];
+
+function mariniereArmRings() {
+  const [cloth, stripe, seam, skin] = knitPalette;
+  const bands = [.18, .55, .925, 1.295, 1.64].map((at): LimbBand => [at, at + .108, stripe]);
+  bands.push([1.751, 1.768, seam], [1.94, 2.045, skin]);
+  return finishCut(mariniereSleeve, cloth, bands).map(ring => ring.at > 2.045 ? { ...ring, color: skin } : ring);
+}
+
+function armRings(look: ChanvrierAppearance, colors: Colors) {
+  const { top: style, jacket } = look;
   const long = style !== "tee" && style !== "overalls" && style !== "apron" && style !== "sailor-blouse";
   const fullCoat = jacket !== "none" && jacket !== "wool-vest";
   const cloth = fullCoat ? colors.jacket : style === "embroidered-vest" ? striping(colors.top) : colors.top;
@@ -496,13 +563,13 @@ function armRings(style: ChanvrierAppearance["top"], jacket: ChanvrierAppearance
     [1.927, .036, .030], [1.94, .035, .029], [2.045, .031, .026],
   ];
   const bands: LimbBand[] = [];
-  if (style === "mariniere" && !fullCoat) {
-    for (const at of [.18, .47, .76, 1.05, 1.34, 1.63]) bands.push([at, at + .082, striping(cloth), .001]);
-  } else if (style === "fisher-knit" && !fullCoat) {
+  if (style === "fisher-knit" && !fullCoat) {
     for (const at of [.22, .52, .82, 1.13, 1.42]) bands.push([at, at + .045, tint(cloth, cream, .19), .002]);
   }
   if (jacket === "kabig") {
     bands.push([1.646, 1.715, seam(cloth), .001], [1.721, 1.776, colors.accent, .003], [1.782, 1.923, seam(cloth), .003]);
+  } else if (jacket === "raincoat") {
+    bands.push([1.681, 1.703, seam(cloth), .002], [1.726, 1.919, tint(cloth, cream, .09), .004]);
   } else bands.push([1.755, 1.923, seam(cloth), .003]);
   bands.push([1.937, 2.041, colors.skin]);
   return finishCut(cut, cloth, bands).map(ring => ring.at > 2.041 ? { ...ring, color: colors.skin } : ring);
@@ -519,6 +586,10 @@ const bareLeg: LimbCut = [
   [.81, .071, .061], [1, .069, .061], [1.22, .069, .068], [1.41, .072, .072],
   [1.59, .062, .062], [1.78, .049, .050], [2.05, .042, .047],
 ];
+const skirtLeg: LimbCut = bareLeg.map(([at, width, depth]) => {
+  const covered = THREE.MathUtils.lerp(.53, 1, THREE.MathUtils.smoothstep(at, .31, .74));
+  return [at, width * covered, depth * covered];
+});
 const breeches: LimbCut = [
   [-.16, 0, 0], [-.07, .060, .053], [.05, .100, .082], [.22, .122, .098], [.44, .132, .113], [.62, .130, .107],
   [.77, .111, .091], [.89, .085, .069], [1.015, .070, .061], [1.04, .067, .059], ...trouserCut.filter(([at]) => at > 1.04),
@@ -530,15 +601,20 @@ const shortsCut: LimbCut = [
   [.756, .076, .067], [.778, .074, .065], ...bareLeg.slice(5),
 ];
 const sailorCut: LimbCut = [
-  [-.16, 0, 0], [-.09, .042, .037], [.015, .074, .068], [.17, .090, .082],
-  [.34, .102, .090], [.45, .103, .092], [.64, .098, .090], [.82, .090, .082],
-  [1, .084, .080], [1.17, .082, .078], [1.34, .085, .080], [1.56, .089, .083],
-  [1.78, .090, .083], [1.94, .092, .085], [2.015, .091, .085],
+  [-.16, 0, 0], [-.09, .052, .049], [.015, .085, .078], [.17, .102, .091],
+  [.34, .107, .093], [.45, .103, .092], [.64, .098, .088], [.82, .090, .080],
+  [1, .079, .071], [1.17, .077, .069], [1.35, .080, .074], [1.57, .083, .076],
+  [1.67, .085, .077], [1.709, .088, .077], [1.738, .100, .088], [1.766, .102, .090],
+  [1.864, .100, .088], [1.891, .091, .083], [1.935, .065, .061], [2.015, .049, .049],
+];
+const denimCut: LimbCut = [
+  ...trouserCut.filter(([at]) => at <= 1.37), [1.58, .075, .069], [1.75, .061, .057], [1.835, .059, .055],
+  [1.864, .068, .062], [1.910, .069, .063], [1.985, .067, .061], [2.014, .062, .056], [2.02, .050, .048],
 ];
 
 function legPattern(style: ChanvrierAppearance["bottom"], colors: Colors) {
   const skirt = style === "skirt" || style === "pleated-skirt";
-  if (skirt) return { cut: bareLeg, color: colors.skin, bands: [] };
+  if (skirt) return { cut: skirtLeg, color: colors.skin, bands: [] };
   if (style === "shorts") {
     return { cut: shortsCut, color: colors.bottom, bands: [
       [.665, .734, tint(colors.bottom, cream, .105), .002], [.741, .752, seam(colors.bottom)],
@@ -546,12 +622,13 @@ function legPattern(style: ChanvrierAppearance["bottom"], colors: Colors) {
     ] as LimbBand[] };
   }
   const sailor = style === "sailor-trousers", gaiter = style === "bragou-braz";
-  const cut = gaiter ? breeches : sailor ? sailorCut : trouserCut;
+  const cut = gaiter ? breeches : sailor ? sailorCut : style === "jeans" ? denimCut : trouserCut;
   const gaiterColor = tint(colors.bottom, ink, .72);
   const bands: LimbBand[] = gaiter ? [
     [.905, 1.019, seam(colors.bottom), .002], [1.025, 1.115, seam(gaiterColor), .002],
     [1.12, 1.875, gaiterColor], [1.881, 2.016, seam(gaiterColor), .003],
-  ] : sailor ? [[1.929, 1.991, tint(colors.bottom, cream, .12), .002], [2.001, 2.016, seam(colors.bottom)]]
+  ] : sailor ? [[1.714, 1.739, seam(colors.bottom)], [1.741, 1.883, tint(colors.bottom, "#829da6", .25)], [1.889, 2.016, seam(colors.bottom)]]
+    : style === "jeans" ? [[1.847, 1.861, seam(colors.bottom)], [1.864, 1.995, tint(colors.bottom, "#a6b5bb", .16)], [1.999, 2.016, seam(colors.bottom)]]
     : [[1.862, 2.016, seam(colors.bottom), .002]];
   return { cut, color: colors.bottom, bands };
 }
@@ -568,16 +645,21 @@ function trouserDetails(art: Assembly, cut: LimbCut, style: ChanvrierAppearance[
     art.sweep([point(.40, a, .012), point(.437, 1.05, .016), point(.40, b, .012)], [.004, .005, .004], seam(color), 6);
     art.ball(point(.451, 1.07, .014), .008, brass, [.65, 1, 1]);
   }
-  if (style === "shorts" || style === "sailor-trousers") {
-    const sailor = style === "sailor-trousers";
+  if (style === "jeans" || style === "sailor-trousers") {
+    const stitch = tint(colors.bottom, "#829da6", .17);
+    const opening = [point(.19, .16, .004), point(.34, .24, .006), point(.46, .45, .006), point(.51, .78, .005), point(.46, 1.19, .004)];
+    art.sweep(opening, [.0022, .0029, .0030, .0027, .0018], stitch, 6);
+    art.sweep([point(.23, .14, .003), point(.37, .23, .004), point(.49, .45, .004), point(.537, .78, .004), point(.48, 1.19, .003)],
+      [.0015, .0019, .0020, .0018, .0012], seam(colors.bottom), 6);
+  } else if (style === "shorts") {
     // Each pocket is cut into the side front panel and inclines toward the hip.
     const thigh: FrontSurface = (angle, y, lift = .003) => {
       const at = -y / .35;
       const tilt = side * angle - (at - .51) * .42;
       return point(at, tilt, lift);
     };
-    pocket(art, thigh, side * .86, sailor ? -.180 : -.177, .86, sailor ? .093 : .081, tint(colors.bottom, cream, .046));
-    art.sweep([point(.29, 1.49, .005), point(.45, 1.51, .005), point(sailor ? .74 : .657, 1.50, .005)],
+    pocket(art, thigh, side * .86, -.177, .86, .081, tint(colors.bottom, cream, .046));
+    art.sweep([point(.29, 1.49, .005), point(.45, 1.51, .005), point(.657, 1.50, .005)],
       [.003, .004, .003], tint(colors.bottom, cream, .18), 6);
   } else {
     const seamLine = [.09, .25, .43, .69].map(at => point(at, 1.43, .003));
@@ -587,32 +669,24 @@ function trouserDetails(art: Assembly, cut: LimbCut, style: ChanvrierAppearance[
 
 function trouserWaist(art: Assembly, style: ChanvrierAppearance["bottom"], color: string) {
   const sailor = style === "sailor-trousers";
-  if (sailor || style === "shorts") {
+  if (sailor || style === "shorts" || style === "jeans") {
     // A single pelvis covers the two articulated thighs and narrows into the rise.
-    const cut: Profile = [[0, -.185], [.052, -.178], [.092, -.161], [.141, -.139], [.173, -.115],
-      [.196, -.091], [.190, -.057], [.176, -.016], [.159, .033], [.144, .048], [0, .049]];
-    const depth = .655;
+    const cut: Profile = sailor ? [[0, -.167], [.047, -.165], [.091, -.155], [.145, -.139], [.185, -.116],
+      [.205, -.092], [.207, -.063], [.195, -.032], [.180, .012], [.168, .035], [0, .036]]
+      : [[0, -.185], [.052, -.178], [.092, -.161], [.141, -.139], [.173, -.115],
+        [.196, -.091], [.190, -.057], [.176, -.016], [.159, .033], [.144, .048], [0, .049]];
+    const depth = sailor ? .64 : .655;
     art.add(turn(cut, depth), color);
     stripe(art, cut, depth, -.094, .028, tint(color, ink, .23));
-    stripe(art, cut, depth, -.091, .006, tint(color, cream, .16));
+    stripe(art, cut, depth, -.091, .006, tint(color, style === "jeans" ? "#a6b5bb" : cream, .16));
     const surface: FrontSurface = (x, y, lift) => front(cut, depth, x, y, lift);
-    if (sailor) {
-      const panel: FrontSurface = (x, y, lift = .006) => surface(x * THREE.MathUtils.lerp(.57, 1, THREE.MathUtils.smoothstep(y, -.171, -.083)), y, lift);
-      pocket(art, panel, 0, -.106, .205, .124, tint(color, cream, .10));
-      for (const side of sides) {
-        const edge = [panel(side * .097, -.046, .012), panel(side * .098, -.102, .013), panel(side * .089, -.156, .011)];
-        art.sweep(edge, [.004, .005, .003], tint(color, cream, .23), 6);
-        for (const y of [-.073, -.120, -.151]) art.add(new THREE.SphereGeometry(.011, 8, 5).scale(1, 1, .54), brass, panel(side * .094, y, .015));
-      }
-    } else {
-      for (const side of sides) {
-        const loop = [surface(side * .098, -.106, .006), surface(side * .104, -.081, .009), surface(side * .113, -.051, .008)];
-        art.sweep(loop, [.003, .006, .003], tint(color, cream, .27), 6);
-      }
-      art.sweep([surface(.020, -.079, .006), surface(.020, -.114, .009), surface(.015, -.154, .007), surface(-.009, -.173, .005)],
-        [.004, .004, .004, .003], seam(color), 6);
-      art.add(new THREE.SphereGeometry(.010, 8, 5).scale(1, 1, .55), brass, surface(.003, -.077, .009));
+    for (const side of sides) {
+      const loop = [surface(side * .098, -.106, .004), surface(side * .104, -.081, .005), surface(side * .113, -.051, .004)];
+      art.sweep(loop, [.002, .0045, .002], tint(color, "#829da6", .18), 6);
     }
+    art.sweep([surface(.021, -.087, .004), surface(.020, -.112, .005), surface(.014, -.137, .004), surface(-.007, -.152, .003)],
+      [.0023, .0034, .0030, .0017], seam(color), 6);
+    art.add(new THREE.SphereGeometry(.009, 8, 5).scale(1, 1, .55), brass, surface(.003, -.089, .007));
     return;
   }
   const cut: Profile = [[0, -.147], [.078, -.140], [.142, -.120], [.181, -.088], [.174, -.045], [.161, .004], [.144, .048], [0, .050]];
@@ -624,10 +698,11 @@ function foldedSkirt(profile: Profile, pleated: boolean, lift = 0) {
   const facets = pleated ? 56 : 32;
   const positions: number[] = [], indices: number[] = [];
   for (const [radius, y] of profile) {
+    const depth = .83 - .119 * THREE.MathUtils.smoothstep(y, -.117, .012);
     for (let i = 0; i <= facets; i++) {
       const angle = i / facets * TAU;
       const fold = Math.cos(angle * (pleated ? 14 : 7)) * (pleated ? .011 : .004) * THREE.MathUtils.clamp((-.033 - y) / .153, 0, 1);
-      positions.push(Math.sin(angle) * (radius + fold + lift), y, Math.cos(angle) * (radius * .83 + fold + lift));
+      positions.push(Math.sin(angle) * (radius + fold + lift), y, Math.cos(angle) * (radius * depth + fold + lift));
       if (i < facets && positions.length / 3 > facets + 1) {
         const b = positions.length / 3 - 1, a = b - facets - 1;
         indices.push(a, a + 1, b, b, a + 1, b + 1);
@@ -642,14 +717,15 @@ function foldedSkirt(profile: Profile, pleated: boolean, lift = 0) {
 }
 
 function skirtArt(color: string, pleated: boolean) {
-  const art = new Assembly(), hem = pleated ? -.298 : -.247, width = pleated ? .271 : .242;
+  const art = new Assembly(), hem = pleated ? -.412 : -.268, width = pleated ? .296 : .249;
   const cut: Profile = [
     [width * .86, hem + .013], [width * .985, hem], [width, hem + .018],
-    [Math.max(.231, width - .023), hem * .69], [.229, -.094], [.216, .023],
+    [Math.max(.229, width - .023), hem * .69], [.213, -.145], [.198, -.092], [.189, .023],
   ];
   art.add(foldedSkirt(cut, pleated), color);
-  art.add(foldedSkirt(cut.slice(1, 3), pleated, .002), seam(color));
-  art.add(foldedSkirt([[.216, .01], [.220, .027], [.214, .042]], pleated, .001), seam(color));
+  art.add(foldedSkirt(cut.slice(1, 3), pleated, .002), tint(color, pleated ? "#a6947e" : ink, .15));
+  if (pleated) art.add(foldedSkirt([[width - .002, hem + .020], [width - .003, hem + .026]], true, .002), seam(color));
+  art.add(foldedSkirt([[.191, .009], [.192, .025], [.190, .040]], pleated, .001), seam(color));
   return { art, hem };
 }
 
@@ -792,14 +868,17 @@ function hatArt(style: WornHeadwear, cloth: string, accent: string) {
   } else if (style === "bigouden-coif" || style === "lace-coif") {
     const high = style === "bigouden-coif";
     const cut: Profile = high
-      ? [[.151, .282], [.185, .286], [.188, .325], [.148, .371], [.129, .462], [.128, .546], [.117, .557], [.086, .555], [0, .55]]
+      ? [[.151, .282], [.185, .286], [.190, .307], [.185, .329], [.148, .371], [.123, .448], [.119, .539], [.124, .553], [.118, .566], [.086, .565], [0, .559]]
       : [[.16, .257], [.185, .272], [.194, .307], [.173, .366], [.139, .395], [.073, .417], [0, .419]];
     art.add(turn(cut, depth), cloth);
     stripe(art, cut, depth, high ? .332 : .285, .025, thread);
-    const trim = tint(cloth, "#a48978", .28);
+    if (high) stripe(art, cut, depth, .546, .010, tint(cloth, cream, .24));
+    const trim = tint(cloth, "#a48978", .33);
     for (const side of sides) {
-      art.sweep([[side * .120, .32, -.098], [side * .155, .218, -.105], [side * .182, .121, -.073], [side * .152, high ? .063 : .101, -.059]], [.013, .016, .013, .006], cloth, 8);
-      if (!high) art.ball([side * .133, .242, -.112], .067, cloth, [.90, .90, .49]);
+      const ribbon: CharacterPoint[] = [[side * .120, .32, -.098], [side * .155, .218, -.105], [side * .174, .121, -.081], [side * .150, high ? .054 : .101, -.060]];
+      art.sweep(ribbon, [.012, .015, .013, .006], cloth, 8);
+      if (high) art.sweep(ribbon.map(([x, y, z]) => [x + side * .008, y, z + .008]), [.0012, .0018, .0018, .001], thread, 5);
+      else art.ball([side * .133, .242, -.112], .067, cloth, [.90, .90, .49]);
     }
     for (const [row, y] of (high ? [.391, .438, .477, .516] : [.305, .343, .370]).entries()) {
       for (const [column, angle] of [-.79, -.38, 0, .38, .79].entries()) {
@@ -809,6 +888,10 @@ function hatArt(style: WornHeadwear, cloth: string, accent: string) {
         art.add(eyelet, trim, point);
         if ((column + row) % 3 === 0) art.ball([point[0] + .007, point[1] + .004, point[2]], .0036, thread, [.76, 1.02, .57]);
       }
+    }
+    if (high) for (const side of sides) {
+      const edgework = [.372, .398, .425, .452, .478, .506, .534].map((y, i) => hatPoint(cut, depth, y, side * (1.12 + Math.sin(i * 1.8) * .10), .0018));
+      art.sweep(edgework, [.0012, .0017, .0017, .0017, .0017, .0017, .0012], trim, 5);
     }
   } else {
     const kerchief: Profile = [[.157, .24], [.177, .253], [.195, .28], [.196, .321], [.164, .378], [.097, .398], [0, .404]];
@@ -845,22 +928,25 @@ function fitHeadwear(mesh: THREE.Mesh, style: WornHeadwear, face: ChanvrierAppea
 
 export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
   const parts = new Map<string, { key: string; meshes: THREE.Mesh[] }>();
-  const hems = new Map<THREE.Mesh, { points: number[]; source: Float32Array; normals: Float32Array; fitted: boolean; flare: number; forward: number }>();
+  const hems = new Map<THREE.Mesh, { points: number[]; source: Float32Array; normals: Float32Array; fitted: boolean; followStride: boolean; flare: number; forward: number; leftStep: number; rightStep: number }>();
   let skirt: { mesh: THREE.Mesh; hem: number; rest: Float32Array } | undefined;
   let arms: LimbSurface[] = [], legs: LimbSurface[] = [], thighPanels: THREE.Mesh[] = [], waist: THREE.Mesh | undefined;
   const left = new THREE.Vector3(), right = new THREE.Vector3(), inverseTorso = new THREE.Matrix4();
   const kneePoint = new THREE.Vector3(), anklePoint = new THREE.Vector3(), acrossBody = new THREE.Vector3(1, 0, 0);
   const hemNormal = new THREE.Vector3();
+  const knitMeshes = new Map<THREE.Mesh, ReturnType<typeof prepareKnittedFabric>>();
+  let knitMaterial: THREE.Material | undefined;
 
   function clear(meshes: THREE.Mesh[]) {
     for (const mesh of meshes) {
       hems.delete(mesh);
+      knitMeshes.delete(mesh);
       mesh.removeFromParent();
       mesh.geometry.dispose();
     }
   }
 
-  function fitHem(mesh: THREE.Mesh, fitted: boolean) {
+  function fitHem(mesh: THREE.Mesh, fitted: boolean, followStride = false) {
     const geometry = mesh.geometry;
     const position = geometry.getAttribute("position") as THREE.BufferAttribute;
     const normal = geometry.getAttribute("normal") as THREE.BufferAttribute;
@@ -872,7 +958,7 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
     geometry.computeBoundingBox();
     geometry.boundingBox!.expandByVector(new THREE.Vector3(.085, .065, .12));
     geometry.boundingSphere = geometry.boundingBox!.getBoundingSphere(new THREE.Sphere());
-    hems.set(mesh, { points, source: Float32Array.from(position.array), normals: Float32Array.from(normal.array), fitted, flare: NaN, forward: NaN });
+    hems.set(mesh, { points, source: Float32Array.from(position.array), normals: Float32Array.from(normal.array), fitted, followStride, flare: NaN, forward: NaN, leftStep: NaN, rightStep: NaN });
     return mesh;
   }
 
@@ -890,13 +976,21 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
   function update(look: ChanvrierAppearance, colors: Colors) {
     const closedCoat = look.jacket === "raincoat" || look.jacket === "kabig";
     const layered = look.jacket !== "none";
-    replace("torso", [look.top, colors.top, look.top === "overalls" ? colors.bottom : "", colors.accent, closedCoat ? "closed" : layered ? "layered" : "single"], () => {
+    const knitted = look.top === "mariniere";
+    const sleeveKnit = knitted && (!layered || look.jacket === "wool-vest");
+    if (knitted) knitMaterial ??= borrowKnittedFabric();
+    replace("torso", [look.top, knitted ? "" : colors.top, look.top === "overalls" ? colors.bottom : "", knitted ? "" : colors.accent, closedCoat ? "closed" : layered ? "layered" : "single"], () => {
       const art = new Assembly();
-      topArt(art, look, colors);
-      const mesh = art.finish(`haut-${look.top}`, rig.torso, material);
+      if (knitted) mariniereArt(art);
+      else topArt(art, look, colors);
+      const mesh = art.finish(`haut-${look.top}`, rig.torso, knitted ? knitMaterial! : material);
+      if (knitted) {
+        const positions = mesh.geometry.getAttribute("position");
+        knitMeshes.set(mesh, prepareKnittedFabric(mesh, i => [positions.getX(i), positions.getY(i), positions.getZ(i)]));
+      }
       if (closedCoat) mesh.scale.set(.925, 1, .83);
       else if (layered) mesh.scale.set(.972, 1, .955);
-      return [fitHem(mesh, layered)];
+      return [fitHem(mesh, layered, knitted)];
     });
     replace("jacket", [look.jacket, colors.jacket, colors.accent], () => {
       if (look.jacket === "none") return [];
@@ -910,10 +1004,18 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
       accessoryArt(art, look, colors.accent);
       return [fitHem(art.finish(`accessoire-${look.accessory}`, rig.torso, material), look.jacket !== "none")];
     });
-    replace("arms", [look.top, look.jacket, colors.skin, colors.top, colors.jacket, look.jacket === "kabig" ? colors.accent : ""], () => {
-      const rings = armRings(look.top, look.jacket, colors);
+    replace("arms", [look.top, look.jacket, sleeveKnit ? "" : colors.skin, sleeveKnit ? "" : colors.top, sleeveKnit ? "" : colors.jacket, look.jacket === "kabig" ? colors.accent : ""], () => {
+      const rings = sleeveKnit ? mariniereArmRings() : armRings(look, colors);
       const coveredElbow = look.jacket !== "none" && look.jacket !== "wool-vest" || !["tee", "overalls", "apron", "sailor-blouse"].includes(look.top);
-      arms = sides.map(side => createCharacterLimbSurface(rig.shoulders, material, `chanvrier-arm-${side}`, rings, 14, .23, coveredElbow));
+      const segments = 14;
+      arms = sides.map(side => createCharacterLimbSurface(rig.shoulders, sleeveKnit ? knitMaterial! : material, `chanvrier-arm-${side}`, rings, segments, .23, coveredElbow));
+      if (sleeveKnit) for (const { mesh } of arms) {
+        knitMeshes.set(mesh, prepareKnittedFabric(mesh, i => {
+          const angle = i % segments / segments * TAU;
+          const { at, width, depth } = rings[Math.floor(i / segments)];
+          return [width * Math.cos(angle), -at * .205, (depth ?? width) * Math.sin(angle)];
+        }));
+      }
       return arms.map(({ mesh }) => mesh);
     });
     replace("legs", [look.bottom, colors.bottom, colors.skin], () => {
@@ -944,7 +1046,7 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
           trouserDetails(details, cut, look.bottom, colors, side);
           const detail = details.finish("stitching-and-pockets", rig.hips[i], material);
           meshes.push(detail);
-          if (look.bottom === "shorts" || look.bottom === "sailor-trousers") thighPanels.push(detail);
+          if (look.bottom === "shorts" || look.bottom === "sailor-trousers" || look.bottom === "jeans") thighPanels.push(detail);
           if (look.bottom === "bragou-braz") {
             const buttons = new Assembly();
             for (const at of [1.32, 1.46, 1.60, 1.74]) {
@@ -965,6 +1067,13 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
       fitHeadwear(mesh, look.headwear, look.face);
       return [mesh];
     });
+    if (knitted) {
+      const palette = [colors.top, colors.stripe, tint(colors.top, ink, .12), colors.skin];
+      for (const paint of knitMeshes.values()) paint(palette);
+    } else if (knitMaterial) {
+      releaseKnittedFabric();
+      knitMaterial = undefined;
+    }
   }
 
   function poseArm(index: number, shoulder: THREE.Vector3, elbow: THREE.Vector3, wrist: THREE.Vector3, width: number) {
@@ -989,12 +1098,18 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
     const build = rig.hips[0].scale.x / rig.torso.scale.x;
     const pitch = rig.shoulders.rotation.x;
     const lean = Math.sin(pitch) * THREE.MathUtils.smoothstep(Math.abs(pitch), .012, .028);
+    const forwardStep = (i: number) => Math.max(0, -Math.sin(rig.hips[i].rotation.x)) * .145;
+    const leftStep = forwardStep(0), rightStep = forwardStep(1);
     for (const [mesh, hem] of hems) {
       const flare = THREE.MathUtils.clamp((hem.fitted ? .095 : .205) + (build - 1) * .28, .07, .30);
       const forward = lean * .176 / (depth * mesh.scale.z);
-      if (flare === hem.flare && forward === hem.forward) continue;
+      const left = hem.followStride ? leftStep / (depth * mesh.scale.z) : 0;
+      const right = hem.followStride ? rightStep / (depth * mesh.scale.z) : 0;
+      if (flare === hem.flare && forward === hem.forward && left === hem.leftStep && right === hem.rightStep) continue;
       hem.flare = flare;
       hem.forward = forward;
+      hem.leftStep = left;
+      hem.rightStep = right;
       const position = mesh.geometry.getAttribute("position"), normal = mesh.geometry.getAttribute("normal");
       const room = hem.fitted ? .033 : .15;
       const lift = Math.max(0, lean) * (hem.fitted ? .072 : .138);
@@ -1003,9 +1118,11 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
         const t = THREE.MathUtils.clamp((y + .112) / .252, 0, 1);
         const weight = 1 - t * t * (3 - 2 * t), slope = -6 * t * (1 - t) / .252;
         const width = 1 + flare * weight, front = 1 + room * weight;
-        position.setXYZ(i, x * width, y + lift * weight, z * front + forward * weight);
+        const stride = (x < 0 ? left : right) * THREE.MathUtils.smoothstep(Math.abs(x), .02, .132) * THREE.MathUtils.smoothstep(z, .005, .105);
+        // The front hem clears the advancing hip on each side without stretching the stripes.
+        position.setXYZ(i, x * width, y + lift * weight, z * front + (forward + stride) * weight);
         const nx = hem.normals[offset] / width, nz = hem.normals[offset + 2] / front;
-        const ny = (hem.normals[offset + 1] - slope * (nx * x * flare + nz * (z * room + forward))) / (1 + lift * slope);
+        const ny = (hem.normals[offset + 1] - slope * (nx * x * flare + nz * (z * room + forward + stride))) / (1 + lift * slope);
         hemNormal.set(nx, ny, nz).normalize();
         normal.setXYZ(i, hemNormal.x, hemNormal.y, hemNormal.z);
       }
@@ -1041,6 +1158,8 @@ export function createChanvrierWardrobe(rig: Rig, material: THREE.Material) {
     for (const { meshes } of parts.values()) clear(meshes);
     parts.clear();
     skirt = undefined;
+    if (knitMaterial) releaseKnittedFabric();
+    knitMaterial = undefined;
   }
 
   return { update, poseArm, poseLowerBody, dispose };

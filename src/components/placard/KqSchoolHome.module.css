@@ -10,6 +10,7 @@
 .home .sign:first-child { --game-control-art: var(--game-control-teal,url('/placard/ui/control-teal-v2.webp')); color: #fff8e7; }
 .home .sign:focus-visible, .home .sign:hover { --game-control-art: var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); color: var(--game-ink,#172923); }
 .sign svg { flex: 0 0 auto; }
+.direction { display: none; }
 .sign strong, .sign small { display: block; }
 .sign strong { font: 850 clamp(1.05rem,2.25vw,1.65rem)/1.1 var(--font-display),sans-serif; }
 .sign small { margin-top: 3px; font-size: .78rem; line-height: 1.25; font-weight: 550; }
@@ -17,9 +18,9 @@
 .home:not(:has(canvas[data-live="true"])) .motion { display: none; }
 @media (prefers-reduced-motion: reduce) { .home .motion { display: none; } }
 @media (max-width: 580px) {
-  .signs { margin: 3px 0 0; gap: 3px; }
-  .home .sign { flex-direction: column; gap: 3px; padding: 7px 2px; text-align: center; }
-  .sign small { display: none; }
-  .sign svg { width: 19px; height: 19px; }
-  .sign strong { font-size: clamp(.85rem,3.6vw,1.15rem); }
+  .signs { grid-template-columns: 1fr; margin: 10px 0 0; gap: 6px; }
+  .signs .sign { display: grid; grid-template-columns: 28px minmax(0,1fr) 20px; justify-items: start; gap: 12px; padding: 10px 18px; }
+  .sign strong { font-size: 1.2rem; }
+  .sign small { font-size: .85rem; }
+  .direction { display: block; }
 }
