@@ -1,0 +1,233 @@
+{
+  "repository": "https://github.com/coreyhaines31/marketingskills",
+  "revision": "8fd2fcade2fd6629026e9dfe6d133b55b36968b9",
+  "tree": "7bfa838de8b78874cdeea23f6a22a0ce5d1a4032",
+  "reviewDate": "2026-11-26",
+  "files": [
+    {
+      "sourcePath": "LICENSE",
+      "gitBlob": "7c48dd638a9ebed49a8ef0c0c4eea90105381cdf",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    {
+      "sourcePath": "skills/ai-seo/SKILL.md",
+      "gitBlob": "2869ca89116540ad34437c90888a9322553dc69d",
+      "sha256": "1eb9e2c4d35adc3b98e10703c03909a92d2e45244095287f88e023ce7c307024"
+    },
+    {
+      "sourcePath": "skills/ai-seo/evals/evals.json",
+      "gitBlob": "9b5bc04783892d41ae41c9c348aec3ac4735274e",
+      "sha256": "3824a16a8a8179ac69d40df5148560ad57421b05433b2c78fd191c7ea0a013b6"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/agent-defaults.md",
+      "gitBlob": "c2c3294a2d7ecc1f4b4d97bdc78c8d40ac9bd25e",
+      "sha256": "4f009f323b381553961914bf7d67755ee3c178dd10f1570f61fe306cd0054b21"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/agent-readiness.md",
+      "gitBlob": "a2c16ce9c1afc89bd120674a5fd3d6a7527fe69e",
+      "sha256": "2d2d3b47c4efa6151bd463f8bdbd346101d7e9606946d7479f97aeb694cc7561"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/ai-attribution.md",
+      "gitBlob": "bb66efa357638f9daf8841e7347202fea322ea38",
+      "sha256": "accaf004e50fd92d16e5e1b57ce0aa5f5c0f88d1ba7bb2ce6939de29fe3e1728"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/answer-accuracy.md",
+      "gitBlob": "2db36301fdf802eaad59e31bcaf400088cbab1c9",
+      "sha256": "9c9115a720c6891fc7e0122d465ed38643170b026fa461de5971feb642f0da57"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/citations-vs-recommendations.md",
+      "gitBlob": "3bb23b55c68e565849c2e7cd4c0ffa4a8b571c2b",
+      "sha256": "90adc950592b24d8ebd46460ef7ada6a2c4df0f4e4752903c93341cbe182b919"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/content-patterns.md",
+      "gitBlob": "602f00e758645ab3bd62c65463f57eec99e7ece6",
+      "sha256": "07ac95563bf96fdefc2dc0513908c8cf0241dfbf4d90ce61f9b4fbe8ed628d65"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/content-types.md",
+      "gitBlob": "114f58e3cfad8643764c0d86b0122316b2ca3d91",
+      "sha256": "2323104990cb3057f3ce135c2b7bac71e5369992d5aeb24cec009c8f6d841d0b"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/format-volatility.md",
+      "gitBlob": "389428e4391a5265ceb63cde9ba59e63e91778bd",
+      "sha256": "235858ee4d820dd0b89d3c7ffc65f4f59c7904f63feef7d2fff78cc6818caddf"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/linkedin-ai-citations.md",
+      "gitBlob": "b4309ac54ebb364a9738ced971385aaf2147d145",
+      "sha256": "2bd191703b543fc5f3ae36f5e367ed6d5504ad38e7446797cd3c5fe23ababd4b"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/multilingual-and-commerce.md",
+      "gitBlob": "d82a7ce5422bafd24b7073aa006e7239d8f2f974",
+      "sha256": "5d65db4b85c9c257f4d052a9b3b65bb2f72af140076e2b2dc4cf7dd34d111057"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/okf.md",
+      "gitBlob": "e99bc7ca1b1417fd0643c9e772b75b227a9af1da",
+      "sha256": "4abcab5b8ee90b63c5d09c98387a8ec3cdb8f5df33e75d3b4b91eb817283bfd8"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/platform-ranking-factors.md",
+      "gitBlob": "9209d1484f65205ba414add1a7a548bdd3099126",
+      "sha256": "82951391c75008b01d6025e591d8141f222cbb578054727f685cfb8178e5e49a"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/positioning-and-consensus.md",
+      "gitBlob": "cb8916e78f5fd664dae3c097effff0f60b82ef74",
+      "sha256": "b7618247e57a4560c3785155c34de77adc232784b7dd91b2c44a77a73617b9b4"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/prompt-portfolio.md",
+      "gitBlob": "2d5d67c16bbc2ba12fcd6d4e2916c63e54fdb9a7",
+      "sha256": "8891f4e747d4eb17a4a2f1d075a081d4261a6084eaa1e9fdb862ed09ebb505c0"
+    },
+    {
+      "sourcePath": "skills/ai-seo/references/youtube-ai-citations.md",
+      "gitBlob": "d8c526ff1426cdbe307f5deb43e138c65ccbc748",
+      "sha256": "eee24cd9f377db5f59933c775a740f5ff7ece9f238b051157ba72531d9507a99"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/SKILL.md",
+      "gitBlob": "245ff38a155371c41cce935198b0d4d2e80d5082",
+      "sha256": "a6733b6908deb4e0095fdf7cecb535f64d8fcf8b322574945ce85ece97897611"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/evals/evals.json",
+      "gitBlob": "36e7d1a04da57470a8a65cf60c4f6bfecdea5b35",
+      "sha256": "b077b28ec346b614dfe6fd828a4cd8df10134f221e49743fece6765da0fe99a4"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/loop-catalog.md",
+      "gitBlob": "f7fe4e98ddc3183916d3719621aec8e28f89ab61",
+      "sha256": "a5806f0fd20c8a5a9a0692f7076fdf5b2dd1b865b8f61a84b51b18f2b9a231a7"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/loop-guardrails.md",
+      "gitBlob": "9c26ebc920ad9cafe2ae6160799a4ff9c0dddb61",
+      "sha256": "a93cdb67d28773d72e789c937a26f3062129c8a0076018ac24269d52e7a31e46"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/loop-orchestration.md",
+      "gitBlob": "c1170e965c5c1cbfa8623948fce73321066c9026",
+      "sha256": "8ef60ebde4fec8ef4f94fb6d087ddac5e311c0c3c298015f681382fe735ca1d6"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/loop-state.md",
+      "gitBlob": "d41876f6e9a766d34fade5853086666769597d8a",
+      "sha256": "4ffe822756019407babc4a3cb337be160362ad88b41919cb70d1d039a76e2c15"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/loop-template.md",
+      "gitBlob": "757e22db0f776dde3e611692b8597ed9261561b2",
+      "sha256": "695fde57b9b0735e49b5fc718b0e8eb726808c08b19bea89056f8913cf1bff26"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/outbound-operator.md",
+      "gitBlob": "64483f4e041d99488fce202ebaa6c82d127a0690",
+      "sha256": "f2a455ad0d493c01b1c4cc3fca83aa85762529c32f6fdd8dcd8a64b08bccd593"
+    },
+    {
+      "sourcePath": "skills/marketing-loops/references/seo-operator.md",
+      "gitBlob": "442c17e2da5bf0a79460a04dd6daabd710a3e5ee",
+      "sha256": "5b3b6c3bbc2af2f07d31bc23eefe2558a0b3aca23c8f88f156a4cff14d2f5a45"
+    },
+    {
+      "sourcePath": "skills/schema/SKILL.md",
+      "gitBlob": "a152e5e59496740caf18ba0f0c74f4ef0e383c39",
+      "sha256": "673fa46bad2f2d4649955c473b11778bd2d258317662df670b31414e28725a84"
+    },
+    {
+      "sourcePath": "skills/schema/evals/evals.json",
+      "gitBlob": "c679cb253c26f81166b068b4e52cf04acd0cb093",
+      "sha256": "6a194556545e53876ca8c7a53f18bf012f8db9b23e8fd2adb1c3f966c38cfbab"
+    },
+    {
+      "sourcePath": "skills/schema/references/schema-examples.md",
+      "gitBlob": "014b5292ce46184a5cde223d3a528b3e48397b8f",
+      "sha256": "9b093bce816fac8494c8ccfd588eeb0c00e1308fe99bb46388ff222664ed94be"
+    },
+    {
+      "sourcePath": "skills/seo-audit/SKILL.md",
+      "gitBlob": "8e969c81b41f5ebc820de2ecd51a7c8ab85847c0",
+      "sha256": "91bad6e5a85a8fef21c8d03876978e4e4e15c23a0785bb7471100d9f3a4beea8"
+    },
+    {
+      "sourcePath": "skills/seo-audit/evals/evals.json",
+      "gitBlob": "d569ae70cf4746f7a27e7808abbaea4878c27fd7",
+      "sha256": "1524e98916ab53abb894fb80827a8d0e1815041adca2ee2023b89916d68f22b2"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/ai-writing-detection.md",
+      "gitBlob": "cb67ece4135f4153575bbbdfbf722364babff61d",
+      "sha256": "f1e273f56ce7e2215ff218bf903680ddcec0fd026ab90c3ebfb3439ed0edfaa4"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/international-seo.md",
+      "gitBlob": "35a7ad2aeadcbef2541563b0077d5f717e4b147d",
+      "sha256": "0603022cca968acf7889fc224221aa0e70955ba64355bc18b06f7e86b32f45e5"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/local-seo-pages-and-measurement.md",
+      "gitBlob": "d49f0443e091c70e4778a4e33030a33d18a361a4",
+      "sha256": "20607ef91c4b8b37346f42130a6f51ed4ce64dc2731b6e1328b5b14f16917fe3"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/local-seo-profile-and-citations.md",
+      "gitBlob": "d34b7e043cb7c4d2da114f04e986bd476a22d0c6",
+      "sha256": "83b1b63eb6083e7aab1f56c4928335ea2a235e837861a9e9e8043b6af162a1f3"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/local-seo.md",
+      "gitBlob": "c2636ada98809d6ed8db588040817adc332add5e",
+      "sha256": "d2666d9c225bc36f9737ce612894abbe7e263b5974e2db7c1efc50f6010bb376"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/rankings-push.md",
+      "gitBlob": "3d074afe1278ffcb34407b3fa37f8082bad6efab",
+      "sha256": "1b131c2f93a32d2c990aa7d4e7df8f445d292bfedba3822d6abcfcfdfe203ec8"
+    },
+    {
+      "sourcePath": "skills/seo-audit/references/title-tags.md",
+      "gitBlob": "5d5eac8002179ac5288f3b4bbd2aa35b3a409a42",
+      "sha256": "c40b3c6af3600ca15670db8eb81000c7ca6fa25265a6550ccc630f53db3fcf51"
+    },
+    {
+      "sourcePath": "skills/site-architecture/SKILL.md",
+      "gitBlob": "870d187c42ab3c5d748fcae46284583e62ad0dfe",
+      "sha256": "0c71871aea12689012b4d85aaaf24a4752d3f0e985603c4992d5c0bf0fce57ea"
+    },
+    {
+      "sourcePath": "skills/site-architecture/evals/evals.json",
+      "gitBlob": "78d764c21ecfff56bef876f42f4b9ae79eda3823",
+      "sha256": "ed6f68ba0f8355efe26d89eae51d64c381d644cc7e942e80539a660cb52c9b02"
+    },
+    {
+      "sourcePath": "skills/site-architecture/references/mermaid-templates.md",
+      "gitBlob": "9f911083427ea01298569b1173ae24474c298015",
+      "sha256": "362190c7d3f419d5f445170f1fb17beecc163937d2068922893b7a69eeb25f0f"
+    },
+    {
+      "sourcePath": "skills/site-architecture/references/navigation-patterns.md",
+      "gitBlob": "b8e69acc4a0f73335afc94db11e199e377d006ab",
+      "sha256": "2efa772709b753e33d5018c007147ca30aaa95a04b04dc0df6227ea5a053078b"
+    },
+    {
+      "sourcePath": "skills/site-architecture/references/platforms-and-migration.md",
+      "gitBlob": "56f582f3142179e92f65d2d35a15dba49d1c3fca",
+      "sha256": "391f12c5994e1e577db75cd6044e038a276f14eda1c2ebc7f6a92293fbc59448"
+    },
+    {
+      "sourcePath": "skills/site-architecture/references/site-type-templates.md",
+      "gitBlob": "6abe73efdcbb42e9d000c35d5c7e9987b06bd000",
+      "sha256": "3c3cd7ce5e31c502dc071baf82bb58cb30f5edf4a2fd8ca052fbc8f3777db140"
+    }
+  ]
+}

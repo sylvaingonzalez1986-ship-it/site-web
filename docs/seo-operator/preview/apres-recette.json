@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-11-26T16:34:15.619Z",
+  "phase": "apres",
+  "url": "http://127.0.0.1:3191/analyse-laboratoire-cbd",
+  "httpStatus": 200,
+  "chrome": "Chrome/157.0.8103.79",
+  "fixture": "local public catalogue with no products",
+  "screenshotStyle": "hide developer controls only",
+  "source": {
+    "title": "Analyse laboratoire CBD : lire un certificat (COA) | Les Chanvriers Bretons",
+    "h1": [
+      "Comment lire une analyse laboratoire CBD ?"
+    ],
+    "canonical": [
+      "https://www.leschanvriersbretons.com/analyse-laboratoire-cbd"
+    ],
+    "description": [
+      "Méthode pratique pour lire une analyse CBD : lot, cannabinoïdes, unités, LOD, LOQ, contaminants et portée d'accréditation du laboratoire."
+    ],
+    "robots": [
+      "index, follow"
+    ],
+    "schemas": [
+      "OnlineStore",
+      "WebSite",
+      "BreadcrumbList",
+      "Article",
+      "FAQPage"
+    ],
+    "heading": [
+      "Où trouver le rapport d’analyse ?"
+    ],
+    "links": [
+      {
+        "href": "/boutique/fleurs-cbd",
+        "label": "catalogue des fleurs CBD"
+      },
+      {
+        "href": "/cbd-breton",
+        "label": "guide sur l’origine d’une fleur bretonne"
+      }
+    ],
+    "chapterOrder": [
+      "La réponse courte",
+      "Où trouver le rapport d’analyse ?",
+      "Pourquoi rapprocher l'étiquette et l'analyse ?",
+      "1. Identifier le produit, le lot et le rapport",
+      "2. Comprendre le profil des cannabinoïdes",
+      "3. Lire les unités, LOD, LOQ et ND",
+      "4. Vérifier ce qui a réellement été recherché",
+      "5. Vérifier le laboratoire et sa portée",
+      "Checklist avant de retenir une analyse CBD",
+      "Questions fréquentes",
+      "Sources et suite de lecture"
+    ]
+  },
+  "viewports": [
+    {
+      "requestedWidth": 320,
+      "emulatedTouch": true,
+      "screenshot": "apres-320.webp",
+      "width": 320,
+      "height": 844,
+      "scrollWidth": 320,
+      "chapter": "Où trouver le rapport d’analyse ?",
+      "chapterWithinViewport": true,
+      "newSectionCount": 1,
+      "linkDecoration": [
+        "underline",
+        "underline"
+      ]
+    },
+    {
+      "requestedWidth": 390,
+      "emulatedTouch": true,
+      "screenshot": "apres-390.webp",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "chapter": "Où trouver le rapport d’analyse ?",
+      "chapterWithinViewport": true,
+      "newSectionCount": 1,
+      "linkDecoration": [
+        "underline",
+        "underline"
+      ]
+    },
+    {
+      "requestedWidth": 1440,
+      "emulatedTouch": false,
+      "screenshot": "apres-1440.webp",
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "chapter": "Où trouver le rapport d’analyse ?",
+      "chapterWithinViewport": true,
+      "newSectionCount": 1,
+      "linkDecoration": [
+        "underline",
+        "underline"
+      ]
+    }
+  ],
+  "navigation": [
+    {
+      "gesture": "toucher puis confirmation de majorité si demandée",
+      "href": "/boutique/fleurs-cbd",
+      "initialDestination": "/boutique/fleurs-cbd",
+      "heading": "Fleurs CBD"
+    },
+    {
+      "gesture": "clavier Tab puis Entrée",
+      "href": "/cbd-breton",
+      "focusVisible": true,
+      "heading": "CBD breton : quelle origine réelle ?"
+    }
+  ]
+}

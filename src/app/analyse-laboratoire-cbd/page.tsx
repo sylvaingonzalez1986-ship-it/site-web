@@ -165,7 +165,7 @@ export default function CbdAnalysisGuidePage() {
             <ol className="mt-4 max-w-4xl list-decimal space-y-3 pl-5 leading-relaxed text-charcoal">
               <li>
                 Ouvrez la fiche d’une fleur depuis le{" "}
-                <Link href="/boutique/fleurs-cbd" className="font-bold underline underline-offset-4 hover:text-ink">
+                <Link href="/boutique/fleurs-cbd" className="font-bold underline! underline-offset-4 hover:text-ink">
                   catalogue des fleurs CBD
                 </Link>
                 . Repérez le nom du producteur affiché sur la fiche.
@@ -181,7 +181,7 @@ export default function CbdAnalysisGuidePage() {
             </ol>
             <p className="mt-4 leading-relaxed text-charcoal">
               Pour vérifier le lieu de culture indiqué, consultez le{" "}
-              <Link href="/cbd-breton" className="font-bold underline underline-offset-4 hover:text-ink">
+              <Link href="/cbd-breton" className="font-bold underline! underline-offset-4 hover:text-ink">
                 guide sur l’origine d’une fleur bretonne
               </Link>
               .

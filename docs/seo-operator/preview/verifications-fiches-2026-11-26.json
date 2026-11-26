@@ -1,0 +1,29 @@
+{
+  "collectedAt": "2026-11-26",
+  "userAgent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+  "method": "GET direct, texte hors scripts et balises",
+  "examples": [
+    {
+      "path": "/boutique/fleurs-cbd/product-1773870065552",
+      "status": 200,
+      "visible": [
+        "panier📄 Voir l'analyse laboratoireComment lire ce document ?← Retour Fleurs CBDToute la boutiqueComparer les",
+        "s CBD — La Vaca Del DiabloAccueil/Le Marché/Fleurs CBD/Sour RNAFleurs CBD · Sélection du MarchéSour RNAProdu"
+      ]
+    },
+    {
+      "path": "/boutique/fleurs-cbd/product-1775333841673",
+      "status": 200,
+      "visible": [
+        "u panierAucune analyse de laboratoire publiée pour cette référence.← Retour Fleurs CBDToute la boutiqueCompa"
+      ]
+    },
+    {
+      "path": "/boutique/e-liquide-cbd",
+      "status": 200,
+      "visible": [
+        "tégorie pour le moment.Comment choisir un e-liquide CBD ?Consultez la concentration en CBD, la liste des ing"
+      ]
+    }
+  ]
+}
