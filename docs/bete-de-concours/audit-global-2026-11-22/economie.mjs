@@ -102,12 +102,12 @@ try {
     let shopRecruitment = 0;
     let shopPartners = 0;
     const hoursByDay = new Map();
-    const useHours = (at, hours) => {
+    const recordHours = (at, hours) => {
       const key = Math.floor((at - ORIGIN) / business.KQ_GAME_DAY_MS);
       hoursByDay.set(key, (hoursByDay.get(key) ?? 0) + hours);
     };
-    useHours(now, 0.5); // achat du plan; dans le scénario développé, deux enregistrements
-    if (scenario.plan.zones.length > 1) useHours(now, 0.5);
+    recordHours(now, 0.5); // achat du plan; dans le scénario développé, deux enregistrements
+    if (scenario.plan.zones.length > 1) recordHours(now, 0.5);
     const plan = structuredClone(scenario.plan);
     for (const [index, seed] of sequence.entries()) {
       // NetPosition réserve déjà toutes les factures et la TVA. SQL peut proposer
@@ -117,7 +117,7 @@ try {
       const available = scenario.album.filter(code => rotation.getKqBuddieRotationRemaining(code, recentBuddies) === 0);
       assert.ok(available.length >= plan.zones.length);
       plan.zones.forEach((zone, zoneIndex) => { zone.buddieCode = available[zoneIndex]; });
-      useHours(now, .5); // sauvegarde des affectations
+      recordHours(now, .5); // sauvegarde des affectations
       const members = campaign.getKqCampaignParticipants(plan, index + 1, wear, null, 1)
         .map((member, zoneIndex) => ({ ...member, runId: `61000000-0000-4000-8000-${String(zoneIndex + 1).padStart(12, "0")}` }));
       const quoted = campaign.getKqCampaignTotals(members);
@@ -143,7 +143,7 @@ try {
           state = game.playKqCard(state, mainVerte.code);
         }
         state = game.rollKqDice(state);
-        useHours(now, .5);
+        recordHours(now, .5);
         stageHours += .5;
         let preview = game.previewKqResolution(state);
         if (preview.total < 2) for (const code of ["BOTTE-037", "BOTTE-006"]) {
@@ -193,7 +193,7 @@ try {
         const trimHours = Math.ceil(grams / trim.getKqStaffTrimRate(1, "manual") * 2) / 2;
         const trimmed = trim.getKqStaffSharedTrimQuote({ mode: "manual", level: 1, hours: trimHours });
         labor.trim += trimHours;
-        useHours(now, trimHours);
+        recordHours(now, trimHours);
         const totalUnits = Math.round(grams * 10);
         const storageLot = storage.createKqStorageLot({ flowerId: flower.id, harvestedAt: new Date(now).toISOString(),
           baseline: { varietyCode: member.buddieCode, juryScore: market.getKqJuryScoreFromStats(flower.stats),
@@ -218,7 +218,7 @@ try {
           originalUnits: totalUnits, repExact: 0, repRounded: 0 };
         const sales = [];
         labor.prepare += 1;
-        useHours(saleClock, 1);
+        recordHours(saleClock, 1);
         for (const channel of isOptimizer ? CHANNELS : ["wholesale"]) {
           if (!stock.remainingUnits) break;
           const wholesaleCapacity = 10000 + shopPartners * 2500;
@@ -247,7 +247,7 @@ try {
           roundVatCents += vat;
           ledger.collect(offer.payoutCents, vat, saleClock);
           labor.sell += .5;
-          useHours(saleClock, .5);
+          recordHours(saleClock, .5);
           sales.push({ channel, grams: offer.units / 10, unitCents: offer.unitCents, ttcCents: offer.payoutCents, vatCents: vat });
         }
         assert.equal(stock.remainingUnits, 0);

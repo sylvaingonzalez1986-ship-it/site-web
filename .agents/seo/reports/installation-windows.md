@@ -25,9 +25,11 @@ Ajouter `-Json` à `Report` pour le détail. Le prochain bilan mensuel indiquera
 
 ## Audience Vercel
 
-La tâche utilise aussi la session Vercel CLI locale pour rafraîchir les agrégats Web Analytics de production chaque semaine. Les périodes couvrent 28 jours, les 28 jours précédents et 90 jours, jusqu’au dernier jour UTC complet. La collecte lit les pages vues, les visiteurs estimés et les référents déclarés par le navigateur. Elle examine également les référents de moteur sur un échantillon d’URL suivies. Search Console, Bing Webmaster Tools et les ventes gardent leurs propres sources.
+La tâche utilise aussi la session Vercel CLI locale pour rafraîchir les agrégats Web Analytics de production chaque semaine. Les périodes couvrent 28 jours, les 28 jours précédents et 90 jours, jusqu’au dernier jour UTC complet. La collecte lit les pages vues, les visiteurs estimés et les référents déclarés par le navigateur. Elle examine également les référents de moteur sur un échantillon d’URL suivies. Search Console, Bing Webmaster Tools et les ventes gardent leurs propres sources. [Documentation de l’API Web Analytics](https://vercel.com/docs/analytics/web-analytics-api)
 
 Le dossier `state` conserve la collecte et ses tentatives dans `vercel-traffic.dpapi`, chiffré avec Windows DPAPI pour le compte courant. `Report -Cadence weekly` y ajoute le dernier relevé disponible. `VercelReport -Json` donne le détail en local et `VercelRefresh` permet un rattrapage manuel soumis au plafond hebdomadaire. Le brouillon Codex reçoit uniquement les preuves publiques du lot.
+
+Le 26 novembre 2026, la tâche a enregistré les trois périodes dans le fichier chiffré et terminé avec le code 0. Un second signal a laissé son empreinte inchangée.
 
 Pour garder cette source lors d’une actualisation de la tâche, ajouter `-EnableVercelTraffic -VercelRepositoryLink <chemin-vers-repo.json>` à la commande `-Action Install -EnableCodexDrafts`. Utiliser le fichier `.vercel/repo.json` du dépôt lié et conserver le même compte Windows pour restaurer son rapport. La connexion Vercel se vérifie depuis `Status` par l’état et la date de collecte. L’aperçu du candidat reste protégé par l’authentification Vercel.
 
