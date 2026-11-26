@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { getChanvrierAppearance, type ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { createGrowWorker } from "../placard/kq-grow-worker-model";
+import { createGrowWorker, type ChanvrierExpression } from "../placard/kq-grow-worker-model";
 import type { KqGrowRoomEvent } from "../placard/KqGrowRoomModel";
 import { paintChanvrierMesh } from "./chanvrier-paper-render";
 import { VILLAGE_LIGHT } from "../placard/world/village-lighting";
@@ -9,7 +9,7 @@ import { CHANVRIER_STUDIO_CAMERA_POSITION, CHANVRIER_STUDIO_LIGHT, frameChanvrie
 type View = "full" | "portrait";
 export type ChanvrierDetail = "eyes" | "eyebrows" | "nose" | "mouth" | "facialHair";
 export type ChanvrierStampPose = { distance: number; walking: number; gesture: KqGrowRoomEvent["gesture"] | null; phase: number; stage: number | null };
-type Snapshot = { profile: ChanvrierAvatarProfile; view: View; width: number; pose?: ChanvrierStampPose; detail?: ChanvrierDetail };
+type Snapshot = { profile: ChanvrierAvatarProfile; view: View; width: number; pose?: ChanvrierStampPose; detail?: ChanvrierDetail; expression?: ChanvrierExpression };
 
 function createStudio(profile: ChanvrierAvatarProfile, tools: boolean) {
   const light = tools ? VILLAGE_LIGHT : CHANVRIER_STUDIO_LIGHT;
@@ -69,7 +69,7 @@ function frameDetail(head: THREE.Object3D, detail: ChanvrierDetail, aspect: numb
   camera.updateProjectionMatrix();
 }
 
-function render({ profile, view, width, pose, detail }: Snapshot) {
+function render({ profile, view, width, pose, detail, expression }: Snapshot) {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(releaseStudio, 20_000);
   if (!renderer && !software) {
@@ -85,6 +85,7 @@ function render({ profile, view, width, pose, detail }: Snapshot) {
     studio = createStudio(profile, withTools);
   } else studio.model.updateAppearance(profile);
   const { model, scene } = studio;
+  model.setExpression(expression ?? "neutral");
   model.pose(pose?.distance ?? 0, pose?.walking ?? 0, pose?.gesture ?? null, pose?.phase ?? 0, pose?.stage ?? null);
   const height = detail ? Math.round(width / 1.48) : view === "full" ? Math.round(width * 1.48) : width;
   const head = model.object.getObjectByName("chanvrier-head")!;
@@ -123,8 +124,8 @@ function advance() {
     const job = jobs.shift()!;
     if (job.signal.aborted) { job.reject(job.signal.reason); continue; }
     try {
-      const { profile, view, width, pose, detail } = job.snapshot;
-      const key = JSON.stringify([profile.gender, profile.clothing, profile.skin, getChanvrierAppearance(profile), view, width, pose, detail]);
+      const { profile, view, width, pose, detail, expression } = job.snapshot;
+      const key = JSON.stringify([profile.gender, profile.clothing, profile.skin, getChanvrierAppearance(profile), view, width, pose, detail, expression ?? "neutral"]);
       let stamp = cache.get(key);
       if (stamp) cache.delete(key);
       else {

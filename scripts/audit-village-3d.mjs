@@ -10,7 +10,8 @@ import { auditCameraScene } from './fixtures/village-audit-camera.mjs';
 const lifecycle = process.argv.includes('--interiors-lifecycle');
 const interiors = process.argv.includes('--interiors') || process.argv.includes('--interiors-builder') || lifecycle;
 const studio = process.argv.includes('--avatar-studio');
-const root = process.cwd(), output = resolve(root, studio ? process.env.CHANVRIER_STUDIO_AUDIT_DIR ?? 'output/chanvrier-studio' : interiors ? 'output/village-interiors' : 'output/village-3d');
+const turntable = process.argv.includes('--avatar-turntable');
+const root = process.cwd(), output = resolve(root, turntable ? process.env.CHANVRIER_TURNTABLE_DIR ?? 'output/chanvrier-turntable' : studio ? process.env.CHANVRIER_STUDIO_AUDIT_DIR ?? 'output/chanvrier-studio' : interiors ? 'output/village-interiors' : 'output/village-3d');
 const preview = process.argv.includes('--preview');
 const life = process.argv.includes('--life');
 const npcs = process.argv.includes('--npcs');
@@ -46,6 +47,10 @@ if (calendar) modules.entry = `import React from 'react';import {createRoot} fro
   import {KqStaffRecoveryProvider} from '/src/components/placard/KqStaffRecoveryContext';
   const noop=()=>{};createRoot(document.getElementById('main-content')).render(<KqStaffRecoveryProvider ownerId="world-audit-player"><VillagePrototype onNavigate={noop} onOpenOverview={noop}><KqQuarterTeamAccess onAvailabilityChange={noop}/></VillagePrototype></KqStaffRecoveryProvider>);`;
 if (studio) modules.entry = (await import('./audit-chanvrier-studio.mjs')).entry;
+if (turntable) {
+  modules.entry = 'export {}';
+  modules['turntable-three'] = 'export * from "three"';
+}
 if (worldFinish || (characterQuality && process.argv.includes('--timing-only') && process.argv.includes('--human-finish'))) {
   const { entry } = await import('./audit-village-finish.mjs');
   modules.entry = entry;
@@ -109,6 +114,8 @@ if (preview) {
   try { await (await import('./audit-korrigan-market.mjs')).auditKorriganMarket(origin); } finally { await server.close(); }
 } else if (calendar) {
   try { await (await import('./audit-village-calendar.mjs')).auditVillageCalendar(origin, server); } finally { await server.close(); }
+} else if (turntable) {
+  try { await (await import('./audit-chanvrier-turntable.mjs')).run({ origin, output }); } finally { await server.close(); }
 } else if (studio) {
   try { await (await import('./audit-chanvrier-studio.mjs')).run({ origin, output }); } finally { await server.close(); }
 } else if (worldFinish) {

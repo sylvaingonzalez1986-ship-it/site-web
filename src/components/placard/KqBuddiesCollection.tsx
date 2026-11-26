@@ -15,6 +15,7 @@ import type { LotteryCollectionAlbum, LotteryCollectionCardSlot } from "@/types/
 import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import { clickedCollectionBackdrop, useKqCollectionDialog } from "./KqCollectionDialog";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqAlbumSearch, KqAlbumSummary } from "./KqAlbumTools";
 import styles from "./KqBotteCollection.module.css";
 
 type Ownership = "owned" | "all" | "duplicates" | "missing";
@@ -114,12 +115,15 @@ export function KqBuddiesCollection({ active, onOpenShop, initialBuddyCode, onLe
   const localBuddie = selected ? catalog.get(selected) : undefined;
   const detail: ReadableBuddie | undefined = cards.find(slot => slot.code === selected) ?? (localBuddie ? { ...localBuddie, ownedCount: null, burnableCount: null } : undefined);
   return <div className={styles.albumPanel} hidden={!active} role="tabpanel" id="collection-panel-buddies" aria-labelledby="collection-tab-buddies" data-collection-panel="buddies">
-    <section className={styles.progress} aria-label="État de tes Buddies"><div><strong>{slots ? `${owned} / ${cards.length}` : "…"}</strong><span>Buddies différents</span></div><progress value={owned} max={cards.length || 1} aria-label="Buddies différents possédés" /><div><strong>{slots ? duplicates : "…"}</strong><span>exemplaires en double</span></div></section>
+    <KqAlbumSummary label="Buddies différents" owned={slots ? owned : null} total={cards.length} quantity={slots ? duplicates : null} quantityLabel="Exemplaires en double" />
     <div className={styles.filters}>
       <nav className={styles.buddieFilters} aria-label="Afficher les Buddies">{([
         ["owned", "Mes Buddies", owned], ["all", "Album complet", cards.length], ["duplicates", "Doublons", duplicateCards], ["missing", "Manquants", cards.length - owned],
       ] as const).map(([key, label, count]) => <button type="button" key={key} disabled={!slots} data-buddie-collection-filter={key} aria-pressed={ownership === key} onClick={() => setOwnership(key)}>{label}<b>{slots ? count : "…"}</b></button>)}</nav>
-      <div><label className={styles.search}><Search size={17} aria-hidden="true" /><input aria-label="Rechercher un Buddie" placeholder="Nom, numéro…" value={query} onChange={event => setQuery(event.target.value)} /></label><label className={styles.utility}><span>Rareté</span><select aria-label="Filtrer les Buddies par rareté" value={rarity} onChange={event => setRarity(event.target.value)}><option value="all">Toutes les raretés</option>{RARITY_ORDER.map(key => <option key={key} value={key}>{rarityLabels[key]}</option>)}</select></label></div>
+      <KqAlbumSearch active={Boolean(query.trim()) || rarity !== "all"} matches={slots ? visible.length : null}>
+        <label className={styles.search}><Search size={17} aria-hidden /><input type="search" aria-label="Rechercher un Buddie" placeholder="Nom, numéro…" value={query} onChange={event => setQuery(event.target.value)} /></label>
+        <label className={styles.utility}><span>Rareté</span><select aria-label="Filtrer les Buddies par rareté" value={rarity} onChange={event => setRarity(event.target.value)}><option value="all">Toutes les raretés</option>{RARITY_ORDER.map(key => <option key={key} value={key}>{rarityLabels[key]}</option>)}</select></label>
+      </KqAlbumSearch>
     </div>
     <div className={styles.cardsArea} aria-busy={loading}>
       {loading ? <p role="status" className={styles.notice}>Ouverture de ton album Buddies…</p> : null}

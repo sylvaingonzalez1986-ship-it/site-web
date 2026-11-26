@@ -1,6 +1,15 @@
 .tiers.tiers { container-type: inline-size; margin: 18px 0; padding: 14px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .tiers.tiers header h4 { margin: 0; color: #172923; font-family: var(--font-display), Impact, sans-serif; font-size: 24px; }
 .tiers.tiers header p { font-size: 12px; line-height: 1.5; color: #536058; }
+.comparison { width: 100%; border-collapse: collapse; margin: 0 0 12px; color: #172923; font-size: clamp(11px, 3.6cqi, 14px); line-height: 1.25; font-variant-numeric: tabular-nums; }
+.comparison :is(th,td) { padding: 7px clamp(3px, 1.8cqi, 10px); border-bottom: 1px solid #304c3f45; text-align: right; }
+.comparison :is(th,td):first-child { padding-inline-start: 0; text-align: left; }
+.comparison :is(th,td):last-child { padding-inline-end: 0; }
+.comparison tbody :is(th,td) { vertical-align: top; }
+.comparison td { white-space: nowrap; }
+.comparison small { display: block; margin-top: 2px; color: #076c61; font: inherit; }
+.comparison tr[data-current-tier] th { color: #076c61; }
+.confirm:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; }
 .grid article { min-width: 0; display: flex; flex-direction: column; padding: 13px 11px; --tier: var(--game-surface-warm); --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .grid article[data-tier="standard"] { --tier: #a9ded3; }

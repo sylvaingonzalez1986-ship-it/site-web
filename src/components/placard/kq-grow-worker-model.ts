@@ -3,16 +3,36 @@ import { getChanvrierAppearance, getChanvrierColors, type ChanvrierAvatarProfile
 import { createChanvrierHand } from "./chanvrier-hand";
 import { createCharacterContactShadow } from "./world/village-contact-shadow";
 import { createChanvrierHead } from "./chanvrier-head";
+import type { ChanvrierExpression } from "./chanvrier-expression";
+import { recomputeLatheNormals } from "./chanvrier-geometry";
 import { createChanvrierWardrobe } from "./chanvrier-wardrobe";
 import { GROW_ROOM_VISITOR } from "./kq-grow-worker-profile";
 import { Assembly, characterDisposer, characterMaterial } from "./world/village-character-art";
 import { createVillageCharacterGait, VILLAGE_CHARACTER_STRIDE_PER_METER, type VillageGroundHeight } from "./world/village-character-gait";
 import type { KqGrowRoomEvent } from "./KqGrowRoomModel";
 
+export type { ChanvrierExpression } from "./chanvrier-expression";
+
 type Gesture = KqGrowRoomEvent["gesture"];
 const ink = "#2b3736";
 const turned = (points: number[][], depth = 1, segments = 18) =>
   new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), segments).scale(1, 1, depth);
+
+function neckShape() {
+  const rings = [[0, -.067], [.104, -.059], [.105, -.023], [.097, .017],
+    [.091, .046], [.093, .077], [.100, .108], [.093, .133], [0, .146]];
+  const profile = new THREE.CatmullRomCurve3(rings.map(([radius, y]) => new THREE.Vector3(radius, y, 0)));
+  const geometry = turned(profile.getPoints(26).map(point => [Math.max(0, point.x), point.y]), .90, 24);
+  const positions = geometry.getAttribute("position");
+  for (let i = 0; i < positions.count; i++) {
+    const y = positions.getY(i);
+    const upperNeck = THREE.MathUtils.smoothstep(y, .009, .101);
+    // Taper the upper neck into the skull, including when the nape is exposed.
+    positions.setZ(i, positions.getZ(i) * (1 - .24 * upperNeck) - .032 * upperNeck);
+  }
+  recomputeLatheNormals(geometry);
+  return geometry;
+}
 
 const bodyShapes = {
   regular: { chest: 1.05, height: .85, depth: 1.03, stance: 1, arm: 1, head: 1 },
@@ -155,6 +175,7 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
   const tools = options?.tools === false ? null : createGrowWorkerTools(object, hands[1], material);
   const armUp = new THREE.Vector3(0, 1, 0), shoulder = new THREE.Vector3(), elbowGuide = new THREE.Vector3();
   const upperArm = new THREE.Vector3(), elbow = new THREE.Vector3(), gripAxis = new THREE.Vector3();
+  const headRest = new THREE.Vector3(), headPivotOffset = new THREE.Vector3(0, -.047, -.050), rotatedPivot = new THREE.Vector3();
   let neckMesh: THREE.Mesh | undefined;
   let lastSkin: string | undefined;
   let shape = bodyShapes.regular;
@@ -169,7 +190,7 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
     neckAnchor.scale.x = silhouette.neck;
     const headSize = .72 * shape.head;
     // Keep the base of the skull joined to the neck as the head is scaled.
-    head.position.set(0, neckAnchor.position.y - .005 + .1283 * headSize, .018);
+    headRest.set(0, neckAnchor.position.y - .005 + .1283 * headSize, .018);
     head.scale.set(1.15 * headSize * silhouette.headWidth, 1.27 * headSize, 1.12 * headSize);
     for (let i = 0; i < legs.length; i++) {
       const side = i ? 1 : -1;
@@ -184,7 +205,7 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
       neckMesh?.removeFromParent();
       neckMesh?.geometry.dispose();
       const neck = new Assembly();
-      neck.add(turned([[0, -.065], [.104, -.059], [.106, -.016], [.101, .031], [.098, .056], [.100, .072], [0, .078]], .91), colors.skin);
+      neck.add(neckShape(), colors.skin);
       neckMesh = neck.finish("chanvrier-neck", neckAnchor, material);
       neckMesh.castShadow = false;
       for (const palm of palms) palm.update(colors.skin);
@@ -200,12 +221,32 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
   const cropHandHeight = [-.04, .035, .16, .29, .41, .36];
   const shaftDirection = new THREE.Vector3(), broomPosition = new THREE.Vector3(), gripPoint = new THREE.Vector3();
   const torsoInverse = new THREE.Matrix4();
+  let explicitExpression: { name: ChanvrierExpression; strength?: number } | null = null;
+  let gestureExpression: ChanvrierExpression = "neutral";
+  let gestureStrength = 0;
+  function updateExpression() {
+    face.setExpression(explicitExpression?.name ?? gestureExpression, explicitExpression ? explicitExpression.strength : gestureStrength);
+  }
   let lastPose: Parameters<typeof pose> = [0, 0, null, 0, null];
-  function pose(distance: number, walking: number, gesture: Gesture | null, phase: number, stage: number | null, deviceCode?: string, elapsedSeconds?: number) {
-    lastPose = [distance, walking, gesture, phase, stage, deviceCode, elapsedSeconds];
+  function pose(distance: number, walking: number, gesture: Gesture | null, phase: number, stage: number | null, deviceCode?: string, elapsedSeconds?: number, turnYaw = 0) {
+    lastPose = [distance, walking, gesture, phase, stage, deviceCode, elapsedSeconds, turnYaw];
     const gaitHeight = gait(distance * VILLAGE_CHARACTER_STRIDE_PER_METER, walking);
     const stride = gait.stride;
-    const reach = gesture ? Math.sin(Math.PI * phase) ** .72 : 0;
+    const reach = gesture ? Math.sin(Math.PI * THREE.MathUtils.clamp(phase, 0, 1)) ** 1.14 : 0;
+    if (gesture === "inspect" || gesture === "tend" || gesture === "repair" || gesture === "sweep" || gesture === "spread") {
+      gestureExpression = "focus";
+      gestureStrength = .65 * reach;
+    } else if (gesture === "harvest" || gesture === "card" || gesture === "dry") {
+      gestureExpression = "smile";
+      gestureStrength = .56 * reach;
+    } else if (gesture === "dice") {
+      gestureExpression = "surprise";
+      gestureStrength = .70 * reach;
+    } else {
+      gestureExpression = "neutral";
+      gestureStrength = 0;
+    }
+    if (!explicitExpression) updateExpression();
     const work = reach * Math.sin(phase * Math.PI * 4);
     const time = elapsedSeconds ?? 0;
     const idle = elapsedSeconds === undefined || gesture ? 0 : 1 - walking;
@@ -230,13 +271,18 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
       }
     }
     torso.rotation.x = reach * bend + breath * .009;
-    torso.rotation.z = shift * .022;
+    const weightTransfer = Math.cos(stride) * walking;
+    torso.rotation.z = shift * .022 + weightTransfer * .021;
     const sweeping = gesture === "sweep";
     const stroke = Math.sin(phase * Math.PI * 6);
-    torso.rotation.y = sweeping ? stroke * .20 * reach : .038 * walking * Math.sin(stride) - shift * .011;
+    const anticipation = THREE.MathUtils.clamp(turnYaw, -.62, .62) * (1 - reach);
+    torso.rotation.y = sweeping ? stroke * .20 * reach : .038 * walking * Math.sin(stride) - shift * .011 + .26 * anticipation;
     head.rotation.x = reach * (low ? .39 : gesture === "dry" ? -.14 : .13) - breath * .025;
-    head.rotation.y = shift * .080;
-    head.rotation.z = -shift * .035;
+    head.rotation.y = shift * .080 - torso.rotation.y * .46 + .62 * anticipation;
+    head.rotation.z = -shift * .035 - weightTransfer * .014;
+    // Rotate around the upper neck, so the visible jaw does not hinge on its tip.
+    rotatedPivot.copy(headPivotOffset).applyQuaternion(head.quaternion);
+    head.position.copy(headRest).add(headPivotOffset).sub(rotatedPivot);
     face.blink(elapsedSeconds, walking, reach, -head.rotation.y);
     const held = jarTray ? "jar" : barrel ? null : pouring ? "water" : gesture;
     const holding = reach > .12 && (held !== "pbi" || phase < .55);
@@ -262,7 +308,7 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
       const handGoal = gesture === "store" || gesture === "harvest" ? .134 : .20;
       let handX = s * THREE.MathUtils.lerp(handRest, handGoal, grip)
         + (gesture === "harvest" && i ? work * .043 : 0);
-      let handY = -.045 + grip * (goalY + .045) + work * (gesture === "dry" ? .040 * s : .022);
+      let handY = -.045 + grip * (goalY + .045) + work * (gesture === "dry" ? .040 * s : .022) + swing ** 2 * .017;
       let handZ = .06 + swing * .136 + grip * (jarTray || gesture === "pbi" ? .45 : low ? .31 : .38) + (gesture === "dice" || (spreading && i) ? work * .11 : 0);
       if (sweeping) {
         gripPoint.copy(broomPosition);
@@ -326,7 +372,11 @@ export function createGrowWorker(profile = GROW_ROOM_VISITOR, options?: { tools?
     }
   }
   updateAppearance(profile);
-  return { object, pose, updateAppearance, dispose: () => {
+  return { object, pose, updateAppearance, setExpression(expression: ChanvrierExpression, strength?: number) {
+    if (resources.disposed) return;
+    explicitExpression = expression === "neutral" ? null : { name: expression, strength };
+    updateExpression();
+  }, dispose: () => {
     if (resources.disposed) return;
     tools?.grains.dispose();
     shadow.mesh.dispose();

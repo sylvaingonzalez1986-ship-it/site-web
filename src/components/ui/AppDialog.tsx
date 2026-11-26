@@ -21,16 +21,17 @@ export type AppDialogProps = {
   headerClassName?: string;
   closeLabel?: string;
   closeOnBackdrop?: boolean;
+  historyManagedByUrl?: boolean;
   footer?: ReactNode;
   dialogProps?: { id?: string } & { [key: `data-${string}`]: string | boolean | undefined };
 };
 
 /** A native top-layer dialog with a persistent exit and one scrolling body. */
-export function AppDialog({ open, onClose, title, label, labelledBy, children, className = "", bodyClassName = "", headerClassName = "", closeLabel = "Fermer", closeOnBackdrop = true, footer, dialogProps }: AppDialogProps) {
+export function AppDialog({ open, onClose, title, label, labelledBy, children, className = "", bodyClassName = "", headerClassName = "", closeLabel = "Fermer", closeOnBackdrop = true, historyManagedByUrl = false, footer, dialogProps }: AppDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
-  const { close, navigate } = useOverlayHistory(open, onClose);
+  const { close, navigate } = useOverlayHistory(open, onClose, !historyManagedByUrl);
   useBodyScrollLock(open);
 
   useLayoutEffect(() => {

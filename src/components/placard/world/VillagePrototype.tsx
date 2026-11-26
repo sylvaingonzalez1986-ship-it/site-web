@@ -193,13 +193,13 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
     <header ref={headerNode} className={styles.header}>
       <h1 className={styles.srOnly} hidden={activityOpen}>Mon quartier</h1>
       <nav className={styles.headerActions} aria-label="Commandes du quartier">
-        <KqPlacardNavigation active={activeNav} locationLabel={locationLabel} onNavigate={navigate} onHighlight={highlight} drawerOnly />
-        {onOpenOverview ? <button className={styles.contextCommand} type="button" data-village-toolbar-return={activityOpen || undefined} aria-label={activityOpen ? "Revenir au village 3D" : "Ouvrir le bilan de ma partie"} onClick={() => { if (activityOpen) onCloseActivity?.(); else navigateWithDraftGuard(onOpenOverview); }}>
-          <KqPrintedArt kind={activityOpen ? "quarter" : "game-summary"} variant="menu" /><span>{activityOpen ? "Au village" : "Ma partie"}</span>
-        </button> : <Link className={styles.contextCommand} href="/arene/placard" prefetch={false} aria-label="Retour au quartier"><KqPrintedArt kind="quarter" variant="menu" /><span>Retour au jeu</span></Link>}
+        <KqPlacardNavigation active={activeNav} locationLabel={locationLabel} onNavigate={navigate} onHighlight={highlight} drawerOnly contextAction={
+          onOpenOverview ? <button className={styles.contextCommand} type="button" data-village-toolbar-return={activityOpen || undefined} aria-label={activityOpen ? "Revenir au village 3D" : "Ouvrir le bilan de ma partie"} onClick={() => { if (activityOpen) onCloseActivity?.(); else navigateWithDraftGuard(onOpenOverview); }}>
+            <KqPrintedArt kind={activityOpen ? "quarter" : "game-summary"} variant="menu" /><span>{activityOpen ? "Au village" : "Ma partie"}</span>
+          </button> : <Link className={styles.contextCommand} href="/arene/placard" prefetch={false} aria-label="Retour au quartier"><KqPrintedArt kind="quarter" variant="menu" /><span>Retour au jeu</span></Link>
+        } />
       </nav>
       <div className={styles.gameSummary} data-village-activity-state={status} hidden={activityOpen}>
-        {calendar && <VillageCalendarSign calendar={calendar} />}
         <div className={styles.walletRow}>
           {snapshot ? <span className={styles.cash}>Argent du jeu <strong>{formatKqCash(snapshot.cashCents)}</strong></span>
             : status === "loading" ? <span role="status">Chargement de ta partie…</span>
@@ -221,6 +221,7 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
             </div>
           </details>}
         </div>
+        {calendar && <VillageCalendarSign calendar={calendar} />}
         {!calendar && snapshot && <small>Calendrier indisponible</small>}
       </div>
     </header>
@@ -284,7 +285,8 @@ export function VillagePrototype({ onNavigateHref, onNavigate: navigateGame, act
         <VillageActivities key={selectedPlace.id} id={selectedPlace.id} name={selectedPlace.name} nodeRef={bubble} fallback={unavailable} onClose={closeActivities} snapshot={snapshot} onNavigate={onNavigateHref} />
       </> : null}
     </section>
-    {marketOpen && !activityOpen && <KorriganMarket isNight={isNight} onClose={closeMarket} onReaction={setKorriganReaction} />}
+    {marketOpen && !activityOpen && <KorriganMarket isNight={isNight} onClose={closeMarket} onReaction={setKorriganReaction}
+      onOpenStock={() => openDestination("/arene/placard?view=harvests&section=storage")} />}
     <VillageNightContext.Provider value={isNight}>{children}</VillageNightContext.Provider>
     <span className={styles.srOnly} role="status">{selectedPlace ? `${selectedPlace.name} sélectionné. ${selectedPlace.description}` : unavailable ? null : ready ? "Village 3D prêt. Choisis un bâtiment dans le village ou avec la touche Tab." : "Chargement du village."}</span>
   </div>;

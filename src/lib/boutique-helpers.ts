@@ -1,6 +1,10 @@
 import type { Product } from "@/data/products";
 import type { Producer } from "@/types/store";
 
+export function shopProductsShortcutLabel(count: number): string {
+  return count === 1 ? "Voir 1 produit" : `Voir les ${count} produits`;
+}
+
 export function isPrintfulProduct(product: Product): boolean {
   return product.id.startsWith("printful-p-") || product.id.startsWith("printful-v-");
 }

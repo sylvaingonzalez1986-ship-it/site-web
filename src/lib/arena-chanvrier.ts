@@ -27,6 +27,13 @@ export const CHANVRIER_FABRICS = [
   { code: "heather", name: "Bruyère", color: "#ad7c98" }, { code: "brick", name: "Brique", color: "#ac4939" },
   { code: "ink", name: "Encre", color: "#282c35" }, { code: "linen", name: "Lin", color: "#beae91" },
 ] as const;
+export const CHANVRIER_FABRIC_DYES = [
+  ...CHANVRIER_FABRICS,
+  { code: "oat", name: "Crème", color: "#f5e3be" }, { code: "petrol", name: "Pétrole", color: "#204858" },
+  { code: "cider", name: "Cidre", color: "#c78c3e" }, { code: "denim", name: "Denim", color: "#225369" },
+  { code: "moor", name: "Lande", color: "#59634a" }, { code: "plum", name: "Prune", color: "#684554" },
+  { code: "chestnut-burr", name: "Châtaigne", color: "#83533e" }, { code: "madder", name: "Garance", color: "#b14b42" },
+] as const;
 export const CHANVRIER_APPEARANCE_OPTIONS = {
   body: [{ code: "regular", name: "Classique" }, { code: "compact", name: "Menu" }, { code: "broad", name: "Robuste" }],
   hair: [{ code: "crop", name: "Court" }, { code: "quiff", name: "Banane" }, { code: "bob", name: "Carré" }, { code: "long", name: "Long" }, { code: "curls", name: "Boucles" }, { code: "afro", name: "Afro" }, { code: "braids", name: "Tresses" }, { code: "bun", name: "Chignon" }, { code: "ponytail", name: "Queue de cheval" }, { code: "mohawk", name: "Crête" }, { code: "buzz", name: "Rasé court" }, { code: "bald", name: "Sans cheveux" }, { code: "waves", name: "Ondulations" }, { code: "pixie", name: "Coupe lutin" }],
@@ -47,7 +54,7 @@ export const CHANVRIER_APPEARANCE_OPTIONS = {
 } as const;
 
 export type ChanvrierChoiceKey = keyof typeof CHANVRIER_APPEARANCE_OPTIONS;
-export const CHANVRIER_DYE_ZONES = ["skin", "hair", "eyes", "top", "bottom", "shoes", "jacket", "headwear", "accent"] as const;
+export const CHANVRIER_DYE_ZONES = ["skin", "hair", "eyes", "top", "bottom", "shoes", "jacket", "headwear", "accent", "stripe"] as const;
 export type ChanvrierDyeZone = typeof CHANVRIER_DYE_ZONES[number];
 export type ChanvrierAppearance = {
   [K in ChanvrierChoiceKey]: typeof CHANVRIER_APPEARANCE_OPTIONS[K][number]["code"]
@@ -78,13 +85,23 @@ function swatch(options: readonly { code: string; color: string }[], code: strin
 
 export function getChanvrierColors(profile: ChanvrierAvatarProfile): Record<ChanvrierDyeZone, string> {
   const look = getChanvrierAppearance(profile);
+  const top = look.dyes?.top ?? swatch(CHANVRIER_CLOTHES, profile.clothing);
   return {
-    skin: swatch(CHANVRIER_SKINS, profile.skin), top: swatch(CHANVRIER_CLOTHES, profile.clothing),
+    skin: swatch(CHANVRIER_SKINS, profile.skin), top,
     hair: swatch(CHANVRIER_APPEARANCE_OPTIONS.hairColor, look.hairColor), eyes: swatch(CHANVRIER_APPEARANCE_OPTIONS.eyeColor, look.eyeColor),
     bottom: swatch(CHANVRIER_FABRICS, look.bottomColor), shoes: swatch(CHANVRIER_FABRICS, look.shoeColor),
     jacket: swatch(CHANVRIER_FABRICS, look.jacketColor), headwear: swatch(CHANVRIER_FABRICS, look.headwearColor),
-    accent: swatch(CHANVRIER_FABRICS, look.accentColor), ...look.dyes,
+    accent: swatch(CHANVRIER_FABRICS, look.accentColor), stripe: defaultChanvrierStripe(top), ...look.dyes,
   };
+}
+
+export function defaultChanvrierStripe(topColor: string) {
+  const channel = (offset: number) => {
+    const srgb = parseInt(topColor.slice(offset, offset + 2), 16) / 255;
+    return srgb <= .04045 ? srgb / 12.92 : ((srgb + .055) / 1.055) ** 2.4;
+  };
+  const lightness = channel(1) * .213 + channel(3) * .715 + channel(5) * .072;
+  return lightness > .36 ? "#204858" : "#f5e3be";
 }
 
 export function parseChanvrierProfile(value: unknown): ChanvrierProfile | null {

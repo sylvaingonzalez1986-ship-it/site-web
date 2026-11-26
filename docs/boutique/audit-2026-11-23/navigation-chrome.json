@@ -1,0 +1,365 @@
+{
+  "origine": "https://www.leschanvriersbretons.com",
+  "viewport": [
+    1440,
+    900
+  ],
+  "client": "Chrome headless, ordinateur",
+  "version": "Chrome/157.0.8103.79",
+  "observations": [
+    {
+      "action": "Ouverture du Marché",
+      "url": "/boutique",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Tous"
+      ],
+      "count": 2,
+      "first": [
+        "Small Bud Mix",
+        "Heaven"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "body"
+    },
+    {
+      "action": "Sélection et carte avant ouverture · Pineapple Mimosa",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 1651,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": -14,
+      "carteVisible": true,
+      "focus": "Greenhouse"
+    },
+    {
+      "action": "Fiche ouverte au clic",
+      "url": "/boutique/fleurs-cbd/product-1795269223044",
+      "title": "Pineapple Mimosa",
+      "pressed": [],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+      "focus": "body"
+    },
+    {
+      "action": "Précédent navigateur depuis la fiche",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 1651,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": -14,
+      "carteVisible": true,
+      "focus": "body"
+    },
+    {
+      "action": "Suivant navigateur après le retour",
+      "url": "/boutique/fleurs-cbd/product-1795269223044",
+      "title": "Pineapple Mimosa",
+      "pressed": [],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+      "focus": "body"
+    },
+    {
+      "action": "Fiche rechargée",
+      "url": "/boutique/fleurs-cbd/product-1795269223044",
+      "title": "Pineapple Mimosa",
+      "pressed": [],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1795269223044",
+      "focus": "body"
+    },
+    {
+      "action": "← Retour Fleurs CBD après rechargement",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "topCarte": 5116,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Fil d’Ariane de la fiche",
+      "liens": [
+        {
+          "text": "Accueil",
+          "href": "/",
+          "visible": true
+        },
+        {
+          "text": "Le Marché",
+          "href": "/boutique",
+          "visible": true
+        },
+        {
+          "text": "Fleurs CBD",
+          "href": "/boutique/fleurs-cbd",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "action": "Fil d’Ariane · Le Marché",
+      "url": "/boutique",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Tous"
+      ],
+      "count": 2,
+      "first": [
+        "Small Bud Mix",
+        "Heaven"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "body"
+    },
+    {
+      "action": "Fil d’Ariane · Fleurs CBD",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "topCarte": 5116,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Toute la boutique",
+      "url": "/boutique",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Tous"
+      ],
+      "count": 2,
+      "first": [
+        "Small Bud Mix",
+        "Heaven"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "body"
+    },
+    {
+      "action": "Menu bureau · Le Marché",
+      "url": "/boutique",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes produits",
+        "Tout",
+        "Tous"
+      ],
+      "count": 2,
+      "first": [
+        "Small Bud Mix",
+        "Heaven"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "Le Marché"
+    },
+    {
+      "action": "Deuxième fiche · navigation de catégorie",
+      "url": "/boutique/fleurs-cbd/product-1773870065552",
+      "title": "Sour RNA",
+      "pressed": [
+        ""
+      ],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1773870065552",
+      "focus": "body"
+    },
+    {
+      "action": "Retour depuis la deuxième fiche",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "topCarte": 5116,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Onglet A ouvert sur la sélection depuis une URL",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": 1640,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Onglet B · autre sélection",
+      "url": "/boutique?selection=copains&culture=outdoor",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Les copains de France et de Navarre",
+        "Tout",
+        "Outdoor"
+      ],
+      "count": 5,
+      "first": [
+        "Shiva's Nectar",
+        "Suver Haze",
+        "Blood Lime"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "body"
+    },
+    {
+      "action": "Destination du lien de A chargée dans un nouvel onglet isolé",
+      "url": "/boutique/fleurs-cbd/product-1788596868038",
+      "title": "Skunk",
+      "pressed": [],
+      "count": 0,
+      "first": [],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd/product-1788596868038",
+      "focus": "body"
+    },
+    {
+      "action": "Retour de la fiche ouverte en nouvel onglet",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "focus": "body"
+    },
+    {
+      "action": "Onglet A après consultation dans le nouvel onglet",
+      "url": "/boutique?selection=neighbors&culture=greenhouse",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Mes voisins",
+        "Tout",
+        "Greenhouse"
+      ],
+      "count": 4,
+      "first": [
+        "Skunk",
+        "White Cbg",
+        "Pineapple Mimosa"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "topCarte": 1640,
+      "carteVisible": false,
+      "focus": "body"
+    },
+    {
+      "action": "Onglet B après consultation dans le nouvel onglet",
+      "url": "/boutique?selection=copains&culture=outdoor",
+      "title": "Chanvre naturel",
+      "pressed": [
+        "Les copains de France et de Navarre",
+        "Tout",
+        "Outdoor"
+      ],
+      "count": 5,
+      "first": [
+        "Shiva's Nectar",
+        "Suver Haze",
+        "Blood Lime"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique",
+      "focus": "body"
+    },
+    {
+      "action": "Entrée directe · retour de la fiche",
+      "url": "/boutique/fleurs-cbd",
+      "title": "Fleurs CBD",
+      "pressed": [],
+      "count": 19,
+      "first": [
+        "Small Bud Mix",
+        "Lemon Flambé",
+        "Sour Space Candy"
+      ],
+      "scrollY": 0,
+      "canonical": "https://www.leschanvriersbretons.com/boutique/fleurs-cbd",
+      "topCarte": 5116,
+      "carteVisible": false,
+      "focus": "body"
+    }
+  ]
+}

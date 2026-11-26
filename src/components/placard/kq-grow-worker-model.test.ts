@@ -167,6 +167,57 @@ describe("3D Chanvrier", () => {
     worker.dispose();
   });
 
+  it("holds an explicit expression through a gesture and restores the saved mouth at rest", () => {
+    const look = { ...profile, appearance: { ...DEFAULT_CHANVRIER_APPEARANCE, mouth: "grin" as const, facialHair: "beard" as const } };
+    const worker = createGrowWorker(look, { tools: false });
+    const other = createGrowWorker(look, { tools: false });
+    const mouth = mesh(worker, "chanvrier-mouth"), geometry = mouth.geometry, otherMouth = mesh(other, "chanvrier-mouth");
+    const beard = mesh(worker, "chanvrier-facial-hair"), iris = mesh(worker, "chanvrier-eyes");
+    const base = Array.from(geometry.getAttribute("position").array);
+
+    worker.setExpression("surprise", .75);
+    expect(mouth.morphTargetInfluences).toEqual([0, .75, 0]);
+    expect(beard.morphTargetInfluences).toEqual(mouth.morphTargetInfluences);
+    expect(iris.morphTargetInfluences).toEqual(mouth.morphTargetInfluences);
+    expect(otherMouth.morphTargetInfluences).toEqual([0, 0, 0]);
+    expect(otherMouth.geometry).not.toBe(geometry);
+    expect(otherMouth.geometry.morphAttributes.position![0]).toBe(geometry.morphAttributes.position![0]);
+    worker.pose(0, 0, "inspect", .5, 2);
+    expect(mouth.morphTargetInfluences).toEqual([0, .75, 0]);
+
+    worker.setExpression("neutral");
+    expect(mouth.morphTargetInfluences).toEqual([0, 0, .65]);
+    worker.pose(0, 0, null, 0, null);
+    expect(mouth.morphTargetInfluences).toEqual([0, 0, 0]);
+    expect(mouth.geometry).toBe(geometry);
+    expect(Array.from(geometry.getAttribute("position").array)).toEqual(base);
+    worker.dispose();
+    const firstVertex = otherMouth.getVertexPosition(15, new THREE.Vector3());
+    other.setExpression("smile", .8);
+    expect(otherMouth.getVertexPosition(15, new THREE.Vector3()).distanceTo(firstVertex)).toBeGreaterThan(.001);
+    other.dispose();
+  });
+
+  it("anticipates a signed turn above the waist while preserving the root and foot positions", () => {
+    const worker = createGrowWorker(profile, { tools: false });
+    const head = worker.object.getObjectByName("chanvrier-head")!;
+    const torso = worker.object.getObjectByName("chanvrier-torso")!;
+    const feet = [-1, 1].map(side => worker.object.getObjectByName(`chanvrier-ankle-${side}`)!);
+    const locations = feet.map(foot => foot.getWorldPosition(new THREE.Vector3()));
+
+    worker.pose(0, 0, null, 0, null, undefined, undefined, 2);
+    expect(head.rotation.y).toBeGreaterThan(.25);
+    expect(torso.rotation.y).toBeGreaterThan(.15);
+    expect(worker.object.rotation.y).toBe(0);
+    for (const [i, foot] of feet.entries()) expect(foot.getWorldPosition(new THREE.Vector3()).distanceTo(locations[i])).toBeLessThan(.00001);
+    const previousYaw = head.rotation.y;
+    worker.updateAppearance(profile);
+    expect(head.rotation.y).toBe(previousYaw);
+    worker.pose(0, 0, null, 0, null, undefined, undefined, -2);
+    expect(head.rotation.y).toBeCloseTo(-previousYaw, 5);
+    worker.dispose();
+  });
+
   it("keeps both silhouettes distinct across all three builds with the same haircut", () => {
     const worker = createGrowWorker(profile, { tools: false });
     const chest = worker.object.getObjectByName("chanvrier-chest")!, hair = mesh(worker, "chanvrier-hair");

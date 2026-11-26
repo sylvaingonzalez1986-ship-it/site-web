@@ -10,6 +10,7 @@ import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
 import { normalizeAnalysisUrl } from "@/lib/product-analysis-url";
+import { reportShopCartAddition } from "@/lib/shop-measurement";
 import type { Product } from "@/data/products";
 import {
   formatRemainingGrams,
@@ -71,6 +72,7 @@ export function ProductDetailActions({
     setAdded(false);
     const result = addToCart(product, selectedVariant?.id, qty);
     if (result.ok) {
+      reportShopCartAddition(null, product.id, selectedVariant?.id);
       setStockError(null);
       setAdded(true);
       setQty(1);

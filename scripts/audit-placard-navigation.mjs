@@ -403,7 +403,7 @@ else try {
    const {auditBuildingRooms}=await import('./audit-building-rooms-scenarios.mjs');
    await auditBuildingRooms({page,visit,click,assertNoOverflow,results,output,bankOfficeOnly});
  }else if(quarterMenu){
-   await auditQuarterMenu({page,visit,results,assertNoOverflow,origin,output});
+   await auditQuarterMenu({page,visit,setScenario:next=>{scenario=next;},results,assertNoOverflow,origin,output});
  }else if(world3d){
    await auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin,warehousePlayer});
  }else if(schoolChallenge){

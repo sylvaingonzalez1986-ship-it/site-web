@@ -321,6 +321,14 @@
 .cultureToolbar > div { border: 0; border-radius: 0; background: transparent; box-shadow: none; gap: 6px; padding: 0; }
 .campaignLaunch { padding: 16px 18px; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .preparationAccess { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); background: transparent; }
+.cultureShortcut > div { margin-block: 0 8px; gap: 6px 14px; padding: 8px 12px; }
+.cultureShortcut > div > span { flex: 1 1 0; min-width: 0; }
+.cultureShortcut strong { font-size: 14px; }
+.cultureShortcut small { font-size: 11px; line-height: 1.25; }
+.cultureShortcut :is(a,button) { flex: 0 1 auto; max-width: 100%; }
+@media (max-width: 360px) {
+  .cultureShortcut :is(a,button) { max-width: 70%; }
+}
 @media (max-width: 650px) {
   .header { padding: 16px 12px; gap: 12px; }
   .workshopSign { font-size: 34px; }

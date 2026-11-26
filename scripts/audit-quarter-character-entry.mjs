@@ -63,6 +63,46 @@ source=source.slice(0,start)+`
   await page.waitForSelector('input[name="confirm-strength"]');assert.equal(await page.$eval('[data-profile-next]',node=>node.disabled),true);
   await page.click('input[name="confirm-strength"]');await noOverflow();await enter('[data-profile-next]');
  }
+ async function tryHaircut(width){
+  const strip='[data-feature-choices="hair"]';
+  const previous='button[aria-label="Coupe précédente"]',next='button[aria-label="Coupe suivante"]';
+  async function category(name){
+   const tab=await page.evaluateHandle(label=>[...document.querySelectorAll('nav[aria-label="Personnaliser l’apparence"] button')].find(button=>button.textContent===label),name);
+   await tab.asElement().click();await tab.dispose();
+  }
+  async function visibleChoice(name){
+   await page.waitForFunction((selector,label)=>{
+    const rail=document.querySelector(selector),choice=rail?.querySelector('[aria-pressed="true"]');
+    if(!choice||choice.textContent!==label)return false;
+    const item=choice.getBoundingClientRect(),bounds=rail.getBoundingClientRect();
+    return item.left>=bounds.left-1&&item.right<=bounds.right+1;
+   },{},strip,name);
+  }
+  await enter('[data-arrival-create]');await category('Cheveux');
+  await page.click('button[aria-label="Coupe de cheveux : Coupe lutin"]');
+  await category('Yeux');await category('Cheveux');await visibleChoice('Coupe lutin');
+  await enter(next);await visibleChoice('Court');
+  assert.equal(await page.$eval(next,button=>button===document.activeElement&&button.matches(':focus-visible')&&getComputedStyle(button).outlineStyle!=='none'),true);
+  await enter(previous);await visibleChoice('Coupe lutin');
+  if(width===320){
+   await page.setViewport({width:844,height:390});await visibleChoice('Coupe lutin');
+   await page.setViewport({width,height:844});await visibleChoice('Coupe lutin');
+   const session=await page.createCDPSession();
+   await session.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
+   const rotation=await page.$eval('[data-preview-state]',node=>node.dataset.previewRotation);
+   await page.tap(next);await visibleChoice('Court');
+   await page.tap(previous);await visibleChoice('Coupe lutin');
+   assert.equal(await page.$eval('[data-preview-state]',node=>node.dataset.previewRotation),rotation);
+   await session.send('Emulation.setTouchEmulationEnabled',{enabled:false});await session.detach();
+  }
+  assert.equal(await page.evaluate(()=>window.calls.some(call=>call.method==='POST')),false);
+  await page.screenshot({path:resolve(output,'coiffure-'+width+'.png')});
+  await page.keyboard.press('Escape');await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForSelector('[data-arrival-create]');await enter('[data-arrival-create]');
+  await category('Cheveux');await visibleChoice('Coupe lutin');
+  assert.equal(await page.evaluate(()=>window.calls.some(call=>call.method==='POST')),false);
+  await page.keyboard.press('Escape');await page.waitForSelector('dialog[open]',{hidden:true});
+ }
  for(const width of [320,1440]){
   await page.setViewport({width,height:844});await clean('entry');
   await page.waitForSelector('[data-quarter-arrival="story"]');assert.equal(await page.$('#game'),null);assert.equal(await page.$('dialog[open]'),null);
@@ -72,7 +112,9 @@ source=source.slice(0,start)+`
   await enter('[data-arrival-create]');await page.waitForSelector('[data-chanvrier-profile][open]');await noOverflow();await page.screenshot({path:resolve(output,'creation-'+width+'.png')});
   await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.querySelector('dialog[open]'));assert.equal(await page.$('#game'),null);
   await page.waitForFunction(()=>document.activeElement===document.querySelector('[data-arrival-create]'));
+  await tryHaircut(width);
   await completeCharacter();await page.waitForSelector('#game[data-placard-view="hub"]');
+  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('profile')).appearance.hair),'pixie');
   assert.equal((await page.evaluate(()=>window.calls)).filter(c=>c.method==='POST').length,1);
   await page.waitForSelector('[data-beta-welcome][open]');await page.keyboard.press('Escape');
   await page.waitForSelector('[data-sylvain-guide][data-mode="invited"]');
@@ -80,7 +122,7 @@ source=source.slice(0,start)+`
   await noOverflow();await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('#game');
   assert.equal(await page.$('[data-quarter-arrival]'),null);assert.equal(await page.$('[data-beta-welcome]'),null);
   await page.goto(origin+'/?mode=arena',{waitUntil:'networkidle0'});assert.equal(await page.$('[data-arena-profile-trigger]'),null);assert.equal((await page.evaluate(()=>window.calls)).length,0);
-  await noOverflow();results.push({width,storyBeforeCharacter:true,cancelAndResume:true,savedOnce:true,quarterAndOptionalGuide:true,noInventedProgress:true,betaAfterStory:true,reloadSkipsCreation:true,arenaHasNoProfile:true});
+  await noOverflow();results.push({width,storyBeforeCharacter:true,cancelAndResume:true,savedOnce:true,haircutAfterReload:'pixie',haircutKeyboardFocus:true,haircutTouchAndResize:width===320,quarterAndOptionalGuide:true,noInventedProgress:true,betaAfterStory:true,reloadSkipsCreation:true,arenaHasNoProfile:true});
  }
  await page.goto(origin+'/?mode=error',{waitUntil:'networkidle0'});await page.waitForSelector('[role="alert"]');assert.equal(await page.$('#game'),null);await page.click('[data-quarter-character-gate]>button');await page.waitForSelector('#game');results.push({retry:true});
  for(const mode of ['signed-out','other-owner','invalid']){await page.goto(origin+'/?mode='+mode,{waitUntil:'networkidle0'});assert.equal(await page.$('#game'),null);assert.equal(await page.$('[data-chanvrier-profile]'),null);results.push({mode,blocked:true});}

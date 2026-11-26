@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { ProductCard } from "@/components/ProductCard";
+import { useMemo, type ReactNode } from "react";
+import { ProductCard, type ShopCardOrigin } from "@/components/ProductCard";
 import { ProducerTcgShowcase } from "@/components/boutique/ProducerTcgShowcase";
 import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
@@ -16,6 +16,10 @@ type ProducerBarProps = {
   producerPartnerLabel: string;
   producerWebsiteLabel: string;
   tastingSummariesByProductId: Record<string, PublicContestProductTastingSummary>;
+  resultsHeading: ReactNode;
+  origin: ShopCardOrigin;
+  selectedProducerId: string | null;
+  onSelectProducer: (producerId: string | null) => void;
 };
 
 export function ProducerBar({
@@ -27,6 +31,10 @@ export function ProducerBar({
   producerPartnerLabel,
   producerWebsiteLabel,
   tastingSummariesByProductId,
+  resultsHeading,
+  origin,
+  selectedProducerId,
+  onSelectProducer,
 }: ProducerBarProps) {
   const producerById = useMemo(
     () => new Map(producers.map((producer) => [producer.id, producer])),
@@ -50,6 +58,9 @@ export function ProducerBar({
   return (
     <div className="mt-6">
       <ProducerTcgShowcase
+        origin={origin}
+        selectedProducerId={selectedProducerId}
+        onSelectProducer={onSelectProducer}
         producers={producersWithProducts}
         products={products}
         rotationDay={rotationDay}
@@ -60,11 +71,13 @@ export function ProducerBar({
         tastingSummariesByProductId={tastingSummariesByProductId}
       />
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+      {resultsHeading}
+      <div data-shop-list-view="market" className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
         {products.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
+            origin={origin}
             producer={product.producerId ? producerById.get(product.producerId) : undefined}
             addButtonLabel={addButtonLabel}
             lowStockThresholdGrams={lowStockThresholdGrams}

@@ -21,11 +21,20 @@ export async function saveChanvrierProfile(userId: string, value: unknown) {
     ? { ...profile, appearance: Object.fromEntries(Object.entries(profile.appearance)
       .filter(([key]) => Object.hasOwn(input, key) && Object.hasOwn(CHANVRIER_APPEARANCE_OPTIONS, key))) }
     : profile;
-  const result = await createSupabaseServiceClient().rpc("rpc_arena_save_chanvrier", { p_user_id: userId, p_profile: payload });
+  const supportsStripe = (value as { supportsStripe?: unknown }).supportsStripe === true;
+  const result = await createSupabaseServiceClient().rpc("rpc_arena_save_chanvrier", {
+    p_user_id: userId, p_profile: supportsStripe ? { ...payload, supportsStripe: true } : payload,
+  });
   if (result.error) {
     if (result.error.message.includes("chanvrier_strength_locked")) throw new Error("Ta spécialité est définitive. Tu peux modifier ton apparence et ton surnom.");
     if (result.error.code === "23505") throw new Error("Ce surnom est déjà utilisé.");
     throw new Error(`[supabase:chanvrier] ${result.error.message}`);
   }
-  return result.data as { profile: ChanvrierProfile; startingBonusCents: number; created: boolean };
+  const saved = result.data as { profile: ChanvrierProfile; startingBonusCents: number; created: boolean };
+  // An older editor's parser rejects unknown dye keys in its acknowledgement.
+  // The RPC has preserved this stripe in the locked database row.
+  if (!supportsStripe && !profile.appearance?.dyes?.stripe && saved.profile.appearance?.dyes) {
+    delete saved.profile.appearance.dyes.stripe;
+  }
+  return saved;
 }

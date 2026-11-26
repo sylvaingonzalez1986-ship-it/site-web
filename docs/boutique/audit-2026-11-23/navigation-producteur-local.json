@@ -1,0 +1,469 @@
+{
+  "origin": "http://localhost:3000",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "filterInteractive": {
+    "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+    "selected": "true",
+    "culture": "Greenhouse",
+    "registerHeading": [
+      "Tous les produits4 produits"
+    ],
+    "all": 4,
+    "visibleRegister": 4,
+    "cards": [
+      {
+        "name": "Skunk",
+        "href": "/boutique/fleurs-cbd/product-1788596868038",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "White Cbg",
+        "href": "/boutique/fleurs-cbd/product-1788597425269",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Pineapple Mimosa",
+        "href": "/boutique/fleurs-cbd/product-1795269223044",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Cake Brulée",
+        "href": "/boutique/fleurs-cbd/product-1784378769542",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      }
+    ]
+  },
+  "filterDirect": {
+    "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+    "selected": "true",
+    "culture": "Greenhouse",
+    "registerHeading": [
+      "Tous les produits4 produits"
+    ],
+    "all": 4,
+    "visibleRegister": 4,
+    "cards": [
+      {
+        "name": "Skunk",
+        "href": "/boutique/fleurs-cbd/product-1788596868038",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "White Cbg",
+        "href": "/boutique/fleurs-cbd/product-1788597425269",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Pineapple Mimosa",
+        "href": "/boutique/fleurs-cbd/product-1795269223044",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Cake Brulée",
+        "href": "/boutique/fleurs-cbd/product-1784378769542",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      }
+    ]
+  },
+  "filterDirectSettled": {
+    "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+    "selected": "true",
+    "culture": "Greenhouse",
+    "registerHeading": [
+      "Tous les produits4 produits"
+    ],
+    "all": 4,
+    "visibleRegister": 4,
+    "cards": [
+      {
+        "name": "Skunk",
+        "href": "/boutique/fleurs-cbd/product-1788596868038",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "White Cbg",
+        "href": "/boutique/fleurs-cbd/product-1788597425269",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Pineapple Mimosa",
+        "href": "/boutique/fleurs-cbd/product-1795269223044",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      },
+      {
+        "name": "Cake Brulée",
+        "href": "/boutique/fleurs-cbd/product-1784378769542",
+        "title": null,
+        "culture": "FleursGreenhouse",
+        "visible": true,
+        "inDialog": false
+      }
+    ]
+  },
+  "filterDirectBeforeHydration": {
+    "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+    "selected": "false",
+    "culture": "Tous",
+    "registerHeading": [
+      "Tous les produits2 produits"
+    ],
+    "all": 2,
+    "visibleRegister": 0,
+    "cards": [
+      {
+        "name": "Small Bud Mix",
+        "href": "/boutique/fleurs-cbd/product-1775333841673",
+        "title": null,
+        "culture": "FleursOutdoor",
+        "visible": false,
+        "inDialog": false
+      },
+      {
+        "name": "Heaven",
+        "href": "/boutique/fleurs-cbd/product-1782391212934",
+        "title": null,
+        "culture": "FleursOutdoor",
+        "visible": false,
+        "inDialog": false
+      }
+    ]
+  },
+  "history": {
+    "producer": {
+      "currentIndex": 5,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        }
+      ],
+      "scrollY": 906,
+      "overlayHistory": [
+        "_r_35_"
+      ],
+      "active": "A",
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 924,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542",
+        "top": 462
+      },
+      "h1": "Chanvre naturel"
+    },
+    "product": {
+      "currentIndex": 6,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 23,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Cake Brulée"
+    },
+    "back": {
+      "currentIndex": 5,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 23,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 906,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    },
+    "forward": {
+      "currentIndex": 6,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 23,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Cake Brulée"
+    },
+    "backAgain": {
+      "currentIndex": 5,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 23,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 906,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    },
+    "backTwice": {
+      "currentIndex": 4,
+      "entries": [
+        {
+          "id": 5,
+          "url": "about:blank",
+          "type": "auto_toplevel"
+        },
+        {
+          "id": 7,
+          "url": "http://localhost:3000/boutique",
+          "type": "typed"
+        },
+        {
+          "id": 9,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=neighbors&culture=greenhouse",
+          "type": "link"
+        },
+        {
+          "id": 21,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 22,
+          "url": "http://localhost:3000/boutique?selection=neighbors",
+          "type": "link"
+        },
+        {
+          "id": 23,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1784378769542",
+          "type": "link"
+        }
+      ],
+      "scrollY": 906,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    }
+  },
+  "candidates": [
+    {
+      "dialog": "Fiche producteur Ty Kanna",
+      "dialogScroll": {
+        "top": 0,
+        "height": 787,
+        "fullHeight": 1866
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1784378769542",
+        "top": 1386
+      }
+    }
+  ]
+}

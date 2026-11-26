@@ -1,14 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import { ChevronDown, CircleHelp, Coins, Copy, Leaf, Moon, RectangleVertical, Sparkles, Sun } from "lucide-react";
-import { AppDialog } from "@/components/ui/AppDialog";
+import { ArrowRight, ChevronDown, CircleHelp, Moon, PackageOpen, Sparkles, Sun } from "lucide-react";
+import { AppDialog, useDialogNavigation } from "@/components/ui/AppDialog";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KORRIGAN_MIN_VALUE_CENTS, KORRIGAN_ODDS, type KorriganDraw, type KorriganKind, type KorriganReaction, type KorriganState } from "@/lib/kanab-quest-korrigan";
-import { KqPrintedArt } from "../KqPrintedArt";
 import { useKqTutorialApi } from "../KqTutorialApiContext";
 import styles from "./KorriganMarket.module.css";
 
@@ -65,64 +64,97 @@ function drawLabel(draw: KorriganDraw) {
   return draw.itemLabel ?? outcomes[draw.kind];
 }
 
+const greetings = {
+  welcome: [
+    "Psst ! Fais-nous une offrande de fleurs sèches et je te laisse tirer trois fois le levier.",
+    "Même si ma carte épique tombe ? Bon… marché conclu !",
+  ],
+  resume: ["Ah, te revoilà ! J’ai gardé ta place au levier.", "Et moi, j’ai gardé le compte de tes tirages !"],
+  register: ["Attends un brin, j’ai ton offrande dans mon registre.", "Tourne la page, qu’on voie où on en était !"],
+  resting: ["On a remisé le levier pour cette fois.", "Ton bilan, lui, est toujours là. Tu veux le revoir ?"],
+} as const;
+
+function KorriganLine({ bonnet, children, reaction }: { bonnet: "rouge" | "bleu"; children: string; reaction?: KorriganKind }) {
+  return <p className={styles.speech} data-korrigan-speech={bonnet} data-korrigan-reaction={reaction}>
+    <strong>Bonnet {bonnet}</strong>{" — "}{children}
+  </p>;
+}
+
+function drawRemark(kind: KorriganKind) {
+  if (kind === "loss") return "Rien dans le tiroir, cette fois. Même pas un bouton de mon gilet !";
+  if (kind === "epic") return "Ma fameuse carte ! Marché conclu, elle est à toi.";
+  if (kind === "botte" || kind === "buddie") return "Un paquet tout ficelé ! À toi de découvrir ce qu’il y a dedans.";
+  return "Tu entends les pièces qui tintent ? C’est pour ta bourse !";
+}
+
 function ReelSymbol({ symbol }: { symbol: Symbol }) {
-  if (symbol === "leaf") return <Leaf strokeWidth={2.6} />;
   if (symbol === "loss") return <Moon strokeWidth={2.6} />;
-  if (symbol === "buddie") return <KqPrintedArt kind="buddies-pack" className={styles.reelPack} sizes="56px" />;
-  if (symbol === "botte") return <Copy strokeWidth={2.6} />;
-  if (symbol === "epic") return <span className={styles.epicSymbol}><RectangleVertical strokeWidth={2.6} /><Sparkles strokeWidth={2.8} /></span>;
-  return <><Coins strokeWidth={2.6} /><b>{symbol.replace("x", "×")}</b></>;
+  return <><span className={styles.printedSymbol}>{symbol === "epic" && <Sparkles strokeWidth={2.6} />}</span>
+    {symbol.startsWith("x") && <b>{symbol.replace("x", "×")}</b>}</>;
 }
 
 const reelSequence: Symbol[] = ["leaf", "x5", "botte", "x10", "buddie", "epic", "x50", "loss"];
 
-function MarketMachine({ result, spinning, completed, onSkip }: {
-  result?: KorriganDraw; spinning: boolean; completed: number; onSkip: () => void;
+function MarketMachine({ result, spinning, hasSession, completed, drawAction, waiting, onPull, onSkip }: {
+  result?: KorriganDraw; spinning: boolean; hasSession: boolean; completed: number;
+  drawAction?: string; waiting: boolean; onPull: () => void; onSkip: () => void;
 }) {
   const resultKind = result?.kind;
   const symbols: Symbol[] = resultKind === "loss" ? ["leaf", "loss", "leaf"]
     : resultKind ? [resultKind, resultKind, resultKind] : ["leaf", "botte", "x5"];
 
   return <div className={styles.machineStation}>
-    <div className={styles.machine} data-korrigan-machine data-spinning={spinning || undefined} data-result={spinning ? undefined : resultKind}>
-      <div className={styles.crown} aria-hidden="true"><Moon /><Sparkles /></div>
-      <div className={styles.machineFrame}>
-        <div className={styles.reels} aria-hidden="true">
+    <div className={styles.machine} data-korrigan-machine data-spinning={spinning || undefined} data-settling={spinning && resultKind ? true : undefined} data-result={spinning ? undefined : resultKind}>
+      <div className={styles.cabinet} aria-hidden="true">
+        <div className={styles.reels}>
           {symbols.map((symbol, index) => <div className={styles.reel} data-reel={index + 1} key={index}>
-            {spinning ? <div className={styles.reelMotion}>
-              {[...reelSequence.slice(index), ...reelSequence, ...reelSequence.slice(0, index)].map((rolling, offset) =>
-                <span data-symbol={rolling} key={offset}><ReelSymbol symbol={rolling} /></span>)}
-            </div> : <span data-symbol={symbol}><ReelSymbol symbol={symbol} /></span>}
+            <span className={styles.face} data-symbol={symbol}><ReelSymbol symbol={symbol} /></span>
+            {spinning && <div className={styles.shutter}><div className={styles.reelMotion}>
+              {Array.from({ length: reelSequence.length + 1 }, (_, offset) => {
+                const rolling = reelSequence[(index + offset) % reelSequence.length];
+                return <span data-symbol={rolling} key={offset}><ReelSymbol symbol={rolling} /></span>;
+              })}
+            </div></div>}
           </div>)}
         </div>
-        <div className={styles.machineReadout}>
-          <span className={styles.lamps} aria-hidden="true">
-            {[1, 2, 3].map(index => <i key={index} data-lit={index <= completed || undefined} />)}
-          </span>
-          <span>{completed} / 3 tirages</span>
-        </div>
+        <span className={styles.lamps}>{[1, 2, 3].map(index => <i key={index} data-lit={index <= completed || undefined} />)}</span>
+        <span className={styles.lever}><i /></span>
       </div>
-      <div className={styles.lever} aria-hidden="true" />
-      <div className={styles.base} aria-hidden="true" />
+      {drawAction && !spinning && <button type="button" className={`${styles.control} ${styles.primary} ${styles.drawAction}`}
+        data-korrigan-next disabled={waiting} onClick={onPull}>{drawAction}</button>}
+      {spinning && <button type="button" className={styles.control} data-korrigan-next onClick={onSkip}>Passer l’animation</button>}
     </div>
+    {hasSession && <div className={styles.machineReadout}>{completed} / 3 tirages</div>}
     <div className={styles.result} role="status" aria-live="polite" aria-atomic="true">
       {spinning ? <span>Les rouleaux tournent…</span> : result ? <><strong>{outcomes[result.kind]}</strong>
-        {result.pending ? <span>Remise en attente</span> : drawLabel(result) !== outcomes[result.kind] ? <span>{drawLabel(result)}</span> : null}</>
-        : <span>Trois tirages par offrande</span>}
+        {result.pending ? <span>Remise en attente</span> : <>
+          {drawLabel(result) !== outcomes[result.kind] && <span>{drawLabel(result)}</span>}
+          <KorriganLine bonnet="bleu" reaction={result.kind}>{drawRemark(result.kind)}</KorriganLine>
+        </>}</>
+        : null}
     </div>
-    {spinning ? <button type="button" className={styles.control} data-korrigan-next onClick={onSkip}>Passer l’animation</button> : null}
   </div>;
 }
 
-export function KorriganMarket(props: { isNight: boolean; onClose: () => void; onReaction: (reaction: KorriganReaction) => void }) {
+function EmptyStock({ onOpenStock }: { onOpenStock: () => void }) {
+  const navigate = useDialogNavigation();
+  return <div className={styles.emptyStock}>
+    <PackageOpen size={26} aria-hidden="true" />
+    <div><strong>Aucun lot de fleurs sèches disponible.</strong>
+      <KorriganLine bonnet="rouge">Fouille dans tes récoltes ! Rapporte-nous des fleurs sèches en vrac, prêtes à la reprise.</KorriganLine></div>
+    <button type="button" className={styles.control} onClick={() => navigate(onOpenStock)}>Voir mes récoltes <ArrowRight size={16} aria-hidden="true" /></button>
+  </div>;
+}
+
+type MarketProps = { isNight: boolean; onClose: () => void; onOpenStock: () => void; onReaction: (reaction: KorriganReaction) => void };
+
+export function KorriganMarket(props: MarketProps) {
   const api = useKqTutorialApi();
   const { user } = useCart();
   return <MarketVisit key={api.isTutorial ? "tutorial" : user?.id ?? "guest"} {...props} playerId={api.isTutorial ? null : user?.id ?? null} />;
 }
 
-function MarketVisit({ isNight, onClose, onReaction, playerId }: {
-  isNight: boolean; onClose: () => void; onReaction: (reaction: KorriganReaction) => void; playerId: string | null;
-}) {
+function MarketVisit({ isNight, onClose, onOpenStock, onReaction, playerId }: MarketProps & { playerId: string | null }) {
   const api = useKqTutorialApi();
   const [open, setOpen] = useState(false);
   const active = open || isNight;
@@ -282,7 +314,8 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
         setDrawRecovery(null);
         if (spin.current) {
           spin.current.result = draw;
-          spin.current.timer = window.setTimeout(finishSpin, Math.max(0, spinDuration - (performance.now() - spin.current.startedAt)));
+          // Leave time for the three stops even when the server responds late.
+          spin.current.timer = window.setTimeout(finishSpin, Math.max(680, spinDuration - (performance.now() - spin.current.startedAt)));
         } else callbacks.current.onReaction(reactionFor(draw.kind));
       } else if (operation.type === "draw") {
         setDrawRecovery(operation.draw);
@@ -378,9 +411,14 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
   const offer = savedOffer ?? (canOffer && confirmation ? { ...confirmation, expectedValueCents: confirmation.valueCents } : null);
   const offeredLot = offer && state?.lots.find(lot => lot.id === offer.lotId);
   const actionable = !paused && !busy && !spinning;
+  const drawAction = progress && !offer && !pendingDraw
+    ? pending === "draw" ? "Tirage en cours…" : unresolvedDraw ? "Reprendre le tirage" : `Lancer le tirage ${completeCount + 1} sur 3`
+    : undefined;
   const invitationAction = savedOffer ? "Reprendre mon offrande"
     : progress ? remainingDraws === 0 ? "Reprendre la remise" : remainingDraws === 1 ? "Reprendre mon tirage" : `Reprendre mes ${remainingDraws} tirages`
-      : session && coolDown ? "Voir mon bilan" : "Voir la machine";
+      : session && coolDown ? "Voir mon bilan" : "Je veux voir la machine";
+  const greeting = savedOffer || pendingDraw ? greetings.register : !state ? null
+    : progress ? greetings.resume : coolDown && session ? greetings.resting : coolDown ? null : greetings.welcome;
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -396,6 +434,13 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
     setQuote(null);
     setConfirmation(null);
     setError("");
+  }
+
+  function pullLever() {
+    if (!session || !progress || busy || spinning || (paused && !pendingDraw)) return;
+    const draw = pendingDraw ? { sessionId: session.id, draw: pendingDraw.index }
+      : unresolvedDraw ?? { sessionId: session.id, draw: completeCount + 1 };
+    void perform({ type: "draw", draw, recoverAward: Boolean(pendingDraw) });
   }
 
   function submitOffer() {
@@ -421,12 +466,15 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
       }
     }}>
     <h2 id={titleId}>Les Korrigans</h2>
-    <p>Trois tirages contre une offrande de fleurs sèches, tous les 7 jours.</p>
-    <p><strong>{oddsLabel(inviteOdds.loss)} sans gain, {oddsLabel(10_000 - inviteOdds.loss)} avec un gain</strong> par tirage. En jeu, de l’argent, des packs ou une carte Buddie épique.</p>
+    {greeting ? <div className={styles.exchange}>
+      <KorriganLine bonnet="rouge">{greeting[0]}</KorriganLine>
+      <KorriganLine bonnet="bleu">{greeting[1]}</KorriganLine>
+    </div> : <KorriganLine bonnet="rouge">Psst ! Viens donc t’asseoir avec nous sous le chêne.</KorriganLine>}
+    <p className={styles.inviteTerms}>Une offrande tous les 7 jours. Par tirage, <strong>{oddsLabel(inviteOdds.loss)} sans gain</strong> et <strong>{oddsLabel(10_000 - inviteOdds.loss)} de chances</strong> de gagner des pièces, un pack ou une carte.</p>
     {coolDown && nextOfferAt ? <p className={styles.deadline}>Prochaine offrande à partir du <time dateTime={nextOfferAt}>{timeLabel(nextOfferAt)} (Paris)</time> pendant une nuit du jeu.</p> : null}
     <div className={styles.actions}>
       <button ref={inviteButton} type="button" className={`${styles.control} ${styles.primary}`} onClick={() => setOpen(true)}>{invitationAction}</button>
-      <button ref={declineButton} type="button" className={styles.control} onClick={onClose}>Décliner</button>
+      <button ref={declineButton} type="button" className={styles.control} onClick={onClose}>Une autre fois</button>
     </div>
   </dialog> : null;
 
@@ -440,7 +488,10 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
       </p> : null}
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
       <div className={styles.columns}>
-        <MarketMachine result={spinning ? undefined : pendingDraw ?? shownDraws.at(-1)} spinning={spinning} completed={completeCount} onSkip={finishSpin} />
+        <MarketMachine result={spinning ? draws.find(draw => draw.index === spinningDraw && !draw.pending)
+          : pending === "draw" && !pendingDraw ? undefined : pendingDraw ?? shownDraws.at(-1)}
+          spinning={spinning} hasSession={Boolean(session)} completed={completeCount} drawAction={drawAction}
+          waiting={!actionable} onPull={pullLever} onSkip={finishSpin} />
         <div className={styles.marketControls}>
           {!state ? <div className={styles.operation}>
             <p role="status">{error ? "Le marché est momentanément indisponible." : "Les Korrigans ouvrent leur registre…"}</p>
@@ -465,8 +516,12 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
             if (actionable && selection) void perform({ type: "quote", selection });
           }}>
             <h3>Préparer une offrande</h3>
-            <p>3 tirages pour une valeur de reprise d’au moins <strong>{formatKqCash(minimumValue)}</strong>.</p>
+            <dl className={styles.offerTerms}>
+              <div><dt>Reprise minimale</dt><dd>{formatKqCash(minimumValue)}</dd></div>
+              <div><dt>Tirages par offrande</dt><dd>3</dd></div>
+            </dl>
             {state.lots.length ? <>
+              {!paused && <KorriganLine bonnet="rouge">Montre-moi tes fleurs. Je te dirai ce qu’elles valent avant que tu me les confies.</KorriganLine>}
               <div className={styles.fields}>
                 <label>Lot de fleurs sèches
                   <select value={chosenLot?.id ?? ""} disabled={!actionable} onChange={event => changeSelection({ lotId: event.target.value, grams: choice.grams })}>
@@ -488,20 +543,16 @@ function MarketVisit({ isNight, onClose, onReaction, playerId }: {
                 : <button className={`${styles.control} ${styles.primary}`} type="submit" disabled={!actionable || !selection} data-korrigan-next>
                   {pending === "quote" ? "Devis en cours…" : "Calculer la valeur"}
                 </button>}
-            </> : <p>Aucun lot de fleurs sèches disponible.</p>}
+            </> : <EmptyStock onOpenStock={onOpenStock} />}
           </form> : null}
 
           {session && !offer ? <section className={styles.operation}>
             <h3>{shownDraws.length < 3 ? "Offrande remise" : "Bilan de l’offrande"}</h3>
+            {draws.length === 0 && !spinning && !paused && !unresolvedDraw && pending !== "draw" &&
+              <KorriganLine bonnet="rouge">Tope là ! Le levier est à toi.</KorriganLine>}
             <p><strong>{gramsLabel(session.grams)}</strong> offerts · <strong>{formatKqCash(session.valueCents)}</strong> de reprise.</p>
-            {progress && !spinning ? <>
-              <button type="button" className={`${styles.control} ${styles.primary}`} disabled={busy || (paused && !pendingDraw)} data-korrigan-next
-                onClick={() => void perform({ type: "draw", recoverAward: Boolean(pendingDraw), draw: pendingDraw ? { sessionId: session.id, draw: pendingDraw.index }
-                  : unresolvedDraw ?? { sessionId: session.id, draw: completeCount + 1 } })}>
-                {pendingDraw ? pending === "draw" ? "Remise en cours…" : "Récupérer le gain" : pending === "draw" ? "Tirage en cours…"
-                  : unresolvedDraw ? "Reprendre le tirage" : `Lancer le tirage ${completeCount + 1} sur 3`}
-              </button>
-            </> : null}
+            {pendingDraw && <button type="button" className={`${styles.control} ${styles.primary}`} disabled={busy}
+              data-korrigan-next onClick={pullLever}>{pending === "draw" ? "Remise en cours…" : "Récupérer le gain"}</button>}
             {shownDraws.length ? <>
               {completeCount === 3 && !confirmedMoney && !confirmedItems ? <p><strong>Aucun gain en trois tirages</strong></p> : null}
               <dl className={styles.totals}>

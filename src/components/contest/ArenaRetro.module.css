@@ -26,6 +26,9 @@
   --game-panel-gold: url("/placard/ui/panel-gold-v1.webp");
   --game-panel-slice: 48;
   --game-panel-edge: 15px;
+  --game-action-height: 44px;
+  --game-press-duration: 100ms;
+  --game-ease-out: cubic-bezier(.2, .7, .3, 1);
   font-variant-numeric: tabular-nums;
 }
 
@@ -35,12 +38,54 @@
   --game-control-font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
 }
 
+/* Section selectors share a plate, a tactile press and a non-colour selection cue. */
+.sectionSign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-width: 0;
+  min-height: var(--game-action-height, 44px);
+  padding: .5rem .8rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  color: var(--arcade-ink, #172923);
+  font: 800 1rem/1.15 var(--game-control-font-family, var(--font-display)), Impact, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+.sectionSign svg { flex: none; }
+.sectionSign:is([aria-selected=true], [aria-current=page]) {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+@media (hover: hover) {
+  button.sectionSign:not(:disabled):hover {
+    --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
+    color: var(--arcade-ink, #172923);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  button.sectionSign { transition: translate var(--game-press-duration) var(--game-ease-out); }
+  button.sectionSign:active:not(:disabled) { translate: 0 1px; }
+}
+
 /* Component font shorthands and nested labels must keep the same sign lettering. */
 .gameSurface :is(button, a[href], [role="button"], summary),
 .gameSurface :is(button, a[href], [role="button"], summary) :where(span, strong, b, em, small) {
   font-family: var(--game-control-font-family) !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;
+}
+.gameSurface :is(button, a[href], summary) [data-game-caption] {
+  font-family: var(--font-body), sans-serif !important;
+  font-weight: 550 !important;
+  text-transform: none !important;
 }
 
 .surface :where(button, a, summary, input, select):focus-visible {

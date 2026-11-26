@@ -1,0 +1,484 @@
+{
+  "conditions": "Windows, Chromium headless local, GPU réel via ANGLE D3D11. Rendus fixes à DPR 1, banc de 640 × 360 pixels, 75 intervalles après 10 images de chauffe. API des profils simulée dans le navigateur. PostgreSQL embarqué pour la persistance. Allure et gestes pilotés par le rig de production.",
+  "budgets": {
+    "reference": {
+      "appels": 26,
+      "triangles": 48000,
+      "attributsMio": 1.4,
+      "materiaux": 4,
+      "texturesImages": 0
+    },
+    "variantes": {
+      "appels": 30,
+      "triangles": 65000
+    },
+    "quatrePersonnages": {
+      "appels": 104,
+      "triangles": 225000,
+      "p95Ms": 20
+    }
+  },
+  "mesure": {
+    "avant": {
+      "graphics": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "profiles": [
+        {
+          "name": "Maël",
+          "triangles": 34032,
+          "calls": 20,
+          "materials": 2,
+          "geometries": 20,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 893856,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "maree",
+          "triangles": 35588,
+          "calls": 23,
+          "materials": 2,
+          "geometries": 23,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 949344,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "bigoudene",
+          "triangles": 47924,
+          "calls": 20,
+          "materials": 2,
+          "geometries": 20,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1318452,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "atelier",
+          "triangles": 40820,
+          "calls": 18,
+          "materials": 2,
+          "geometries": 18,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1052268,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        }
+      ],
+      "timings": [
+        {
+          "count": 1,
+          "samples": 75,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "submitMedianMs": 0.7000000476837158,
+          "submitP95Ms": 1.2000000476837158,
+          "calls": 20,
+          "triangles": 34288,
+          "residentTextures": 1,
+          "residentGeometries": 84
+        },
+        {
+          "count": 4,
+          "samples": 75,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "submitMedianMs": 1.3999998569488525,
+          "submitP95Ms": 2.200000047683716,
+          "calls": 81,
+          "triangles": 159388,
+          "residentTextures": 1,
+          "residentGeometries": 84
+        }
+      ],
+      "constructionMs": [
+        183.29999995231628,
+        23.90000009536743,
+        18,
+        37.09999990463257,
+        12.099999904632568,
+        12.599999904632568
+      ],
+      "independent": true,
+      "browser": "Chrome/157.0.8103.79"
+    },
+    "apres": {
+      "graphics": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "profiles": [
+        {
+          "name": "Maël",
+          "triangles": 39956,
+          "calls": 20,
+          "materials": 3,
+          "geometries": 20,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1181584,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "maree",
+          "triangles": 39612,
+          "calls": 23,
+          "materials": 3,
+          "geometries": 23,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1263184,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "bigoudene",
+          "triangles": 49988,
+          "calls": 20,
+          "materials": 2,
+          "geometries": 20,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1474332,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        },
+        {
+          "name": "atelier",
+          "triangles": 39968,
+          "calls": 18,
+          "materials": 2,
+          "geometries": 18,
+          "textures": 0,
+          "bones": 0,
+          "groups": 16,
+          "vertexBytes": 1143744,
+          "uvMeshes": 1,
+          "invalidComponents": 0
+        }
+      ],
+      "timings": [
+        {
+          "count": 1,
+          "samples": 75,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.899999999999864,
+          "submitMedianMs": 1.1000001430511475,
+          "submitP95Ms": 2.299999952316284,
+          "calls": 20,
+          "triangles": 40212,
+          "residentTextures": 18,
+          "residentGeometries": 84
+        },
+        {
+          "count": 4,
+          "samples": 75,
+          "medianMs": 16.699999999999818,
+          "p95Ms": 16.800000000000182,
+          "submitMedianMs": 2.4000000953674316,
+          "submitP95Ms": 3.3000001907348633,
+          "calls": 81,
+          "triangles": 170548,
+          "residentTextures": 18,
+          "residentGeometries": 84
+        }
+      ],
+      "constructionMs": [
+        124.40000009536743,
+        44.09999990463257,
+        44.90000009536743,
+        31.59999990463257,
+        26.59999990463257,
+        29.799999952316284
+      ],
+      "independent": true,
+      "browser": "Chrome/157.0.8103.79"
+    }
+  },
+  "atelier": {
+    "avant": {
+      "scope": "Chromium local, API de profil simulée, émulation tactile. Les intervalles portent sur les images WebGL de l’aperçu et le tas sur la page entière.",
+      "frames": [
+        {
+          "label": "1360 × 900 · marche",
+          "count": 144,
+          "meanFps": 60,
+          "medianMs": 16.7,
+          "p95Ms": 18.2,
+          "slowestMs": 20.4,
+          "heapMiB": 39.1
+        },
+        {
+          "label": "390 × 844 · marche",
+          "count": 145,
+          "meanFps": 60,
+          "medianMs": 16.6,
+          "p95Ms": 17.4,
+          "slowestMs": 19.5,
+          "heapMiB": 33.3
+        }
+      ],
+      "captures": [
+        "atelier-breton-ordinateur.png",
+        "atelier-breton-clavier.png",
+        "atelier-echelle-quartier.png",
+        "atelier-telephone.png",
+        "atelier-paysage.png",
+        "atelier-320.png",
+        "salle-culture.png",
+        "boutique-qualite-reduite.png",
+        "quartier-distance-jeu.png",
+        "personnage-au-quartier.png"
+      ],
+      "errors": [],
+      "graphics": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "renderedDetails": [
+        "nose",
+        "mouth",
+        "eyebrows",
+        "facialHair",
+        "eyes"
+      ],
+      "draft": {
+        "closeAndReload": true,
+        "keyboardRotation": true,
+        "noPrematureSave": true,
+        "explicitDiscard": true
+      },
+      "desktopAppearanceTools": {
+        "visibleAfterSelection": true,
+        "tabOrder": true,
+        "focusVisible": true
+      },
+      "rapidChanges": {
+        "count": 18,
+        "heapBeforeMiB": 34.1,
+        "heapAfterMiB": 34.1,
+        "hair": 12,
+        "colors": 6
+      },
+      "smallScreen": {
+        "viewport": [
+          320,
+          640
+        ],
+        "dialog": [
+          304,
+          304
+        ],
+        "preview": [
+          276,
+          166
+        ],
+        "overflows": false
+      },
+      "saved": {
+        "nickname": "Mael29",
+        "gender": "male",
+        "clothing": "berry",
+        "skin": "honey",
+        "strength": "green-thumb",
+        "appearance": {
+          "version": 2,
+          "body": "regular",
+          "hair": "braids",
+          "hairColor": "chestnut",
+          "face": "round",
+          "eyes": "almond",
+          "eyeColor": "blue",
+          "eyebrows": "natural",
+          "nose": "round",
+          "mouth": "smile",
+          "facialHair": "none",
+          "top": "embroidered-vest",
+          "bottom": "pleated-skirt",
+          "bottomColor": "blue",
+          "shoes": "work",
+          "shoeColor": "ochre",
+          "accessory": "brooch",
+          "headwear": "bigouden-coif",
+          "jacket": "none",
+          "accentColor": "cream",
+          "jacketColor": "navy",
+          "headwearColor": "cream",
+          "dyes": {
+            "top": "#427a91",
+            "bottom": "#383342",
+            "shoes": "#443736",
+            "headwear": "#f9ebd2",
+            "accent": "#d98050"
+          }
+        },
+        "createdAt": "2026-11-22T10:00:00Z"
+      },
+      "finish": {
+        "stickyCategories320": true,
+        "rememberedField": true,
+        "completeOutfitResetAndUndo": true,
+        "visibleStageMode": true,
+        "disabledReason": true
+      },
+      "softwarePortraitPixels": 46017,
+      "passed": true
+    },
+    "apres": {
+      "scope": "Chromium local, API de profil simulée, émulation tactile. Les intervalles portent sur les images WebGL de l’aperçu et le tas sur la page entière.",
+      "frames": [
+        {
+          "label": "1360 × 900 · marche",
+          "count": 145,
+          "meanFps": 60,
+          "medianMs": 16.7,
+          "p95Ms": 17.2,
+          "slowestMs": 18,
+          "heapMiB": 52
+        },
+        {
+          "label": "390 × 844 · marche",
+          "count": 145,
+          "meanFps": 60,
+          "medianMs": 16.7,
+          "p95Ms": 17.6,
+          "slowestMs": 18.4,
+          "heapMiB": 46.8
+        }
+      ],
+      "captures": [
+        "atelier-breton-ordinateur.png",
+        "atelier-breton-clavier.png",
+        "atelier-echelle-quartier.png",
+        "atelier-telephone.png",
+        "atelier-paysage.png",
+        "atelier-320.png",
+        "salle-culture.png",
+        "boutique-qualite-reduite.png",
+        "quartier-distance-jeu.png",
+        "personnage-au-quartier.png",
+        "rayures-et-foulard.png"
+      ],
+      "errors": [],
+      "graphics": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x000046A8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "expressions": {
+        "visible": 4,
+        "keyboardZoom": true,
+        "requestsBeforeConfirmation": 0
+      },
+      "renderedDetails": [
+        "nose",
+        "mouth",
+        "eyebrows",
+        "facialHair",
+        "eyes"
+      ],
+      "draft": {
+        "closeAndReload": true,
+        "keyboardRotation": true,
+        "noPrematureSave": true,
+        "explicitDiscard": true
+      },
+      "desktopAppearanceTools": {
+        "visibleAfterSelection": true,
+        "tabOrder": true,
+        "focusVisible": true
+      },
+      "rapidChanges": {
+        "count": 18,
+        "heapBeforeMiB": 47.8,
+        "heapAfterMiB": 65.5,
+        "hair": 12,
+        "colors": 6
+      },
+      "smallScreen": {
+        "viewport": [
+          320,
+          640
+        ],
+        "dialog": [
+          304,
+          304
+        ],
+        "preview": [
+          276,
+          166
+        ],
+        "overflows": false
+      },
+      "saved": {
+        "nickname": "Mael29",
+        "gender": "male",
+        "clothing": "berry",
+        "skin": "honey",
+        "strength": "green-thumb",
+        "appearance": {
+          "version": 2,
+          "body": "regular",
+          "hair": "braids",
+          "hairColor": "chestnut",
+          "face": "round",
+          "eyes": "almond",
+          "eyeColor": "blue",
+          "eyebrows": "natural",
+          "nose": "round",
+          "mouth": "smile",
+          "facialHair": "none",
+          "top": "embroidered-vest",
+          "bottom": "pleated-skirt",
+          "bottomColor": "blue",
+          "shoes": "work",
+          "shoeColor": "ochre",
+          "accessory": "brooch",
+          "headwear": "bigouden-coif",
+          "jacket": "none",
+          "accentColor": "cream",
+          "jacketColor": "navy",
+          "headwearColor": "cream",
+          "dyes": {
+            "top": "#427a91",
+            "bottom": "#383342",
+            "shoes": "#443736",
+            "headwear": "#f9ebd2",
+            "accent": "#d98050"
+          }
+        },
+        "supportsStripe": true,
+        "createdAt": "2026-11-22T10:00:00Z"
+      },
+      "quarter": {
+        "residents": [
+          "chanvrier",
+          "village-breton",
+          "village-fisherman",
+          "village-loic"
+        ],
+        "zoom": 25,
+        "callsInLastFrame": 253,
+        "trianglesInLastFrame": 566427
+      },
+      "finish": {
+        "stickyCategories320": true,
+        "rememberedField": true,
+        "completeOutfitResetAndUndo": true,
+        "visibleStageMode": true,
+        "disabledReason": true
+      },
+      "separateDyes": {
+        "stripe": "#ac4939",
+        "scarf": "#a84237",
+        "reloaded": true
+      },
+      "softwarePortraitPixels": 46874,
+      "passed": true
+    }
+  }
+}

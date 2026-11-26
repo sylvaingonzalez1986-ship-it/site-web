@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "@/components/navigation/NavigationLink";
-import { useRouter } from "@/components/navigation/NavigationFeedback";
+import { ShopProductLink } from "@/components/boutique/ShopProductLink";
+import { reportShopCartAddition } from "@/lib/shop-measurement";
+import type { ShopOrigin } from "@/lib/shop-origin";
 import { Plus } from "lucide-react";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
@@ -32,6 +33,7 @@ function buildStockLimitMessage(productName: string, maxAvailable?: number): str
 type ProductCardActionsProps = {
   product: Product;
   productHref: string;
+  origin?: ShopOrigin;
   addButtonLabel: string;
   inStock: boolean;
   requiresVariantChoice: boolean;
@@ -42,13 +44,13 @@ type ProductCardActionsProps = {
 export function ProductCardActions({
   product,
   productHref,
+  origin,
   addButtonLabel,
   inStock,
   requiresVariantChoice,
   maxPurchasableQty,
   hasPromo,
 }: ProductCardActionsProps) {
-  const router = useRouter();
   const { addToCart, cartLoading } = useCart();
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -56,19 +58,15 @@ export function ProductCardActions({
   const [added, setAdded] = useState(false);
   const [stockError, setStockError] = useState<string | null>(null);
 
-  const handleAddToCart = () => {
+  const handleAddToCart: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     if (cartLoading) {
-      return;
-    }
-
-    if (requiresVariantChoice) {
-      router.push(productHref);
       return;
     }
 
     setAdded(false);
     const result = addToCart(product, undefined, qty);
     if (result.ok) {
+      reportShopCartAddition(event.currentTarget, product.id);
       setStockError(null);
       setAdded(true);
       setQty(1);
@@ -114,7 +112,7 @@ export function ProductCardActions({
 
       <div className={`mt-auto border-t-2 border-[#1a1a1a] pt-4 ${styles.purchase}`}>
         {hasPromo ? (
-          <div className="flex items-end gap-3">
+          <div className="flex items-end gap-3" data-shop-impression-price>
             <span className="price-original text-sm">{formatPrice(product.originalPrice!)}{product.category === "fleurs" && " / g"}</span>
             <div className="flex items-end gap-2">
               <span className="price-promo font-display text-2xl">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</span>
@@ -122,18 +120,21 @@ export function ProductCardActions({
             </div>
           </div>
         ) : (
-          <div className="flex items-end gap-2">
+          <div className="flex items-end gap-2" data-shop-impression-price>
             <p className="font-display text-2xl font-black text-ink">{formatPrice(product.price)}{product.category === "fleurs" && " / g"}</p>
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-charcoal">TTC</span>
           </div>
         )}
         <div className={`mt-3 flex flex-wrap items-center gap-2 ${styles.controls}`}>
-          <Link data-ui-commerce="secondary" data-ui-shape="control"
+          <ShopProductLink data-ui-commerce="secondary" data-ui-shape="control"
             href={productHref}
+            origin={origin}
+            control="view"
+            aria-label={`Voir ${product.name}`}
             className="btn-cartoon btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center px-4 py-3 text-xs"
           >
             Voir
-          </Link>
+          </ShopProductLink>
           {!requiresVariantChoice && inStock && (
             <QuantitySelector
               value={qty}
@@ -145,15 +146,23 @@ export function ProductCardActions({
               compact
             />
           )}
-          <button data-ui-commerce="primary" data-ui-shape="control"
+          {requiresVariantChoice && inStock ? <ShopProductLink data-ui-commerce="primary" data-ui-shape="control"
+            href={productHref}
+            origin={origin}
+            control="format"
+            aria-label={`Choisir format · ${product.name}`}
+            className="btn-cartoon btn-primary inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 px-4 py-3 text-xs"
+          >
+            Choisir format
+          </ShopProductLink> : <button data-ui-commerce="primary" data-ui-shape="control"
             type="button"
             onClick={handleAddToCart}
             disabled={cartLoading || !inStock}
             className="btn-cartoon btn-primary inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 px-4 py-3 text-xs disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Plus size={15} />{" "}
-            {inStock ? (requiresVariantChoice ? "Choisir format" : addButtonLabel) : "Rupture"}
-          </button>
+            {inStock ? addButtonLabel : "Rupture"}
+          </button>}
         </div>
       </div>
 

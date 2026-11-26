@@ -1,5 +1,6 @@
 /** Shared live shell and Three canvas, with read-only local destination/API fixtures. */
 import assert from 'node:assert/strict';
+import {mkdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {bankReturnLink} from './audit-building-rooms-scenarios.mjs';
 
@@ -10,8 +11,16 @@ export function world3dFixturePayload(path) {
   return null;
 }
 
-export async function auditQuarterMenu({page, visit, assertNoOverflow, results, origin, output}) {
+export async function auditQuarterMenu({page, visit, setScenario, assertNoOverflow, results, origin, output}) {
+  const visualStage = process.env.QUARTER_MENU_VISUAL_STAGE;
+  if (visualStage) {
+    assert.match(visualStage, /^(avant|apres|reessai)$/);
+    output = resolve('output/finition-interface/navigation', visualStage === 'avant' ? 'avant' : 'apres');
+    await mkdir(output, {recursive: true});
+  }
   const trigger = 'button[aria-label="Ouvrir le menu du quartier"]';
+  const summary = 'button[aria-label="Ouvrir le bilan de ma partie"]';
+  const villageBack = 'button[aria-label="Revenir au village 3D"]';
   const menu = 'dialog[aria-label="Menu de Kanab Quest"][open]';
   const returnLink = 'a[href="/arene"][aria-label="Retour à l’Arène"]';
   const readyCanvas = 'canvas[data-village-ready="true"]';
@@ -45,17 +54,56 @@ export async function auditQuarterMenu({page, visit, assertNoOverflow, results, 
     });
     await page.screenshot({path: resolve(output, `quarter-menu-${name}.jpg`), quality: 92});
   };
+  const captureHud = async name => {
+    const hud = '[data-village-prototype] > header';
+    await page.$eval(hud, async element => {
+      await Promise.all([...element.querySelectorAll('img')].map(image => image.decode()));
+      await document.fonts.ready;
+    });
+    await page.screenshot({path: resolve(output, `quarter-hud-${name}.jpg`), quality: 92});
+    return page.$eval(hud, header => {
+      const rect = header.getBoundingClientRect();
+      const controls = [...header.querySelectorAll(':scope > nav > :is(button, a)')].map(element => {
+        const box = element.getBoundingClientRect();
+        return {label: element.getAttribute('aria-label'), x: box.x, right: box.right, width: box.width, height: box.height};
+      });
+      return {width: rect.width, height: rect.height, controls};
+    });
+  };
   const waitArena = async () => {
     await page.waitForSelector('main[data-world="arena"] h1', {visible: true});
     assert.equal(new URL(page.url()).pathname, '/arene');
     assert.equal(new URL(page.url()).search, '');
   };
+  const checkRetry = async () => {
+    await page.setViewport({width: 320, height: 710, isMobile: true, hasTouch: true});
+    // The lobby also requests equipment, so an error on the first request could miss the HUD.
+    await visit('overflow-equipment-error', 'villageDay=1&villageMinute=720');
+    const failedHud = '[data-village-activity-state="error"]';
+    await page.waitForSelector(failedHud, {visible: true});
+    assert.match(await page.$eval(`${failedHud} [role="status"]`, element => element.textContent), /indisponible/);
+    await captureHud('erreur-320');
+    setScenario('starter');
+    await page.focus(`${failedHud} button`);
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-village-activity-state="ready"]', {visible: true});
+    await assertNoOverflow('Quarter HUD error and retry');
+    results.push({scenario: 'quarter-hud-retry', width: 320, errorVisible: true, keyboardRetry: true});
+  };
+  if (visualStage === 'reessai') return checkRetry();
   for (const width of [1440, 320]) {
     await page.setViewport({width, height: width === 320 ? 710 : 900, isMobile: width === 320, hasTouch: width === 320});
     await visit('starter', 'villageDay=1&villageMinute=720');
     await page.waitForSelector(readyCanvas);
     await page.waitForSelector('[data-village-phase="day"]');
+    if (visualStage) await page.waitForSelector('[data-village-activity-state="ready"]');
     await page.evaluate(selector => { window.__quarterMenuCanvas = document.querySelector(selector); }, readyCanvas);
+
+    if (visualStage) {
+      const geometry = await captureHud(width);
+      assert(geometry.controls.every(control => control.x >= 0 && control.right <= width && control.height >= 44));
+      results.push({scenario: 'quarter-hud', route: '/arene/placard', initial: 'starter, day 1, noon', width, height: page.viewport().height, geometry});
+    }
 
     await page.focus(trigger);
     await page.keyboard.press('Enter');
@@ -83,6 +131,36 @@ export async function auditQuarterMenu({page, visit, assertNoOverflow, results, 
     await page.goBack();
     await awaitMenuClose();
     assert.equal(new URL(page.url()).pathname, '/arene/placard');
+
+    if (visualStage === 'avant') {
+      await captureCommerce();
+      continue;
+    }
+    if (visualStage === 'apres') {
+      await page.focus(trigger);
+      await page.keyboard.press('Tab');
+      assert.equal(await page.$eval(summary, element => document.activeElement === element && getComputedStyle(element).outlineStyle !== 'none'), true);
+      await page.keyboard.press('Tab');
+      assert.equal(await page.$eval(`header ${returnLink}`, element => document.activeElement === element), true);
+      await page.keyboard.down('Shift');
+      await page.keyboard.press('Tab');
+      await page.keyboard.up('Shift');
+      await page.keyboard.press('Enter');
+      const nextAction = '[data-village-activity-panel] [data-placard-next-action] button';
+      await page.waitForSelector(nextAction, {visible: true});
+      const action = await page.$eval(nextAction, element => element.textContent.trim());
+      assert(action, 'The game summary exposes the next action');
+      await openMenu();
+      assert.match(await page.$eval(menu, element => document.getElementById(element.getAttribute('aria-describedby')).textContent), /Ma partie/);
+      await capture(`ma-partie-${width}`);
+      await page.keyboard.press('Escape');
+      await awaitMenuClose();
+      await page.waitForFunction(selector => document.activeElement?.matches(selector), {}, trigger);
+      await page.focus(villageBack);
+      await page.keyboard.press('Enter');
+      await page.waitForSelector('[data-village-activity-panel]', {hidden: true});
+      results.push({scenario: 'quarter-hud-next-action', width, nextAction: action, keyboardOrder: true, focusRestored: true});
+    }
 
     for (const key of [...destinations.slice(1), 'hub']) {
       await openMenu();
@@ -127,9 +205,25 @@ export async function auditQuarterMenu({page, visit, assertNoOverflow, results, 
     await awaitMenuClose();
     results.push({scenario: 'learning-launcher', width, guideVisible: true});
 
+    async function captureCommerce() {
+      const query = 'view=market&section=sales&flower=fixture-flower';
+      await visit('starter', query);
+      await page.waitForSelector('[data-placard-view="market"]');
+      const geometry = await captureHud(`commerce-${width}`);
+      assert(geometry.controls.every(control => control.x >= 0 && control.right <= width && control.height >= 44));
+      await openMenu();
+      await checkActive('market');
+      await capture(`commerce-${width}`);
+      await page.keyboard.press('Escape');
+      await awaitMenuClose();
+      results.push({scenario: 'quarter-hud', route: `/arene/placard?${query}`, initial: 'direct URL, starter', width, height: page.viewport().height, geometry});
+    }
     const query = 'view=market&section=sales&flower=fixture-flower';
-    await visit('starter', query);
-    await page.waitForSelector('[data-placard-view="market"]');
+    if (visualStage) await captureCommerce();
+    else {
+      await visit('starter', query);
+      await page.waitForSelector('[data-placard-view="market"]');
+    }
     await activate(`header ${returnLink}`);
     await waitArena();
     await visit('starter', query);
@@ -159,6 +253,8 @@ export async function auditQuarterMenu({page, visit, assertNoOverflow, results, 
     results.push({scenario: 'arena-return', width, direct: true, reload: true, draftGuard: true, backRestoresActivity: true});
   }
 
+  if (visualStage === 'avant') return;
+
   await page.goto(new URL('/menu-indisponible', origin).href, {waitUntil: 'domcontentloaded'});
   await openMenu();
   const disabled = `${menu} [data-placard-nav="game"]`;
@@ -178,6 +274,8 @@ export async function auditQuarterMenu({page, visit, assertNoOverflow, results, 
   await checkOverflow();
   await capture('nuit-320');
   results.push({scenario: 'night-quarter-menu', width: 320});
+
+  if (visualStage === 'apres') await checkRetry();
 }
 
 export async function auditWorld3d({page,visit,click,screenshot,assertNoOverflow,results,origin,warehousePlayer}) {

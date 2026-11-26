@@ -12,6 +12,7 @@ import { ChanvrierWardrobe, useChanvrierWardrobe } from "./ChanvrierWardrobe";
 import type { ChanvrierWorkshopView } from "./chanvrier-workshop-renderer";
 import { KqChapterHeading } from "../placard/KqChapterHeading";
 import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
+import type { ChanvrierExpression } from "../placard/kq-grow-worker-model";
 import styles from "./ChanvrierProfileEditor.module.css";
 
 const ICONS = [Leaf, Coins, Handshake, Wrench];
@@ -49,6 +50,7 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
   const latest = useRef(editor);
   const { profile: draft, step } = editor;
   const [view, setView] = useState<ChanvrierWorkshopView>(step === "look" || step === "inheritance" ? "portrait" : "full");
+  const [expression, setExpression] = useState<ChanvrierExpression>("neutral");
   const [confirmedStrength, setConfirmedStrength] = useState(false);
   const [nicknameTouched, setNicknameTouched] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -62,6 +64,7 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
   const titleId = useId();
   const nicknameHintId = useId();
   const nicknameErrorId = useId();
+  const nextHintId = useId();
   const strength = CHANVRIER_STRENGTHS.find(choice => choice.code === (profile?.strength ?? draft.strength))!;
   const { gender, clothing, skin, appearance } = draft;
   const look = useMemo(() => ({ gender, clothing, skin, appearance }), [gender, clothing, skin, appearance]);
@@ -75,10 +78,13 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
   const stepIndex = steps.indexOf(step);
   const validNickname = /^[A-Za-z0-9._-]{3,24}$/.test(draft.nickname.trim());
   const nicknameError = nicknameTouched && !validNickname;
+  const nextHint = step !== "inheritance" && !validNickname ? "Renseigne ton surnom pour continuer."
+    : step === "review" && !profile && !confirmedStrength ? "Confirme ta spécialité pour continuer." : null;
   const changeStep = (next: Step) => {
     if (inFlight.current) return;
     updateEditor({}, next);
     setError("");
+    setExpression("neutral");
     setView(next === "look" ? wardrobe.category.view : "full");
   };
 
@@ -113,7 +119,7 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
     setError("");
     const identityHeaders: Record<string, string> = ownerId ? { [CHANVRIER_OWNER_HEADER]: ownerId } : {};
     try {
-      const response = await api.request("/api/arena/chanvrier", { method: "POST", headers: { ...identityHeaders, "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, nickname: draft.nickname.trim(), strength: strength.code, appearance: getChanvrierAppearance(draft) }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) });
+      const response = await api.request("/api/arena/chanvrier", { method: "POST", headers: { ...identityHeaders, "Content-Type": "application/json" }, body: JSON.stringify({ ...draft, nickname: draft.nickname.trim(), strength: strength.code, appearance: getChanvrierAppearance(draft), supportsStripe: true }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) });
       const body = await response.json();
       if (controller.signal.aborted) return;
       if (!response.ok) throw new Error(body.error || "Enregistrement impossible.");
@@ -154,10 +160,11 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
 
   const nicknameField = <label className={styles.nickname} key="nickname">Ton surnom
     <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Loic29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => updateEditor({ nickname: event.target.value })} />
-    <small id={nicknameHintId}>3 à 24 caractères : lettres sans accent, chiffres, . _ -</small>
+    <small id={nicknameHintId}>3 à 24 caractères : A–Z, a–z, 0–9, . _ -</small>
     {nicknameError ? <span id={nicknameErrorId} className={styles.fieldError}>Choisis un surnom de 3 à 24 caractères autorisés pour continuer.</span> : null}
   </label>;
-  const lookEditor = <ChanvrierWardrobe key="wardrobe" wardrobe={wardrobe} profile={look} onViewChange={next => setView(current => current === "village" ? current : next)} />;
+  const lookEditor = <ChanvrierWardrobe key="wardrobe" wardrobe={wardrobe} profile={look} expression={expression} onExpressionChange={setExpression} onViewChange={next => setView(current => current === "village" ? current : next)}
+    onCategoryChange={() => controls.current?.scrollTo({ top: 0, behavior: "instant" })} />;
 
   return <dialog ref={dialog} className={styles.dialog} data-chanvrier-profile data-profile-step={step} aria-labelledby={titleId} aria-busy={busy} onCancel={event => { event.preventDefault(); if (!inFlight.current) onClose(); }}>
     <div data-farm-guide-host />
@@ -175,7 +182,7 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
       {step === "inheritance" ? <aside className={styles.storyScene}>
         <Image className={styles.sceneImage} src={ARENA_RELEVE_SCENES.arrival} alt="Loïc t’attend avec les clés devant la grange aux portes turquoise." width={1536} height={1024} sizes="(max-width: 680px) 100vw, 480px" loading="eager" />
         <p className={styles.sceneCaption}>Loïc a gardé les clés. Il t’aidera à faire tes premiers pas.</p>
-      </aside> : <ChanvrierWorkshopPreview profile={look} view={view} onViewChange={setView} disabled={busy} />}
+      </aside> : <ChanvrierWorkshopPreview profile={look} view={view} onViewChange={setView} disabled={busy} expression={expression} />}
       <section ref={controls} className={styles.controls} aria-label={step === "look" ? "Surnom et apparence" : undefined}>
         {step !== "look" && stepHeading}
         {step === "inheritance" ? <>
@@ -209,13 +216,14 @@ function ProfileDialog({ profile, onSaved, onClose, onDiscard, draftScope, owner
           </div>}
         </>}
         {(draftScope || onDiscard) && <button type="button" className={styles.editLink} data-profile-discard disabled={busy} onClick={discard}>Abandonner les modifications</button>}
-        {draftScope && editor.hasDraft ? <p className={styles.note} data-profile-draft>Brouillon local · à valider</p> : null}
         {error ? <p ref={errorMessage} role="alert" tabIndex={-1} className={styles.error}>{error}</p> : null}
       </section>
     </div>
     <footer className={styles.actions}>
+      {nextHint ? <p id={nextHintId} className={styles.nextStatus}>{nextHint}</p>
+        : draftScope && editor.hasDraft ? <p className={styles.nextStatus} data-profile-draft>Brouillon local</p> : null}
       {stepIndex > 0 ? <button type="button" data-profile-back disabled={busy} onClick={() => changeStep(steps[stepIndex - 1])}><ArrowLeft size={17} aria-hidden="true" />Retour</button> : null}
-      <button type="button" data-profile-next className={styles.primary} disabled={busy || (step !== "inheritance" && !validNickname) || (step === "review" && !profile && !confirmedStrength)} onClick={() => step === "review" ? void save() : changeStep(steps[stepIndex + 1])}>{busy ? "Enregistrement…" : nextLabel}<ArrowRight size={18} aria-hidden="true" /></button>
+      <button type="button" data-profile-next aria-describedby={nextHint ? nextHintId : undefined} className={styles.primary} disabled={busy || Boolean(nextHint)} onClick={() => step === "review" ? void save() : changeStep(steps[stepIndex + 1])}>{busy ? "Enregistrement…" : nextLabel}<ArrowRight size={18} aria-hidden="true" /></button>
     </footer>
   </dialog>;
 }

@@ -84,6 +84,10 @@
 .input { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid #00563f66; border-radius: 2px; background: white; color: var(--arcade-dark); font-size: 16px; }
 .input::placeholder { color: #53685b; opacity: 1; }
 .field { display: grid; gap: 5px; min-width: 0; color: var(--arcade-dark); font-size: .8rem; font-weight: 700; }
+.input[aria-invalid="true"] { border-color: #922e25; }
+.fieldError { display: block; color: #922e25; font-size: .8rem; font-weight: 700; }
+.relayField { display: grid; gap: 5px; }
+.relayField:focus { outline: 2px solid var(--arcade-green); outline-offset: 4px; }
 .mobileSummary { display: none; }
 .input:disabled { background: #e8efe4; opacity: .65; }
 .deliveryOptions { margin-block: 8px; padding: 12px; border: 1px solid #00563f40; background: #e8efe4; }

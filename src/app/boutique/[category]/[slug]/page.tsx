@@ -4,10 +4,13 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/JsonLd";
 import { ProductDetailActions } from "@/components/boutique/ProductDetailActions";
 import { ProductImageGallery } from "@/components/boutique/ProductImageGallery";
+import { ProductReviewAnchor } from "@/components/boutique/ProductReviewAnchor";
 import { ProductTastingBadge, ProductTastingSection } from "@/components/boutique/ProductTastingSection";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
-import { readPublicStoreByBackend } from "@/lib/data-backend";
 import { getOwnProducer, isOwnProduct } from "@/lib/own-producer";
+import { productReturnContext, readProductCatalog } from "@/lib/shop-product-route";
+import { getCatalogCategoryBySlug } from "@/lib/catalog-categories";
+import { parseShopOrigin, shopOriginLabel, shopProductHref, shopResultsHref, shopSearchParams, type ShopOrigin } from "@/lib/shop-origin";
 import type { Producer } from "@/types/store";
 import { isProductTastingStorefrontEnabled, isProductTastingNotebookLinkEnabled } from "@/lib/product-tasting-feature";
 import { getSiteUrl } from "@/lib/site-url";
@@ -39,6 +42,7 @@ const categorySlugMap: Record<string, { slug: string; label: string }> = {
 
 type ProductPageProps = {
   params: Promise<{ category: string; slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 type SiblingProduct = { id: string; name: string; category: string };
@@ -46,6 +50,8 @@ type SiblingProduct = { id: string; name: string; category: string };
 type FindProductResult = {
   product: Product;
   producer?: Producer;
+  origin: ShopOrigin | null;
+  originProducerName?: string;
   prevProduct: SiblingProduct | null;
   nextProduct: SiblingProduct | null;
   currentIndex: number;
@@ -55,13 +61,15 @@ type FindProductResult = {
 
 async function findProduct(
   slug: string,
+  origin: ShopOrigin | null = null,
 ): Promise<FindProductResult | null> {
-  const store = await readPublicStoreByBackend();
+  const store = await readProductCatalog();
   const product = store.products.find((p) => p.id === slug);
   if (!product) return null;
 
+  const ownProducer = getOwnProducer(store.content.boutique);
   const producer = isOwnProduct(product)
-    ? getOwnProducer(store.content.boutique)
+    ? ownProducer
     : store.producers.find((pr) => pr.id === product.producerId);
 
   // Build same-category product list (deduplicated, stable order)
@@ -87,6 +95,7 @@ async function findProduct(
   return {
     product,
     producer,
+    ...productReturnContext(origin, product, store),
     prevProduct,
     nextProduct,
     currentIndex: idx,
@@ -163,10 +172,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug, category } = await params;
+export default async function ProductPage({ params, searchParams }: ProductPageProps) {
+  const [{ slug, category }, query] = await Promise.all([params, searchParams]);
+  const requestedOrigin = parseShopOrigin(shopSearchParams(query));
   const [result, tastingSummary] = await Promise.all([
-    findProduct(slug),
+    findProduct(slug, requestedOrigin),
     findProductTastingSummary(slug),
   ]);
 
@@ -177,6 +187,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const {
     product,
     producer,
+    origin,
+    originProducerName,
     prevProduct,
     nextProduct,
     currentIndex,
@@ -188,7 +200,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categorySlug = catInfo?.slug ?? `${product.category}-cbd`;
   const categoryLabel = catInfo?.label ?? "CBD";
   const canonicalUrl = `${baseUrl}/boutique/${categorySlug}/${product.id}`;
-  if (category !== categorySlug) permanentRedirect(`/boutique/${categorySlug}/${product.id}`);
+  if (category !== categorySlug) {
+    permanentRedirect(shopProductHref(`/boutique/${categorySlug}/${product.id}`, origin));
+  }
 
   const prevHref = prevProduct
     ? `/boutique/${categorySlugMap[prevProduct.category]?.slug ?? `${prevProduct.category}-cbd`}/${prevProduct.id}`
@@ -208,6 +222,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <section data-ui-commerce="product-page" className={styles.page} data-world="market">
+      <ProductReviewAnchor productId={product.id} />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", url: baseUrl },
@@ -325,17 +340,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
 
               <div className={styles.backLinks}>
+                {origin && <p className="w-full text-sm font-semibold">{[shopOriginLabel(origin), originProducerName].filter(Boolean).join(" · ")}</p>}
                 <Link data-ui-commerce="secondary" data-ui-shape="control"
-                  href={`/boutique/${categorySlug}`}
+                  href={origin ? shopResultsHref(origin) : `/boutique/${categorySlug}`}
+                  scroll={origin ? false : undefined}
                   className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
                 >
-                  ← Retour {categoryLabel}
+                  {origin ? "← Retour aux résultats" : `Voir les ${getCatalogCategoryBySlug(categorySlug)?.sentenceLabel ?? "produits de la catégorie"}`}
                 </Link>
                 <Link data-ui-commerce="secondary" data-ui-shape="control"
                   href="/boutique"
                   className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
                 >
-                  Toute la boutique
+                  Accueil du Marché
                 </Link>
               </div>
             </div>
@@ -360,7 +377,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <nav data-ui-commerce="gold" data-ui-shape="panel" className={styles.pager} aria-label="Autres produits de la même catégorie">
             {prevHref ? (
               <Link data-ui-commerce="secondary" data-ui-shape="control"
-                href={prevHref}
+                href={shopProductHref(prevHref, origin)}
                 className="btn-cartoon btn-secondary inline-flex h-10 items-center gap-2 px-4 text-xs"
                 title={prevProduct!.name}
               >
@@ -374,7 +391,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </span>
             {nextHref ? (
               <Link data-ui-commerce="secondary" data-ui-shape="control"
-                href={nextHref}
+                href={shopProductHref(nextHref, origin)}
                 className="btn-cartoon btn-secondary inline-flex h-10 items-center gap-2 px-4 text-xs"
                 title={nextProduct!.name}
               >

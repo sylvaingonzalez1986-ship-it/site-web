@@ -10,9 +10,6 @@
 .albumPanel{display:flex;flex:1;flex-direction:column;min-height:0;overflow:hidden}
 .albumPanel[hidden]{display:none}
 .albumTabs{display:flex;flex-shrink:0;gap:10px;padding:12px 24px;border-bottom:2px solid #172923;background:#fff1d6}
-.albumTabs button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 15px;border:var(--game-control-border-width, 2px) solid #172923;border-radius:0;color:#172923;font:800 13px var(--font-body),Arial,sans-serif;cursor:pointer;box-shadow:none;--game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));background:transparent;border-color:transparent;border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch}
-.albumTabs button[aria-selected=true]{box-shadow:none;--game-control-art:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));background:transparent;border-color:transparent;color:#172923}
-.albumTabs button>svg{flex-shrink:0}
 .buddieThumbnail{display:block;width:100%;background:#fffaf0}
 .buddieEnlarged>span{width:100%;max-width:440px}
 .buddieEnlarged img{box-shadow:none}
@@ -27,8 +24,6 @@
 .header h2{margin:6px 0;font:900 clamp(25px,3.5vw,42px)/1.05 var(--font-display),Impact,sans-serif;text-transform:uppercase}
 .header p{margin:8px 0 0;font-size:13px;color:#102019}
 .close{position:absolute;top:14px;right:14px;z-index:3;display:grid;place-items:center;width:44px;height:44px;cursor:pointer;border:var(--game-control-border-width, 2px) solid #172923;color:#172923;border-radius:0;box-shadow:none;--game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));background:transparent;border-color:transparent;border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch}.close svg{width:23px;height:23px}
-.progress{display:flex;align-items:center;gap:24px;padding:12px 24px;flex-shrink:0;background:var(--game-surface-warm, #ffae59);border-bottom:2px solid #17292355}
-.progress>div{display:grid;gap:2px;flex-shrink:0}.progress strong{font-size:23px;line-height:1.1;font-variant-numeric:tabular-nums}.progress span{font-size:11px}.progress progress{flex:1;width:100%;min-width:50px;height:12px;background:#fffaf1;accent-color:#076c61;border:1px solid #172923;border-radius:8px}.progress progress::-webkit-progress-bar{background:#fffaf1}.progress progress::-webkit-progress-value{background:#076c61}
 .filters{display:grid;gap:12px;padding:14px 24px;flex-shrink:0;background:#fff1d6;border-bottom:2px solid #172923}.filters nav{display:flex;gap:8px}.filters nav button{display:flex;gap:7px;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:800;cursor:pointer;border:var(--game-control-border-width, 2px) solid #172923;border-radius:0;color:#172923;box-shadow:none;--game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));background:transparent;border-color:transparent;border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch}.filters nav button[aria-pressed=true]{color:#172923;box-shadow:none;--game-control-art:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));background:transparent;border-color:transparent}.filters nav button:disabled{opacity:.5;cursor:default}.filters nav b{font-size:11px;opacity:.85}.filters>div{display:flex;gap:12px}
 .search{display:flex;flex:1;align-items:center;gap:8px;min-width:0;min-height:42px;padding:7px 10px;border:1px solid #172923;border-radius:var(--game-panel-radius, 2px);background:#fffaf0;color:#172923}.search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:inherit;font-size:13px}.search:focus-within{outline:3px solid #172923;outline-offset:2px}
 .utility{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800}.utility select{max-width:220px;min-height:42px;padding:6px 8px;font:inherit;border:1px solid #172923;border-radius:var(--game-panel-radius, 2px);background:#fffaf0;color:#172923}
@@ -52,18 +47,33 @@
 .collectionDialog select:focus-visible{outline-offset:3px;outline:3px solid #172923}.card:focus-visible{outline-width:4px!important;outline-color:#172923!important}
 @media(max-width:700px){
  .collectionDialog{width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;border:2px solid transparent;border-radius:0;background:transparent;box-shadow:none;border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch}.header{padding:18px 68px 15px 16px}.header h2{font-size:28px}.header p,.header small{display:none}.close{top:12px;right:12px}
- .progress{gap:12px;padding:12px 16px}.progress strong{font-size:20px}.progress span{font-size:10px}.progress progress{min-width:20px}.filters{padding:10px 14px;gap:10px}.filters nav{gap:5px}.filters nav button{flex:1;padding:6px;font-size:11px;gap:4px}.filters>div{gap:8px}.utility>span{display:none}.utility select{width:140px;font-size:11px}.search input{font-size:12px}.cardsArea{padding:12px 14px 22px}.hint{font-size:11px;align-items:flex-start;line-height:1.4}.hint svg{flex-shrink:0}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.cardInfo{padding:8px;gap:5px}.cardInfo>strong{font-size:12px}.cardInfo>small{font-size:10px}.cardInfo>b{font-size:11px}.footer{padding:9px 14px;font-size:10px}
+ .filters{padding:10px 14px;gap:10px}.filters nav{gap:5px}.filters nav button{flex:1;padding:6px;font-size:11px;gap:4px}.filters>div{gap:8px}.utility>span{display:none}.utility select{width:140px;font-size:11px}.search input{font-size:12px}.cardsArea{padding:12px 14px 22px}.hint{font-size:11px;align-items:flex-start;line-height:1.4}.hint svg{flex-shrink:0}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.cardInfo{padding:8px;gap:5px}.cardInfo>strong{font-size:12px}.cardInfo>small{font-size:10px}.cardInfo>b{font-size:11px}.footer{padding:9px 14px;font-size:10px}
  .detailDialog{width:calc(100vw - 24px);max-height:calc(100dvh - 24px);max-width:calc(100vw - 24px);border:2px solid transparent;border-radius:0;background:transparent;box-shadow:none;border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch}.detailLayout{grid-template-columns:minmax(0,1fr);gap:18px;padding:64px 16px 16px}.enlargedCard img{width:100%;max-width:430px;max-height:none}.detailCopy{padding:20px 16px}.detailCopy h2{font-size:30px}.detailDialog .close{position:sticky;top:10px;float:right;margin:10px 10px -54px 0}.detailCopy .role{max-width:100%}
 }
-@media(max-width:360px){.progress progress{display:none}.progress{justify-content:space-between}.header h2{font-size:24px}.utility select{width:118px}.cardInfo>strong{font-size:11px}}
+@media(max-width:360px){.header h2{font-size:24px}.utility select{width:118px}.cardInfo>strong{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.card{transition:none}}
 .rarity{align-self:flex-start;padding:3px 6px;background:#eee8dc;color:#354334;font-size:10px;font-weight:850}.rarity[data-rarity=uncommon]{background:#d7eaee}.rarity[data-rarity=rare]{background:#ffe59a}.rarity[data-rarity=epic]{background:#e4c7f6;color:#542174}.card[data-rarity=epic]{box-shadow:4px 4px 0 #744397}.examples{margin:16px 0;font-size:12px;line-height:1.5}.examples ul{margin:8px 0;padding-left:18px}.filters>div{flex-wrap:wrap}.search{flex-basis:220px;border:1px solid #172923;border-radius:var(--game-panel-radius, 2px);background:#fffaf0;color:#172923}.footer>span{flex:1;min-width:150px}
-@media(max-width:700px){.filters .search{flex-basis:100%;min-height:38px}.filters .utility{flex:1;min-width:0}.filters .utility select{width:100%;max-width:none;min-width:0;min-height:38px}.filters>div{gap:6px}.footer{line-height:1.3}.footer>span{display:none}}
+@media(max-width:700px){
+  .filters .search, .filters .utility select { min-height: var(--game-action-height, 44px); }
+  .filters .search input { font-size: 1rem; }
+  .filters .utility { display: grid; gap: 4px; min-width: 0; }
+  .filters .utility > span { display: block; }
+  .filters .utility select { width: 100%; max-width: none; min-width: 0; }
+  .footer { line-height: 1.3; }
+  .footer > span { display: none; }
+}
 .filters .utility select{font:600 12px/1.3 var(--font-body),Arial,sans-serif}
 .epicLimit{padding:12px;border:1px solid #a66bc4;background:#f1e0fc;color:#542174;font-size:12px;font-weight:800;line-height:1.5}
 @media(max-height:600px){
- .header{padding:10px 66px 10px 16px;min-height:60px;justify-content:center;flex-direction:column}.header small,.header p,.progress{display:none}.header h2{font-size:26px;margin:0}.header .close{top:7px}.footer{padding:6px 14px;font-size:10px}
+ .header{padding:10px 66px 10px 16px;min-height:60px;justify-content:center;flex-direction:column}.header small,.header p{display:none}.header h2{font-size:26px;margin:0}.header .close{top:7px}.footer{padding:6px 14px;font-size:10px}
 }
 @media(max-height:600px) and (min-width:701px){
- .filters{display:flex;gap:12px;padding:8px 14px}.filters nav{flex-shrink:0}.filters nav button{padding:6px 9px;font-size:11px}.filters>div{flex:1;min-width:0;gap:8px}.utility>span{display:none}.utility select{max-width:130px}.cardsArea{padding-top:8px}.hint{margin-bottom:10px;font-size:11px}
+ .filters { gap: 4px; padding: 8px 14px; }
+ .cardsArea { padding-top: 8px; }
+}
+@media (max-height: 680px), (max-width: 700px) {
+  .collectionDialog { overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: 72px; }
+  .collectionDialog .albumLayout { height: auto; }
+  .collectionDialog .albumPanel, .collectionDialog .cardsArea { overflow: visible; }
+  .collectionDialog [data-kq-chapter] { position: sticky; top: 0; z-index: 2; }
 }

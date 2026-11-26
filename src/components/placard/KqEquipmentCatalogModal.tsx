@@ -173,6 +173,7 @@ function getLoadoutProjectionMetrics(current: EquipmentLoadoutSummary, projected
 export function KqEquipmentCatalogModal(props: {
   embedded?: boolean;
   workshopOnly?: boolean;
+  workshopBackToExtraction?: boolean;
   initialEquipmentCode?: string | null;
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?: string) => void;
@@ -185,6 +186,7 @@ export function KqEquipmentCatalogModal(props: {
 function LegacyKqEquipmentCatalogModal({
   embedded = false,
   workshopOnly = false,
+  workshopBackToExtraction = false,
   initialEquipmentCode = null,
   onClose,
   onOpenWorkshop,
@@ -192,6 +194,7 @@ function LegacyKqEquipmentCatalogModal({
 }: {
   embedded?: boolean;
   workshopOnly?: boolean;
+  workshopBackToExtraction?: boolean;
   initialEquipmentCode?: string | null;
   onClose: () => void;
   onOpenWorkshop?: (equipmentCode?:string)=>void;
@@ -199,6 +202,7 @@ function LegacyKqEquipmentCatalogModal({
 }) {
   const api = useKqTutorialApi();
   const inline = embedded || api.isTutorial;
+  const backLabel = workshopBackToExtraction ? "Retour à l’extraction" : workshopOnly ? "Retour à mes machines" : "Retour à la boutique";
   const selectKqTent = useKqSelectTent();
   const recommendedEquipmentCode = initialEquipmentCode && getKqEquipmentDefinition(initialEquipmentCode) && (!workshopOnly || isKqSharedEquipment(initialEquipmentCode))
     ? initialEquipmentCode
@@ -551,7 +555,7 @@ function LegacyKqEquipmentCatalogModal({
       if (event.key === "Tab") {
         event.stopPropagation();
         const scope = activeLayer ? event.currentTarget.querySelector(`.${activeLayer}`) : event.currentTarget;
-        const controls = Array.from(scope?.querySelectorAll<HTMLElement>('button:not(:disabled), input, select, a[href], [tabindex="0"]') ?? []).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
+        const controls = Array.from(scope?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled), a[href], summary, [tabindex="0"]') ?? []).filter((node) => !node.closest('[inert]') && node.getClientRects().length > 0);
         const first = controls[0], last = controls.at(-1);
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
@@ -569,7 +573,7 @@ function LegacyKqEquipmentCatalogModal({
     }}>
       {workshopOnly ? <Image src="/placard/market-workshop-sylvain-v2.webp" alt="" fill sizes="100vw" className={styles.showroomBackdrop} /> : null}
       <header className={styles.catalogHeader}>
-        <button type="button" disabled={mutationPending} onClick={onClose} className={styles.backButton} aria-label={workshopOnly?"Retour aux machines":"Retour à la boutique"}><ArrowLeft aria-hidden="true" />{workshopOnly?"Mes machines":"Boutique"}</button>
+        <button type="button" disabled={mutationPending} onClick={onClose} className={styles.backButton} aria-label={backLabel}><ArrowLeft aria-hidden="true" />{workshopOnly ? backLabel : "Boutique"}</button>
         <div className={styles.catalogBrand}>
           <h2 id="equipment-catalog-title">{workshopOnly?"Équiper mon atelier":"Le rayon matériel"}</h2>
         </div>
@@ -598,14 +602,14 @@ function LegacyKqEquipmentCatalogModal({
 
       <div className={styles.catalogBody}>
         <nav className={styles.categoryNav} aria-label="Catégories du catalogue">
-          <button type="button" disabled={mutationPending} data-active={(category === "all" || workshopOnly && category === "processing") || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>{workshopOnly?"Toutes les machines":"Tout le matériel"}</span></button>
+          <button type="button" disabled={mutationPending} aria-pressed={category === "all" || workshopOnly && category === "processing"} data-active={(category === "all" || workshopOnly && category === "processing") || undefined} onClick={() => setCategory("all")}><Package aria-hidden="true" /><span>{workshopOnly?"Toutes les machines":"Tout le matériel"}</span></button>
           {!workshopOnly&&!api.isTutorial ? <button type="button" disabled={careBusy} aria-pressed={category === "care"} data-active={category === "care" || undefined} onClick={() => setCategory("care")}><Leaf aria-hidden="true" /><span>Intrants & PBI</span></button> : null}
           {!workshopOnly&&KQ_EQUIPMENT_CATEGORIES.map((item) => {
             const Icon = CATEGORY_ICONS[item];
-            return <button key={item} type="button" disabled={careBusy} data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
+            return <button key={item} type="button" disabled={careBusy} aria-pressed={category === item} data-active={category === item || undefined} onClick={() => setCategory(item)}><Icon aria-hidden="true" /><span>{KQ_EQUIPMENT_CATEGORY_LABELS[item]}</span></button>;
           })}
-          <button type="button" disabled={mutationPending} data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
-          {!workshopOnly&&<button type="button" disabled={careBusy} data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>}
+          <button type="button" disabled={mutationPending} aria-pressed={category === "owned"} data-active={category === "owned" || undefined} onClick={() => setCategory("owned")}><Check aria-hidden="true" /><span>Déjà possédés</span></button>
+          {!workshopOnly&&<button type="button" disabled={careBusy} aria-pressed={category === "commerce"} data-active={category === "commerce" || undefined} onClick={() => setCategory("commerce")}><Laptop aria-hidden="true" /><span>Vente en ligne</span></button>}
           {!workshopOnly && category !== "care" ? <div className={styles.loadoutSummary} data-arena-tour="installation">
             <small>Tente {tentNumber} · Son équipement</small>
             <strong>{currentLoadout.powerWatts * productionUnits} W</strong>
@@ -829,7 +833,7 @@ function LegacyKqEquipmentCatalogModal({
           </article>;
         })}</div>
         <b>{formatKqCash(purchaseResult.totalPriceCents)} investis · {formatKqCash(purchaseResult.cashAfterCents)} restants</b>
-        <footer><button type="button" disabled={mutationPending} onClick={() => setPurchaseResult(null)}>Continuer les achats</button><button type="button" disabled={mutationPending} onClick={onClose}>{workshopOnly?"Retour aux machines":"Retour à la boutique"}</button></footer>
+        <footer><button type="button" disabled={mutationPending} onClick={() => setPurchaseResult(null)}>Continuer les achats</button><button type="button" disabled={mutationPending} onClick={onClose}>{backLabel}</button></footer>
       </section></div> : null}
     </section>
   );

@@ -12,6 +12,18 @@ La [planche ImageGen](reference.webp) a été réalisée à partir des captures 
 
 [Détail des flûtistes en jeu](ronde-detail.webp) · [Ronde sur mobile](ronde-mobile.webp) · [Machine sur ordinateur](machine-ordinateur.webp) · [Bilan sur mobile](machine-mobile.webp)
 
+### La machine au bonnet rouge
+
+Sous le chêne, Bonnet rouge propose trois tours de levier contre des fleurs sèches. Bonnet bleu s’inquiète pour sa carte épique. Le joueur peut répondre « Je veux voir la machine » ou « Une autre fois ». Les deux lutins reconnaissent aussi une offrande en cours. La réaction au tirage arrive après la révélation et la remise du gain éventuel. [Invitation sur mobile](invitation-mobile.webp) · [Recette du dialogue](../../../output/korrigan-dialogue/navigateur.json)
+
+La façade est une illustration ImageGen du 25 novembre 2026, créée à partir de la capture du marché fournie par Sylvain. La direction retenue associe une enseigne bretonne vue de face, un korrigan au bonnet garance, des fougères gravées, du bois sarcelle et des garnitures en laiton. Le guichet central a été dessiné vide pour recevoir les rouleaux du jeu. La façade détourée est exportée en WebP transparent de 960 × 640 pixels et pèse 133 Kio. [Illustration de la machine](../../../public/placard/ui/korrigan-machine-v1.webp)
+
+Les cinq motifs imprimés des rouleaux partagent une feuille WebP de 720 × 144 pixels et 30 Kio. Le plant et les cartes viennent des onglets Culture, les pièces à la coquille du registre des comptes. Le booster et le dos de carte viennent de la collection Buddies. Les multiplicateurs et le bilan restent du texte. [Motifs des rouleaux](../../../public/placard/ui/korrigan-reels-v1.webp)
+
+Une fois l’offrande confirmée, toucher la poignée ou activer « Lancer le tirage » au clavier déclenche la même commande. Les rouleaux s’arrêtent de gauche à droite à la réception du résultat. « Passer l’animation » garde la demande en cours. La préférence de réduction des mouvements affiche directement le résultat reçu. Les trois voyants du socle et le compteur indiquent les tirages réglés. Quand les lots admissibles sont épuisés, « Voir mes récoltes » ouvre le stock.
+
+Sept parcours ont été joués dans Chrome 157 avec SwiftShader, à 1 280 × 800 et à 320 × 700 en émulation tactile. La vue vide a aussi été reprise à 903 × 576, aux dimensions de la capture d’origine. Une seconde recette sur PostgreSQL local vérifie qu’une coupure après l’écriture de l’offrande laisse un seul prélèvement et trois tirages. [Machine sans lot](offrande-vide-ordinateur.webp) · [Parcours navigateur](../../../output/korrigan-finition/apres/navigateur.json) · [Recette PostgreSQL](../../../output/korrigan-finition/apres/navigateur-postgres.json)
+
 ### Offrande et règlement
 
 Le joueur choisit des grammes entiers de fleurs sèches en vrac, mûres, stockées et admissibles à la reprise du CBD shop. La quantité tient compte du reliquat disponible et de la capacité de reprise du canal. Les paquets déjà préparés pour la boutique en ligne sont hors de ce reliquat. Le devis utilise le prix de vente du lot, y compris le bonus de demande applicable et les arrondis du registre.

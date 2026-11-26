@@ -135,6 +135,17 @@ function TournamentSession({ ownerId, onEncyclopedia, onOpen }: Props) {
   const questionPanel = useRef<HTMLDivElement>(null);
   const questionHeading = useRef<HTMLHeadingElement>(null);
   const revealPanel = useRef<HTMLDivElement>(null);
+  const leaveButton = useRef<HTMLButtonElement>(null);
+  const stayButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (confirmLeave) stayButton.current?.focus();
+  }, [confirmLeave]);
+
+  function stayInRoom() {
+    setConfirmLeave(false);
+    leaveButton.current?.focus({ preventScroll: true });
+  }
 
   const clearPending = useCallback(() => {
     pendingRef.current = null; setPending(null); setRejected(false); setCommandError('');
@@ -333,7 +344,24 @@ function TournamentSession({ ownerId, onEncyclopedia, onOpen }: Props) {
     {snapshot && (!room || status === 'lobby') ? <Champion champion={snapshot.champion} compact/> : null}
     {room && status !== 'lobby' ? <>
       <Standings room={room} ownerId={ownerId}/>
-      {!terminal ? <div className={styles.leave}><button type="button" data-tournament-leave disabled={busy || Boolean(pending)} onClick={() => setConfirmLeave(true)}>Quitter le tournoi<LogOut size={16} aria-hidden/></button>{confirmLeave ? <div className={styles.confirm} role="group" aria-label="Confirmer le départ"><p>{self?.isActive ? 'Quitter te retire du tournoi en cours. Les autres joueurs peuvent continuer.' : 'Quitter arrête le suivi de ce salon.'}</p><button type="button" disabled={busy || Boolean(pending)} onClick={leave}>Confirmer le départ</button><button type="button" onClick={() => setConfirmLeave(false)}>Rester</button></div> : null}</div> : null}
+      {!terminal ? <div className={styles.leave}>
+        <button type="button" ref={leaveButton} data-tournament-leave aria-expanded={confirmLeave}
+          disabled={busy || Boolean(pending)} onClick={() => setConfirmLeave(value => !value)}>
+          Quitter le tournoi<LogOut size={16} aria-hidden/>
+        </button>
+        {confirmLeave ? <div className={styles.confirm} role="group" aria-label="Confirmer le départ" aria-describedby="tournament-leave-effect"
+          onKeyDown={event => {
+            if (event.key === 'Escape' && !busy && !pending) {
+              event.preventDefault();
+              event.stopPropagation();
+              stayInRoom();
+            }
+          }}>
+          <p id="tournament-leave-effect">{self?.isActive ? 'Quitter te retire du tournoi en cours. Les autres joueurs peuvent continuer.' : 'Quitter arrête le suivi de ce salon.'}</p>
+          <button type="button" ref={stayButton} disabled={busy || Boolean(pending)} onClick={stayInRoom}>Rester</button>
+          <button type="button" disabled={busy || Boolean(pending)} onClick={leave}>Confirmer le départ</button>
+        </div> : null}
+      </div> : null}
     </> : null}
 
     {snapshot && (!room || status === 'lobby' || terminal) ? <section className={styles.leaderboard} data-tournament-weekly-ranking><h3>La course au fauteuil</h3><p className={styles.small}>Meilleure finale par joueur · points et rapidité · titre dimanche à minuit</p>{snapshot.weeklyLeaderboard.length ? <ol>{snapshot.weeklyLeaderboard.map(player => <li key={player.userId} data-own={player.userId === ownerId}><span className={styles.rank}>{player.rank}</span><Avatar player={player}/><div className={styles.playerName}><strong>{player.displayName}{player.userId === ownerId ? ' · toi' : ''}</strong><small>{player.correctCount} / 3 réponses justes · {duration(player.elapsedMs)}</small></div><div className={styles.rankingScore}><strong>{points(player.score)}</strong><small>sur 450 points</small></div></li>)}</ol> : <p>Aucune finale enregistrée cette semaine.</p>}</section> : null}

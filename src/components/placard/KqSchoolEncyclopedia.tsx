@@ -72,14 +72,23 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
   }, []);
   useEffect(() => {
     if (!catalog) return;
+    const scroller = content.current?.closest<HTMLElement>('[data-village-activity-panel]') ?? window;
     if (returnTarget.current.id) {
       const { id, y } = returnTarget.current;
       const target = [...(content.current?.querySelectorAll<HTMLElement>("[data-reference-entry]") || [])].find(element => element.dataset.referenceEntry === id);
-      if (target) requestAnimationFrame(() => { const disclosure = target.closest('details'); if (disclosure) disclosure.open = true; target.focus({ preventScroll: true }); window.scrollTo({ top: y || 0, behavior: "instant" }); });
       returnTarget.current = { id: undefined, y: undefined };
+      if (target) {
+        const frame = requestAnimationFrame(() => {
+          const disclosure = target.closest('details');
+          if (disclosure) disclosure.open = true;
+          target.focus({ preventScroll: true });
+          scroller.scrollTo({ top: y ?? 0, behavior: "instant" });
+        });
+        return () => cancelAnimationFrame(frame);
+      }
     } else if (focusNext.current) {
       const heading = isHistory ? document.getElementById(titleId) : content.current?.querySelector<HTMLElement>("h3");
-      if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); if (isHistory) window.scrollTo({ top: 0, behavior: 'instant' }); else heading.scrollIntoView({ block: "start", behavior: "instant" }); }
+      if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); if (isHistory) scroller.scrollTo({ top: 0, behavior: 'instant' }); else heading.scrollIntoView({ block: "start", behavior: "instant" }); }
       focusNext.current = false;
     }
   }, [catalog, isHistory, state, titleId]);
@@ -112,7 +121,12 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
     if (!plainActivation(event)) return;
     event.preventDefault();
     if (articleId.startsWith('record-terpene-')) { setTerpeneCard({ id: articleId.slice(15), ids: TERPENE_CARDS.map(item => item.id) }); return; }
-    remember({ ...state, returnTo: entryId, scrollY: window.scrollY }); onOpen("reference", articleId);
+    readEntry(articleId, entryId);
+  }
+  function readEntry(articleId: string, entryId = articleId) {
+    const panel = content.current?.closest<HTMLElement>('[data-village-activity-panel]');
+    remember({ ...state, returnTo: entryId, scrollY: panel?.scrollTop ?? window.scrollY });
+    onOpen("reference", articleId);
   }
   function topicLink(event: MouseEvent<HTMLAnchorElement>, id: CannabisTopicId) {
     if (!plainActivation(event)) return;
@@ -161,7 +175,7 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
         </> : null}
       {error ? <div role="alert"><p>L’encyclopédie n’a pas pu être chargée.</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>Réessayer</button></div> : !catalog ? <p role="status">Chargement des articles…</p> : <>
         {view === "home" ? <>
-          {featured ? <section className={styles.featured}><div><h3><a href={articleHref(featured.id)} data-reference-entry={featured.id} onClick={event => openArticle(event, featured.id)}>{featured.title}</a></h3><p>{featured.lead}</p><a href={articleHref(featured.id)} className={styles.readLink} onClick={event => openArticle(event, featured.id)}>Lire l’article<ArrowRight size={16} aria-hidden/></a></div><figure><Image src={featured.image.src} alt={featured.image.alt} width={600} height={400} sizes="(max-width: 700px) 140px, 300px" unoptimized/><figcaption>{featured.image.caption}</figcaption></figure></section> : null}
+          {featured ? <section className={styles.featured}><div><h3><a href={articleHref(featured.id)} data-reference-entry={featured.id} onClick={event => openArticle(event, featured.id)}>{featured.title}</a></h3><p>{featured.lead}</p><a href={articleHref(featured.id)} data-reference-read className={styles.readLink} onClick={event => openArticle(event, featured.id)}>Lire l’article<ArrowRight size={16} aria-hidden/></a></div><figure><Image src={featured.image.src} alt={featured.image.alt} width={600} height={400} sizes="(max-width: 700px) 140px, 300px" unoptimized/><figcaption>{featured.image.caption}</figcaption></figure></section> : null}
         </> : null}
         {view === "topic" && topic ? <>
           {topic.id !== 'terpenes' && topic.id !== 'history' ? <header className={styles.topicHeader}><h3>{topic.title}</h3><p>{topic.description}</p></header> : null}
@@ -175,6 +189,6 @@ export function KqSchoolEncyclopedia({ onOpen, initialShelfId }: KqSchoolEncyclo
         {view === "search" ? <section data-reference-results><h3>Résultats pour « {query.trim()} »</h3><p className={styles.count} role="status">{matches.length} article{matches.length > 1 ? "s" : ""}{matchingTerms.length ? ` · ${matchingTerms.length} définition${matchingTerms.length > 1 ? "s" : ""}` : ""}</p>{articleList(pageItems(matches), true)}{pagination(matches.length)}{matchingTerms.length ? <section className={styles.definitions}><h3>Définitions</h3>{termList(matchingTerms.slice(0, 6))}{matchingTerms.length > 6 ? <p className={styles.meta}>Les autres définitions sont classées dans le lexique A–Z.</p> : null}</section> : null}{!matches.length && !matchingTerms.length ? <p>Aucun résultat pour ce terme. Essaie un autre mot ou consulte les rayons.</p> : null}</section> : null}
       </>}
     </div>
-    {terpeneCard ? <KqTerpeneCardDialog initialId={terpeneCard.id} ids={terpeneCard.ids} onClose={() => setTerpeneCard(undefined)} onRead={id => { remember({ ...state, returnTo: id, scrollY: window.scrollY }); onOpen('reference', id); }}/> : null}
+    {terpeneCard ? <KqTerpeneCardDialog initialId={terpeneCard.id} ids={terpeneCard.ids} onClose={() => setTerpeneCard(undefined)} onRead={id => readEntry(id)}/> : null}
   </section>;
 }

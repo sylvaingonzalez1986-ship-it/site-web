@@ -1,0 +1,319 @@
+{
+  "origin": "http://localhost:3000",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "isMobile": true,
+    "hasTouch": true
+  },
+  "documents": [
+    [
+      200,
+      "http://localhost:3000/boutique?selection=regions"
+    ]
+  ],
+  "mobile": {
+    "region": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BUTTON Fermer la selection Bretagne",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    },
+    "producer": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 1830,
+        "height": 746,
+        "fullHeight": 2680
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 438
+      },
+      "h1": "Chanvre naturel"
+    },
+    "product": {
+      "currentIndex": 4,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Heaven"
+    },
+    "back": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 1821,
+        "height": 746,
+        "fullHeight": 2680
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 451
+      },
+      "h1": "Chanvre naturel"
+    },
+    "backStable": {
+      "currentIndex": 3,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "A",
+      "dialog": "Fiche producteur Les Chanvriers Bretons",
+      "dialogScroll": {
+        "top": 1821,
+        "height": 746,
+        "fullHeight": 2680
+      },
+      "sourceCard": {
+        "path": "/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&depuis=region&entree=product-1782391212934",
+        "top": 451
+      },
+      "h1": "Chanvre naturel"
+    },
+    "forward": {
+      "currentIndex": 4,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "BODY",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Heaven"
+    },
+    "closeProducer": {
+      "currentIndex": 2,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "ARTICLE Découvrir la fiche de Les Chanvriers Bretons",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    },
+    "closeRegion": {
+      "currentIndex": 1,
+      "entries": [
+        {
+          "id": 8,
+          "url": "about:blank",
+          "type": "reload"
+        },
+        {
+          "id": 10,
+          "url": "http://localhost:3000/boutique?selection=regions",
+          "type": "typed"
+        },
+        {
+          "id": 12,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne",
+          "type": "link"
+        },
+        {
+          "id": 13,
+          "url": "http://localhost:3000/boutique?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons",
+          "type": "link"
+        },
+        {
+          "id": 14,
+          "url": "http://localhost:3000/boutique/fleurs-cbd/product-1782391212934?selection=regions&region=Bretagne&producteur=les-chanvriers-bretons&resume=3cb8096a-8462-4808-9352-5e18be2cbf2e&depuis=region&entree=product-1782391212934",
+          "type": "link"
+        }
+      ],
+      "scrollY": 0,
+      "overlayHistory": [],
+      "active": "SELECT",
+      "dialog": null,
+      "dialogScroll": null,
+      "sourceCard": null,
+      "h1": "Chanvre naturel"
+    }
+  }
+}

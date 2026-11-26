@@ -1,20 +1,20 @@
-// In-memory PostgreSQL only. No .env, Supabase client or network connection.
+// PGlite by default. --concurrent-nicknames uses the dedicated loopback test cluster.
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { createServer } from "vite";
 import { PGlite } from "@electric-sql/pglite";
+import { openPlacardIsolatedPostgres } from "./lib/placard-isolated-postgres.mjs";
+import { checkConcurrentNicknames } from "./fixtures/chanvrier-concurrent-nicknames.mjs";
 
-const db = new PGlite();
-const vite = await createServer({
-  configFile: false, envDir: false,
-  resolve: { alias: { "@": path.resolve("src") } },
-  server: { middlewareMode: true, watch: null },
-});
+const native = process.argv.includes("--concurrent-nicknames");
+const cluster = native ? await openPlacardIsolatedPostgres() : null;
+const db = cluster ? cluster.open() : new PGlite();
 const migration = (name) => readFile(path.resolve("supabase/migrations", name), "utf8");
+const nicknameOrderMigration = "20261125000100_chanvrier_nickname_lock_order.sql";
 
-try {
+async function run(vite) {
   await db.exec(`
     CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role;
     CREATE SCHEMA auth;
@@ -66,6 +66,23 @@ try {
     '20260914000400_chanvrier_green_thumb_xp.sql',
     '20260915000300_kq_realtime_commerce_demand.sql',
   ]) await db.exec(await migration(name));
+  if (cluster) {
+    await db.exec(await migration("20260919000100_chanvrier_customization_and_benefits.sql"));
+    await db.exec(await migration("20261118000500_chanvrier_appearance_v2.sql"));
+    const rpcState = async () => (await db.query(`
+      SELECT pg_get_functiondef(oid) AS definition, proacl::text AS acl
+      FROM pg_proc WHERE oid = 'public.rpc_arena_save_chanvrier(uuid,jsonb)'::regprocedure`)).rows[0];
+    const previous = await rpcState();
+    await db.exec(await migration(nicknameOrderMigration));
+    assert.equal((await rpcState()).acl, previous.acl);
+    const { getChanvrierAppearance } = await vite.ssrLoadModule("/src/lib/arena-chanvrier.ts");
+    await checkConcurrentNicknames(db, cluster.open(), cluster.open(), getChanvrierAppearance({ gender: "male" }));
+    // Rehearse restoring the captured definition in this disposable database.
+    await db.exec(previous.definition);
+    assert.deepEqual(await rpcState(), previous);
+    console.log("PASS: original RPC definition restored and execution grants preserved.");
+    return;
+  }
   const save = async (user, profile) => (await db.query('SELECT rpc_arena_save_chanvrier($1,$2) AS data',[user,JSON.stringify(profile)])).rows[0].data;
   const savings = async (user,action='state',amount=0,key=null) => (await db.query('SELECT rpc_arena_chanvrier_savings($1,$2,$3,$4) AS data',[user,action,amount,key])).rows[0].data;
   const profile = { nickname:'Treasury',gender:'male',clothing:'teal',skin:'peach',strength:'treasurer' };
@@ -83,21 +100,29 @@ try {
   await save(legacy, {...profile, nickname:'Legacy', gender:'female', appearance:oldLook});
   const previousCash = (await savings(legacy)).cashCents;
   await db.exec(await migration('20261118000500_chanvrier_appearance_v2.sql'));
+  await db.exec(await migration(nicknameOrderMigration));
   const loadLook = async user => (await db.query('SELECT appearance FROM arena_chanvrier_profiles WHERE user_id=$1', [user])).rows[0].appearance;
   assert.deepEqual(await loadLook(legacy), {...getChanvrierAppearance({gender:'female'}), ...oldLook});
   assert.equal((await savings(legacy)).cashCents,previousCash);
   assert.deepEqual(await loadLook(treasury), appearance);
-  const dyed = {...appearance, dyes:{skin:'#bd8459', top:'#6ab9ca', accent:'#483d28'}};
+  const previousValidator = (await db.query("SELECT proacl::text FROM pg_proc WHERE oid='public.arena_valid_appearance(jsonb)'::regprocedure")).rows[0];
+  const historical = await loadLook(legacy);
+  await db.exec(await migration('20261125000200_chanvrier_stripe_dye.sql'));
+  assert.deepEqual(await loadLook(legacy), historical);
+  assert.deepEqual((await db.query("SELECT proacl::text FROM pg_proc WHERE oid='public.arena_valid_appearance(jsonb)'::regprocedure")).rows[0], previousValidator);
+  const dyed = {...appearance, dyes:{skin:'#bd8459', top:'#6ab9ca', accent:'#483d28', stripe:'#b96d45'}};
   await save(treasury,{...profile,appearance:dyed});
   assert.deepEqual(await loadLook(treasury),dyed);
-  for (const malformed of [{...dyed,dyes:{unknown:'#123456'}},{...dyed,dyes:{skin:'red'}},{...dyed,version:7},{version:2,body:'regular'}]) {
+  for (const malformed of [{...dyed,dyes:{unknown:'#123456'}},{...dyed,dyes:{stripe:'red'}},{...dyed,dyes:{skin:'red'}},{...dyed,version:7},{version:2,body:'regular'}]) {
     await assert.rejects(()=>save(treasury,{...profile,appearance:malformed}),/check constraint/);
     assert.deepEqual(await loadLook(treasury),dyed);
   }
   await save(treasury,{...profile,appearance:{hair:'curls'}});
   assert.deepEqual(await loadLook(treasury),{...dyed,hair:'curls'},'legacy edit preserves modern slots and dyes');
   await save(treasury,{...profile,appearance});
-  assert.deepEqual(await loadLook(treasury),appearance,'v2 edit can clear dyes');
+  assert.deepEqual(await loadLook(treasury),{...appearance,dyes:{stripe:'#b96d45'}},'an older full v2 editor can clear its dyes and keeps a newer stripe');
+  await save(treasury,{...profile,appearance,supportsStripe:true});
+  assert.deepEqual(await loadLook(treasury),appearance,'the new editor can restore automatic stripes');
   for(const [key,choices] of Object.entries(CHANVRIER_APPEARANCE_OPTIONS)) for(const choice of choices){
     const saved=await save(treasury,{...profile,appearance:{...appearance,[key]:choice.code}});
     assert.deepEqual(saved.profile.appearance,{...appearance,[key]:choice.code});
@@ -248,4 +273,19 @@ try {
   assert.deepEqual(await wallets(),afterBudgetWallets,'reapplying the budget migration changes no existing wallet');
   assert.deepEqual(await access(),previousAccess,'reapplying the migration preserves grants');
   console.log('PASS: appearance catalog, legacy profiles, one-time capital, XP migration, savings timing, compounding, transfers, retries, permissions, merchant capacity, settled sale and new-only 2000/2650-euro budgets.');
-} catch (error) { console.error(error.message, error.where ?? ""); process.exitCode=1; } finally { await vite.close(); await db.close(); }
+}
+
+let vite;
+try {
+  vite = await createServer({
+    configFile: false, envDir: false,
+    resolve: { alias: { "@": path.resolve("src") } },
+    server: { middlewareMode: true, hmr: false, ws: false, watch: null },
+  });
+  await run(vite);
+}
+catch (error) { console.error(error.message, error.where ?? ""); process.exitCode=1; }
+finally {
+  try { await vite?.close(); }
+  finally { if (cluster) await cluster.close(); else await db.close(); }
+}

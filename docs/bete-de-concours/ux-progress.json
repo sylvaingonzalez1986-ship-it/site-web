@@ -1,4 +1,31 @@
 {
+  "refontePersonnages3D20261125": {
+    "livraison": "Maël en marinière, visages animés, coiffures et pilosités, quatre tenues principales, étoffes recolorables et rayure indépendante du foulard. Essais d’expression et zoom dans l’atelier.",
+    "preuve": "docs/bete-de-concours/refonte-personnages/recette.md",
+    "verification": "Comparaison multivue, marche et inspection, deux personnages côte à côte, quatre en mouvement. Atelier à 320, 390 et 1360 px sur Iris Xe. Persistance testée en PostgreSQL embarqué.",
+    "pointDeReprise": "Essayer le zoom et les contrôles de teinture sur un téléphone physique. La migration facultative de couleur est testée localement et attend la décision de publication."
+  },
+  "machineKorrigans20261125": {
+    "livraison": "Façade illustrée au bonnet rouge, rouleaux aux motifs du jeu et poignée jouable. Affichage du seuil de reprise et accès aux récoltes depuis un stock vide.",
+    "preuve": "docs/bete-de-concours/korrigans/marche.md",
+    "dialogue": "Bonnet rouge et Bonnet bleu accueillent le joueur, reconnaissent son offrande et réagissent au résultat confirmé. Huit parcours Chromium dans output/korrigan-dialogue/navigateur.json.",
+    "recette": "output/korrigan-finition/apres/navigateur.json et navigateur-postgres.json. Clavier, mouvements réduits, coupure après débit et trois tirages en base locale.",
+    "pointDeReprise": "Essayer la poignée sur téléphone physique."
+  },
+  "finitionInterface20261125": {
+    "livraison": "HUD et menu, entrepôt et comparateur de machines, inventaire, atelier de personnage, albums et activités de QuizzShow. Travail local sur feat/finition-interface-quartier depuis f980a336.",
+    "preuve": "docs/bete-de-concours/finition-interface/recette.md",
+    "verification": "Profils fictifs, Chromium de 320 à 1440 px. Focus, filtres, défilement, confirmation, erreur et réessai vérifiés. Mesures du studio avant/après sur Iris Xe et cinq cycles de mémoire après collecte.",
+    "pointDeReprise": "Recette sur téléphone physique du retour à une lecture, du nuancier et des onglets fixes du personnage. Vérifier le texte agrandi avec les réglages d’accessibilité du téléphone."
+  },
+  "atelierCoiffures20261125": {
+    "livraison": "La coupe portée revient dans le bandeau. Deux commandes parcourent les 14 coiffures au clavier ou au doigt et conservent le brouillon jusqu’à la validation.",
+    "preuve": "docs/bete-de-concours/atelier-personnage/recette-coiffures.md",
+    "verification": "Sélection visible sur 0/5 fenêtres avant, 5/5 après. 41 tests Vitest, SQL en mémoire, 14 groupes d’arrivée, 10 de menu, recette du studio 3D, typage, lint ciblé et build local validés.",
+    "environnement": "470cbd11, dix skills importés au SHA vérifié et six rôles Codex du projet. Les trois skills préexistants sont dans 64e92db7.",
+    "sauvegardeSurnom": "PostgreSQL 18.7, deux sessions locales. Interblocage observé avant correction. Après la migration 20261125000100, les deux sauvegardes aboutissent, les profils concordent et le refus de spécialité annule toute modification. Retour à la définition SQL précédente vérifié en base jetable.",
+    "pointDeReprise": "Étudier deux éditions concurrentes de l’apparence v2. Pour l’atelier, contrôler le nuancier et le clavier sur téléphone physique."
+  },
   "heuresDansMonEquipe20261123": {
     "livraison": "Dans Ma partie, la jauge supérieure et le volet sur les durées sont retirés. Mon équipe affiche les heures libres et leur répartition par personne.",
     "verification": "Quatre parcours Chromium du Quartier à 320, 390 et 1440 px vérifient les disponibilités dans Mon équipe et l’absence du doublon dans le bilan. 94 tests ciblés réussis.",

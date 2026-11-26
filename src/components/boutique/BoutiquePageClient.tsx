@@ -2,12 +2,15 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard, type ShopCardOrigin } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
+import { focusShopResults, REGION_RESULTS_ID, ShopResultsRestore } from "@/components/boutique/ShopResultsRestore";
+import { FRENCH_REGIONS } from "@/data/france-geo";
 import {
   categoryLabels,
   isProductCultureModeEligible,
@@ -18,8 +21,10 @@ import {
 } from "@/data/products";
 import { resolveProductProducer } from "@/lib/own-producer";
 import { hasActiveProductPromo } from "@/lib/product-promo";
-import { mergeUniqueProductsById } from "@/lib/boutique-helpers";
+import { mergeUniqueProductsById, shopProductsShortcutLabel } from "@/lib/boutique-helpers";
+import { buildRegionCatalogue } from "@/lib/region-catalogue";
 import { rotateProductsForDay } from "@/lib/product-rotation";
+import { changeShopUrl } from "@/lib/shop-panel-history";
 import type { BoutiqueSection, Producer, PublicStoreResponse } from "@/types/store";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import styles from "./BoutiquePageClient.module.css";
@@ -39,19 +44,20 @@ type CultureFilter = "all" | ProductCultureType;
 const CULTURE_FILTERS: CultureFilter[] = ["all", "outdoor", "greenhouse", "indoor"];
 type ShowcaseMode = "products" | "neighbors" | "copains" | "regions";
 const SHOWCASE_MODES: ShowcaseMode[] = ["products", "neighbors", "copains", "regions"];
-const CATALOG_URL_EVENT = "shop:filters-changed";
-function subscribeToCatalogUrl(notify: () => void) {
-  window.addEventListener("popstate", notify);
-  window.addEventListener(CATALOG_URL_EVENT, notify);
-  return () => {
-    window.removeEventListener("popstate", notify);
-    window.removeEventListener(CATALOG_URL_EVENT, notify);
-  };
+const RESULTS_TITLE: Record<ShowcaseMode, string> = {
+  products: "Produits maison",
+  neighbors: "Produits des voisins",
+  copains: "Produits des copains",
+  regions: "Produits par région",
+};
+
+function goToResults() {
+  const heading = document.getElementById("boutique-resultats");
+  heading?.scrollIntoView({ block: "start" });
+  heading?.focus({ preventScroll: true });
 }
-const readCatalogUrl = () => window.location.search;
-const serverCatalogUrl = () => "";
-function readCatalogFilters(search: string): { filter: Filter; cultureFilter: CultureFilter; showcaseMode: ShowcaseMode } {
-  const params = new URLSearchParams(search);
+
+function readCatalogFilters(params: Pick<URLSearchParams, "get">): { filter: Filter; cultureFilter: CultureFilter; showcaseMode: ShowcaseMode } {
   const requestedFilter = params.get("categorie") ?? "all";
   const requestedCulture = params.get("culture") as CultureFilter;
   const requestedMode = params.get("selection") as ShowcaseMode;
@@ -61,17 +67,8 @@ function readCatalogFilters(search: string): { filter: Filter; cultureFilter: Cu
     showcaseMode: SHOWCASE_MODES.includes(requestedMode) ? requestedMode : "products",
   };
 }
-function updateCatalogFilter(key: "selection" | "categorie" | "culture", value: string, defaultValue: string) {
-  const url = new URL(window.location.href);
-  if (value === defaultValue) url.searchParams.delete(key);
-  else url.searchParams.set(key, value);
-  if (url.href === window.location.href) return;
-  // Native history is integrated with the Next router; keep unrelated query parameters.
-  window.history.pushState(null, "", url.pathname + url.search + url.hash);
-  window.dispatchEvent(new Event(CATALOG_URL_EVENT));
-}
-
 type BoutiquePageClientProps = {
+  initialSearch: string;
   rotationDay: number;
   boutique: PublicStoreResponse["content"]["boutique"];
   producers: Producer[];
@@ -86,6 +83,7 @@ type BoutiquePageClientProps = {
 };
 
 export function BoutiquePageClient({
+  initialSearch,
   rotationDay,
   boutique,
   producers,
@@ -99,12 +97,18 @@ export function BoutiquePageClient({
   tastingSummariesByProductId = {},
 }: BoutiquePageClientProps) {
   const loading = false;
-  const search = useSyncExternalStore(subscribeToCatalogUrl, readCatalogUrl, serverCatalogUrl);
+  const search = useSearchParams() ?? new URLSearchParams(initialSearch);
   const { filter, cultureFilter, showcaseMode } = readCatalogFilters(search);
-  const setFilter = (value: Filter) => updateCatalogFilter("categorie", value, "all");
-  const setCultureFilter = (value: CultureFilter) => updateCatalogFilter("culture", value, "all");
-  const setShowcaseMode = (value: ShowcaseMode) => updateCatalogFilter("selection", value, "products");
-  const [selectedOwnProducerId, setSelectedOwnProducerId] = useState<string | null>(null);
+  const setFilter = (value: Filter) => changeShopUrl({ categorie: value === "all" ? null : value, producteur: null });
+  const setCultureFilter = (value: CultureFilter) => changeShopUrl({ culture: value === "all" ? null : value, producteur: null });
+  const setShowcaseMode = (value: ShowcaseMode) => changeShopUrl({ selection: value === "products" ? null : value, region: null, producteur: null });
+  const selectedProducerId = search.get("producteur");
+  const isRegionMode = showcaseMode === "regions";
+  const selectedRegion = isRegionMode ? FRENCH_REGIONS.find(region => region === search.get("region")) ?? null : null;
+  const setProducer = (producerId: string | null) => changeShopUrl({ producteur: producerId }, producerId ? selectedProducerId ? "switch" : "open" : "close");
+  const regionCatalogue = useMemo(() => isRegionMode
+    ? buildRegionCatalogue(selectedRegion, producers, partnerProducts, ownProducer, ownProducts, rotationDay)
+    : null, [isRegionMode, ownProducer, ownProducts, partnerProducts, producers, rotationDay, selectedRegion]);
 
   const modeProducts = showcaseMode === "neighbors" ? voisinProducts : showcaseMode === "copains" ? copainsProducts : ownProducts;
 
@@ -155,6 +159,7 @@ export function BoutiquePageClient({
     effectiveFilter === "promos" ||
     isProductCultureModeEligible(effectiveFilter);
   const effectiveCultureFilter = showCultureFilter ? cultureFilter : "all";
+  const listOrigin: ShopCardOrigin = { surface: "market", selection: showcaseMode, categorie: effectiveFilter, culture: effectiveCultureFilter };
 
   const displayedProducts = useMemo(() => {
     let selection;
@@ -201,6 +206,23 @@ export function BoutiquePageClient({
   const ownProductsByProducerId = useMemo(
     () => new Map([[ownProducer.id, displayedOwnProducts]]),
     [displayedOwnProducts, ownProducer.id],
+  );
+  const resultCount = displayedProducts.length;
+  const regionalProductCount = regionCatalogue?.selectedProducts.length ?? 0;
+  const shortcutLabel = selectedRegion
+    ? regionalProductCount > 0 ? shopProductsShortcutLabel(regionalProductCount) : "Voir la région"
+    : showcaseMode === "regions" ? "Voir la carte des producteurs" : shopProductsShortcutLabel(resultCount);
+  const hasResultsSection = boutiqueSections.some(section => section.type === "products");
+  const resultLabel = effectiveFilter === "all" ? null : effectiveFilter === "promos" ? "Promotions" : categoryLabels[effectiveFilter];
+  const resultsHeading = (
+    <div className={styles.catalogueHeading}>
+      <h2 id="boutique-resultats" tabIndex={-1}>{RESULTS_TITLE[showcaseMode]}</h2>
+      {showcaseMode !== "regions" && (
+        <span aria-live="polite" aria-atomic="true">
+          {resultLabel && `${resultLabel} · `}{resultCount} produit{resultCount > 1 ? "s" : ""}
+        </span>
+      )}
+    </div>
   );
 
   const renderBoutiqueSection = (section: BoutiqueSection, index: number) => {
@@ -301,19 +323,38 @@ export function BoutiquePageClient({
                   </div>
                 </fieldset>
               )}
+              {hasResultsSection && (
+                <div className={styles.resultsAction}>
+                  {showcaseMode === "regions" || resultCount > 0 ? (
+                    <>
+                      <button type="button" onClick={() => {
+                        if (!selectedRegion || !focusShopResults(REGION_RESULTS_ID)) goToResults();
+                      }} aria-controls={selectedRegion ? REGION_RESULTS_ID : "boutique-resultats"} className={styles.resultsButton}>
+                        {shortcutLabel}
+                      </button>
+                      {selectedRegion && regionalProductCount === 0 && <p role="status">Aucun produit dans cette région actuellement.</p>}
+                    </>
+                  ) : (
+                    <p role="status">Aucun produit pour cette sélection.</p>
+                  )}
+                </div>
+              )}
             </div>
           </header>
         );
       case "products": {
-        if (showcaseMode === "regions") {
+        if (regionCatalogue) {
           return (
             <div key={section.id} className={spacingClass}>
+              {resultsHeading}
               <RegionProducerShowcase
+                originFilters={{ categorie: filter, culture: cultureFilter }}
+                selectedRegion={selectedRegion}
+                selectedProducerId={selectedProducerId}
+                onSelectProducer={setProducer}
                 rotationDay={rotationDay}
-                producers={producers}
-                products={partnerProducts}
+                catalogue={regionCatalogue}
                 ownProducer={ownProducer}
-                ownProducts={ownProducts}
                 addButtonLabel={boutique.addButtonLabel}
                 lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                 producerPartnerLabel={boutique.producerPartnerLabel}
@@ -327,7 +368,7 @@ export function BoutiquePageClient({
         const isNeighborsMode = showcaseMode === "neighbors";
         const isCopainsMode = showcaseMode === "copains";
         const isPartnerMode = isNeighborsMode || isCopainsMode;
-        const hasProducerProducts = displayedProducts.some((product) => Boolean(product.producerId));
+        const hasProducerProducts = displayedProducts.some((product) => product.producerId && producersById.has(product.producerId));
         const showOwnProducerCard =
           showcaseMode === "products" && displayedOwnProducts.length > 0;
 
@@ -335,18 +376,14 @@ export function BoutiquePageClient({
           <div key={section.id} className={spacingClass}>
             {isNeighborsMode && (
               <div data-ui-commerce="paper" data-ui-shape="panel" className={styles.sectionIntro}>
-                <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
-                <p className="mt-3 max-w-3xl text-charcoal">
+                <p className="max-w-3xl text-charcoal">
                   Producteurs bretons et du 44. Parce que oui, Nantes fait partie de la Bretagne historique.
                 </p>
               </div>
             )}
             {isCopainsMode && (
               <div data-ui-commerce="paper" data-ui-shape="panel" className={styles.sectionIntro}>
-                <h2 className="font-display text-4xl text-ink">
-                  Les copains de France et de Navarre
-                </h2>
-                <p className="mt-3 max-w-3xl text-charcoal">
+                <p className="max-w-3xl text-charcoal">
                   Il existe de nombreux talents et de superbes produits partout en France. D&eacute;couvrez ici ceux de quelques producteurs qui partagent nos valeurs.
                 </p>
               </div>
@@ -361,12 +398,11 @@ export function BoutiquePageClient({
               </div>
             )}
 
-            <div className={styles.catalogueHeading}>
-              <h2>{effectiveFilter === "all" ? "Tous les produits" : effectiveFilter === "promos" ? "Les bonnes affaires" : categoryLabels[effectiveFilter]}</h2>
-              <span aria-live="polite" aria-atomic="true">{displayedProducts.length} produit{displayedProducts.length > 1 ? "s" : ""}</span>
-            </div>
             {isPartnerMode && hasProducerProducts ? (
               <ProducerBar
+                origin={listOrigin}
+                selectedProducerId={selectedProducerId}
+                onSelectProducer={setProducer}
                 rotationDay={rotationDay}
                 producers={producers}
                 products={displayedProducts}
@@ -375,6 +411,7 @@ export function BoutiquePageClient({
                 producerPartnerLabel={boutique.producerPartnerLabel}
                 producerWebsiteLabel={boutique.producerWebsiteLabel}
                 tastingSummariesByProductId={tastingSummariesByProductId}
+                resultsHeading={resultsHeading}
               />
             ) : (
               <>
@@ -382,22 +419,20 @@ export function BoutiquePageClient({
                   <div className="mb-6 flex justify-center md:justify-start">
                     <ProducerTcgCard
                       producer={ownProducer}
-                      isSelected={selectedOwnProducerId === ownProducer.id}
+                      isSelected={selectedProducerId === ownProducer.id}
                       imagePriority
-                      onClick={() =>
-                        setSelectedOwnProducerId((current) =>
-                          current === ownProducer.id ? null : ownProducer.id,
-                        )
-                      }
+                      onClick={() => setProducer(ownProducer.id)}
                     />
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+                {resultsHeading}
+                <div data-shop-list-view="market" className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
                   {displayedProducts.map((product, index) => (
                     <ProductCard
                       key={product.id}
                       product={product}
+                      origin={listOrigin}
                       producer={resolveProductProducer(product, producersById, ownProducer)}
                       addButtonLabel={boutique.addButtonLabel}
                       lowStockThresholdGrams={boutique.lowStockThresholdGrams}
@@ -408,17 +443,18 @@ export function BoutiquePageClient({
                 </div>
 
                 <ProducerTcgModal
-                  open={showOwnProducerCard && selectedOwnProducerId !== null}
+                  open={showOwnProducerCard && selectedProducerId === ownProducer.id}
+                  origin={{ ...listOrigin, surface: "producer" }}
                   producers={[ownProducer]}
-                  selectedProducerId={selectedOwnProducerId}
+                  selectedProducerId={selectedProducerId}
                   productsByProducerId={ownProductsByProducerId}
                   addButtonLabel={boutique.addButtonLabel}
                   lowStockThresholdGrams={boutique.lowStockThresholdGrams}
                   producerPartnerLabel={boutique.ownProducerLabel}
                   producerWebsiteLabel={boutique.producerWebsiteLabel}
                   tastingSummariesByProductId={tastingSummariesByProductId}
-                  onClose={() => setSelectedOwnProducerId(null)}
-                  onSelectProducer={setSelectedOwnProducerId}
+                  onClose={() => setProducer(null)}
+                  onSelectProducer={setProducer}
                 />
               </>
             )}
@@ -467,6 +503,7 @@ export function BoutiquePageClient({
 
   return (
     <section data-ui-commerce="shop" className={`section-band paper-grain pt-32 ${styles.page}`}>
+      <ShopResultsRestore />
       <div className="retro-container">
         {boutiqueSections.map((section, index) => renderBoutiqueSection(section, index))}
       </div>

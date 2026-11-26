@@ -1,28 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import styles from "./RegionMarket.module.css";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard, type ShopCardOrigin } from "@/components/ProductCard";
 import { FranceRegionMap } from "@/components/boutique/FranceRegionMap";
 import { ProducerTcgShowcase } from "@/components/boutique/ProducerTcgShowcase";
 import { RegionCarouselOverlay } from "@/components/boutique/RegionCarouselOverlay";
+import { focusShopResults, hasShopResultsRestore, REGION_RESULTS_ID } from "@/components/boutique/ShopResultsRestore";
 import {
   FRENCH_REGION_LABELS,
-  resolveFrenchRegion,
   type FrenchRegion,
 } from "@/data/france-geo";
-import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
+import { shopProductsShortcutLabel } from "@/lib/boutique-helpers";
 import { resolveProductProducer } from "@/lib/own-producer";
-import { rotateProductsForDay } from "@/lib/product-rotation";
+import type { RegionCatalogue } from "@/lib/region-catalogue";
+import { changeShopUrl } from "@/lib/shop-panel-history";
 import type { Producer } from "@/types/store";
 
 type RegionProducerShowcaseProps = {
+  originFilters: Pick<ShopCardOrigin, "categorie" | "culture">;
+  selectedRegion: FrenchRegion | null;
+  selectedProducerId: string | null;
+  onSelectProducer: (producerId: string | null) => void;
   rotationDay: number;
-  producers: Producer[];
-  products: Product[];
+  catalogue: RegionCatalogue;
   ownProducer: Producer;
-  ownProducts: Product[];
   addButtonLabel: string;
   lowStockThresholdGrams: number;
   producerPartnerLabel: string;
@@ -30,20 +33,28 @@ type RegionProducerShowcaseProps = {
   tastingSummariesByProductId: Record<string, PublicContestProductTastingSummary>;
 };
 
+const mobileQuery = "(max-width: 640px)";
+function subscribeToViewport(update: () => void) {
+  const mediaQuery = window.matchMedia(mobileQuery);
+  mediaQuery.addEventListener("change", update);
+  return () => mediaQuery.removeEventListener("change", update);
+}
+
 export function RegionProducerShowcase({
+  originFilters,
+  selectedRegion,
+  selectedProducerId,
+  onSelectProducer,
   rotationDay,
-  producers,
-  products,
+  catalogue,
   ownProducer,
-  ownProducts,
   addButtonLabel,
   lowStockThresholdGrams,
   producerPartnerLabel,
   producerWebsiteLabel,
   tastingSummariesByProductId,
 }: RegionProducerShowcaseProps) {
-  const [selectedRegion, setSelectedRegion] = useState<FrenchRegion | null>(null);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const isMobileViewport = useSyncExternalStore(subscribeToViewport, () => window.matchMedia(mobileQuery).matches, () => false);
   const [regionFlight, setRegionFlight] = useState<{
     key: number;
     startX: number;
@@ -55,126 +66,12 @@ export function RegionProducerShowcase({
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const cardsSectionRef = useRef<HTMLDivElement | null>(null);
   const emptySectionRef = useRef<HTMLDivElement | null>(null);
+  const regionOpenerRef = useRef<HTMLElement | SVGElement | null>(null);
+  const openedRegionRef = useRef(false);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 640px)");
-    const legacyMediaQuery = mediaQuery as MediaQueryList & {
-      addListener?: (listener: (event: MediaQueryListEvent) => void) => void;
-      removeListener?: (listener: (event: MediaQueryListEvent) => void) => void;
-    };
-    const syncViewport = () => {
-      setIsMobileViewport(mediaQuery.matches);
-    };
-
-    syncViewport();
-
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", syncViewport);
-      return () => {
-        mediaQuery.removeEventListener("change", syncViewport);
-      };
-    }
-
-    legacyMediaQuery.addListener?.(syncViewport);
-    return () => {
-      legacyMediaQuery.removeListener?.(syncViewport);
-    };
-  }, []);
-
-  const allProducers = useMemo(() => {
-    const seen = new Set<string>();
-    const merged: Producer[] = [];
-
-    for (const producer of [ownProducer, ...producers]) {
-      if (seen.has(producer.id)) {
-        continue;
-      }
-
-      seen.add(producer.id);
-      merged.push(producer);
-    }
-
-    return merged;
-  }, [ownProducer, producers]);
-
-  const producerById = useMemo(
-    () => new Map(allProducers.map((producer) => [producer.id, producer])),
-    [allProducers],
-  );
-
-  const producersByRegion = useMemo(() => {
-    const grouped = new Map<FrenchRegion, Producer[]>();
-
-    for (const producer of allProducers) {
-      const region = resolveFrenchRegion(producer.region);
-      if (!region) {
-        continue;
-      }
-
-      const list = grouped.get(region) ?? [];
-      list.push(producer);
-      grouped.set(region, list);
-    }
-
-    return grouped;
-  }, [allProducers]);
-
-  const producerCountByRegion = useMemo(() => {
-    const counts: Partial<Record<FrenchRegion, number>> = {};
-
-    for (const [region, regionProducers] of producersByRegion.entries()) {
-      counts[region] = regionProducers.length;
-    }
-
-    return counts;
-  }, [producersByRegion]);
-
-  const selectedProducers = useMemo(
-    () => (selectedRegion ? producersByRegion.get(selectedRegion) ?? [] : []),
-    [producersByRegion, selectedRegion],
-  );
-
-  const selectedProducerIds = useMemo(
-    () => new Set(selectedProducers.map((producer) => producer.id)),
-    [selectedProducers],
-  );
-
-  const selectedProductsByProducerId = useMemo(() => {
-    const grouped = new Map<string, Product[]>();
-
-    for (const product of products) {
-      if (!product.producerId || !selectedProducerIds.has(product.producerId)) {
-        continue;
-      }
-
-      const list = grouped.get(product.producerId) ?? [];
-      list.push(product);
-      grouped.set(product.producerId, list);
-    }
-
-    if (selectedProducerIds.has(ownProducer.id) && ownProducts.length > 0) {
-      grouped.set(ownProducer.id, ownProducts);
-    }
-
-    return new Map([...grouped].map(([producerId, producerProducts]) => [
-      producerId,
-      rotateProductsForDay(producerProducts, rotationDay, `producer:${producerId}`),
-    ]));
-  }, [ownProducer.id, ownProducts, products, rotationDay, selectedProducerIds]);
-
-  const selectedProducts = useMemo(() => {
-    const partnerProducts = products.filter(
-      (product) => product.producerId && selectedProducerIds.has(product.producerId),
-    );
-
-    const selection = selectedProducerIds.has(ownProducer.id)
-      ? [...partnerProducts, ...ownProducts]
-      : partnerProducts;
-
-    return rotateProductsForDay(selection, rotationDay, `region:${selectedRegion}`, { ownProductsFirst: true });
-  }, [ownProducer.id, ownProducts, products, rotationDay, selectedProducerIds, selectedRegion]);
-
-  const selectedCount = selectedRegion ? producerCountByRegion[selectedRegion] ?? 0 : 0;
+  const { producerById, producerCountByRegion, selectedProducers, selectedProducts, selectedProductsByProducerId } = catalogue;
+  const selectedCount = selectedProducers.length;
+  const productCount = selectedProducts.length;
   const selectedLabel = selectedRegion ? FRENCH_REGION_LABELS[selectedRegion] : null;
   const shouldShowDesktopPanel = !isMobileViewport && selectedRegion !== null;
 
@@ -228,17 +125,38 @@ export function RegionProducerShowcase({
 
   const handleRegionSelection = useCallback(
     (region: FrenchRegion, source?: { x: number; y: number }) => {
-      setSelectedRegion(region);
+      if (region === selectedRegion) return;
+      if (!selectedRegion) {
+        const active = document.activeElement;
+        regionOpenerRef.current = active instanceof HTMLElement || active instanceof SVGElement ? active : null;
+      }
+      changeShopUrl({ region, producteur: null }, selectedRegion ? "switch" : "open");
 
       window.requestAnimationFrame(() => {
         triggerRegionFlight(source);
       });
     },
-    [triggerRegionFlight],
+    [selectedRegion, triggerRegionFlight],
   );
 
+  const closeRegion = useCallback(() => changeShopUrl({ region: null, producteur: null }, "close"), []);
+
   useEffect(() => {
-    if (!selectedRegion || isMobileViewport) {
+    if (selectedRegion) {
+      openedRegionRef.current = true;
+      return;
+    }
+    if (!openedRegionRef.current) return;
+    const opener = regionOpenerRef.current ?? (document.activeElement === document.body
+      ? isMobileViewport ? mapContainerRef.current?.querySelector("select") : document.getElementById("boutique-resultats")
+      : null);
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+    regionOpenerRef.current = null;
+    openedRegionRef.current = false;
+  }, [isMobileViewport, selectedRegion]);
+
+  useEffect(() => {
+    if (!selectedRegion || isMobileViewport || hasShopResultsRestore()) {
       return;
     }
 
@@ -265,6 +183,38 @@ export function RegionProducerShowcase({
     };
   }, [regionFlight]);
 
+  const origin: ShopCardOrigin | undefined = selectedRegion ? { ...originFilters, surface: "region", selection: "regions", region: selectedRegion } : undefined;
+  const productGrid = origin && productCount > 0 ? (
+    <div className={styles.productResults}>
+      <h4 id={REGION_RESULTS_ID} tabIndex={-1}>Produits · {selectedLabel}</h4>
+      <div data-shop-list-view="region" className="region-showcase-grid">
+        {selectedProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            origin={origin}
+            producer={resolveProductProducer(product, producerById, ownProducer)}
+            addButtonLabel={addButtonLabel}
+            lowStockThresholdGrams={lowStockThresholdGrams}
+            tastingSummary={tastingSummariesByProductId[product.id]}
+          />
+        ))}
+      </div>
+    </div>
+  ) : null;
+  const mobileProductsShortcut = productCount > 0 && (
+    <button
+      type="button"
+      data-ui-commerce="primary"
+      data-ui-shape="control"
+      className="btn-cartoon btn-primary min-h-11 px-3 py-2 text-sm"
+      aria-controls={REGION_RESULTS_ID}
+      onClick={() => focusShopResults(REGION_RESULTS_ID)}
+    >
+      {shopProductsShortcutLabel(productCount)}
+    </button>
+  );
+
   return (
     <div data-ui-commerce="region-showcase" ref={showcaseRef} className={`region-showcase ${styles.showcase}`}>
       <div ref={mapContainerRef} className={`region-map-container ${styles.board}`}>
@@ -286,19 +236,23 @@ export function RegionProducerShowcase({
           producerCountByRegion={producerCountByRegion}
         />
 
-        {selectedRegion ? (
+        {selectedRegion && origin && isMobileViewport ? (
           <RegionCarouselOverlay
             key={selectedRegion}
-            open={isMobileViewport}
+            origin={origin}
             region={selectedRegion}
             producers={selectedProducers}
+            selectedProducerId={selectedProducerId}
+            onSelectProducer={onSelectProducer}
+            productGrid={productGrid}
+            productsShortcut={mobileProductsShortcut}
             productsByProducerId={selectedProductsByProducerId}
             addButtonLabel={addButtonLabel}
             lowStockThresholdGrams={lowStockThresholdGrams}
             producerPartnerLabel={producerPartnerLabel}
             producerWebsiteLabel={producerWebsiteLabel}
             tastingSummariesByProductId={tastingSummariesByProductId}
-            onClose={() => setSelectedRegion(null)}
+            onClose={closeRegion}
           />
         ) : null}
       </div>
@@ -322,11 +276,11 @@ export function RegionProducerShowcase({
         </div>
       ) : null}
 
-      {shouldShowDesktopPanel ? (
+      {shouldShowDesktopPanel && origin ? (
         <div className="region-showcase-panel">
           <div className="region-showcase-meta">
             <div>
-              <p className="font-display text-3xl text-ink">{selectedLabel}</p>
+              <h3 id={productGrid ? undefined : REGION_RESULTS_ID} data-shop-panel-results tabIndex={-1} className="font-display text-3xl text-ink">{selectedLabel}</h3>
               <p className="mt-2 font-handwritten text-2xl text-charcoal">
                 {selectedCount} producteur{selectedCount > 1 ? "s" : ""}
               </p>
@@ -335,7 +289,7 @@ export function RegionProducerShowcase({
               <button data-ui-commerce="secondary" data-ui-shape="control"
                 type="button"
                 className="btn-cartoon btn-secondary region-reset-button"
-                onClick={() => setSelectedRegion(null)}
+                onClick={closeRegion}
               >
                 Retour à la carte
               </button>
@@ -350,7 +304,7 @@ export function RegionProducerShowcase({
               <button data-ui-commerce="secondary" data-ui-shape="control"
                 type="button"
                 className="btn-cartoon btn-secondary mt-6"
-                onClick={() => setSelectedRegion(null)}
+                onClick={closeRegion}
               >
                 Retour à la carte
               </button>
@@ -359,6 +313,9 @@ export function RegionProducerShowcase({
             <>
               <div ref={cardsSectionRef}>
                 <ProducerTcgShowcase
+                  origin={origin}
+                  selectedProducerId={selectedProducerId}
+                  onSelectProducer={onSelectProducer}
                   rotationDay={rotationDay}
                   className="region-showcase-cards"
                   producers={selectedProducers}
@@ -372,20 +329,7 @@ export function RegionProducerShowcase({
                 />
               </div>
 
-              {selectedProducts.length > 0 ? (
-                <div className="region-showcase-grid">
-                  {selectedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      producer={resolveProductProducer(product, producerById, ownProducer)}
-                      addButtonLabel={addButtonLabel}
-                      lowStockThresholdGrams={lowStockThresholdGrams}
-                      tastingSummary={tastingSummariesByProductId[product.id]}
-                    />
-                  ))}
-                </div>
-              ) : null}
+              {productGrid ?? <p className="mt-4 font-semibold text-charcoal">Aucun produit dans cette région actuellement.</p>}
             </>
           )}
         </div>

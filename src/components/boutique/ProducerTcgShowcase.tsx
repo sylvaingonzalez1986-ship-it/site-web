@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import type { ShopCardOrigin } from "@/components/ProductCard";
 import { ProducerCarousel } from "@/components/boutique/ProducerCarousel";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
 import { ProducerTcgModal } from "@/components/boutique/ProducerTcgModal";
@@ -20,6 +21,9 @@ type ProducerTcgShowcaseProps = {
   producerWebsiteLabel: string;
   tastingSummariesByProductId?: Record<string, PublicContestProductTastingSummary>;
   className?: string;
+  origin: ShopCardOrigin;
+  selectedProducerId: string | null;
+  onSelectProducer: (producerId: string | null) => void;
 };
 
 export function ProducerTcgShowcase({
@@ -33,8 +37,10 @@ export function ProducerTcgShowcase({
   producerWebsiteLabel,
   tastingSummariesByProductId = {},
   className = "",
+  origin,
+  selectedProducerId,
+  onSelectProducer,
 }: ProducerTcgShowcaseProps) {
-  const [selectedProducerId, setSelectedProducerId] = useState<string | null>(null);
 
   const groupedProductsByProducerId = useMemo(() => {
     const grouped = new Map<string, Product[]>();
@@ -73,14 +79,13 @@ export function ProducerTcgShowcase({
             key={producer.id}
             producer={producer}
             isSelected={selectedProducerId === producer.id}
-            onClick={() =>
-              setSelectedProducerId((current) => (current === producer.id ? null : producer.id))
-            }
+            onClick={() => onSelectProducer(producer.id)}
           />
         ))}
       </ProducerCarousel>
 
       <ProducerTcgModal
+        origin={origin.surface === "region" ? origin : { ...origin, surface: "producer" }}
         open={selectedProducerId !== null}
         producers={producers}
         selectedProducerId={selectedProducerId}
@@ -90,8 +95,8 @@ export function ProducerTcgShowcase({
         producerPartnerLabel={producerPartnerLabel}
         producerWebsiteLabel={producerWebsiteLabel}
         tastingSummariesByProductId={tastingSummariesByProductId}
-        onClose={() => setSelectedProducerId(null)}
-        onSelectProducer={setSelectedProducerId}
+        onClose={() => onSelectProducer(null)}
+        onSelectProducer={onSelectProducer}
       />
     </div>
   );

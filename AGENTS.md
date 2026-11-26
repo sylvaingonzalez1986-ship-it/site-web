@@ -34,6 +34,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Prefer one agent for a bounded task. Delegate only a distinct, substantial investigation or review when the benefit justifies the extra context; send a focused brief instead of the full conversation where possible.
 - For continued game UX work, read `docs/bete-de-concours/ux-progress.json` first. Read only the relevant audit section and source files; do not reload the entire audit or repeat a completed audit by default.
 - Group related small changes into one screen-level task with a clear finish condition. Separate required fixes from optional polish; do not turn each completion into an unbounded new audit.
+- Pour le Quartier, prendre au plus trois spécialistes simultanés, chacun sur des fichiers distincts. Les rôles et leur vérification sont décrits dans [l’équipe Codex](docs/bete-de-concours/equipe-codex.md).
+- Charger les disciplines utiles depuis le routeur local. Avant toute mise à jour des [skills tiers](.agents/third-party/awesome-gamedev-agent-skills/manifest.json), comparer les fichiers au SHA du manifeste et examiner les scripts avant usage.
+- Pour le village, conserver la boucle Fiber à la demande. Pour le créateur et les intérieurs, réutiliser leur renderer Three.js. Faire la recette sur les composants joués, sur boucle locale avec un profil fictif, et préciser le matériel ou l’émulation.
 - Keep search output bounded and tool logs concise. Read targeted ranges rather than whole large files. Use existing scripts before creating another harness.
 - Run relevant tests once after changes; rerun after a failure or material change. Preserve payment, data-loss, accessibility and migration checks when affected. Broad checks belong at shared-code changes or integration milestones.
 - Keep progress and final reports short. Update the compact checkpoint with completed work, evidence and the next bounded task. Use it to resume in a fresh conversation when the existing thread is long.
@@ -41,3 +44,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Référencement de la boutique
 
 Pour un cycle SEO, partir du [mandat et des limites de publication](.agents/seo/mandat.md), du [dernier bilan](.agents/seo/reports/) et de la [file de travail](.agents/seo/backlog.md). Charger ensuite seulement la compétence et les sources utiles au lot.
+
+## Spécialistes du site et du jeu
+
+Dans `.agents/skills/`, mobiliser `$lcb-jeu-3d` pour les scènes et la progression, `$lcb-seo` pour la recherche organique et `$lcb-ui-ux` pour les parcours et les interfaces. Pour une interaction en scène, associer jeu et UI autour du même geste et de la même capture. Pour une page d’acquisition, associer SEO et UI autour de la même URL. Si les modèles sont disponibles, Astra 6.2 coordonne et valide les choix structurants, Sol 6.2 traite les investigations ciblées avec un effort proportionné. Confier à chaque intervenant une question, les fichiers utiles et une preuve attendue, puis centraliser les modifications. Garder la comptabilité sur le Mac mini. Utiliser d’abord les outils déjà présents. Obtenir l’accord de Sylvain avant tout abonnement, achat de crédits, essai à renouvellement payant ou génération facturée. Une mission de diagnostic se termine par ses preuves et ses propositions. La réalisation d’une refonte, un changement de gameplay ou un déploiement nécessitent une demande distincte.

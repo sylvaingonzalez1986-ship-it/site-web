@@ -54,7 +54,7 @@ import { KqWarehouseShop } from "./KqWarehouseShop";
 import { proposeFirstWarehousePlan } from "@/lib/kanab-quest-warehouse-first-plan";
 import { KqWarehousePlanQuote } from "./KqWarehousePlanQuote";
 import { describeKqWarehouseAirMount, getKqWarehousePlanCultureBudget, getKqWarehousePlanPayment } from "@/lib/kanab-quest-warehouse-plan-review";
-import { KqWarehouseCulture, warehouseCultureHref, warehouseCampaignHref, type KqWarehouseCultureSummary, type KqWarehouseBuddies } from "./KqWarehouseCulture";
+import { KqWarehouseCulture, warehouseCultureHref, warehouseCampaignHref, warehouseCultureStage, type KqWarehouseCultureSummary, type KqWarehouseBuddies } from "./KqWarehouseCulture";
 import { KqWarehouseDashboard, type KqWarehouseDashboardTab } from "./KqWarehouseDashboard";
 import { KqWarehouseBuddieDock } from "./KqWarehouseBuddieDock";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
@@ -978,6 +978,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   function closeWorkshopShop() {
     setWorkshopShop(false);
     if (resumeExtraction) { setResumeExtraction(false); setWorkshopTab("extracts"); }
+    requestAnimationFrame(() => {
+      const tab = workshopActions.current?.querySelector<HTMLButtonElement>('button[aria-pressed="true"]');
+      tab?.focus();
+    });
   }
   function openTargetedShop(department: KqWarehouseDepartment, equipmentCode?: string) {
     setShopVisit(current => ({ id: current.id + 1, department, equipmentCode }));
@@ -1137,12 +1141,19 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                 </div>
   </> : null;
 
-  const cultureAccess = !firstInstallationConfirmed && zoneCultures && (activeRuns.length > 0 || snapshot?.state.zones.some(isKqWarehouseZoneOperational)) && !dirty && (directPreparation || !editing) && <div className={`${styles.campaignLaunch} ${directPreparation ? styles.preparationAccess : ""}`} data-warehouse-campaign>
-                  <span>{directPreparation ? <><strong>{activeRuns.length ? "Tes cultures en cours" : "Prêt à cultiver ?"}</strong><small>{activeRuns.length ? `${activeRuns.length} culture${activeRuns.length > 1 ? "s" : ""} à suivre.` : "Choisis tes Buddies et tes cartes sur la page de préparation."}</small></> : activeCampaign ? "Une campagne · tous tes Buddies" : activeRuns.length ? "Termine tes cultures en cours" : `${campaignZones.length} Buddie${campaignZones.length > 1 ? "s" : ""} placé${campaignZones.length > 1 ? "s" : ""} pour la campagne`}</span>
+  const soloRun = !activeCampaign && activeRuns.length === 1 ? activeRuns[0] : undefined;
+  const soloRunHref = !directPreparation && soloRun?.zoneId ? warehouseCultureHref(soloRun.zoneId, soloRun.runId) : undefined;
+  const soloZone = snapshot && soloRun?.zoneId ? getKqZoneIdentity(snapshot.state, soloRun.zoneId) : null;
+  const showCultureShortcut = activeModule === "production" && !editing && (productionView === "priorities" || productionView === "timeline");
+  const cultureAccess = !firstInstallationConfirmed && zoneCultures && (activeRuns.length > 0 || snapshot?.state.zones.some(isKqWarehouseZoneOperational)) && !dirty && (directPreparation || !editing) && <div className={`${styles.campaignLaunch} ${directPreparation || soloRun ? styles.preparationAccess : ""}`} data-warehouse-campaign>
+                  <span>{soloRun ? <><strong>{warehouseCultureStage(soloRun)}</strong><small>{soloZone?.label ?? "Culture en cours"}</small></> : directPreparation ? activeRuns.length ? `${activeRuns.length} culture${activeRuns.length > 1 ? "s" : ""} à suivre` : "Choisis tes Buddies et tes cartes." : activeCampaign ? "Campagne en cours" : activeRuns.length ? "Termine tes cultures en cours" : `${campaignZones.length} Buddie${campaignZones.length > 1 ? "s" : ""} prêt${campaignZones.length > 1 ? "s" : ""} pour la campagne`}</span>
                   {dirty ? <button type="button" className={styles.primary} data-warehouse-campaign-action="review" onClick={reviewPlan}>Voir le devis du plan</button>
                     : activeCampaign && !locked ? onOpenCulture
                       ? <button type="button" className={styles.primary} data-warehouse-campaign-action="resume" data-sylvain-target="next-open" onClick={() => onOpenCulture(warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId))}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></button>
                       : <Link className={styles.primary} data-warehouse-campaign-action="resume" data-sylvain-target="next-open" href={warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId)}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></Link>
+                      : soloRunHref && !locked ? onOpenCulture
+                        ? <button type="button" className={styles.primary} data-warehouse-campaign-action="resume" onClick={() => onOpenCulture(soloRunHref)}>Reprendre la culture<ArrowRight size={15} aria-hidden="true" /></button>
+                        : <Link className={styles.primary} data-warehouse-campaign-action="resume" href={soloRunHref}>Reprendre la culture<ArrowRight size={15} aria-hidden="true" /></Link>
                       : directPreparation && !locked ? onOpenCulture
                         ? <button type="button" className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} onClick={() => onOpenCulture(warehouseCampaignHref(undefined, !activeRuns.length))}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></button>
                         : <Link className={styles.primary} data-sylvain-target={activeRuns.length ? "next-open" : "prepare-open"} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} href={warehouseCampaignHref(undefined, !activeRuns.length)}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></Link>
@@ -1288,7 +1299,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     {activeModule === "production" && <>
       {productionView === "priorities" && <WarehousePriorities alerts={alerts} ready={!!currentSecurity && !!preparations.state}
         disabled={workInProgress} onOpen={openPriority} nextAction={editing ? undefined : planZones.length === 0 ? <button type="button" className={board.control} data-primary data-sylvain-target="install-empty"
-          disabled={!canPlace} onClick={() => { setMode(true); openTargetedShop("substrate"); }}><Wrench size={16} aria-hidden="true" />Installer une zone</button> : cultureAccess} />}
+          disabled={!canPlace} onClick={() => { setMode(true); openTargetedShop("substrate"); }}><Wrench size={16} aria-hidden="true" />Installer une zone</button> : showCultureShortcut ? undefined : cultureAccess} />}
       {productionView === "surface" && <WarehouseSurface summary={summary} onOpen={module => {
         const nextZone = module === "production" ? draft.zones[0] : draft.serviceZones?.find(zone => zone.kind === module);
         if (module === "production" && nextZone) selectProductionZone(nextZone.id);
@@ -1302,7 +1313,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       {!editing && (productionView === "timeline" || productionView === "priorities" && (activeRuns.length > 0 || storage?.lots.some(lot => lot.projection.stage === "curing"))) &&
         <WarehouseProduction runs={activeRuns} lots={storageError ? undefined : storage?.lots} selectedZoneId={selectedId} labelZone={labelZone} official={guidePlanReady}
           onSelectZone={id => { selectProductionZone(id); showDrawingPlan(); }} onSelectLot={selectLot}>
-          {storageError && <p>{storageError}</p>}{productionView === "timeline" ? cultureAccess : null}
+          {storageError && <p>{storageError}</p>}
         </WarehouseProduction>}
       {!editing && productionView === "selection" && <div className={board.sectionActions}><button type="button" className={board.control} onClick={() => setProductionView("timeline")}>
         Toutes les étapes <ArrowRight size={15} aria-hidden="true" /></button></div>}
@@ -1379,7 +1390,12 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       <h3>{room === "drying" ? "Capacité de séchage" : "Place en stockage"}</h3>
       {room === "drying" && <KqProgressMeter label="Capacité par récolte" value={summary.dryingCapacityGrams} max={Math.max(summary.dryingCapacityGrams, summary.estimatedHarvestGrams)}
         valueLabel={mass(summary.dryingCapacityGrams)} hint={summary.activeAreaM2 ? `Potentiel matériel du plan · ${mass(summary.estimatedHarvestGrams)}` : "La récolte dépend des zones actives."} />}
-      {room === "storage" && <p>{availableStorage === null ? "Occupation à établir." : `${mass(Math.max(0, availableStorage))} libres sur ${mass(savedActualStorageCapacity)}. Les réservations de récolte sont déduites.`}</p>}
+      {room === "storage" && (availableStorage === null
+        ? <p>Place libre à confirmer · {mass(savedActualStorageCapacity)} de capacité installée.</p>
+        : <KqProgressMeter label="Capacité réservée" value={savedActualStorageCapacity - availableStorage} max={savedActualStorageCapacity}
+          valueLabel={`${mass(savedActualStorageCapacity - availableStorage)} / ${mass(savedActualStorageCapacity)}`}
+          tone={availableStorage < 0 ? "red" : "teal"}
+          hint={availableStorage < 0 ? `${mass(-availableStorage)} au-delà de la capacité, récoltes prévues comprises.` : `${mass(availableStorage)} de place libre après réservation des récoltes.`} />)}
       <p>{currentService ? `${labelZone(currentService.id)} · ${currentService.width * currentService.height} m²` : "Choisis un poste pour aménager la surface dans le plan."}</p>
       <a className={board.control} href={`#${id}-activity`}>{room === "drying" ? "Gérer le séchage" : "Gérer les lots"}<ArrowRight size={15} aria-hidden="true" /></a>
     </section>}
@@ -1481,11 +1497,12 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
             </div>
           </div>}
           {room !== "processing" && <WarehouseMetrics summary={editing ? summary : installedSummary} count={zoneCultures ? activeRuns.length : Number(snapshot.activeRun)}
-            stock={stock} stockFree={availableStorage === null ? null : Math.max(0, availableStorage)} disabled={workInProgress}
+            stock={stock} stockFree={availableStorage} disabled={workInProgress}
             onSurface={() => { openModule("production"); setProductionView("surface"); focusContext(); }}
             onProduction={() => { openModule("production"); focusContext(); }}
             onStorage={() => { openModule("storage"); focusContext(); }}
             onCosts={() => openDashboard("costs")} />}
+          {showCultureShortcut && cultureAccess && <div className={styles.cultureShortcut}>{cultureAccess}</div>}
           {room !== "processing" && <WarehouseModules id={id} active={activeModule} disabled={workInProgress || pending} onOpen={openModule} />}
           {editing && (dirty || room !== "processing") && <div className={board.planStatus} data-dirty={dirty || undefined}>
             <span role="status" data-warehouse-draft={dirty || undefined}><strong>{dirty ? "Brouillon à enregistrer" : "Plan enregistré"}</strong>
@@ -1569,11 +1586,11 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                     : workshopTab === "extracts" ? <KqCommerceDesk workshop initialFlowerId={extractionLot.flowerId} initialLotId={extractionLot.lotId}
                       onLotSelectionChange={(lotId, flowerId) => setExtractionLot({ lotId, flowerId })} onBusyChange={setWorkshopBusy}
                       onOpenShop={code => openWorkshopShop(code, true)} onOpenStorage={flowerId => flowerId ? selectLot(flowerId) : openModule("storage")} />
-                    : workshopShop ? <>
+                    : workshopShop ? workshopEquipmentCode === "COMPUTER" ? <>
                       <button className={board.control} type="button" disabled={workshopBusy} onClick={closeWorkshopShop}>{resumeExtraction ? "Retour à l’extraction" : "Retour à mes machines"}</button>
-                      {workshopEquipmentCode === "COMPUTER" ? <KqCommerceComputer onBusyChange={setWorkshopBusy} />
-                        : <KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={closeWorkshopShop} />}
-                    </> : <KqWarehouseEntry embedded workshopOnly showWorkshopHeading={false} initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={() => openModule("storage")} onOpenShop={openWorkshopShop} />}
+                      <KqCommerceComputer onBusyChange={setWorkshopBusy} />
+                    </> : <KqEquipmentCatalogModal embedded workshopOnly workshopBackToExtraction={resumeExtraction} initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={closeWorkshopShop} />
+                    : <KqWarehouseEntry embedded workshopOnly showWorkshopHeading={false} initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={() => openModule("storage")} onOpenShop={openWorkshopShop} />}
                 </div>}
               </>}
               {room === "storage" && <div>

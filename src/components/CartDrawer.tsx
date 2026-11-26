@@ -6,13 +6,14 @@ import { categoryLabels } from "@/data/products";
 import styles from "./CartDrawer.module.css";
 import dynamic from "next/dynamic";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { CartBenefitSummaryModal } from "@/components/cart/CartBenefitSummaryModal";
 import { OrderCashRewardPreview } from "@/components/checkout/OrderCashReward";
 import { ContestBundleRewardPreview } from "@/components/checkout/ContestBundleReward";
 import { useCart } from "@/context/CartContext";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useCmsStore } from "@/hooks/useCmsStore";
+import { getCheckoutDeliveryErrors, type CheckoutDeliveryField } from "@/lib/checkout-delivery-validation";
 import { getCustomerCheckoutEligibility } from "@/lib/customer-checkout-eligibility";
 import {
   getBadgeDiscountPercent,
@@ -124,10 +125,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [lotterySuccess, setLotterySuccess] = useState<string | null>(null);
   const [lotteryPreview, setLotteryPreview] = useState<LotteryPreview | null>(null);
   const [cartError, setCartError] = useState<string | null>(null);
+  const [removalNotice, setRemovalNotice] = useState("");
+  const [deliveryErrorFocus, setDeliveryErrorFocus] = useState<{ field: CheckoutDeliveryField } | null>(null);
   const [summaryModal, setSummaryModal] = useState<"loyalty" | "packs" | null>(null);
   const drawerRef = useRef<HTMLDialogElement>(null);
+  const emptyActionRef = useRef<HTMLButtonElement>(null);
   const checkoutAreaRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const deliveryFieldId = useId();
   const [checkoutVisible, setCheckoutVisible] = useState(false);
   const wasOpenRef = useRef(false);
   useBodyScrollLock(open);
@@ -138,6 +143,17 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     else if (!open && drawer.open) drawer.close();
     return () => { if (drawer.open) drawer.close(); };
   }, [open]);
+
+  useEffect(() => {
+    if (open && items.length === 0 && removalNotice) emptyActionRef.current?.focus();
+  }, [items.length, open, removalNotice]);
+
+  useEffect(() => {
+    if (!deliveryErrorFocus) return;
+    const field = drawerRef.current?.querySelector<HTMLElement>(`[data-checkout-field="${deliveryErrorFocus.field}"]`);
+    field?.scrollIntoView({ block: "center" });
+    field?.focus({ preventScroll: true });
+  }, [deliveryErrorFocus]);
 
   useEffect(() => {
     if (!open || !checkoutAreaRef.current) return;
@@ -158,6 +174,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     }
 
     setCartError(null);
+    setRemovalNotice("");
+    setDeliveryErrorFocus(null);
     if (isAuthenticated) {
       void refreshSession({ silent: true, force: true });
     }
@@ -434,28 +452,34 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     [user],
   );
 
-  const canCheckout = useMemo(
-    () =>
-      Boolean(
-        shippingName.trim() &&
-          shippingEmail.trim() &&
-          shippingPhone.trim() &&
-          (deliveryMethod === "home"
-            ? shippingAddress.trim() && shippingCity.trim() && shippingPostalCode.trim() && shippingCountry.trim()
-            : selectedRelayPoint),
-      ),
-    [
-      deliveryMethod,
-      selectedRelayPoint,
-      shippingAddress,
-      shippingCity,
-      shippingCountry,
-      shippingEmail,
-      shippingName,
-      shippingPhone,
-      shippingPostalCode,
-    ],
-  );
+  const deliveryErrors = deliveryErrorFocus ? getCheckoutDeliveryErrors(checkoutDraft) : [];
+  const validateDelivery = () => {
+    const [firstError] = getCheckoutDeliveryErrors(checkoutDraft);
+    setDeliveryErrorFocus(firstError ? { field: firstError.field } : null);
+    return !firstError;
+  };
+  const getDeliveryFieldProps = (field: CheckoutDeliveryField) => {
+    const invalid = deliveryErrors.some(error => error.field === field);
+    return {
+      "data-checkout-field": field,
+      "aria-invalid": invalid || undefined,
+      "aria-describedby": invalid ? `${deliveryFieldId}-${field}` : undefined,
+    };
+  };
+  const renderDeliveryError = (field: CheckoutDeliveryField) => {
+    const message = deliveryErrors.find(error => error.field === field)?.message;
+    return message && <span id={`${deliveryFieldId}-${field}`} className={styles.fieldError}>{message}</span>;
+  };
+
+  const recordRemoval = (removesLastLine: boolean) => {
+    setCartError(null);
+    if (removesLastLine) setRemovalNotice("Dernier article retiré du panier.");
+  };
+  const closeDrawer = () => {
+    setRemovalNotice("");
+    setDeliveryErrorFocus(null);
+    onClose();
+  };
 
   const applyPromoCode = async () => {
     setPromoError(null);
@@ -615,12 +639,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     const returnUrl = new URL(window.location.href);
     returnUrl.searchParams.set("panier", "1");
     const nextPath = returnUrl.pathname + returnUrl.search;
-    onClose();
+    closeDrawer();
     router.push(`/compte/connexion?next=${encodeURIComponent(nextPath)}`);
   };
 
   const goToProfile = () => {
-    onClose();
+    closeDrawer();
     router.push("/profil?tab=infos");
   };
 
@@ -631,11 +655,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         ref={drawerRef}
         aria-label="Ton panier"
         className={styles.drawer}
-        onCancel={(event) => { event.preventDefault(); onClose(); }}
+        onCancel={(event) => { event.preventDefault(); closeDrawer(); }}
         onClick={(event) => {
           if (event.target !== event.currentTarget) return;
           const bounds = event.currentTarget.getBoundingClientRect();
-          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeDrawer();
         }}
       >
         <header className={styles.header}>
@@ -643,12 +667,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <p className={styles.eyebrow}>Les Chanvriers Bretons · Le Marché</p>
             <h2>Ton panier<span className={styles.itemCount}>{totalItems}</span></h2>
           </div>
-          <button data-ui-commerce="cart-close" data-ui-shape="control" type="button" className={styles.closeButton} onClick={onClose} aria-label="Fermer le panier" autoFocus>
+          <button data-ui-commerce="cart-close" data-ui-shape="control" type="button" className={styles.closeButton} onClick={closeDrawer} aria-label="Fermer le panier" autoFocus>
             <X size={22} aria-hidden="true" />
           </button>
         </header>
 
         <div ref={scrollAreaRef} className={styles.scrollArea}>
+          <p className="sr-only" role="status">{items.length === 0 ? removalNotice : ""}</p>
           <div className={styles.content} data-empty={items.length === 0}>
           <div className={styles.items}>
             {items.length === 0 && (
@@ -659,7 +684,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <h3>Une belle récolte<br />à composer.</h3>
                   <p>Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.</p>
                   <div className="mt-3">
-                    <button data-ui-commerce="primary" data-ui-shape="control" type="button" onClick={() => { onClose(); router.push("/boutique"); }} className={`btn-cartoon btn-primary min-h-11 px-3 text-xs ${styles.emptyAction}`}>
+                    <button ref={emptyActionRef} data-ui-commerce="primary" data-ui-shape="control" type="button" onClick={() => { closeDrawer(); router.push("/boutique"); }} className={`btn-cartoon btn-primary min-h-11 px-3 text-xs ${styles.emptyAction}`}>
                       Découvrir les produits
                     </button>
                   </div>
@@ -702,7 +727,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     <button data-ui-commerce="cart-icon" data-ui-shape="control"
                       type="button"
                       onClick={() => {
-                        setCartError(null);
+                        recordRemoval(items.length === 1);
                         removeFromCart(item.id);
                       }}
                       className={styles.iconButton}
@@ -715,7 +740,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     <button data-ui-commerce="cart-icon" data-ui-shape="control"
                       type="button"
                       onClick={() => {
-                        setCartError(null);
+                        recordRemoval(items.length === 1 && item.quantity <= 1);
                         decreaseQuantity(item.id);
                       }}
                       className={styles.iconButton}
@@ -786,6 +811,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <label className={styles.field}>
                   <span>Nom complet</span>
                 <input
+                  {...getDeliveryFieldProps("name")}
                   required
                   className={styles.input}
                   value={shippingName}
@@ -794,10 +820,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="name"
                   placeholder="Nom complet"
                 />
+                  {renderDeliveryError("name")}
                 </label>
                 <label className={styles.field}>
                   <span>Email</span>
                 <input
+                  {...getDeliveryFieldProps("email")}
                   required
                   className={styles.input}
                   type="email"
@@ -807,10 +835,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="email"
                   placeholder="Email"
                 />
+                  {renderDeliveryError("email")}
                 </label>
                 <label className={styles.field}>
                   <span>Téléphone</span>
                 <input
+                  {...getDeliveryFieldProps("phone")}
                   required
                   type="tel"
                   className={styles.input}
@@ -820,6 +850,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="tel"
                   placeholder={normalizeShippingCountryCode(shippingCountry) === "BE" ? "+32 470 12 34 56" : "Téléphone"}
                 />
+                  {renderDeliveryError("phone")}
                 </label>
                 <div data-ui-commerce="sage" data-ui-shape="panel" className={styles.deliveryOptions}>
                   <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
@@ -854,6 +885,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <label className={styles.field}>
                     <span>Adresse de livraison</span>
                   <input
+                    {...getDeliveryFieldProps("address")}
                     required
                     autoComplete="street-address"
                     aria-label="Adresse de livraison"
@@ -862,12 +894,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     onChange={(event) => updateCheckoutDraft({ shippingAddress: event.target.value })}
                     placeholder="Adresse"
                   />
+                    {renderDeliveryError("address")}
                   </label>
                 )}
                 <div className="grid grid-cols-2 gap-2">
                   <label className={styles.field}>
                     <span>Ville{deliveryMethod === "relay" ? " (facultatif)" : ""}</span>
                   <input
+                    {...getDeliveryFieldProps("city")}
                     required={deliveryMethod === "home"}
                     className={styles.input}
                     value={shippingCity}
@@ -876,10 +910,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="address-level2"
                   placeholder="Ville"
                   />
+                    {renderDeliveryError("city")}
                   </label>
                   <label className={styles.field}>
                     <span>Code postal</span>
                   <input
+                    {...getDeliveryFieldProps("postalCode")}
                     required
                     inputMode="numeric"
                     className={styles.input}
@@ -889,11 +925,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   autoComplete="postal-code"
                   placeholder="Code postal"
                   />
+                    {renderDeliveryError("postalCode")}
                   </label>
                 </div>
                 <label className={styles.field}>
                   <span>Pays</span>
                 <input
+                  {...getDeliveryFieldProps("country")}
                   required
                   className={styles.input}
                   value={shippingCountry}
@@ -903,21 +941,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   list="checkout-shipping-countries"
                   placeholder="France ou Belgique"
                 />
+                  {renderDeliveryError("country")}
                 <datalist id="checkout-shipping-countries">
                   <option value="France" />
                   <option value="Belgique" />
                 </datalist>
                 </label>
                 {deliveryMethod === "relay" && (
-                  <MondialRelayPicker
-                    key={`${normalizeShippingCountryCode(shippingCountry)}:${shippingPostalCode.trim()}:${shippingCity.trim()}`}
-                    postalCode={shippingPostalCode}
-                    city={shippingCity}
-                    country={shippingCountry}
-                    selectedPoint={selectedRelayPoint}
-                    onSelect={(point) => updateCheckoutDraft({ selectedRelayPoint: point })}
-                    minHeightClassName="min-h-[300px] md:min-h-[360px]"
-                  />
+                  <div {...getDeliveryFieldProps("relay")} role="group" aria-label="Point relais" tabIndex={-1} className={styles.relayField}>
+                    {renderDeliveryError("relay")}
+                    <MondialRelayPicker
+                      key={`${normalizeShippingCountryCode(shippingCountry)}:${shippingPostalCode.trim()}:${shippingCity.trim()}`}
+                      postalCode={shippingPostalCode}
+                      city={shippingCity}
+                      country={shippingCountry}
+                      selectedPoint={selectedRelayPoint}
+                      onSelect={(point) => updateCheckoutDraft({ selectedRelayPoint: point })}
+                      minHeightClassName="min-h-[300px] md:min-h-[360px]"
+                    />
+                  </div>
                 )}
                 <div className={styles.codeRow}>
                   <label className={styles.field}>
@@ -1111,7 +1153,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               }}
               promoCode={promoPreview?.code || undefined}
               lotteryRewardClaimId={lotteryPreview?.claimId || undefined}
-              disabled={!canCheckout || authLoading || !isAuthenticated || !checkoutEligibility.allowed}
+              disabled={authLoading || !isAuthenticated || !checkoutEligibility.allowed}
+              validateDelivery={validateDelivery}
               onSuccess={() => {
                 clearCart();
                 setPromoCode("");
@@ -1133,22 +1176,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </div>
                 <p className="text-xs text-charcoal">Ton panier est conservé sur ce navigateur pendant 48 h. Connecte-toi ou crée ton compte pour poursuivre la commande.</p>
                 <button data-ui-commerce="primary" data-ui-shape="control" type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>
-                <button type="button" onClick={onClose} className="min-h-11 w-full text-sm font-bold underline">Continuer mes achats</button>
-              </div>
-            )}
-            {isAuthenticated && !canCheckout && items.length > 0 && (
-              <div className="mt-2 text-sm font-semibold text-charcoal">
-              <p>
-                {deliveryMethod === "relay" && !selectedRelayPoint
-                  ? "Sélectionne un Point Relais pour payer."
-                  : "Compléter les informations de livraison pour payer."}
-              </p>
-              <button type="button" className="min-h-11 underline" onClick={() => {
-                const target = drawerRef.current?.querySelector<HTMLElement>("input[required]:invalid")
-                  ?? drawerRef.current?.querySelector<HTMLElement>(".mondial-relay-widget button, input[autocomplete='postal-code']");
-                target?.scrollIntoView({ block: "center" });
-                target?.focus({ preventScroll: true });
-              }}>Compléter ma livraison</button>
+                <button type="button" onClick={closeDrawer} className="min-h-11 w-full text-sm font-bold underline">Continuer mes achats</button>
               </div>
             )}
             {!authLoading && isAuthenticated && !checkoutEligibility.allowed && (

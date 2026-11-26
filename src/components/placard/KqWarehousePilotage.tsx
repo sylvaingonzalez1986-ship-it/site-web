@@ -80,7 +80,9 @@ export function WarehouseMetrics({ summary, count, stock, stockFree, disabled, o
   const metrics = [
     { id: "surface", label: "Surface aménagée", value: `${summary.allocatedAreaM2} / ${area(summary.totalAreaM2)}`, note: `${area(summary.activeAreaM2)} de culture active`, icon: Ruler, action: onSurface },
     { id: "production", label: "Cultures en cours", value: count, note: count === 0 ? "Aucun cycle lancé" : "Voir les étapes", icon: Sprout, action: onProduction },
-    { id: "storage", label: "Récoltes en stock", value: typeof stock === "number" ? warehouseMass(stock) : "Indisponible", note: stockFree === null ? "Capacité libre à établir" : `${warehouseMass(stockFree)} de place libre`, icon: Package, action: onStorage },
+    { id: "storage", label: "Récoltes en stock", value: typeof stock === "number" ? warehouseMass(stock) : "Indisponible",
+      note: stockFree === null ? "Place libre à confirmer" : stockFree < 0 ? `${warehouseMass(-stockFree)} de réservation en trop` : `${warehouseMass(stockFree)} de place libre`,
+      icon: Package, action: onStorage },
     { id: "costs", label: "Charges / cycle", value: formatKqCash(summary.operatingCostCents), note: "Énergie et fournitures estimées", icon: Zap, action: onCosts },
   ];
   return <div className={styles.metrics} aria-label="Synthèse de l’entrepôt">

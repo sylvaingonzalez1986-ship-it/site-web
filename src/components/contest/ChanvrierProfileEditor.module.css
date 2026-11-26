@@ -23,6 +23,7 @@
 .dialog :where(button, input, select) { font-family: inherit; }
 .dialog button { touch-action: manipulation; }
 .dialog button:disabled { opacity: .55; cursor: not-allowed; }
+.dialog button[aria-disabled="true"] { opacity: .55; cursor: default; }
 .dialog :is(button, input, summary, [tabindex="0"]):focus-visible { outline: 3px solid #087b70; outline-offset: 2px; box-shadow: none; }
 .dialog :where(button, input, summary, [tabindex]) { scroll-margin-block: 8px 14px; }
 
@@ -87,7 +88,7 @@
   scrollbar-width: thin;
   scrollbar-color: #087b70 #fff1d6;
   padding: 2px 6px 12px 18px;
-  scroll-padding-block: 12px;
+  scroll-padding-block: 166px 12px;
 }
 .layout[data-workshop="true"] .workshopPreview { grid-area: preview; position: static; height: auto; min-height: 0; padding: 0 13px 9px 0; }
 
@@ -122,15 +123,32 @@
 }
 .stageCanvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 6px; object-fit: contain; }
 .previewStatus { position: relative; max-width: 18ch; margin: 7px; font-size: 12px; line-height: 1.4; text-align: center; }
+.stageMode {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  position: absolute;
+  inset: auto auto 4px 4px;
+  margin: 0;
+  padding: 6px 9px;
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / 8px / 0 stretch;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  pointer-events: none;
+}
 .previewTools { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 7px; }
 .viewControls, .rotationControls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
 .rotationControls { padding-left: 5px; border-left: 1px solid var(--workshop-rule); }
-.previewTools button { min-width: 0; min-height: 42px; padding: 3px; font-size: 12px; line-height: 1.1; cursor: pointer; }
+.previewTools button { min-width: 0; min-height: 42px; padding: 3px; font-size: 13px; line-height: 1.1; cursor: pointer; }
 .rotationControls button, .walkButton { width: clamp(33px, 4.6vw, 40px); }
 .rotationControls button { display: grid; place-items: center; }
 .walkButton { display: flex; align-items: center; justify-content: center; gap: 5px; }
 .walkButton svg { flex-shrink: 0; }
 .walkButton span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.zoomControls { position: absolute; inset: auto 4px 4px auto; display: flex; align-items: center; gap: 2px; cursor: default; }
+.zoomControls button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; cursor: pointer; }
+.zoomLevel { color: var(--ink); font-size: 12px; font-variant-numeric: tabular-nums; text-align: center; padding: 4px; }
 .stageHint { min-height: 14px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.35; text-align: center; }
 
 .nickname { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 10px; align-items: center; margin: 0 0 12px; font: 800 19px/1.2 var(--font-display), Impact, sans-serif; }
@@ -140,17 +158,39 @@
 .nickname small, .nickname .fieldError { grid-column: 2; }
 .nickname small { font: 500 11px/1.4 var(--font-body), Arial, sans-serif; color: var(--muted); }
 .wardrobe { display: grid; min-width: 0; gap: 12px; }
+.lookControls, .lookNavigation {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.lookControls {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-block: 6px;
+  border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / 7px / 0 stretch;
+}
 .lookTabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) minmax(0, 1.17fr); gap: 5px; }
 .lookTabs button { display: grid; min-width: 0; min-height: 62px; place-content: center; justify-items: center; gap: 3px; padding: 5px 2px; font-size: 16px; line-height: 1; cursor: pointer; }
 .fieldTabs { display: flex; flex-wrap: wrap; gap: 4px; }
 .fieldTabs button { flex: 1 1 auto; min-height: 38px; padding: 4px 8px; font-size: 13px; }
-.lookTools { display: flex; justify-content: flex-end; gap: 5px; padding-top: 8px; border-top: 1px solid var(--workshop-rule); }
-.lookTools button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; min-height: 43px; padding: 5px 10px; font-size: 13px; line-height: 1.2; cursor: pointer; }
+.lookTools { display: flex; gap: 5px; }
+.lookTools button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; min-height: 44px; padding: 5px 10px; font-size: 13px; line-height: 1.2; cursor: pointer; }
 .lookTools svg { flex-shrink: 0; }
+.currentOutfit { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.currentOutfit strong { margin-inline-end: 4px; color: var(--ink); }
+.outfitGroup summary { min-height: 44px; align-content: center; padding-block: 6px; color: var(--ink); font-weight: 750; cursor: pointer; }
 .optionGroup, .palette { min-width: 0; margin: 0; padding: 0; border: 0; }
 .fieldHeading { width: 100%; margin: 0 0 7px; padding: 0 0 4px; border-bottom: 1px solid var(--workshop-rule); font: 800 22px/1.08 var(--font-display), Impact, sans-serif; }
 .traitNote { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.expressionPreview { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 9px; font-weight: 750; }
+.expressionPreview select { min-height: 44px; max-width: 100%; padding: 5px 9px; font: inherit; color: var(--ink); cursor: pointer; }
 .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hairStepper { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 6px; padding-bottom: 4px; margin-bottom: 7px; border-bottom: 1px solid var(--workshop-rule); }
+.hairStepper button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; cursor: pointer; }
+.hairStepper [role="status"] { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 2px 8px; text-align: center; }
+.hairStepper strong { font: 800 22px/1.1 var(--font-display), Impact, sans-serif; }
+.hairStepper small { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .choices[data-feature-choices="hair"] {
   grid-auto-columns: calc((100% - 24px) / 4.25);
   grid-auto-flow: column;
@@ -231,14 +271,15 @@
   padding: 9px 12px;
 }
 .actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 46px; padding: 8px 14px; font-size: 13px; line-height: 1.3; cursor: pointer; }
-.actions > button:first-child:not(.primary) { margin-right: auto; }
+.actions > [data-profile-back] { margin-right: auto; }
+.nextStatus { margin: 0 auto 0 0; color: var(--muted); font-size: 12px; font-weight: 650; line-height: 1.3; }
 .actions .primary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .actions svg { flex-shrink: 0; }
 .dialog[data-profile-step="look"] .actions { position: static; padding: 10px 12px 3px; margin: 0; border: 0; border-top: 1px solid var(--workshop-rule); border-image: none; }
 .dialog[data-profile-step="look"] .actions button { min-height: 47px; font-size: 17px; }
 .dialog[data-profile-step="look"] :is(button, summary, button span) { text-transform: none !important; }
 
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option,
+.close, .stepNumber, .nickname input, .expressionPreview select, .previewTools button, .zoomControls button, .zoomLevel, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option,
 .customColor input, .recentColors button, .actions button, .strengths button, .editLink {
   --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
   color: var(--ink);
@@ -248,7 +289,7 @@
   box-shadow: none;
   border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
-.close, .stepNumber, .nickname input, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
+.close, .stepNumber, .nickname input, .expressionPreview select, .previewTools button, .zoomControls button, .zoomLevel, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option, .customColor input, .recentColors button, .editLink { --game-control-edge: 9px; }
 .stepNumber { --game-control-edge: 7px; }
 .previewTools button[aria-pressed="true"], .lookTabs button[aria-pressed="true"], .fieldTabs button[aria-pressed="true"], .recentColors button[aria-pressed="true"] {
   --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
@@ -264,7 +305,7 @@
   border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 @media (hover: hover) {
-  :is(.close, .previewTools button, .lookTabs button, .fieldTabs button, .lookTools button, .option, .recentColors button, .actions button, .editLink):hover:not(:disabled, [aria-pressed="true"]) {
+  :is(.close, .previewTools button, .zoomControls button, .lookTabs button, .fieldTabs button, .lookTools button, .hairStepper button, .option, .recentColors button, .actions button, .editLink):hover:not(:disabled, [aria-disabled="true"], [aria-pressed="true"]) {
     --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
     color: var(--ink);
   }
@@ -299,7 +340,7 @@
   .layout[data-workshop="true"] { padding-inline: 6px; }
   .layout[data-workshop="true"] .stepHeading { min-height: 50px; margin-bottom: 6px; padding-block: 2px 4px; }
   .layout[data-workshop="true"] .stepHeading [data-kq-chapter] h2 { font-size: clamp(24px, 6.5vw, 33px); }
-  .layout[data-workshop="true"] .controls { padding: 6px 5px 12px; }
+  .layout[data-workshop="true"] .controls { padding: 6px 5px 12px; scroll-padding-block-start: 104px; }
   .lookTabs { gap: 3px; }
   .lookTabs button { min-height: 51px; font-size: 13px; }
   .lookTabs button svg { width: 18px; height: 18px; }
@@ -310,14 +351,17 @@
   .wardrobe { gap: 9px; }
   .fieldHeading { font-size: 19px; }
   .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .outfitGroup .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .outfitGroup .choicePortrait { height: clamp(82px, 14dvh, 125px); }
   .choices[data-feature-choices="hair"] { grid-auto-columns: calc((100% - 16px) / 2.5); }
   .choices[data-feature-choices="eyes"] .choicePortrait { height: clamp(62px, 20vw, 82px); }
   .palette[data-palette="hair"] .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .lookTools { justify-content: space-between; }
   .lookTools button { flex: 1 1 auto; padding-inline: 4px; }
-  .actions { bottom: -5px; padding: 6px 7px; }
+  .actions { bottom: -5px; padding: 6px 7px; flex-wrap: wrap; }
   .actions button { gap: 5px; padding-inline: 9px; font-size: 12px; }
   .actions .primary { flex: 1 1 auto; }
+  .actions:has([data-profile-back]) .nextStatus { flex-basis: 100%; }
   .dialog[data-profile-step="look"] .actions { padding: 5px 6px 0; }
   .dialog[data-profile-step="look"] .actions button { font-size: 15px; }
 }
@@ -330,8 +374,10 @@
     padding: 0 3px 6px;
   }
   .previewTools, .viewControls, .rotationControls { gap: 3px; }
+  .zoomControls { flex-direction: column-reverse; }
+  .zoomLevel { padding-block: 2px; line-height: 1; }
   .rotationControls button, .walkButton { width: clamp(33px, 10vw, 43px); }
-  .previewTools button { min-height: 37px; padding-inline: 1px; font-size: 12px; }
+  .previewTools button { min-height: 44px; padding-inline: 1px; font-size: 12px; }
   .layout[data-workshop="true"] .stageHint:not([data-notice="true"]) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .layout[data-workshop="true"] .controls { border-top: 1px solid var(--workshop-rule); }
 }
@@ -346,6 +392,29 @@
   .strengths strong { font-size: 20px; }
   .starterAreas dd { font-size: 23px; }
   .actions button { font-size: 11px; }
+}
+
+@media (max-width: 680px), (max-height: 520px) and (orientation: landscape) {
+  .lookControls { display: contents; }
+  .lookNavigation {
+    position: sticky;
+    top: -2px;
+    z-index: 2;
+    padding-block: 2px 4px;
+    border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / 7px / 0 stretch;
+  }
+}
+
+@media (max-width: 360px), (max-height: 520px) and (orientation: landscape) {
+  .lookNavigation { display: contents; }
+  .lookTabs {
+    position: sticky;
+    top: -2px;
+    z-index: 2;
+    padding-block: 2px 4px;
+    border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / 7px / 0 stretch;
+  }
+  .layout[data-workshop="true"] .controls { scroll-padding-block-start: 74px; }
 }
 
 @media (max-height: 520px) and (orientation: landscape) {

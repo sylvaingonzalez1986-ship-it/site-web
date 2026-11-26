@@ -72,6 +72,19 @@ describe("machine maintenance", () => {
 });
 
 describe("independent appearance choices", () => {
+  it("persists stripes independently of accents and derives contrast for older profiles", () => {
+    const appearance = { ...getChanvrierAppearance({ gender: "female" }), top: "mariniere", accessory: "neckerchief",
+      dyes: { top: "#f5e3be", accent: "#B14B42" } } as const;
+    const legacy = parseChanvrierProfile({ ...profile, appearance })!;
+    expect(legacy.appearance?.dyes).toEqual({ top: "#f5e3be", accent: "#b14b42" });
+    expect(getChanvrierColors(legacy)).toMatchObject({ stripe: "#204858", accent: "#b14b42" });
+
+    const tinted = parseChanvrierProfile({ ...profile, appearance: { ...appearance, dyes: { ...appearance.dyes, stripe: "#D79B38" } } })!;
+    expect(tinted.appearance?.dyes).toEqual({ top: "#f5e3be", accent: "#b14b42", stripe: "#d79b38" });
+    expect(getChanvrierColors(tinted)).toMatchObject({ stripe: "#d79b38", accent: "#b14b42" });
+    expect(parseChanvrierProfile({ ...profile, appearance: { ...appearance, dyes: { stripe: "yellow" } } })).toBeNull();
+  });
+
   it("keeps dye zones and underlying pieces across a JSON round trip for each Breton outfit", () => {
     for (const kit of CHANVRIER_BRETON_OUTFITS) {
       const appearance = { ...getChanvrierAppearance({gender:"female"}), hair:"braids", ...kit.appearance,
